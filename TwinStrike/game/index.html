@@ -60,6 +60,11 @@
       background: var(--paper); border: .45cqh solid var(--ink); font-size: 2.6cqh; white-space: nowrap; pointer-events: none; box-shadow: 0 .6cqh 0 rgba(43,29,20,.35); }
     .panel .advice { font-size: 2.1cqh; color: var(--belt); max-width: 90%; white-space: pre-line; }
     .panel .advice:empty { display: none; }
+    .panel .online { font-size: 2.3cqh; margin: 0; } .panel .online:empty { display: none; }
+    .panel .board { margin: 0; padding: 0; list-style: none; width: 80%; font-size: 2cqh; display: grid; gap: .3cqh; }
+    .panel .board:empty { display: none; }
+    .panel .board li { display: flex; justify-content: space-between; padding: .3cqh 1cqh; border-radius: 1cqh; background: rgba(43,29,20,.06); }
+    .panel .board li.me { background: rgba(242,154,60,.25); font-weight: 800; }
     .panel button.calibrate.suggest { background: var(--star); }
     .pop.critical { color: #fff3a6; font-size: 5.4cqh; }
     .pop { position: absolute; top: 47%; font-size: 4.4cqh; opacity: 0; white-space: nowrap; -webkit-text-stroke: .45cqh var(--ink); paint-order: stroke; }
@@ -152,6 +157,8 @@
       <table class="breakdown"></table>
       <p class="advice"></p>
       <p class="small verify"></p>
+      <p class="online"></p>
+      <ol class="board"></ol>
       <button class="again">再打一次</button>
       <button class="calibrate secondary">延遲校正</button>
       <button class="export secondary" hidden>匯出試玩紀錄</button>

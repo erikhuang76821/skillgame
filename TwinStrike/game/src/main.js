@@ -17,6 +17,7 @@ import { Bgm } from './audio/bgm.js';
 import { ComboFeel, tierOf } from './fx/comboFeel.js';
 import { Calibration, loadLatency } from './ui/calibration.js';
 import { PlaytestLog } from './ui/playtestLog.js';
+import { Api, apiBase, submitMessage } from './net/api.js';
 import catSheetData from './assets/cat.json';           // art/tools/pack_atlas.py output (gdd/02 §4)
 import catSheetUrl from './assets/cat.png';
 import enemySheetData from './assets/enemies.json';     // frames named '<group>.<pose>'
@@ -36,8 +37,12 @@ gsap.matchMedia().add('(prefers-reduced-motion: reduce)', () => {
 });
 
 const params = new URLSearchParams(location.search);
-const today = new Date();                                // render layer only: picks the daily seed, never read by the sim
-const SEED = Number(params.get('seed')) || seedFromString(`daily-${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`);
+// Which challenge (docs/backend_design.md §9 C1): the server's daily seed when online; ?seed=<n> = fixed challenge
+// (dev / playtest, never uploaded); offline or outdated client = practice on a local seed (never uploaded).
+const api = new Api(apiBase(params));
+const today = new Date();                                // render layer only: practice seed, never read by the sim
+let SEED = Number(params.get('seed')) || seedFromString(`practice-${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`);
+let mode = params.get('seed') ? 'fixed' : 'connecting', dailyInfo = null;
 // Latency (knowledge-base/13 §3): ?offset=<ms> wins, else this device's saved calibration (ui/calibration.js), else 0.
 const saved = loadLatency();
 // Human playtest mode (docs/human_playtest_plan.md): ?playtest=1&tester=<name> keeps every match for export.
@@ -89,7 +94,27 @@ const ui = {
   pops: [$('.pop.l'), $('.pop.r')], title: $('.title'), result: $('.result'), milestone: $('.milestone'),
 };
 ui.title.style.backgroundImage = `url(${titleArtUrl})`;
-$('.seed').textContent = `今日題目 #${(SEED % 100000).toString().padStart(5, '0')}`;
+const seedTag = () => `#${(SEED % 100000).toString().padStart(5, '0')}`;
+function showMode() {
+  const left = dailyInfo ? Math.max(0, dailyInfo.closesAt - api.serverNow()) : 0;
+  const hhmm = `${Math.floor(left / 3600000)}:${String(Math.floor(left / 60000) % 60).padStart(2, '0')}`;
+  $('.seed').textContent = {
+    daily: `今日題目 ${seedTag()} · 剩 ${hhmm}`,
+    fixed: `指定題目 ${seedTag()}（不上傳）`,
+    connecting: '連線中…',
+    practice: `練習模式 ${seedTag()}（離線，成績不上傳）`,
+    outdated: '有新版本，請重新整理（目前為練習模式）',
+  }[mode];
+}
+showMode();
+if (mode === 'connecting') {
+  api.daily().then(d => {
+    if (d.ok && d.version === GAME.version) { SEED = d.seed >>> 0; dailyInfo = d; mode = 'daily'; api.flushPending(); }
+    else mode = d.ok ? 'outdated' : 'practice';
+    showMode();
+  });
+  setInterval(() => { if (mode === 'daily') showMode(); }, 30000);
+}
 ui.hp.innerHTML = '<span>🐾</span>'.repeat(RULES.hpMax);
 if (import.meta.env.DEV) {
   const { drawCallCounter } = await import('./debug/drawCalls.js');
@@ -296,6 +321,8 @@ function finish() {
     $('.playtest-note').textContent = `試玩者：${playtest.tester} · 紀錄只存在這台裝置，按匯出後把檔案傳給我們`;
   }
   $('.verify').textContent = v.valid ? `重播驗證通過 ✓ · 題目 #${(SEED % 100000).toString().padStart(5, '0')}` : `重播驗證失敗：${v.reason}`;
+  $('.online').textContent = ''; $('.board').innerHTML = '';
+  if (mode === 'daily') uploadRun(rec.upload());                  // C2: daily runs only (fixed / practice never upload)
   gsap.delayedCall(sim.hp > 0 ? 0.8 : 1.2, () => { ui.result.hidden = false; gsap.from(ui.result, { scale: 0.85, opacity: 0, duration: FEEL.ui.in, ease: FEEL.ui.inEase }); });
 }
 
@@ -309,6 +336,24 @@ function banner(text, kind) {
 }
 
 const scoreRoll = { v: 0 };                               // displayed score rolls up instead of jumping
+/** C2 + leaderboard: upload, show the server's verdict and the top 5 (+ me). */
+async function uploadRun(upload) {
+  const online = $('.online'), board = $('.board');
+  online.textContent = '上傳成績中…';
+  const r = await api.submit(dailyInfo.date, upload);
+  online.textContent = submitMessage(r);
+  if (r.error === 'version_mismatch') { mode = 'outdated'; showMode(); }
+  if (!r.ok) return;
+  const lb = await api.leaderboard(dailyInfo.date, 5);
+  if (!lb.ok) return;
+  const me = api.account?.playerId;
+  const rows = lb.top.map(p => ({ ...p, me: p.playerId === me }));
+  if (lb.me && !rows.some(p => p.me)) rows.push({ ...lb.me, me: true });
+  board.innerHTML = rows.map(p => `<li class="${p.me ? 'me' : ''}"><span>${p.rank ?? '—'}. ${escapeHtml(p.name)}</span><span>${p.score.toLocaleString('zh-TW')}</span></li>`).join('')
+    + `<li><span>今日 ${lb.players} 人參加</span><span></span></li>`;
+}
+const escapeHtml = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+
 function syncHud(sim) {
   const score = GAME.score(sim);
   if (score !== shownScore) {
@@ -365,4 +410,4 @@ app.ticker.add(() => {
   view.update(rec.sim, renderSub, now);
 });
 
-if (import.meta.env.DEV) window.__game = { app, view, start, get rec() { return rec; }, get clock() { return clock; }, calib, latency, playtest, coach, hitErrors, timingAdvice, sfx, bgm, comboFeel, predictHit, beatDelay, sounded };   // console inspection only
+if (import.meta.env.DEV) window.__game = { app, view, start, get rec() { return rec; }, get clock() { return clock; }, api, get mode() { return mode; }, calib, latency, playtest, coach, hitErrors, timingAdvice, sfx, bgm, comboFeel, predictHit, beatDelay, sounded };   // console inspection only

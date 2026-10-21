@@ -26,6 +26,7 @@
 | 正式美術 | 貓師父、老鼠、飛鼠、狸貓（`art/tools/pack_atlas.py` + `art/atlas.json`）、道場背景（`art/tools/bake_bg.py`）已進遊戲；特效貼紙、主視覺（標題畫面）都已進遊戲；**美術全部完成** |
 | 落拍打擊感 | keysound（音高跟 BGM 和弦）＋按下即預判、拍點吸附（`audio/keysound.js`、`main.js` `predictHit`） |
 | 連擊節奏感 | 完成（`fx/comboFeel.js`、`audio/bgm.js`、`view.js` 脈動 / 速度線 / 暖光）；BGM 為程序化合成，尚未實際聽感調校 |
+| 連線（路線 A） | `game/src/net/api.js`：每日題目、自動訪客帳號、上傳驗分、排行榜、離線排隊；後端雛形在 `server/`（`npm start`，預設 http://localhost:8787；遊戲可用 `?api=` 指定） |
 | 延遲校正畫面 | 完成（`ui/calibration.js`：聽拍 + 看閃光各 8 下 → 觸控 offset 與音訊延遲，存在裝置上） |
 
 ```
