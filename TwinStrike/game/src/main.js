@@ -110,11 +110,11 @@ const coach = {
   reset() { this.whiffTimes.length = 0; this.runShown = 0; },
   whiff() {
     const now = performance.now();
-    this.whiffTimes = this.whiffTimes.filter(t => now - t < 3000).concat(now);
+    this.whiffTimes = this.whiffTimes.filter(t => now - t < FEEL.coach.mashWindowMs).concat(now);
     if (this.shown === 0) this.say('等敵人踏進框再點！');                       // very first whiff on this device
-    else if (this.whiffTimes.length >= 3 && this.runShown < 2) { this.runShown++; this.say('狂按會露出破綻，貓會暈 0.2 秒'); }
+    else if (this.whiffTimes.length >= FEEL.coach.mashWhiffs && this.runShown < FEEL.coach.perRun) { this.runShown++; this.say('狂按會露出破綻，貓會暈 0.2 秒'); }
   },
-  locked() { if (this.runShown < 2 && this.whiffTimes.length >= 2) { this.runShown++; this.say('暈眩中！先停手，等下一隻'); } },
+  locked() { if (this.runShown < FEEL.coach.perRun && this.whiffTimes.length >= 2) { this.runShown++; this.say('暈眩中！先停手，等下一隻'); } },
 };
 coach.runShown = 0;
 try { coach.shown = Number(localStorage.getItem('twinstrike-coach-v1')) || 0; } catch { /* storage blocked */ }
@@ -262,9 +262,9 @@ function start() {
 // Bluetooth latency, not skill -> suggest calibration. The median is robust to a few wild taps.
 const hitErrors = [];
 function timingAdvice() {
-  if (hitErrors.length < 20) return null;
+  if (hitErrors.length < FEEL.coach.minHits) return null;
   const s = [...hitErrors].sort((a, b) => a - b), med = s[s.length >> 1];
-  if (Math.abs(med) < 35) return null;
+  if (Math.abs(med) < FEEL.coach.biasMs) return null;
   return { med: Math.round(med), text: `你的點擊平均${med > 0 ? '偏晚' : '偏早'} ${Math.abs(Math.round(med))} ms，可能是裝置或藍牙耳機的延遲 → 建議做「延遲校正」` };
 }
 
@@ -281,7 +281,7 @@ function finish() {
   const bias = timingAdvice();
   const advice = [];
   if (bias) advice.push(bias.text);
-  if (b.whiffs >= 8 || b.locked >= 3) advice.push(`破綻 ${b.whiffs} 次：等敵人踏進框再點，狂按會讓貓暈眩 0.2 秒、漏掉下一隻`);
+  if (b.whiffs >= FEEL.coach.whiffAdvice || b.locked >= FEEL.coach.lockedAdvice) advice.push(`破綻 ${b.whiffs} 次：等敵人踏進框再點，狂按會讓貓暈眩 0.2 秒、漏掉下一隻`);
   $('.advice').textContent = advice.join('\n');
   hudEl.querySelectorAll('.result .calibrate').forEach(btn => btn.classList.toggle('suggest', !!bias));
   $('.breakdown').innerHTML = [

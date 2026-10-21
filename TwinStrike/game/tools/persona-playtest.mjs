@@ -7,6 +7,7 @@ import { mkdirSync, writeFileSync } from 'node:fs';
 import { Recorder } from '../src/sim/core/index.js';
 import { GAME, SEGMENTS, KIND, GRADE, SUB, scoreBreakdown } from '../src/sim/sim.js';
 import { makeHumanBot } from './humanBots.mjs';
+import { FEEL } from '../src/fx/feel.js';              // same coaching thresholds as the game (FEEL.coach)
 
 const args = process.argv.slice(2);
 const outIdx = args.indexOf('--out');
@@ -67,7 +68,7 @@ for (const persona of PERSONAS) {
       upload: rec.upload(), summary: { ...b, hp: rec.sim.hp, deathTick: rec.sim.deathTick, verified: true },
       latency, device: { ua: `simulated persona ${persona.id}`, dpr: 3, lang: 'zh-TW', ...persona.device } });
     const med = errs.length ? [...errs].sort((x, y) => x - y)[errs.length >> 1] : 0;
-    out.push({ persona: persona.id, name: persona.name, run, score: rec.sim.judge.score, rate: b.ratePermille / 10, crit: b.critical, med: Math.round(med), advise: errs.length >= 20 && Math.abs(med) >= 35, perfect: b.perfect, miss: b.miss, whiffs: b.whiffs, locked: b.locked, maxCombo: b.maxCombo, ...story(rec.sim, hurts) });
+    out.push({ persona: persona.id, name: persona.name, run, score: rec.sim.judge.score, rate: b.ratePermille / 10, crit: b.critical, med: Math.round(med), advise: errs.length >= FEEL.coach.minHits && Math.abs(med) >= FEEL.coach.biasMs, perfect: b.perfect, miss: b.miss, whiffs: b.whiffs, locked: b.locked, maxCombo: b.maxCombo, ...story(rec.sim, hurts) });
   }
   recordsByPersona[persona.id] = list;
 }

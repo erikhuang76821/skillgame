@@ -26,6 +26,9 @@ export const FEEL = {
   // tanuki boss cues (gdd/07 §7): big arrow over the side to tap + ring closing on the beat; queue over its head
   boss: { color: 0xffb020, cueY: 250, cueScale: 1.5, ringStart: 1.15, ringEnd: 0.42, queueGap: 54, queueScale: 0.55, queueNext: 0.75 },
   cutIn: { in: 0.22, hold: 0.6, out: 0.18 },                      // fever banner (top 20% only, never pauses the sim)
+  // Coaching (docs/persona_playtest.md #1, #3): when to suggest calibration / explain mashing. Read by main.js and
+  // tools/persona-playtest.mjs so the game and the simulation can never disagree.
+  coach: { biasMs: 35, minHits: 20, whiffAdvice: 8, lockedAdvice: 3, mashWindowMs: 3000, mashWhiffs: 3, perRun: 2 },
   // Combo tiers (gdd/06_combo_feel.md). Index = tier T0..T4; render / audio only, scoring is unchanged.
   combo: {
     at: [0, 10, 25, 50, 100],                                      // combo needed for each tier
