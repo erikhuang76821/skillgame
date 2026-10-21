@@ -61,6 +61,8 @@
 
 ## 3. 共通規則（給新專案）
 
+> **改造是必做，不是建議。** 原作多半是「選擇噱頭」，照原作復刻做不出技巧主導（GateLane 2026-10-21：照原作自動射擊、只留加乘門 → 技巧佔比僅 71%、高手兩秒打倒頭目）。規格書的「Skill Game 化改造（必做）」每一條都要在 `gdd/05_game_spec.md` §13 回應（`RULE-AF-ADAPTATION`）；開工必讀清單見 [bootstrap.md §0](../.claude/skills/lite-skillgame-stack/references/bootstrap.md)。
+
 | 原作做法 | Skill game 版本 | 對應原則 |
 |---|---|---|
 | 付費 +1 暫存格、續關、無限生命 | 固定容量；失敗即結算，保留已得分 | 錢買不到分數（[01](01_skill-integrity.md)） |

@@ -12,11 +12,12 @@
 | 4 | 專案起手 | [04](04_tech-stack.md) | `lite-skillgame-stack` templates | 可跑骨架 | `npm run dev` 基礎 DC 1 |
 | 5 | 確定性 sim + 測試 | [04](04_tech-stack.md) §4、規格 | 範本 `sim/core/`（不改）；依規格改寫 `sim/sim.js`、`test/determinism.test.mjs`（可用規格裡的 AI 提示詞） | `sim/`、`test/` | `npm test` 全過、golden match 更新 |
 | 6 | 技巧主導驗證 | [01](01_skill-integrity.md) §4 | 依規格 §9 改寫 `tools/bots.mjs`；`node tools/skill-dominance.mjs 30 --out ../docs/skill_dominance_report.md` | 報告 | 技巧佔比 ≥ 70%、最強 vs 次強 ≥ 70%（未過 exit 1） |
-| 6b | 難度曲線 | [16](16_difficulty-curve.md) | 腳本（難度級 + 段落表）寫進 sim；`tools/humanBots.mjs` + `tools/playtest.mjs`（參考 TwinStrike） | `gdd/07_difficulty_curve.md`、`docs/playtest_report.md/.html` | D1–D8 全過（失敗 exit 1）；調校紀錄寫進 gdd/07 |
+| 6b | 難度曲線 | [16](16_difficulty-curve.md) | 腳本（難度級 + 段落表）寫進 sim；範本的 `tools/humanBots.mjs` + `tools/playtest.mjs`（依品類改寫單位與 DI）→ `npm run playtest` | `gdd/07_difficulty_curve.md`、`docs/playtest_report.md/.html` | D1–D8 全過（失敗 exit 1）；調校紀錄寫進 gdd/07 |
 | 7 | 美術 | [06](06_art-pipeline.md)、[07](07_themes-and-liveops.md) | `codex-image`、`pokesurvivor-asset-dev`（`~/.codex/skills/`） | atlas + metadata | 身分一致、真 alpha、validate 通過 |
 | 8 | 打擊感 / UI | [05](05_juice-and-feel.md) | `FEEL`、GSAP | juice、DOM HUD、結算 | LOW 模式資訊不丟 |
 | 9 | 包體 / 效能 | [04](04_tech-stack.md) §5–6 | `npm run size`、drawCalls.js、Spector.js | size budget 實測 | ≤ 8 MB、DC ≤ 5 |
 | 10 | 交付自檢 | [04](04_tech-stack.md) §9 | — | — | 清單全勾 |
+| 11 | 完整度把關 | `rules.json` 的 `RULE-GAME-*`、`RULE-AF-ADAPTATION` | `npm run audit`（[shared/tools/game-audit.mjs](../shared/tools/game-audit.mjs)） | — | 必要項目全過；警告項有處理或寫明理由 |
 
 ## 2. 常用指令
 
@@ -41,6 +42,10 @@ npm run playtest
 ```
 
 ```bash
+npm run audit
+```
+
+```bash
 codex exec --skip-git-repo-check --sandbox read-only < art/prompts/<asset>.txt
 ```
 
@@ -53,7 +58,8 @@ codex exec --skip-git-repo-check --sandbox read-only < art/prompts/<asset>.txt
 | `codex-image` | `~/.claude/skills/` | Codex CLI 生圖 | 同上 |
 | `pokesurvivor-asset-dev` | `~/.codex/skills/` | sprite 契約、`sprite_sheet.py` pack / validate | 不在 repo；`anim_frames.py` 寫死此路徑 |
 | `skill-dominance.mjs`、`lib/dominance.mjs`、`bots.mjs` | 範本 `tools/` | 技巧主導報告（通用統計 + 本作 bot） | `bots.mjs` 每款要依規格重寫 |
-| `humanBots.mjs`、`difficulty-curve.mjs`、`playtest.mjs` | `TwinStrike/game/tools/` | 人性化試玩、難度曲線與節奏驗收（[16](16_difficulty-curve.md)） | 尚未抽進範本；負荷模型與 DI 要依品類改寫 |
+| `humanBots.mjs`、`playtest.mjs`、`lib/curve.mjs` | 範本 `tools/`（2026-10-21 抽入）；節奏類完整版在 `TwinStrike/game/tools/` | 人性化試玩、難度曲線驗收（[16](16_difficulty-curve.md)） | `humanBots` / `playtest` 的單位、負荷模型與 DI 每款改寫；`lib/curve.mjs` 不改 |
+| `game-audit.mjs` | repo `shared/tools/` | 完整度把關（gdd、報告、改造對照、範本殘留） | 要求清單在 `rules.json`，不寫在程式裡 |
 | `anim_prompts.py / gen_anim.sh / anim_frames.py / anim_preview.py` | `SwarmDuel/tools/` | 8 方向像素動畫管線 | 只適用像素俯視角色 |
 | `.claude/launch.json` | repo | dev server 預覽（swarm-duel :5173） | 新遊戲要加一筆 |
 

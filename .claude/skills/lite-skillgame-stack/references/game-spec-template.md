@@ -19,6 +19,7 @@ GDD 說「為什麼」，本規格說「sim 怎麼算」。每一節都對應到
 | §10 公平檢查 | GDD 03 精髓七條 |
 | §11 事件 → 演出 | `main.js` 的 `playJuice()`、`fx/feel.js` |
 | §12 驗收測試 | `test/determinism.test.mjs` |
+| §13 改造對照（改編題才有） | 對應 `knowledge-base/ad-funnel/af-*.md` 的改造清單；`npm run audit` 逐條檢查 |
 
 ---
 
@@ -145,6 +146,15 @@ GDD 說「為什麼」，本規格說「sim 怎麼算」。每一節都對應到
 | 挑戰內容只依種子（換玩家行為，§3 序列不變） | 相同 |
 | `node tools/skill-dominance.mjs 30` | 技巧佔比 ≥ 70%、最強 vs 次強 ≥ 70% |
 | 滿局重播耗時 | < 500 ms（伺服器預算） |
+| `npm run playtest` | 難度曲線 D1–D8 全過（RULE-CURVE-*） |
+
+## §13 改造對照（題目來自廣告玩法或既有遊戲時必填）
+
+來源：`knowledge-base/ad-funnel/af-*.md`（連結寫在本規格開頭）。該規格書「Skill Game 化改造（必做）」的每一條各一列，編號照原文；不採用要寫理由與替代做法（RULE-AF-ADAPTATION）。
+
+| # | 改造項目 | 採用？ | 本作做法 / 不採用理由 | 對應程式 |
+|---|---|---|---|---|
+| 1 | | 採用 / 不採用 | | `sim.js` … |
 
 ---
 

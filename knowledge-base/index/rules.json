@@ -220,6 +220,61 @@
       "howRef": "TwinStrike/gdd/02_art_spec.md §1",
       "source": "SwarmDuel/knowledge/themes/tw-themes.md",
       "reviewedAt": "2026-10-21"
+    },
+    {
+      "id": "RULE-GAME-DOCS",
+      "category": "process",
+      "level": "must",
+      "scope": { "selector": { "kind": "game-folder" } },
+      "constraints": [
+        { "name": "required", "value": ["README.md", "gdd/03_skill_integrity.md", "gdd/05_game_spec.md", "gdd/07_difficulty_curve.md", "gdd/10_tech_constraints.md", "gdd/11_risks_open.md", "docs/skill_dominance_report.md", "docs/playtest_report.md"], "unit": "path", "overridePolicy": "with-reason" },
+        { "name": "specSections", "value": ["§0", "§1", "§2", "§3", "§4", "§5", "§6", "§7", "§8", "§9", "§10", "§11", "§12"], "unit": "heading", "overridePolicy": "forbid" }
+      ],
+      "measurement": "game-audit 檢查 <Game>/ 下檔案存在且非空；gdd/05_game_spec.md 以 ## §N 標題涵蓋 game-spec-template 的每一節（§10 是公平檢查，不可挪作他用）",
+      "enforcement": { "type": "script", "ref": "shared/tools/game-audit.mjs" },
+      "whyRef": "knowledge-base/08_production-workflow.md §1",
+      "howRef": ".claude/skills/lite-skillgame-stack/references/bootstrap.md §0",
+      "source": "knowledge-base/08_production-workflow.md 步驟 3、6、6b",
+      "reviewedAt": "2026-10-21"
+    },
+    {
+      "id": "RULE-GAME-REPORTS",
+      "category": "process",
+      "level": "must",
+      "scope": { "selector": { "kind": "game-folder" } },
+      "constraints": [{ "name": "noFail", "check": "docs/skill_dominance_report.md 與 docs/playtest_report.md 由工具產生，且不含未通過標記（❌ / ✘ / FAIL）", "overridePolicy": "forbid" }],
+      "measurement": "game-audit 掃描報告文字",
+      "enforcement": { "type": "script", "ref": "shared/tools/game-audit.mjs" },
+      "whyRef": "knowledge-base/16_difficulty-curve.md",
+      "howRef": ".claude/skills/lite-skillgame-stack/templates/tools/playtest.mjs",
+      "source": "knowledge-base/16_difficulty-curve.md D1–D8",
+      "reviewedAt": "2026-10-21"
+    },
+    {
+      "id": "RULE-AF-ADAPTATION",
+      "category": "fairness",
+      "level": "must",
+      "scope": { "selector": { "kind": "game-design", "source": "ad-funnel" } },
+      "constraints": [{ "name": "everyItem", "check": "玩法規格引用 knowledge-base/ad-funnel/af-*.md 時，必須有 ## §13 改造對照，且該規格書「Skill Game 化改造」的每一條都有一列：採用（寫本作做法）或不採用（寫理由）", "overridePolicy": "forbid" }],
+      "measurement": "game-audit 比對 af 規格書的編號條目與 gdd/05 §13 表格的 | N | 列",
+      "enforcement": { "type": "script", "ref": "shared/tools/game-audit.mjs" },
+      "whyRef": "knowledge-base/16_ad-funnel-games.md §0 結論 3",
+      "howRef": "knowledge-base/ad-funnel/_TEMPLATE_spec.md",
+      "source": "GateLane 檢討（2026-10-21）：只復刻原作、跳過改造 → 技巧佔比僅 71%",
+      "reviewedAt": "2026-10-21"
+    },
+    {
+      "id": "RULE-TEMPLATE-LEFTOVER",
+      "category": "process",
+      "level": "should",
+      "scope": { "selector": { "kind": "game-folder" } },
+      "constraints": [{ "name": "rewrite", "value": ["src/sim/sim.js", "tools/bots.mjs", "tools/humanBots.mjs", "tools/playtest.mjs", "src/fx/feel.js", "src/audio/sfx.js"], "unit": "path", "overridePolicy": "with-reason" }],
+      "measurement": "game-audit 比對 <Game>/game/ 與 templates/ 的同名檔；內容相同 = 沿用示範遊戲的數值或規則（警告）",
+      "enforcement": { "type": "script", "ref": "shared/tools/game-audit.mjs" },
+      "whyRef": "knowledge-base/05_juice-and-feel.md、knowledge-base/14_audio.md",
+      "howRef": ".claude/skills/lite-skillgame-stack/references/bootstrap.md §1",
+      "source": "GateLane 檢討（2026-10-21）：feel.js / sfx.js 與範本完全相同",
+      "reviewedAt": "2026-10-21"
     }
   ]
 }

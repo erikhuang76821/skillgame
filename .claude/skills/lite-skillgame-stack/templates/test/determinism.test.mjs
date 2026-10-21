@@ -12,7 +12,7 @@ test('same seed + same inputs => identical result', () => {
 
 test('golden match (cross-engine determinism; update only when GAME.version is bumped)', () => {
   assert.deepEqual(playMatch(GAME, 1234, BOTS.expert).result(),
-    { game: 'beat-tap', version: 1, seed: 1234, ticks: 1800, score: 386, hash: 2290218997 });
+    { game: 'beat-tap', version: 2, seed: 1234, ticks: 1800, score: 423, hash: 2394985397 });
 });
 
 test('uploaded match verifies; tampered score does not', () => {
@@ -48,6 +48,12 @@ test('render events never change the outcome (recordEvents off = same hash)', ()
 test('skill dominates on the same seeds (gdd/03 thresholds)', () => {
   const r = runDominance(GAME, BOTS, 12);
   assert.ok(r.pass, `skill share ${r.shares.skillTier.toFixed(2)}, top win rate ${r.top.toFixed(2)}`);
+});
+
+test('scripted difficulty curve passes the D-gates (knowledge-base/16; full report: npm run playtest)', async () => {
+  const { execFileSync } = await import('node:child_process');
+  // tools/playtest.mjs exits 1 when any check fails; 8 seeds keep the test fast
+  assert.doesNotThrow(() => execFileSync(process.execPath, ['tools/playtest.mjs', '8'], { cwd: new URL('..', import.meta.url), stdio: 'pipe' }));
 });
 
 test('full-match replay fits the server budget', () => {

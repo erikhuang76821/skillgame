@@ -8,7 +8,11 @@
 
 | 日期 | 決策 | 狀態 |
 |---|---|---|
-| 2026-10-21 | [知識庫＋資產的規則索引、資產索引與遷移](decisions/2026-10-21-kb-asset-architecture.md)：規則集中於 `index/rules.json`、資產分款登錄後彙整、語意檔名、四階段遷移 | 已定案，尚未實作（本目錄結構將依此調整） |
+| 2026-10-21 | [知識庫＋資產的規則索引、資產索引與遷移](decisions/2026-10-21-kb-asset-architecture.md)：規則集中於 `index/rules.json`、資產分款登錄後彙整、語意檔名、四階段遷移 | 第 0、1 階段已完成（`index/rules.json`、`shared/tools/rules.mjs`、把關程式改讀規則）；第 2、3 階段未做 |
+
+## 開新遊戲：必讀路徑
+
+照 [bootstrap.md §0](../.claude/skills/lite-skillgame-stack/references/bootstrap.md) 的表依階段讀（立項 01 / 02 → 改編題的 `ad-funnel/af-*.md` 改造清單 → 規格 03 / 12 / 13 → 難度曲線 16 → 手感音效 05 / 14 / 15 → 美術 06 / 07 / 10 / 11 → 技術 04），流程與驗收見 [08](08_production-workflow.md)。交付前 `npm run audit`（[shared/tools/game-audit.mjs](../shared/tools/game-audit.mjs)）檢查產出是否齊全。
 
 ## 目錄
 
@@ -40,7 +44,7 @@
 
 ## 優先序
 
-專案自己的技術文件 > `lite-skillgame-stack` skill > 本知識庫摘要。
+門檻數字：[`index/rules.json`](index/rules.json)（唯一來源）> 各遊戲 `config/rules.overrides.json`（只能改允許的規則，必附理由）。做法：專案自己的技術文件 > `lite-skillgame-stack` skill > 本知識庫摘要（skill 與本庫只引用規則 ID，不另寫數字）。
 
 ## 維護
 

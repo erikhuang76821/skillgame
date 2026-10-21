@@ -15,6 +15,8 @@ description: 輕量化 HTML5 單機 Skill Game 技術規範（包體 5～10 MB�
 
 動手前先讀當前專案的技術文件；沒有的話照本 skill 建立（見 [references/bootstrap.md](references/bootstrap.md)）。
 
+**開新遊戲**：先照 [bootstrap.md §0](references/bootstrap.md) 讀完 repo `knowledge-base/` 的必讀頁再動手；範本只帶程式，設計知識（技巧完整性、難度曲線、手感、音效、美術、改編題的改造清單）都在知識庫。門檻與必備產出以 `knowledge-base/index/rules.json` 為準，交付前 `npm run audit` 必過。
+
 ## 1. 技術棧（白名單）
 
 | 用途 | 選擇 | 備註 |
@@ -93,7 +95,7 @@ description: 輕量化 HTML5 單機 Skill Game 技術規範（包體 5～10 MB�
 - **輸入公平**（`knowledge-base/13`）：`core/input.js` 的 `InputClock` / `TapQueue` 以事件時間戳決定 tick 與子 tick 相位（幀率無關），`calibrate()` 延遲校正寫進 `rec.meta`；範本 `main.js` 已接上。
 - **音效**（`knowledge-base/14`）：`src/audio/sfx.js` Web Audio 合成配方，首次手勢 `unlock()`。
 - **技巧主導驗證**：`tools/bots.mjs`（≥ 3 級）+ `node tools/skill-dominance.mjs 30`，門檻技巧佔比 ≥ 70%、最強 vs 次強 ≥ 70%，未過 exit 1。
-- **難度曲線**（repo `knowledge-base/16_difficulty-curve.md`）：曲線用固定腳本設計（難度級每級只加一件事、上升鋸齒、調息、段末頭目），種子只換同級內容；以人性化試玩 bot 逐單位驗收 D1–D8（技巧主導、ρ ≥ 0.6、R² ≥ 0.5、高峰遞增、無 12 pp 斷崖、一般玩家 90–99%、拍格、4 的倍數樂句）。實作範例：`TwinStrike/game/tools/humanBots.mjs`、`playtest.mjs`。
+- **難度曲線**（repo `knowledge-base/16_difficulty-curve.md`）：曲線用固定腳本設計（難度級每級只加一件事、上升鋸齒、調息、段末頭目），種子只換同級內容；以人性化試玩 bot 逐單位驗收 D1–D8（門檻見 rules.json `RULE-CURVE-*`）。範本已附 `tools/humanBots.mjs`、`tools/playtest.mjs`（示範遊戲的單位與 DI，每款改寫）與通用的 `tools/lib/curve.mjs`；`npm run playtest` 產生 `docs/playtest_report.md`。節奏類完整範例（含圖表）：`TwinStrike/game/tools/playtest.mjs`。
 
 ## 7. 交付前自檢
 
@@ -102,7 +104,8 @@ description: 輕量化 HTML5 單機 Skill Game 技術規範（包體 5～10 MB�
 - [ ] `sim/` 內 grep 不到 `gsap|pixi|document|Math.random|Date`
 - [ ] `npm test` 全過（core + determinism，含 golden match）；`node tools/skill-dominance.mjs 30` 過門檻
 - [ ] 改了會影響結果的規則 → `GAME.version` +1、golden match 已更新
-- [ ] 難度曲線自動試玩（`npm run playtest` 或同等工具）D1–D8 全過，調校紀錄寫進 `gdd/07`（knowledge-base/16）
+- [ ] 難度曲線自動試玩（`npm run playtest`）D1–D8 全過，調校紀錄寫進 `gdd/07`（knowledge-base/16）
+- [ ] `npm run audit` 必要項目全過（gdd 03 / 05 / 07 / 10 / 11、報告無未通過項；改編題 gdd/05 §13 逐條回應改造）；警告項（沿用範本的 `feel.js` / `sfx.js`）有處理或寫明理由
 - [ ] 沒有執行期 CDN 依賴（transcoder、字型、wasm 全部本地）
 - [ ] reduced-motion / LOW 特效下所有 juice 有降級
 - [ ] 手感數值沒有寫死在效果函式裡（都在 `FEEL`）

@@ -1,7 +1,7 @@
 # 16 難度曲線設計與驗收規範
 
 > 補 [09](09_knowledge-gaps.md) G5。把「怎麼設計難度曲線」和「怎麼證明曲線是對的」綁成一套流程：**曲線用腳本設計、用自動化試玩驗收、用固定門檻判定**。
-> 實作範例：TwinStrike（喵拳道場）—— 設計 [gdd/07_difficulty_curve.md](../TwinStrike/gdd/07_difficulty_curve.md)，工具 [`game/tools/humanBots.mjs`](../TwinStrike/game/tools/humanBots.mjs)、[`difficulty-curve.mjs`](../TwinStrike/game/tools/difficulty-curve.mjs)、[`playtest.mjs`](../TwinStrike/game/tools/playtest.mjs)，最新報告 [docs/playtest_report.html](../TwinStrike/docs/playtest_report.html)。
+> 實作範例：TwinStrike（喵拳道場）—— 設計 [gdd/07_difficulty_curve.md](../TwinStrike/gdd/07_difficulty_curve.md)，工具 [`game/tools/humanBots.mjs`](../TwinStrike/game/tools/humanBots.mjs)、[`difficulty-curve.mjs`](../TwinStrike/game/tools/difficulty-curve.mjs)、[`playtest.mjs`](../TwinStrike/game/tools/playtest.mjs)，最新報告 [docs/playtest_report.html](../TwinStrike/docs/playtest_report.html)。新遊戲起手：範本已附 `tools/humanBots.mjs`、`tools/playtest.mjs`（示範遊戲 Beat Tap 的單位與 DI）與通用檢查 `tools/lib/curve.mjs`，`npm run playtest` 即跑。
 > 與其他頁的關係：公平性門檻見 [01](01_skill-integrity.md) §4；節奏 / 物理的 sim 配方見 [12](12_genre-recipes.md)；輸入延遲見 [13](13_input-fairness.md)。
 
 ## 1. 核心觀念：設計和驗收是同一件事的兩面
