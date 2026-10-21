@@ -1,0 +1,4 @@
+Generate one image with your image generation tool. Do not write any files.
+
+Create one isolated pixel-art game icon: a brown pinecone mid-throw with two small motion lines
+Chunky 16-bit pixel art game UI icon in the style of mobile roguelite survivor games (bold, saturated, high contrast), 2-pixel dark outline, 3 tones per material, upper-left light, readable at 48x48 pixels. Single centered object with generous transparent padding. Actual transparent background (alpha), not a checkerboard. No text, no letters, no numbers, no frame, no background shape.

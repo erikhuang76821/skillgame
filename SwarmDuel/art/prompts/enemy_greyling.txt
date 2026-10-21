@@ -1,0 +1,6 @@
+Generate one image with your image generation tool. Do not write any files.
+
+Create a character identity reference sheet for an original swarm enemy: "Greyling", a small mischievous grey alien drone-pilot. Pale grey-green skin, huge glossy black almond eyes, tiny antenna with a glowing lime tip, a bulky silver one-piece suit with a small hover-jet backpack. Very compact rounded silhouette that reads at tiny size; designed to appear in groups of 50+.
+Show exactly three full-body poses of the SAME character side by side, same scale, evenly spaced: (1) facing the camera / down, (2) facing right, (3) facing away / up.
+Target native game frame after processing: about 24x24 pixels per pose with feet at bottom-center.
+Style lock (shared by every asset in this game): original 16-bit pixel art for a top-down 3/4 overhead action game, chunky clean pixel clusters, 1-pixel dark contour, limited palette with 3 tones per material (shadow / mid / highlight), light from the upper-left, bold saturated Saturday-morning-cartoon colors aimed at a North American audience. Original design only: no Pokemon, no existing franchise characters. Actual transparent background (alpha), NOT a painted checkerboard. No text, no labels, no ground plane, no cast shadow, no gradients, no smooth airbrush shading, no blur.

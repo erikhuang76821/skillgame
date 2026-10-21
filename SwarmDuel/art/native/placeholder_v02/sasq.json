@@ -1,0 +1,19 @@
+{
+  "w": 32,
+  "h": 40,
+  "n": 1,
+  "r": 4,
+  "d": [
+    60
+  ],
+  "ax": 16.0,
+  "ay": 39,
+  "dirs": [
+    "down",
+    "right",
+    "up",
+    "left"
+  ],
+  "placeholder": true,
+  "source": "art/raw/native_hero_1.png"
+}

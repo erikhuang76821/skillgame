@@ -1,0 +1,15 @@
+{
+  "name": "twin-strike-server",
+  "private": true,
+  "version": "0.1.0",
+  "description": "喵拳道場 路線 A 後端雛形：每日題目、重播驗分、排行榜（無執行期依賴）",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node src/main.js",
+    "test": "node --test test/*.test.mjs",
+    "bench": "node bench/replay-bench.mjs"
+  }
+}

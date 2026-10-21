@@ -1,0 +1,4 @@
+Generate one image with your image generation tool. Do not write any files.
+
+Create a sprite reference sheet for an original top-down 3/4 action game hero: "Sasq", a young friendly Bigfoot with chestnut-brown shaggy fur, tan face, big eyes, a red-and-black plaid scarf, chunky feet, chibi proportions (head ~40% of height). Show exactly three standing idle poses side by side with wide transparent gaps: (1) facing the camera, (2) facing right, (3) facing away.
+Draw it as TRUE LOW-RESOLUTION pixel art: each pose is exactly 32x40 art pixels, and the whole image is upscaled with nearest-neighbour so every art pixel is a clean, equal, hard-edged square block (about 16x16 screen pixels per art pixel). No sub-pixel detail, no anti-aliasing, no gradients, no smooth curves. 1-art-pixel dark outline around the whole silhouette. Limited palette (max 16 colors). Light from upper-left. Actual transparent background (alpha). No text, labels, ground, or shadow.

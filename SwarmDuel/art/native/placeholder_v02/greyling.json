@@ -1,0 +1,19 @@
+{
+  "w": 28,
+  "h": 28,
+  "n": 1,
+  "r": 4,
+  "d": [
+    60
+  ],
+  "ax": 14.0,
+  "ay": 27,
+  "dirs": [
+    "down",
+    "right",
+    "up",
+    "left"
+  ],
+  "placeholder": true,
+  "source": "art/raw/native_greyling_1.png"
+}

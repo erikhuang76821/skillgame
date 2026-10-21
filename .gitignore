@@ -1,0 +1,11 @@
+# knowledge-base/decisions/2026-10-21-kb-asset-architecture.md §7 第 0 階段
+**/node_modules/
+**/dist/
+.env*
+!.env.example
+*.log
+Thumbs.db
+.DS_Store
+.vscode/
+.idea/
+.claude/settings.local.json

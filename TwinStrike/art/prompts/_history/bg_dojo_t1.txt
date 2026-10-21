@@ -1,0 +1,8 @@
+Generate one image with your image generation tool. Do not write any files.
+
+Attached image 1 shows this game's hero (Master Miao, an orange cat). Use it ONLY as the art-style reference: match its thick dark-brown outlines, flat cel-shaded colours (no soft gradients, no painterly rendering) and cozy palette. Do NOT draw the cat or any character in this image.
+
+Draw a background for an original cozy kung fu cat game, portrait 9:16 (1024x1820), side view interior of a small warm wooden dojo at sunset.
+Composition: the lower 30% is an empty polished wooden floor (#c98b4f / #9a5f32) seen almost straight from the side, with a flat horizon line at about 70% height, leaving a clear open stage in the middle for characters. The back wall has paper sliding doors (#f6ecd6) with wooden frames, two wooden pillars at the far left and right edges, a few hanging paper lanterns, a blank wooden plaque above the center (no writing on it), a potted bonsai at one side, and warm orange sunset light through a round window.
+Keep the center area behind the characters low-detail and slightly desaturated so foreground characters read clearly.
+Style: chibi kawaii sticker-style 2D game art, thick clean dark-brown outlines, flat colors with one cel-shade tone, warm cozy palette, light from the upper-left. Original design only. No characters, no text, no letters, no calligraphy, no coins, no casino imagery, no large pure-white or pure-black areas.

@@ -1,0 +1,14 @@
+Generate one image with your image generation tool. Do not write any files.
+
+Draw an animation strip for the original game character "Greyling", a tiny grey alien with a big round head, huge glossy black eyes, a short antenna with a lime-green glowing tip, and a small silver suit with a jetpack.
+Attached image 1 is the accepted identity sheet (front, right side, back): copy its exact species, proportions, face, colors, accessories, outline and pixel-art style. Attached image 2 is the identity pose closest to the requested facing. Attached image 3 is the accepted Idle frame for this exact facing: keep its camera, size and proportions.
+
+Action: Walk. Facing: facing away from the camera (back view, face not visible). Every frame faces the same direction.
+Show exactly 4 frames of the SAME character in ONE horizontal row, left to right, same scale, feet on the same ground line, separated by wide transparent gaps:
+- frame 1: contact pose, left foot forward and right foot back, arms swinging opposite to the legs
+- frame 2: passing pose, legs together under the body, body 1 art pixel higher
+- frame 3: contact pose, right foot forward and left foot back (mirror of the frame 1 leg/arm positions)
+- frame 4: passing pose, legs together under the body, body 1 art pixel higher
+Only the limbs/body described change between frames; head size, colors, scarf/suit details and outline stay identical.
+
+Draw it as TRUE LOW-RESOLUTION pixel art: each frame is exactly 24x24 art pixels, and the whole image is upscaled with nearest-neighbour so every art pixel is a clean, equal, hard-edged square block (about 16x16 screen pixels per art pixel). No sub-pixel detail, no anti-aliasing, no gradients, no smooth curves. 1-art-pixel dark outline around the whole silhouette. Limited palette (max 16 colors). Light from upper-left. Actual transparent background (alpha). No text, labels, frame numbers, grid, ground, or shadow.

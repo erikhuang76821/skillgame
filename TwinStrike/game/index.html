@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <title>喵拳道場</title>
+  <style>
+    :root { --ink: #2b1d14; --paper: #f6ecd6; --wood: #c98b4f; --tabby: #f29a3c; --belt: #d6453d; --catnip: #7fd36b; --sky: #7fd7ff; --star: #ffd34a; }
+    html, body { margin: 0; height: 100%; background: #5a3a22; overflow: hidden; touch-action: none;
+      -webkit-user-select: none; user-select: none; overscroll-behavior: none; color: var(--ink);
+      font: 700 16px/1.35 "jf-openhuninn", "Arial Rounded MT Bold", "Noto Sans TC", system-ui, sans-serif; }
+    /* Layering: #stage (clips) > #stage-shake (shaken by GSAP) > canvas; #fx and #hud are siblings, never shaken. */
+    #stage { position: fixed; inset: 0; overflow: hidden; background: #5a3a22; }
+    #stage-shake { position: absolute; inset: -12px; will-change: transform; }
+    #stage-shake canvas { position: absolute; inset: 12px; display: block; }
+    #fx { position: fixed; inset: 0; pointer-events: none; }
+    #fx-vignette, #fx-flash, #fx-fever { position: absolute; inset: 0; opacity: 0; }
+    #fx-vignette { background: radial-gradient(ellipse at center, transparent 55%, rgba(214, 69, 61, .6) 100%); }
+    #fx-flash { background: #fff; mix-blend-mode: screen; }
+    #fx-fever { background: radial-gradient(ellipse at center, transparent 50%, rgba(127, 211, 107, .45) 100%); transition: opacity .3s; }
+    body.fever #fx-fever { opacity: 1; }
+
+    /* HUD: positioned over the 720x1280 world box (#hud gets the same rect as the world in main.js). */
+    #hud { position: fixed; pointer-events: none; }
+    .top { position: absolute; left: 4%; right: 4%; top: 2.5%; display: flex; justify-content: space-between; align-items: flex-start; }
+    .score { font-size: 7.5cqh; line-height: 1; color: #fff; -webkit-text-stroke: .6cqh var(--ink); paint-order: stroke; }
+    /* combo counter: grows and heats up with the combo tier (gdd/06 §2) */
+    .combo { font-size: 2.6cqh; color: #fff; -webkit-text-stroke: .35cqh var(--ink); paint-order: stroke; min-height: 4cqh;
+      transform-origin: 0 50%; white-space: nowrap; }
+    .combo b { font-size: 1.5em; }
+    .combo[data-tier="1"] { font-size: 3cqh; color: #ffb347; }
+    .combo[data-tier="2"] { font-size: 3.4cqh; color: #ff7a3d; }
+    .combo[data-tier="3"], .combo[data-tier="4"] { font-size: 3.8cqh; -webkit-text-stroke: 0; filter: drop-shadow(0 0 .3cqh var(--ink)) drop-shadow(0 .3cqh 0 var(--ink));
+      background: linear-gradient(90deg, #ffd34a, #ff7a3d, #d6453d, #ffd34a); background-size: 300% 100%; -webkit-background-clip: text; background-clip: text;
+      color: transparent; animation: flame .9s linear infinite; }
+    .combo[data-tier="4"] { font-size: 4.2cqh; }
+    @keyframes flame { to { background-position: 300% 0; } }
+    .combo.broken { color: #9a9a9a; font-size: 2.6cqh; }
+    .milestone { position: absolute; left: 6%; right: 6%; top: 22%; display: flex; flex-direction: column; align-items: center; gap: .4cqh;
+      opacity: 0; pointer-events: none; transform-origin: 50% 50%; }
+    .milestone b { font-size: 6cqh; color: #fff; -webkit-text-stroke: .6cqh var(--ink); paint-order: stroke; line-height: 1; }
+    .milestone span { font-size: 3.4cqh; padding: .3cqh 2.4cqh; border-radius: 99px; border: .45cqh solid var(--ink); background: var(--tabby); color: #fff;
+      -webkit-text-stroke: .3cqh var(--ink); paint-order: stroke; }
+    .milestone[data-tier="2"] span { background: #ff7a3d; } .milestone[data-tier="3"] span, .milestone[data-tier="4"] span { background: var(--belt); }
+    .milestone[data-tier="3"] b, .milestone[data-tier="4"] b { color: var(--star); }
+    .pop small { display: block; font-size: .5em; text-align: center; color: #fff; }
+    .pop.perfect.t2, .pop.perfect.t3, .pop.perfect.t4 { color: #ffe27a; font-size: 5cqh; }
+    .hp { display: flex; gap: .6cqh; font-size: 3.6cqh; }
+    .hp span { filter: drop-shadow(0 .3cqh 0 var(--ink)); transition: transform .15s, opacity .15s; }
+    .hp span.off { opacity: .25; transform: scale(.8); filter: grayscale(1); }
+    .seg { position: absolute; top: 12%; left: 50%; transform: translateX(-50%); padding: .5cqh 2cqh; border-radius: 99px;
+      background: var(--paper); border: .35cqh solid var(--ink); font-size: 2.2cqh; white-space: nowrap; }
+    .bar { position: absolute; left: 4%; right: 4%; top: 17%; height: 1cqh; border-radius: 99px; background: rgba(43,29,20,.25); overflow: hidden; }
+    .bar i { display: block; height: 100%; width: 0; background: var(--tabby); }
+    .cutin { position: absolute; left: -2%; right: -2%; top: 20%; height: 9cqh; display: grid; place-items: center; opacity: 0;
+      background: var(--catnip); border-block: .5cqh solid var(--ink); transform: skewY(-4deg);
+      font-size: 5cqh; color: #fff; -webkit-text-stroke: .5cqh var(--ink); paint-order: stroke; }
+    .cutin[data-kind="boss"] { background: #b5652a; }
+    .pop { position: absolute; top: 47%; font-size: 4.4cqh; opacity: 0; white-space: nowrap; -webkit-text-stroke: .45cqh var(--ink); paint-order: stroke; }
+    .pop.l { left: 10%; } .pop.r { right: 10%; }
+    .pop.perfect { color: var(--star); } .pop.great { color: var(--sky); } .pop.good { color: #fff; } .pop.whiff { color: var(--belt); }
+    .hint { position: absolute; bottom: 4%; width: 46%; text-align: center; font-size: 2.2cqh; color: var(--paper); opacity: .85; }
+    .hint.l { left: 2%; } .hint.r { right: 2%; }
+    .dc { position: absolute; bottom: .5%; right: 1%; font: 1.4cqh/1 ui-monospace, monospace; color: #fff; opacity: .7; }
+
+    .panel { position: absolute; inset: 6% 6%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.6cqh;
+      background: rgba(246,236,214,.96); border: .6cqh solid var(--ink); border-radius: 4cqh; padding: 3cqh; text-align: center;
+      pointer-events: auto; box-shadow: 0 1.2cqh 0 rgba(43,29,20,.35); }
+    .panel[hidden] { display: none; }
+    .panel h1 { margin: 0; font-size: 8cqh; color: var(--tabby); -webkit-text-stroke: .6cqh var(--ink); paint-order: stroke; letter-spacing: .3cqh; }
+    .panel p, .panel li { margin: 0; font-size: 2.2cqh; }
+    .panel ul { margin: 0; padding: 0; list-style: none; display: grid; gap: .8cqh; }
+    .panel table { border-collapse: collapse; font-size: 2.3cqh; }
+    .panel td { padding: .4cqh 1.6cqh; } .panel td:last-child { text-align: right; }
+    .panel .big { font-size: 7cqh; color: #fff; -webkit-text-stroke: .6cqh var(--ink); paint-order: stroke; }
+    .panel .small { font-size: 1.8cqh; opacity: .75; }
+    .panel button { font: inherit; font-size: 3cqh; padding: 1.2cqh 5cqh; border-radius: 99px; border: .5cqh solid var(--ink);
+      background: var(--tabby); color: #fff; -webkit-text-stroke: .3cqh var(--ink); paint-order: stroke; box-shadow: 0 .8cqh 0 var(--ink); cursor: pointer; }
+    .panel button:active { transform: translateY(.6cqh); box-shadow: 0 .2cqh 0 var(--ink); }
+    #hud { container-type: size; }
+    /* title: full-bleed key art (assets/title_keyart.webp, set in main.js); top 25% of the art is kept clear for the logo */
+    .title-screen { position: absolute; inset: 0; pointer-events: auto; background: #5a3a22 center / cover no-repeat;
+      display: flex; flex-direction: column; justify-content: space-between; align-items: center; }
+    .title-screen[hidden] { display: none; }
+    .title-screen .logo { height: 25%; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: .6cqh; }
+    .title-screen h1 { margin: 0; font-size: 11cqh; line-height: 1; color: var(--tabby); -webkit-text-stroke: 1cqh var(--ink); paint-order: stroke;
+      letter-spacing: .4cqh; filter: drop-shadow(0 .8cqh 0 var(--ink)); transform: rotate(-3deg); }
+    .title-screen .seed { margin: 0; font-size: 2cqh; padding: .3cqh 1.6cqh; border-radius: 99px; background: var(--paper); border: .3cqh solid var(--ink); }
+    .title-card { width: 86%; margin-bottom: 4%; padding: 2.2cqh 2.6cqh; border-radius: 3cqh; border: .5cqh solid var(--ink);
+      background: rgba(246,236,214,.94); box-shadow: 0 1cqh 0 rgba(43,29,20,.35); display: flex; flex-direction: column; align-items: center; gap: 1.2cqh; text-align: center; }
+    .title-card p { margin: 0; font-size: 2.4cqh; } .title-card .small { font-size: 1.7cqh; opacity: .8; }
+    .title-card details { font-size: 1.9cqh; width: 100%; text-align: left; } .title-card summary { cursor: pointer; text-align: center; color: var(--ink); opacity: .8; }
+    .title-card ul { margin: .8cqh 0 0; padding-left: 2.4cqh; display: grid; gap: .5cqh; }
+    .title-card button { font: inherit; font-size: 3.2cqh; padding: 1.2cqh 6cqh; border-radius: 99px; border: .5cqh solid var(--ink);
+      background: var(--tabby); color: #fff; -webkit-text-stroke: .3cqh var(--ink); paint-order: stroke; box-shadow: 0 .8cqh 0 var(--ink); cursor: pointer; }
+    .title-card button.secondary { background: var(--paper); color: var(--ink); -webkit-text-stroke: 0; font-size: 2.2cqh; padding: .7cqh 3.5cqh; box-shadow: 0 .5cqh 0 var(--ink); }
+    .title-card button:active { transform: translateY(.6cqh); box-shadow: 0 .2cqh 0 var(--ink); }
+    .panel h2 { margin: 0; font-size: 4.4cqh; color: var(--tabby); -webkit-text-stroke: .4cqh var(--ink); paint-order: stroke; }
+    .panel button.secondary { background: var(--paper); color: var(--ink); -webkit-text-stroke: 0; font-size: 2.4cqh; padding: .8cqh 3.5cqh; box-shadow: 0 .5cqh 0 var(--ink); }
+    .cal-dot { width: 16cqh; height: 16cqh; border-radius: 50%; border: .6cqh solid var(--ink); background: var(--paper); transition: background .05s, transform .05s; }
+    .cal-dot.on { background: var(--star); transform: scale(1.12); }
+    .cal-status { min-height: 2.2cqh; }
+  </style>
+</head>
+<body>
+  <div id="stage"><div id="stage-shake"></div></div>
+  <div id="fx" aria-hidden="true"><div id="fx-vignette"></div><div id="fx-flash"></div><div id="fx-fever"></div></div>
+  <div id="hud">
+    <div class="top">
+      <div><div class="score">0</div><div class="combo"></div></div>
+      <div class="hp" aria-label="血量"></div>
+    </div>
+    <div class="seg">暖身</div>
+    <div class="bar"><i></i></div>
+    <div class="cutin">貓薄荷時間！</div>
+    <div class="milestone"></div>
+    <div class="pop l"></div><div class="pop r"></div>
+    <div class="hint l">◀ 點左半邊<br>← / A / F</div><div class="hint r">點右半邊 ▶<br>→ / D / J</div>
+    <div class="dc" hidden></div>
+
+    <div class="title-screen title">
+      <div class="logo"><h1>喵拳道場</h1><p class="seed"></p></div>
+      <div class="title-card">
+        <p>敵人<b>踏進地上的框</b>時，點那一邊出拳</p>
+        <p class="small">計分：Perfect 100 / Great 80 / Good 50 × 連擊加成（最多 +50%）· 判定 ±45 / ±85 / ±135 ms · 存活時間不計分</p>
+        <details>
+          <summary>完整規則</summary>
+          <ul>
+            <li>點太早、點錯邊 = <b>破綻</b>：0.2 秒不能出招</li>
+            <li>被打到少一顆肉球（之後 0.5 秒內不再扣），連擊 12 回一顆；調息段回一顆</li>
+            <li>狸貓頭目照大箭頭打 3–4 下（每場最多扣 1 顆）</li>
+            <li>所有人打同一份題目，成績可重播驗證</li>
+          </ul>
+        </details>
+        <button class="start">開始修行</button>
+        <button class="calibrate secondary">延遲校正</button>
+        <p class="small cal-status"></p>
+      </div>
+    </div>
+
+    <div class="panel result" hidden>
+      <p>修行結束</p>
+      <div class="big score-final">0</div>
+      <p class="rate"></p>
+      <table class="breakdown"></table>
+      <p class="small verify"></p>
+      <button class="again">再打一次</button>
+      <button class="calibrate secondary">延遲校正</button>
+      <button class="export secondary" hidden>匯出試玩紀錄</button>
+      <p class="small playtest-note" hidden></p>
+    </div>
+
+    <div class="panel calib" hidden></div>
+  </div>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

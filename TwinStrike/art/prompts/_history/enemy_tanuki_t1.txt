@@ -1,0 +1,9 @@
+Generate one image with your image generation tool. Do not write any files.
+
+Attached image 1 shows this game's hero (Master Miao, an orange cat). Use it ONLY as the art-style reference: match its exact outline thickness and colour, flat cel-shading, fur rendering, eye style, chibi proportions and level of detail. Do NOT draw the cat in this image.
+
+Draw a pose sheet for a big armored enemy in an original casual kung fu game: a chubby tanuki trickster-spirit, brown fur (#7a5638 / #4f3622) with a darker eye mask, round belly, a small wooden pot-lid shield on one arm and a straw-rope belt. A single ORANGE-RED MAPLE LEAF sits on its head (the leaf must be orange-red, never green). Mischievous, cute-tough, not scary. About 1.3 times taller and much wider than a mouse enemy.
+Show exactly four poses of the SAME character, facing RIGHT in profile, same scale, feet on the same ground line, in ONE horizontal row with wide transparent gaps:
+(1) walk_a: stomping to the right, left foot forward; (2) walk_b: right foot forward; (3) block: bracing behind the pot-lid shield, cheeks puffed; (4) hit: knocked back, belly wobbling, leaf flying off, eyes as swirls.
+Canvas 2048x512.
+Style lock (shared by every asset in this game): original chibi kawaii sticker-style 2D game art, 2 to 2.5 heads tall, round soft shapes, thick clean dark-brown outline (#2b1d14, never pure black), flat colors with one cel-shade tone per material, light from the upper-left, warm cozy palette. Pure side view (profile), character facing RIGHT. Original design only: not Hello Kitty, not Pokemon, not Kung Fu Panda, not Totoro, not any existing franchise; no maneki-neko lucky-cat pose. Actual transparent background (alpha), NOT a painted checkerboard. No text, no letters, no numbers, no labels, no ground plane, no cast shadow, no frame borders, no grid. No green hats or green headwear on any character. No coins, dice, gold piles or casino imagery.

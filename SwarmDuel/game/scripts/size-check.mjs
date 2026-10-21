@@ -1,0 +1,33 @@
+// Package budget gate (docs/size_budget.md). Fails the build when dist/ exceeds the target.
+import { readdirSync, readFileSync, statSync } from 'node:fs';
+import { join, relative, sep } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { gzipSync, brotliCompressSync, constants } from 'node:zlib';
+
+const DIST = fileURLToPath(new URL('../dist/', import.meta.url));
+const TARGET = 8 * 1024 * 1024, HARD = 10 * 1024 * 1024;
+
+const walk = dir => readdirSync(dir).flatMap(n => {
+  const p = join(dir, n);
+  return statSync(p).isDirectory() ? walk(p) : [p];
+});
+
+const rows = walk(DIST).map(path => {
+  const buf = readFileSync(path);
+  const text = /\.(js|css|html|json|svg)$/.test(path);
+  return {
+    file: relative(DIST, path).split(sep).join('/'),
+    raw: buf.length,
+    gz: text ? gzipSync(buf, { level: 9 }).length : buf.length,
+    br: text ? brotliCompressSync(buf, { params: { [constants.BROTLI_PARAM_QUALITY]: 11 } }).length : buf.length,
+  };
+}).sort((a, b) => b.raw - a.raw);
+
+const kb = n => `${(n / 1024).toFixed(1).padStart(8)} KB`;
+console.log(`${'file'.padEnd(44)}${'raw'.padStart(11)}${'gzip'.padStart(11)}${'brotli'.padStart(11)}`);
+for (const r of rows) console.log(`${r.file.padEnd(44)}${kb(r.raw)}${kb(r.gz)}${kb(r.br)}`);
+const sum = k => rows.reduce((s, r) => s + r[k], 0);
+console.log(`${'TOTAL'.padEnd(44)}${kb(sum('raw'))}${kb(sum('gz'))}${kb(sum('br'))}`);
+console.log(`budget: target ${kb(TARGET).trim()} / hard ${kb(HARD).trim()} (raw on disk)`);
+if (sum('raw') > TARGET) { console.error('FAIL: package exceeds the 8 MB target'); process.exit(1); }
+console.log('OK');

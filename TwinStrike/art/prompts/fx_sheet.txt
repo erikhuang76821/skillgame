@@ -1,0 +1,8 @@
+Generate one image with your image generation tool. Do not write any files.
+
+Attached image 1 shows this game's hero (Master Miao, an orange cat). Use it ONLY as the art-style reference: match its thick dark-brown outlines, flat cel-shaded colours (no soft gradients, no painterly rendering) and cozy palette. Do NOT draw the cat in this image.
+
+Draw a sheet of six separate small effect stickers for an original cozy kung fu cat game, ONE horizontal row, equal cells, wide transparent gaps:
+(1) a big cat paw-print impact burst: orange paw print with white highlight and short radiating impact lines; (2) a fat five-point cartoon star, yellow with orange outline; (3) a small fluffy fur tuft, orange; (4) an orange-red maple leaf; (5) a single light-blue sweat drop; (6) a ring of three tiny cartoon birds circling (dizzy effect).
+Each effect centered in its cell, bold readable silhouette, same outline thickness. Canvas 1536x256.
+Style lock (shared by every asset in this game): original chibi kawaii sticker-style 2D game art, 2 to 2.5 heads tall, round soft shapes, thick clean dark-brown outline (#2b1d14, never pure black), flat colors with one cel-shade tone per material, light from the upper-left, warm cozy palette. Pure side view (profile), character facing RIGHT. Original design only: not Hello Kitty, not Pokemon, not Kung Fu Panda, not Totoro, not any existing franchise; no maneki-neko lucky-cat pose. Actual transparent background (alpha), NOT a painted checkerboard. No text, no letters, no numbers, no labels, no ground plane, no cast shadow, no frame borders, no grid. No green hats or green headwear on any character. No coins, dice, gold piles or casino imagery.

@@ -1,0 +1,172 @@
+{
+  "review": "review",
+  "atlases": [
+    {
+      "out": "../game/src/assets/cat",
+      "cell": [
+        384,
+        256
+      ],
+      "anchor": [
+        0.5,
+        0.95
+      ],
+      "max_width": 2048,
+      "png8": true,
+      "sheets": [
+        {
+          "src": "raw/cat_poses_t1.png",
+          "grid": [
+            3,
+            3
+          ],
+          "names": [
+            "idle_a",
+            "idle_b",
+            "jab",
+            "kick",
+            "palm",
+            "whiff",
+            "hurt",
+            "win",
+            "ko"
+          ],
+          "scale_ref": {
+            "frame": "idle_a",
+            "height": 232
+          },
+          "merge_px": 10,
+          "torso_band": [
+            0.35,
+            0.6
+          ],
+          "dx": {}
+        }
+      ]
+    },
+    {
+      "out": "../game/src/assets/enemies",
+      "cell": [
+        288,
+        224
+      ],
+      "anchor": [
+        0.5,
+        0.95
+      ],
+      "max_width": 2048,
+      "png8": true,
+      "sheets": [
+        {
+          "src": "raw/mouse_poses.png",
+          "prefix": "mouse.",
+          "grid": [
+            1,
+            3
+          ],
+          "names": [
+            "run_a",
+            "run_b",
+            "hit"
+          ],
+          "scale_ref": {
+            "frame": "run_a",
+            "height": 130
+          },
+          "merge_px": 10,
+          "torso_band": [
+            0.35,
+            0.6
+          ],
+          "dx": {}
+        },
+        {
+          "src": "raw/squirrel_poses.png",
+          "prefix": "squirrel.",
+          "grid": [
+            1,
+            3
+          ],
+          "names": [
+            "glide_a",
+            "glide_b",
+            "hit"
+          ],
+          "scale_ref": {
+            "frame": "glide_a",
+            "height": 110
+          },
+          "merge_px": 10,
+          "torso_band": [
+            0.35,
+            0.6
+          ],
+          "dx": {}
+        },
+        {
+          "src": "raw/tanuki_poses.png",
+          "prefix": "tanuki.",
+          "grid": [
+            1,
+            4
+          ],
+          "names": [
+            "walk_a",
+            "walk_b",
+            "block",
+            "hit"
+          ],
+          "scale_ref": {
+            "frame": "walk_a",
+            "height": 190
+          },
+          "merge_px": 10,
+          "torso_band": [
+            0.35,
+            0.6
+          ],
+          "dx": {}
+        }
+      ]
+    },
+    {
+      "out": "../game/src/assets/fx",
+      "cell": [
+        160,
+        160
+      ],
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "max_width": 2048,
+      "png8": true,
+      "sheets": [
+        {
+          "src": "raw/fx_sheet.png",
+          "prefix": "fx.",
+          "grid": [
+            1,
+            6
+          ],
+          "names": [
+            "paw",
+            "star",
+            "fur",
+            "leaf",
+            "sweat",
+            "birds"
+          ],
+          "assign": "nearest",
+          "center": true,
+          "merge_px": 3,
+          "scale_ref": {
+            "frame": "paw",
+            "width": 150
+          },
+          "dx": {}
+        }
+      ]
+    }
+  ]
+}
