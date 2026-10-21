@@ -1,9 +1,27 @@
 // Skill-vs-chance evidence for any GameDef: N seeds x skill-tier bots on the same seeds.
 // Reports score by tier, same-seed head-to-head win rates, and a two-way variance decomposition
 // (skill tier vs seed vs interaction). Game-agnostic: the game supplies GAME + BOTS.
+import { existsSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { hash32, playMatch, TPS } from '../../src/sim/core/index.js';
 
-export const THRESHOLDS = Object.freeze({ skillShare: 0.7, topWinRate: 0.7 });
+// Thresholds come from knowledge-base/index/rules.json through shared/tools/rules.mjs — never hard-coded here
+// (knowledge-base/decisions/2026-10-21-kb-asset-architecture.md). The calling game's config/rules.overrides.json applies.
+const RULES = await (async () => {
+  let d = fileURLToPath(new URL('.', import.meta.url));
+  while (!existsSync(join(d, 'shared', 'tools', 'rules.mjs'))) {
+    const up = dirname(d);
+    if (up === d) throw new Error('shared/tools/rules.mjs not found above ' + fileURLToPath(import.meta.url));
+    d = up;
+  }
+  const { loadRules } = await import(pathToFileURL(join(d, 'shared', 'tools', 'rules.mjs')).href);
+  return loadRules({ from: fileURLToPath(import.meta.url) });
+})();
+export const THRESHOLDS = Object.freeze({
+  skillShare: RULES.value('RULE-SKILL-DOMINANCE', 'skillShare'),
+  topWinRate: RULES.value('RULE-SKILL-DOMINANCE', 'topWinRate'),
+});
 
 const mean = a => a.reduce((s, v) => s + v, 0) / a.length;
 const sd = a => { const m = mean(a); return Math.sqrt(mean(a.map(v => (v - m) ** 2))); };

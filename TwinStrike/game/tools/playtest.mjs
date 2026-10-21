@@ -2,18 +2,38 @@
 // bar by bar. Plays every seed with the skill-tier bots (fairness) and the human-factor bots (feel), analyses
 // the chart as music (beat grid, syncopation, phrasing, keysound melody), fits the difficulty curve and checks it.
 // Usage: node tools/playtest.mjs [seeds=30] [--out ../docs/playtest_report]   -> .md + .html; exit 1 if a check fails
-import { writeFileSync } from 'node:fs';
+import { existsSync, writeFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { hash32 } from '../src/sim/core/index.js';
 import { createSim, step, phase, SEGMENTS, SUB, GRADE, KIND, RULES } from '../src/sim/sim.js';
 import { HUMANS } from './humanBots.mjs';
 import { BOTS } from './bots.mjs';
-import { runDominance } from './lib/dominance.mjs';
+import { runDominance, THRESHOLDS } from './lib/dominance.mjs';
 import { keyFor } from '../src/audio/keysound.js';
 
 const args = process.argv.slice(2);
 const N = Number(args.find(a => /^\d+$/.test(a))) || 30;
 const outIdx = args.indexOf('--out');
 const seeds = Array.from({ length: N }, (_, i) => hash32(2026, 9, i));
+// Thresholds come from knowledge-base/index/rules.json through shared/tools/rules.mjs — never hard-coded here
+// (knowledge-base/decisions/2026-10-21-kb-asset-architecture.md). The calling game's config/rules.overrides.json applies.
+const GATE = await (async () => {
+  let d = fileURLToPath(new URL('.', import.meta.url));
+  while (!existsSync(join(d, 'shared', 'tools', 'rules.mjs'))) {
+    const up = dirname(d);
+    if (up === d) throw new Error('shared/tools/rules.mjs not found above ' + fileURLToPath(import.meta.url));
+    d = up;
+  }
+  const { loadRules } = await import(pathToFileURL(join(d, 'shared', 'tools', 'rules.mjs')).href);
+  return loadRules({ from: fileURLToPath(import.meta.url) });
+})();
+const R = {
+  rho: GATE.value('RULE-CURVE-TREND', 'rho'), r2: GATE.value('RULE-CURVE-LINEARITY', 'r2'),
+  peakTol: GATE.value('RULE-CURVE-PEAKS', 'tolerance'), cliff: GATE.value('RULE-CURVE-CLIFF', 'maxDropPp'),
+  flowMin: GATE.value('RULE-CURVE-FLOW', 'min'), flowMax: GATE.value('RULE-CURVE-FLOW', 'max'),
+  phrase: GATE.value('RULE-CURVE-PHRASE', 'multipleOf'),
+};
 const mean = a => (a.length ? a.reduce((s, v) => s + v, 0) / a.length : NaN);
 const r1 = v => Math.round(v * 10) / 10, pct = v => (Number.isFinite(v) ? `${Math.round(v * 100)}%` : '—');
 
@@ -108,17 +128,17 @@ const mainSec = SEC.filter(x => x.s.levels.length > 1 && !x.s.safe && x.s.id !==
 const dom = runDominance((await import('../src/sim/sim.js')).GAME, BOTS, Math.min(N, 30));
 const checks = [];
 const check = (name, ok, detail) => checks.push({ name, ok, detail });
-check('技巧主導（skill share ≥ 70%、expert vs intermediate ≥ 70%）', dom.pass, `${pct(dom.shares.skillTier)} / ${pct(dom.top)}`);
-check('難度整體上升（主段落逐小節 Spearman ρ ≥ 0.6）', spearman >= 0.6, `ρ = ${spearman.toFixed(2)}`);
-check('難度接近線性（主段落 R² ≥ 0.5）', R2 >= 0.5, `R² = ${R2.toFixed(2)}，斜率 ${slope.toFixed(3)} DI/秒`);
-const peaksOk = mainSec.every((x, j) => j === 0 || x.peak >= mainSec[j - 1].peak - 0.05);
+check(`技巧主導（skill share ≥ ${pct(THRESHOLDS.skillShare)}、expert vs intermediate ≥ ${pct(THRESHOLDS.topWinRate)}）`, dom.pass, `${pct(dom.shares.skillTier)} / ${pct(dom.top)}`);
+check(`難度整體上升（主段落逐小節 Spearman ρ ≥ ${R.rho}）`, spearman >= R.rho, `ρ = ${spearman.toFixed(2)}`);
+check(`難度接近線性（主段落 R² ≥ ${R.r2}）`, R2 >= R.r2, `R² = ${R2.toFixed(2)}，斜率 ${slope.toFixed(3)} DI/秒`);
+const peaksOk = mainSec.every((x, j) => j === 0 || x.peak >= mainSec[j - 1].peak - R.peakTol);
 check('鋸齒向上（每個主段落的高峰 ≥ 前一段）', peaksOk, mainSec.map(x => `${x.s.name} ${r1(x.peak)}`).join(' → '));
-const cliffs = mainSec.slice(1).filter((x, j) => (mainSec[j].hit.regular - x.hit.regular) * 100 > 12).map(x => x.s.name);
-check('無斷崖（一般玩家相鄰主段落命中率下降 ≤ 12 pp）', !cliffs.length, cliffs.join('、') || '—');
-check('一般玩家在心流帶（主段落命中率 90–99%）', mainSec.every(x => x.hit.regular >= 0.9 && x.hit.regular <= 0.99), mainSec.map(x => pct(x.hit.regular)).join(' / '));
+const cliffs = mainSec.slice(1).filter((x, j) => (mainSec[j].hit.regular - x.hit.regular) * 100 > R.cliff).map(x => x.s.name);
+check(`無斷崖（一般玩家相鄰主段落命中率下降 ≤ ${R.cliff} pp）`, !cliffs.length, cliffs.join('、') || '—');
+check(`一般玩家在心流帶（主段落命中率 ${Math.round(R.flowMin * 100)}–${pct(R.flowMax)}）`, mainSec.every(x => x.hit.regular >= R.flowMin && x.hit.regular <= R.flowMax), mainSec.map(x => pct(x.hit.regular)).join(' / '));
 check('全部落在拍格上（八分音格）', true, '譜面只用 8 個八分音位置（建構保證）');
-const oddSections = SEGMENTS.filter(s => s.levels.length > 1 && s.levels.length % 4 !== 0 && s.id !== 'O');
-check('樂句長度（主要段落小節數為 4 的倍數）', !oddSections.length, oddSections.map(s => `${s.name} ${s.levels.length} 小節`).join('、') || '全部 4 / 8 小節');
+const oddSections = SEGMENTS.filter(s => s.levels.length > 1 && s.levels.length % R.phrase !== 0 && s.id !== 'O');
+check(`樂句長度（主要段落小節數為 ${R.phrase} 的倍數）`, !oddSections.length, oddSections.map(s => `${s.name} ${s.levels.length} 小節`).join('、') || '全部 4 / 8 小節');
 
 // ---------- markdown ----------
 const sectionRows = SEC.map(x => `| ${x.s.name}${x.s.fever ? '（無雙）' : x.s.safe ? '（安全）' : ''} | ${(x.s.from / 60).toFixed(0)}–${(x.s.to / 60).toFixed(0)} s | ${x.bars} | ${Math.round(3600 / x.s.beatTicks)} | ${r1(x.nps)} | ${r1(x.di)} / ${r1(x.peak)} | ${pct(x.off)} | ${pct(x.sync)} | ${r1(x.range)} / ${r1(x.leap)} | ${pct(x.hit.casual)} · ${pct(x.hit.regular)} · ${pct(x.hit.skilled)} | ${pct(x.alive.casual)} |`);

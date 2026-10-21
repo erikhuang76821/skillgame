@@ -1,11 +1,23 @@
 // Package budget gate (docs/size_budget.md). Fails the build when dist/ exceeds the target.
-import { readdirSync, readFileSync, statSync } from 'node:fs';
-import { join, relative, sep } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
+import { dirname, join, relative, sep } from 'node:path';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { gzipSync, brotliCompressSync, constants } from 'node:zlib';
 
 const DIST = fileURLToPath(new URL('../dist/', import.meta.url));
-const TARGET = 8 * 1024 * 1024, HARD = 10 * 1024 * 1024;
+// Thresholds come from knowledge-base/index/rules.json through shared/tools/rules.mjs — never hard-coded here
+// (knowledge-base/decisions/2026-10-21-kb-asset-architecture.md). The calling game's config/rules.overrides.json applies.
+const RULES = await (async () => {
+  let d = fileURLToPath(new URL('.', import.meta.url));
+  while (!existsSync(join(d, 'shared', 'tools', 'rules.mjs'))) {
+    const up = dirname(d);
+    if (up === d) throw new Error('shared/tools/rules.mjs not found above ' + fileURLToPath(import.meta.url));
+    d = up;
+  }
+  const { loadRules } = await import(pathToFileURL(join(d, 'shared', 'tools', 'rules.mjs')).href);
+  return loadRules({ from: fileURLToPath(import.meta.url) });
+})();
+const TARGET = RULES.value('RULE-BUNDLE-SIZE', 'target'), HARD = RULES.value('RULE-BUNDLE-SIZE', 'hard');
 
 const walk = dir => readdirSync(dir).flatMap(n => {
   const p = join(dir, n);
@@ -29,5 +41,5 @@ for (const r of rows) console.log(`${r.file.padEnd(44)}${kb(r.raw)}${kb(r.gz)}${
 const sum = k => rows.reduce((s, r) => s + r[k], 0);
 console.log(`${'TOTAL'.padEnd(44)}${kb(sum('raw'))}${kb(sum('gz'))}${kb(sum('br'))}`);
 console.log(`budget: target ${kb(TARGET).trim()} / hard ${kb(HARD).trim()} (raw on disk)`);
-if (sum('raw') > TARGET) { console.error('FAIL: package exceeds the 8 MB target'); process.exit(1); }
+if (sum('raw') > TARGET) { console.error(`FAIL: package exceeds the ${kb(TARGET).trim()} target (RULE-BUNDLE-SIZE)`); process.exit(1); }
 console.log('OK');

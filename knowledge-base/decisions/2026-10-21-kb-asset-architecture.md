@@ -341,3 +341,16 @@ Claude（claude-opus-5-5）、Codex（gpt-6-astra）、Gemini 4 Argon（High）�
 | TwinStrike | `npm test` 50/50 通過；build 成功；size 1,023.9 KB（目標 8 MB 內） |
 | 既有問題 | 無 |
 | 基準 | git 初始化、基準 commit、tag `baseline-0` |
+
+### 第 1 階段（2026-10-21，分支 `kb/phase-1`）
+
+| 項目 | 結果 |
+|---|---|
+| `knowledge-base/index/rules.json` | 16 條規則（第一批，數值與原文件 / 程式常數相同） |
+| `shared/tools/rules.mjs` | resolver：依呼叫檔案路徑判斷遊戲、套用 `<Game>/config/rules.overrides.json`；拒絕禁止覆寫、缺理由、目標超過硬上限的覆寫（三種都已實測擋下） |
+| 改讀規則的把關程式 | `size-check.mjs`（範本、SwarmDuel、TwinStrike）、`lib/dominance.mjs`（範本、TwinStrike）、TwinStrike `playtest.mjs`、`difficulty-curve.mjs` |
+| 覆寫 | `SwarmDuel/config/rules.overrides.json`：`RULE-FX-FILTER` = false |
+| 入口 | `CLAUDE.md` 改新優先序並標規則 ID；新增 `AGENTS.md` |
+| 判定一致性 | 兩款遊戲 test、size、技巧主導、playtest D1–D8 的輸出與改動前**逐行相同**（耗時欄位除外） |
+| 寫死常數 | 上述程式中 grep 不到 0.7、8 MB、12 pp、0.6、0.5、90–99%、4 的倍數 |
+| 未做 | SwarmDuel 的技巧主導腳本本來就只出報告、不判定，未改；KTX2、通用粒子、WebGPU 三項 SwarmDuel 覆寫尚未建規則，仍以文件為準 |

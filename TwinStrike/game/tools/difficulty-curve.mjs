@@ -2,7 +2,9 @@
 // per scripted section, the chart load and how each kind of player does. Flags "cliffs" (a section where the
 // regular player's hit rate drops much more than the curve's step) and "dead zones" (too easy late in the match).
 // Usage: node tools/difficulty-curve.mjs [seeds=30] [--out ../docs/difficulty_curve.md]   (exit 1 on a cliff)
-import { writeFileSync } from 'node:fs';
+import { existsSync, writeFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { hash32 } from '../src/sim/core/index.js';
 import { createSim, step, phase, SEGMENTS, SUB, GRADE, KIND, RULES } from '../src/sim/sim.js';
 import { HUMANS } from './humanBots.mjs';
@@ -10,7 +12,19 @@ import { HUMANS } from './humanBots.mjs';
 const args = process.argv.slice(2);
 const N = Number(args.find(a => /^\d+$/.test(a))) || 30;
 const outIdx = args.indexOf('--out');
-const CLIFF_PP = 12;                                                // max allowed hit-rate drop between consecutive hard sections
+// Thresholds come from knowledge-base/index/rules.json through shared/tools/rules.mjs — never hard-coded here
+// (knowledge-base/decisions/2026-10-21-kb-asset-architecture.md). The calling game's config/rules.overrides.json applies.
+const GATE = await (async () => {
+  let d = fileURLToPath(new URL('.', import.meta.url));
+  while (!existsSync(join(d, 'shared', 'tools', 'rules.mjs'))) {
+    const up = dirname(d);
+    if (up === d) throw new Error('shared/tools/rules.mjs not found above ' + fileURLToPath(import.meta.url));
+    d = up;
+  }
+  const { loadRules } = await import(pathToFileURL(join(d, 'shared', 'tools', 'rules.mjs')).href);
+  return loadRules({ from: fileURLToPath(import.meta.url) });
+})();
+const CLIFF_PP = GATE.value('RULE-CURVE-CLIFF', 'maxDropPp');          // max allowed hit-rate drop between consecutive hard sections
 
 const seeds = Array.from({ length: N }, (_, i) => hash32(2026, 9, i));
 const secOf = n => n.seg;
