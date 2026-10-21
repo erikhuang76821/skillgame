@@ -1,0 +1,149 @@
+[
+ {
+  "v": 1,
+  "tester": "P2-王伯伯",
+  "at": "2026-10-21T08:31:00.000Z",
+  "run": 1,
+  "upload": {
+   "game": "twin-strike",
+   "version": 6,
+   "seed": 1234,
+   "ticks": 3333,
+   "score": 8294,
+   "hash": 2661641916,
+   "log": "AHRhAQBFUgEAQBIBAHhSAQAlkgEAGDIBACkSAQA+oQEAGfEBAB7iAQAgMQEAQoIBABjCAQAdwQEAHNEBAB1xAQAgYQEAHsIBABtBAQAWggEAFDIBACrSAQAgogEAG8EBABDxAQAwsgEAdRIBABVSAQAhgQEAB/EBACvhAQA1MgEAIcIBABTSAQAacQEAF0IBABDCAQAtoQEAIQEBAB7xAQA3EQEADnEBABtxAQA6sQEAJFIBABgBAQAwYgEAH3IBABwxAQAb4QEAPXIBABzyAQA08QEAEpIBABihAQA0MgEAC3EBAAaSAQAckQEADrIBABJBAQAdcgEAEjIBABlyAQAyggEACrIBABpBAQAM0QEAFeEBACHCAQAv4gEAI5EBAA4CAQAS4gEAI1EBABiBAQAfEgECAQAOQQEAEqIBAQEAFKEBABpBAQAikQEAGlIBABmiAQAREgEAECIBAAHBAQAT4gEAAUEBACSBAQAS4gEAEGIBABJRAQAHMgEAJ/EBABVxAQAtIgEAF6IBABgCAQAMAgEAEjEBAAehAQAIogEAD7EBABc=",
+   "choices": [],
+   "meta": {
+    "inputOffsetMs": 55,
+    "audioLatencyMs": 70,
+    "simulated": true
+   }
+  },
+  "summary": {
+   "perfect": 43,
+   "great": 31,
+   "good": 22,
+   "miss": 18,
+   "whiffs": 9,
+   "locked": 1,
+   "maxCombo": 24,
+   "hurts": 18,
+   "notes": 221,
+   "critical": 15,
+   "ratePermille": 258,
+   "hp": 0,
+   "deathTick": 3332,
+   "verified": true
+  },
+  "latency": {
+   "input": 55,
+   "audio": 70
+  },
+  "device": {
+   "ua": "simulated persona P2",
+   "dpr": 3,
+   "lang": "zh-TW",
+   "touch": 5,
+   "w": 412,
+   "h": 915
+  }
+ },
+ {
+  "v": 1,
+  "tester": "P2-王伯伯",
+  "at": "2026-10-21T08:32:00.000Z",
+  "run": 2,
+  "upload": {
+   "game": "twin-strike",
+   "version": 6,
+   "seed": 1234,
+   "ticks": 3158,
+   "score": 7743,
+   "hash": 1896699791,
+   "log": "AHORAQBIIgEAPTIBAEOSAQA28gEAJVIBABxCAQAeMgEAPyEBACAxAQAfQgEAHiEBACaxAQATkgEAHEIBACJhAQAXkQEAIMEBAB/RAQAj0gEALjIBABTiAQAq8gEAHeIBABtBAQASUQEAM2IBAHASAQAcEgEAIVEBAAaRAQAvUQEANDIBABhCAQAXggEAGsEBABbyAQATcgEAL9EBACCxAQBQQQEAEkEBABfRAQA/wQEAHQIBABxBAQAzAgEAHIIBABuBAQAXsQEARbIBABHiAQA6UQEAD2IBACQRAQA04gHBAQAOAgEAGoEBAApyAQATIQEAHfIBAA5yAQAgYQEANCIBAALCAQAb0QEAGlIBABDhAQAZogEAIqEBAA2SAQAj8QEAEuIBAAxyAQAkEQEAG2EBAB3SAQAloQEAAWIBABThAQAc8QEAH5EBABlCAQAV4gEAF5IBAA2SAQAJUQEACnEBAAJiAQAm4QEAEvIBAAsiAQAJMgEADkIBACxRAQAd4QEAAQ==",
+   "choices": [],
+   "meta": {
+    "inputOffsetMs": 55,
+    "audioLatencyMs": 70,
+    "simulated": true
+   }
+  },
+  "summary": {
+   "perfect": 42,
+   "great": 28,
+   "good": 19,
+   "miss": 17,
+   "whiffs": 8,
+   "locked": 0,
+   "maxCombo": 16,
+   "hurts": 17,
+   "notes": 221,
+   "critical": 28,
+   "ratePermille": 241,
+   "hp": 0,
+   "deathTick": 3157,
+   "verified": true
+  },
+  "latency": {
+   "input": 55,
+   "audio": 70
+  },
+  "device": {
+   "ua": "simulated persona P2",
+   "dpr": 3,
+   "lang": "zh-TW",
+   "touch": 5,
+   "w": 412,
+   "h": 915
+  }
+ },
+ {
+  "v": 1,
+  "tester": "P2-王伯伯",
+  "at": "2026-10-21T08:33:00.000Z",
+  "run": 3,
+  "upload": {
+   "game": "twin-strike",
+   "version": 6,
+   "seed": 1234,
+   "ticks": 3308,
+   "score": 8507,
+   "hash": 1712872011,
+   "log": "AHIxAQBN4gEAOAIBAECyAQA/YgEAHJIBAB7yAQAgQgEAJVEBABtBAQAhYQEAGkIBAByhAQAnIQEAFeIBACByAQAd8QEAHzEBABpBAQAeAQEAHsIBACWCAQATAgEAEaIBACXyAQA+wQEAELEBADHSAQBysgEAIrIBABZBAQALEQEALPEBADlSAQAaEgEAEvIBABuBAQAUsgEAErIBAC8RAQAgIQEAHiEBADFBAQAU0QEAIhEBADRhAQA5EQEAM0IBACFiAQAZEQEAFmEBAERCAQAN0gEAOfEBABbSAQAloQEANcEBsgEACMIBAB/BAQARwgEABlEBAB3iAQAWkgEAGzEBADLCAQAG0gEAGNEBAAjRAQAScgEAGNEBABRCAQAfEQEADNIBACQBAQAUEgEAC2IBACWRAQAacQEAH9IBABQCAQAOIgEhAQAbMQEAGdEBABmBAQAcogEAEdIBABiSAQAREgEACLEBAAlSAeEBAC4xAQAIcgEAEaIBAA+BAQAFsQEADCIBACRBAQAYcQEAJuIBABpiAQAeQgEABpIBAAZBAQAQoQHCAQAY",
+   "choices": [],
+   "meta": {
+    "inputOffsetMs": 55,
+    "audioLatencyMs": 70,
+    "simulated": true
+   }
+  },
+  "summary": {
+   "perfect": 50,
+   "great": 22,
+   "good": 25,
+   "miss": 16,
+   "whiffs": 9,
+   "locked": 2,
+   "maxCombo": 21,
+   "hurts": 16,
+   "notes": 221,
+   "critical": 27,
+   "ratePermille": 265,
+   "hp": 0,
+   "deathTick": 3307,
+   "verified": true
+  },
+  "latency": {
+   "input": 55,
+   "audio": 70
+  },
+  "device": {
+   "ua": "simulated persona P2",
+   "dpr": 3,
+   "lang": "zh-TW",
+   "touch": 5,
+   "w": 412,
+   "h": 915
+  }
+ }
+]

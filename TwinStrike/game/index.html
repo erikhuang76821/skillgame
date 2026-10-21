@@ -56,6 +56,12 @@
       background: var(--catnip); border-block: .5cqh solid var(--ink); transform: skewY(-4deg);
       font-size: 5cqh; color: #fff; -webkit-text-stroke: .5cqh var(--ink); paint-order: stroke; }
     .cutin[data-kind="boss"] { background: #b5652a; }
+    .coach { position: absolute; left: 50%; top: 62%; transform: translateX(-50%); padding: 1cqh 2.6cqh; border-radius: 99px; opacity: 0;
+      background: var(--paper); border: .45cqh solid var(--ink); font-size: 2.6cqh; white-space: nowrap; pointer-events: none; box-shadow: 0 .6cqh 0 rgba(43,29,20,.35); }
+    .panel .advice { font-size: 2.1cqh; color: var(--belt); max-width: 90%; white-space: pre-line; }
+    .panel .advice:empty { display: none; }
+    .panel button.calibrate.suggest { background: var(--star); }
+    .pop.critical { color: #fff3a6; font-size: 5.4cqh; }
     .pop { position: absolute; top: 47%; font-size: 4.4cqh; opacity: 0; white-space: nowrap; -webkit-text-stroke: .45cqh var(--ink); paint-order: stroke; }
     .pop.l { left: 10%; } .pop.r { right: 10%; }
     .pop.perfect { color: var(--star); } .pop.great { color: var(--sky); } .pop.good { color: #fff; } .pop.whiff { color: var(--belt); }
@@ -115,6 +121,7 @@
     <div class="cutin">貓薄荷時間！</div>
     <div class="milestone"></div>
     <div class="pop l"></div><div class="pop r"></div>
+    <div class="coach" aria-live="polite"></div>
     <div class="hint l">◀ 點左半邊<br>← / A / F</div><div class="hint r">點右半邊 ▶<br>→ / D / J</div>
     <div class="dc" hidden></div>
 
@@ -143,6 +150,7 @@
       <div class="big score-final">0</div>
       <p class="rate"></p>
       <table class="breakdown"></table>
+      <p class="advice"></p>
       <p class="small verify"></p>
       <button class="again">再打一次</button>
       <button class="calibrate secondary">延遲校正</button>

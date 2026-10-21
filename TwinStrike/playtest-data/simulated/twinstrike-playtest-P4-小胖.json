@@ -1,0 +1,149 @@
+[
+ {
+  "v": 1,
+  "tester": "P4-小胖",
+  "at": "2026-10-21T08:37:00.000Z",
+  "run": 1,
+  "upload": {
+   "game": "twin-strike",
+   "version": 6,
+   "seed": 1234,
+   "ticks": 1578,
+   "score": 2809,
+   "hash": 4080228702,
+   "log": "AHRRAQBBsgEASkIBADTiAQAzAQEABaIBAA4CAQAHAgEADCIBAB8iAQAWAQEABgEBAAaSAQADAQEAG9EBAAkBAQAKAgEABGEBAAUCAQABAQEAH4EBACACAQARAQEAAXEBABoCAQANYQEADwIBAAcBAQADsgEACQEBAA0BAQADkgEADAEBABjRAQAVMQEAGvEBAB6xAQAWAQEADiIBAAgCAQAM4QEAAgEBABNyAQAd8gEADgIBABpiAQAVAQECAQAFggEAG8EBAAoxAQAvAgEAdxIBABARAQArYQEABeEBAC6RAQApAQEAC+IBAA8BAQAK4gEAF7IBAAcBAQAUgQEAIwIBAAIBAQAL4gEAMA==",
+   "choices": [],
+   "meta": {
+    "inputOffsetMs": 40,
+    "audioLatencyMs": 60,
+    "simulated": true
+   }
+  },
+  "summary": {
+   "perfect": 15,
+   "great": 13,
+   "good": 5,
+   "miss": 8,
+   "whiffs": 24,
+   "locked": 10,
+   "maxCombo": 4,
+   "hurts": 8,
+   "notes": 221,
+   "critical": 5,
+   "ratePermille": 87,
+   "hp": 0,
+   "deathTick": 1577,
+   "verified": true
+  },
+  "latency": {
+   "input": 40,
+   "audio": 60
+  },
+  "device": {
+   "ua": "simulated persona P4",
+   "dpr": 3,
+   "lang": "zh-TW",
+   "touch": 5,
+   "w": 360,
+   "h": 800
+  }
+ },
+ {
+  "v": 1,
+  "tester": "P4-小胖",
+  "at": "2026-10-21T08:38:00.000Z",
+  "run": 2,
+  "upload": {
+   "game": "twin-strike",
+   "version": 6,
+   "seed": 1234,
+   "ticks": 1746,
+   "score": 2900,
+   "hash": 1623417763,
+   "log": "AHHxAQA5AQEATQEBAAMCAQA54gEAOUIBACPiAQAjAgEAEgEBAAkCAQACkgEAIfEBABACAQAHgQEACgIBABnBAQAZAQEABOIBABjxAQAFAgEAIAEBABqiAQASAQEACQIBACNxAQAcsQEAEwEBACRhAQAg4gEAHWEBAB9SAQAOIgEACgIBABySAQAPAgEADWIBABABAQAM4QEACgEBADABAQAEQgEAUAEBACCSAQAPggEACAEBACCRAQALgQEAKPEBADUSAQAbQgEAGAIBABvhAQAOAQEAEwIBAAsBAQACMgEAHQIBAAvCAQAYAgIAAlEBAAIBAQBAAgEADjEBAAUCAQAPQQEAKg==",
+   "choices": [],
+   "meta": {
+    "inputOffsetMs": 40,
+    "audioLatencyMs": 60,
+    "simulated": true
+   }
+  },
+  "summary": {
+   "perfect": 17,
+   "great": 10,
+   "good": 7,
+   "miss": 12,
+   "whiffs": 21,
+   "locked": 11,
+   "maxCombo": 8,
+   "hurts": 12,
+   "notes": 221,
+   "critical": 12,
+   "ratePermille": 90,
+   "hp": 0,
+   "deathTick": 1745,
+   "verified": true
+  },
+  "latency": {
+   "input": 40,
+   "audio": 60
+  },
+  "device": {
+   "ua": "simulated persona P4",
+   "dpr": 3,
+   "lang": "zh-TW",
+   "touch": 5,
+   "w": 360,
+   "h": 800
+  }
+ },
+ {
+  "v": 1,
+  "tester": "P4-小胖",
+  "at": "2026-10-21T08:39:00.000Z",
+  "run": 3,
+  "upload": {
+   "game": "twin-strike",
+   "version": 6,
+   "seed": 1234,
+   "ticks": 1634,
+   "score": 3087,
+   "hash": 1962518044,
+   "log": "AHMBAQBKQgEAPIIBADpCAQA0AQEACBIBACOCAQAgcgEAIDIBAB9hAQAeQQEAIAIBUQEAHgIBAAIBAQAYYQEAG6EBAAECAQASAgEADiIBABtCAQALAgEADgEBACGRAQAecQEABQEBABTRAQARAQEAEKIBAB0hAQAZIgEACQEBAAWyAQAqggEAHMIBAB5hAQAFAQEAB/EBADMSAQBwcgEADgIBAA2yAQAbwQEADKEBAAwCAQAT8QEABQIBADgSAQASAQEAByIBABxCAQAd8QEABwIBABgiAQAJAQEAAnIBABphAQAoAgExAQAPAQIAEw==",
+   "choices": [],
+   "meta": {
+    "inputOffsetMs": 40,
+    "audioLatencyMs": 60,
+    "simulated": true
+   }
+  },
+  "summary": {
+   "perfect": 22,
+   "great": 10,
+   "good": 1,
+   "miss": 10,
+   "whiffs": 19,
+   "locked": 9,
+   "maxCombo": 5,
+   "hurts": 10,
+   "notes": 221,
+   "critical": 9,
+   "ratePermille": 96,
+   "hp": 0,
+   "deathTick": 1633,
+   "verified": true
+  },
+  "latency": {
+   "input": 40,
+   "audio": 60
+  },
+  "device": {
+   "ua": "simulated persona P4",
+   "dpr": 3,
+   "lang": "zh-TW",
+   "touch": 5,
+   "w": 360,
+   "h": 800
+  }
+ }
+]

@@ -13,6 +13,8 @@ export { SUB, GRADE };
 
 // Judgement half-widths (spec §5). Wider than the core recipe default (35 / 70 / 110 ms) for a casual audience (v2).
 export const WINDOWS = Object.freeze({ perfect: msToSub(45), great: msToSub(85), good: msToSub(135) });
+// v6: a Perfect within ±20 ms is a CRITICAL Perfect worth +critBonus (maimai-style 101%): a tie-breaker between experts.
+export const CRITICAL = msToSub(20);
 
 // --- Spec §2 input byte: bit 0 left, bit 1 right, bits 4..7 sub-tick phase ---
 export const IN_L = 1, IN_R = 2;
@@ -27,6 +29,7 @@ export const KIND = Object.freeze({ GRUNT: 0, RUNNER: 1, BRUTE: 2 });
 export const RULES = Object.freeze({
   hpMax: 6,
   regenCombo: 12,                    // every N-th consecutive hit restores 1 HP (capped at hpMax)
+  critBonus: 1,                      // points added per Critical Perfect (spec §6 v6)
   guard: 30,                         // ticks after losing HP in which further misses cost no HP (0.5 s)
   stagger: 12,                       // ticks of whiff stagger (200 ms); render greys the hero for exactly this long
   approach: [66, 44, 78],            // ticks from screen edge to strike range, by KIND
@@ -131,7 +134,7 @@ export function createSim(seed) {
   const chart = buildChart(seed >>> 0);
   return {
     seed: seed >>> 0, tick: 0, chart, judge: createJudge(chart),
-    hp: RULES.hpMax, guardUntil: 0, bossHurt: -1, staggerUntil: 0, lockedTaps: 0, hurts: 0, deathTick: -1,
+    hp: RULES.hpMax, guardUntil: 0, bossHurt: -1, crits: 0, staggerUntil: 0, lockedTaps: 0, hurts: 0, deathTick: -1,
     events: [], recordEvents: true,
   };
 }
@@ -154,9 +157,11 @@ export function step(sim, input) {
       sim.staggerUntil = sim.tick + RULES.stagger;
       emit(sim, { type: 'whiff', lane });
     } else {
-      const n = chart[r.note];
+      const n = chart[r.note], dt = time - n.t;                     // signed timing error (sub-ticks), late > 0
+      const crit = r.grade === GRADE.PERFECT && Math.abs(dt) <= CRITICAL;
+      if (crit) { sim.crits++; judge.score += RULES.critBonus; }
       if (judge.combo % RULES.regenCombo === 0 && sim.hp < RULES.hpMax) { sim.hp++; emit(sim, { type: 'heal', hp: sim.hp }); }
-      emit(sim, { type: 'hit', note: r.note, lane, grade: r.grade, pts: r.pts, kind: n.kind, combo: judge.combo, last: chart[r.note + 1]?.group !== n.group });
+      emit(sim, { type: 'hit', note: r.note, lane, grade: r.grade, crit, dt, pts: r.pts + (crit ? RULES.critBonus : 0), kind: n.kind, combo: judge.combo, last: chart[r.note + 1]?.group !== n.group });
     }
   }
 
@@ -188,7 +193,7 @@ export function step(sim, input) {
 
 export const phase = sim => (sim.hp <= 0 || sim.tick >= MATCH_TICKS ? 'over' : 'play');
 export const score = sim => sim.judge.score;
-export const maxScore = sim => chartMax(sim.chart);
+export const maxScore = sim => chartMax(sim.chart) + sim.chart.length * RULES.critBonus;   // every note a Critical
 
 /** Spec §6 result breakdown (shown on the result screen; numeric so skill-dominance can average it). */
 export function scoreBreakdown(sim) {
@@ -196,20 +201,21 @@ export function scoreBreakdown(sim) {
   return {
     perfect, great, good, miss, whiffs: sim.judge.whiffs, locked: sim.lockedTaps,
     maxCombo: sim.judge.maxCombo, hurts: sim.hurts, notes: sim.chart.length,
-    ratePermille: Math.trunc((sim.judge.score * 1000) / chartMax(sim.chart)),
+    critical: sim.crits,
+    ratePermille: Math.trunc((sim.judge.score * 1000) / maxScore(sim)),
   };
 }
 
 export function stateHash(sim) {
   const j = sim.judge;
   return createHasher(sim.tick).mixAll([
-    sim.hp, sim.guardUntil, sim.bossHurt, sim.staggerUntil, sim.lockedTaps, sim.hurts, sim.deathTick,
+    sim.hp, sim.guardUntil, sim.bossHurt, sim.crits, sim.staggerUntil, sim.lockedTaps, sim.hurts, sim.deathTick,
     j.score, j.combo, j.maxCombo, j.whiffs, j.next, ...j.counts, ...j.grade,
   ]).value();
 }
 
 /** GameDef consumed by core/match.js (Recorder, replay, verify) and tools/skill-dominance.mjs. */
 export const GAME = Object.freeze({
-  id: 'twin-strike', version: 5, maxTicks: MATCH_TICKS,
+  id: 'twin-strike', version: 6, maxTicks: MATCH_TICKS,
   createSim, step, phase, score, stateHash, scoreBreakdown,
 });
