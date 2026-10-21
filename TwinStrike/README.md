@@ -9,6 +9,7 @@
 | [gdd/02_art_spec.md](gdd/02_art_spec.md) | 美術規格（Q 版貼紙風、色票、禁忌、資產清單、預算）；prompt 在 [art/prompts/](art/prompts/) |
 | [gdd/07_difficulty_curve.md](gdd/07_difficulty_curve.md) | 腳本化難度曲線（樂句庫、12 段腳本、人性化試玩）；報告 [docs/difficulty_curve.md](docs/difficulty_curve.md) |
 | [gdd/06_combo_feel.md](gdd/06_combo_feel.md) | 連擊節奏感：5 個連擊階段的場景動效、文字動態、對拍分層 BGM |
+| [docs/persona_playtest.md](docs/persona_playtest.md) | **角色扮演模擬試玩**（6 位虛擬玩家 × 3 局，標示為模擬）與 6 個設計問題；`node tools/persona-playtest.mjs --out ../playtest-data/simulated` |
 | [docs/human_playtest_plan.md](docs/human_playtest_plan.md) | **真人試玩計畫**（路線 A 第 1 階段）：假設與通過標準、招募、流程、問卷、`npm run human-report` 分析 |
 | [docs/launch_checklist.md](docs/launch_checklist.md) | **上線前清單**：路線選擇、真人驗證、後端、封裝、法規、營運與建議順序 |
 | [docs/playtest_report.html](docs/playtest_report.html) | **全面自動化試玩**（難度、節奏、旋律、曲線線性、心流帶；`npm run playtest`） |
@@ -20,7 +21,7 @@
 |---|---|
 | `game/src/sim/sim.js` | 照規格完成（譜面、判定、硬直、扣血、回血） |
 | `game/tools/bots.mjs` | 三級 bot 完成 |
-| `game/test/determinism.test.mjs` | 17 項規格測試；`npm test` 共 50 項全過（sim v5：4 / 8 小節樂句） |
+| `game/test/determinism.test.mjs` | 18 項規格測試；`npm test` 共 51 項全過（sim v6：Critical Perfect） |
 | `game/src/main.js`、`render/`、HUD | 可玩：佔位美術（Canvas 程式繪製 atlas，0 bytes）、標題 / 結算畫面、觸控左右半邊 + 鍵盤、重播驗證；基礎 DC 1、包體 1.0 MB（8 MB 的 12%） |
 | 正式美術 | 貓師父、老鼠、飛鼠、狸貓（`art/tools/pack_atlas.py` + `art/atlas.json`）、道場背景（`art/tools/bake_bg.py`）已進遊戲；特效貼紙、主視覺（標題畫面）都已進遊戲；**美術全部完成** |
 | 落拍打擊感 | keysound（音高跟 BGM 和弦）＋按下即預判、拍點吸附（`audio/keysound.js`、`main.js` `predictHit`） |

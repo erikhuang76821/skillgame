@@ -98,17 +98,40 @@ if (import.meta.env.DEV) {
   setInterval(() => { dcEl.textContent = `DC ${dc()}  FPS ${app.ticker.FPS.toFixed(0)}`; }, 250);
 }
 
+// --- Coaching for mashers (docs/persona_playtest.md #1): explain the stagger the first times it happens ---
+const coach = {
+  el: null, shown: 0, whiffTimes: [],
+  say(text) {
+    this.el ??= hudEl.querySelector('.coach');
+    this.el.textContent = text;
+    gsap.timeline().fromTo(this.el, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.18, overwrite: true }).to(this.el, { opacity: 0, duration: 0.3 }, '>+1.6');
+    this.shown++;
+  },
+  reset() { this.whiffTimes.length = 0; this.runShown = 0; },
+  whiff() {
+    const now = performance.now();
+    this.whiffTimes = this.whiffTimes.filter(t => now - t < 3000).concat(now);
+    if (this.shown === 0) this.say('等敵人踏進框再點！');                       // very first whiff on this device
+    else if (this.whiffTimes.length >= 3 && this.runShown < 2) { this.runShown++; this.say('狂按會露出破綻，貓會暈 0.2 秒'); }
+  },
+  locked() { if (this.runShown < 2 && this.whiffTimes.length >= 2) { this.runShown++; this.say('暈眩中！先停手，等下一隻'); } },
+};
+coach.runShown = 0;
+try { coach.shown = Number(localStorage.getItem('twinstrike-coach-v1')) || 0; } catch { /* storage blocked */ }
+const remember = () => { try { localStorage.setItem('twinstrike-coach-v1', String(coach.shown)); } catch { /* storage blocked */ } };
+
 const sfx = new Sfx();                                   // knowledge-base/14: synthesised, 0 bytes
 const audioLatencySec = () => (latency.audio != null ? latency.audio / 1000
   : sfx.ctx ? (sfx.ctx.outputLatency || 0) + (sfx.ctx.baseLatency || 0) : 0);
 const bgm = new Bgm(sfx, audioLatencySec);
 const hitFx = new HitFx(sfx);                            // gdd/06 §7: strike bodies + combo-tier layers                                // gdd/06: beat-locked, layered by combo tier
 const comboFeel = new ComboFeel({ view, bgm, sfx, counter: ui.combo, banner: ui.milestone });
-const GRADE_TEXT = { [GRADE.PERFECT]: ['perfect', 'Perfect!'], [GRADE.GREAT]: ['great', 'Great'], [GRADE.GOOD]: ['good', 'Good'], whiff: ['whiff', '破綻！'] };
+const GRADE_TEXT = { critical: ['critical', 'Critical!'], [GRADE.PERFECT]: ['perfect', 'Perfect!'], [GRADE.GREAT]: ['great', 'Great'], [GRADE.GOOD]: ['good', 'Good'], whiff: ['whiff', '破綻！'] };
 const hooks = {
   shake: kind => shake(shakeEl, kind),
-  popup(grade, lane, combo, pts) {
-    const el = ui.pops[lane], [cls, text] = GRADE_TEXT[grade];
+  popup(grade, lane, combo, pts, crit) {
+    const el = ui.pops[lane], [cls, text] = GRADE_TEXT[crit ? 'critical' : grade];
+    if (grade === 'whiff') coach.whiff();
     const tier = typeof grade === 'number' ? tierOf(combo) : 0;
     el.className = `pop ${lane ? 'r' : 'l'} ${cls} t${tier}`;
     el.innerHTML = tier >= 2 && pts ? `${text}<small>+${pts}</small>` : text;
@@ -122,6 +145,7 @@ const hooks = {
     hitFx.strike({ ...o, delay: beatDelay(o.note.t) });
   },
   hurt(safe) { hurt(safe ? 0.35 : 0.9); shake(shakeEl, 'light'); sfx.play('hurt', { gain: safe ? 0.5 : 1 }); },
+  locked() { coach.locked(); sfx.play('click', { pitch: 0.5, gain: 0.5 }); },
   brute(last) { sfx.play(last ? 'shieldBreak' : 'block'); },
 };
 
@@ -222,6 +246,8 @@ function start() {
   lastFrame = performance.now();                         // the title / result screen is not a hitch
   view.reset();
   comboFeel.reset();
+  coach.reset();
+  hitErrors.length = 0;
   sounded.clear();
   bgm.start();
   lastSeg = -1; shownHp = RULES.hpMax; shownScore = 0; scoreRoll.v = 0;
@@ -232,8 +258,19 @@ function start() {
   playing = true;
 }
 
+// --- Timing-bias check (docs/persona_playtest.md #3): a steady late / early average usually means device or
+// Bluetooth latency, not skill -> suggest calibration. The median is robust to a few wild taps.
+const hitErrors = [];
+function timingAdvice() {
+  if (hitErrors.length < 20) return null;
+  const s = [...hitErrors].sort((a, b) => a - b), med = s[s.length >> 1];
+  if (Math.abs(med) < 35) return null;
+  return { med: Math.round(med), text: `你的點擊平均${med > 0 ? '偏晚' : '偏早'} ${Math.abs(Math.round(med))} ms，可能是裝置或藍牙耳機的延遲 → 建議做「延遲校正」` };
+}
+
 function finish() {
   playing = false;
+  remember();
   bgm.stop();
   rec.meta.lateTaps = taps.late;
   const v = verify(GAME, rec.upload()), b = scoreBreakdown(rec.sim), sim = rec.sim;
@@ -241,12 +278,18 @@ function finish() {
   document.body.classList.remove('fever');
   $('.score-final').textContent = GAME.score(sim).toLocaleString('zh-TW');
   $('.rate').textContent = `達成率 ${(b.ratePermille / 10).toFixed(1)}%（理論滿分 ${maxScore(sim).toLocaleString('zh-TW')}）${sim.hp > 0 ? '' : ' · 第 ' + Math.floor(sim.deathTick / 60) + ' 秒倒下'}`;
+  const bias = timingAdvice();
+  const advice = [];
+  if (bias) advice.push(bias.text);
+  if (b.whiffs >= 8 || b.locked >= 3) advice.push(`破綻 ${b.whiffs} 次：等敵人踏進框再點，狂按會讓貓暈眩 0.2 秒、漏掉下一隻`);
+  $('.advice').textContent = advice.join('\n');
+  hudEl.querySelectorAll('.result .calibrate').forEach(btn => btn.classList.toggle('suggest', !!bias));
   $('.breakdown').innerHTML = [
-    ['Perfect', b.perfect], ['Great', b.great], ['Good', b.good], ['漏接', b.miss],
+    ['Critical（±20 ms）', b.critical], ['Perfect（含 Critical）', b.perfect], ['Great', b.great], ['Good', b.good], ['漏接', b.miss],
     ['破綻（空揮）', b.whiffs], ['最大連擊', b.maxCombo],
   ].map(([k, n]) => `<tr><td>${k}</td><td>${n}</td></tr>`).join('');
   if (playtest.enabled) {
-    playtest.add(rec, { ...b, hp: sim.hp, deathTick: sim.deathTick, verified: v.valid }, latency);
+    playtest.add(rec, { ...b, hp: sim.hp, deathTick: sim.deathTick, verified: v.valid, timingMedianMs: bias?.med ?? null }, latency);
     $('.export').hidden = false;
     $('.export').textContent = `匯出試玩紀錄（${playtest.count} 局）`;
     $('.playtest-note').hidden = false;
@@ -306,7 +349,10 @@ app.ticker.add(() => {
       rec.step(input);
       comboFeel.update(comboBefore, rec.sim.judge.combo);
       const t = rec.sim.tick * SUB;
-      for (const ev of rec.sim.events) view.onEvent(ev, rec.sim, t, hooks);
+      for (const ev of rec.sim.events) {
+        if (ev.type === 'hit') hitErrors.push((ev.dt / SUB) * TICK_MS);   // signed timing error, ms (late > 0)
+        view.onEvent(ev, rec.sim, t, hooks);
+      }
       if (rec.phase === 'over') { finish(); break; }
     }
     syncHud(rec.sim);
@@ -319,4 +365,4 @@ app.ticker.add(() => {
   view.update(rec.sim, renderSub, now);
 });
 
-if (import.meta.env.DEV) window.__game = { app, view, start, get rec() { return rec; }, get clock() { return clock; }, calib, latency, playtest, sfx, bgm, comboFeel, predictHit, beatDelay, sounded };   // console inspection only
+if (import.meta.env.DEV) window.__game = { app, view, start, get rec() { return rec; }, get clock() { return clock; }, calib, latency, playtest, coach, hitErrors, timingAdvice, sfx, bgm, comboFeel, predictHit, beatDelay, sounded };   // console inspection only

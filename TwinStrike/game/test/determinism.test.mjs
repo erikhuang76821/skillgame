@@ -26,7 +26,7 @@ test('same seed + same inputs => identical result', () => {
 
 test('golden match (cross-engine determinism; update only when GAME.version is bumped)', () => {
   assert.deepEqual(playMatch(GAME, 1234, BOTS.expert).result(),
-    { game: 'twin-strike', version: 5, seed: 1234, ticks: 5400, score: 31080, hash: 601539386 });
+    { game: 'twin-strike', version: 6, seed: 1234, ticks: 5400, score: 31257, hash: 4266121400 });
 });
 
 test('uploaded match verifies; tampered score does not', () => {
@@ -169,4 +169,22 @@ test('tanuki boss: hits on quarter beats, alone in its bar, at most 1 HP lost pe
     for (const e of sim.events) if (e.type === 'hurt' && !e.safe && sim.chart[e.note].kind === KIND.BRUTE) lost.set(sim.chart[e.note].group, (lost.get(sim.chart[e.note].group) ?? 0) + 1);
   }
   for (const n of lost.values()) assert.ok(n <= 1, 'a boss cost more than 1 HP');
+});
+
+test('critical perfect: ±20 ms adds critBonus, 21+ ms is a plain perfect, and a full critical run hits maxScore (spec §6 v6)', () => {
+  const sim = createSim(9);
+  sim.recordEvents = true;
+  const [a, b] = sim.chart;
+  while (sim.tick < Math.floor(a.t / SUB)) step(sim, 0);
+  step(sim, encode(laneBit(a.lane), a.t % SUB));                    // exact: critical
+  const hitA = sim.events.find(e => e.type === 'hit');
+  assert.equal(hitA.crit, true);
+  const off = Math.round((21 * 60 * SUB) / 1000) + 1;               // just outside ±20 ms, still inside Perfect (45 ms)
+  const tb = b.t + off;
+  while (sim.tick < Math.floor(tb / SUB)) step(sim, 0);
+  step(sim, encode(laneBit(b.lane), tb % SUB));
+  const hitB = sim.events.find(e => e.type === 'hit');
+  assert.equal(hitB.grade, GRADE.PERFECT);
+  assert.equal(hitB.crit, false);
+  assert.equal(sim.crits, 1);
 });

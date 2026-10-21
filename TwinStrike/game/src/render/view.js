@@ -150,6 +150,17 @@ export class GameView {
 
   setTier(t) { this.tier = t; }
 
+  /** Dizzy birds circling the hero's head (one at a time): "you are stunned, stop tapping". */
+  dizzy() {
+    if (this.dizzySprite?.busy) return;
+    const s = this.dizzySprite ??= this.take('fx', this.fx);
+    s.busy = true; s.visible = true; s.texture = this.tex.fx.birds; s.anchor.set(0.5); s.tint = 0xffffff;
+    s.position.set(this.hero.x, LAYOUT.floor - 250); s.rotation = 0; s.alpha = 1; s.scale.set(FEEL.burst.scale * 1.2);
+    gsap.timeline({ onComplete: () => { s.busy = false; s.visible = false; } })
+      .to(s, { rotation: Math.PI * 2, duration: 0.6, ease: 'none' }, 0)
+      .to(s, { alpha: 0, duration: 0.2 }, 0.4);
+  }
+
   /** Combo broke: dim the background briefly and drop the speed lines (gdd/06 §4). */
   comboBreak() {
     for (const s of this.pool.streak) { gsap.killTweensOf(s); s.busy = false; s.visible = false; }
@@ -209,7 +220,7 @@ export class GameView {
       if (n.kind === KIND.BRUTE) ui.brute(ev.last);                   // wooden tok / shield break on top of the hit sound
       if (n.kind === KIND.BRUTE && ev.last) { this.ring(heroX + dir * range, y - 90); ui.shake('crit'); }
       else if (ev.grade === GRADE.PERFECT) ui.shake('light');
-      ui.popup(ev.grade, ev.lane, ev.combo, ev.pts);
+      ui.popup(ev.grade, ev.lane, ev.combo, ev.pts, ev.crit);
       const b = beatAt(n.t / SUB), next = sim.chart[ev.note + 1];       // the note's own time is exactly on the beat grid
       ui.strike({ id: ev.note, note: n, strike: STRIKES[ev.note % 3], grade: ev.grade, combo: ev.combo, tier: this.tier, kind: n.kind, last: ev.last,
         onBeat: !!b && b.phase === 0, downbeat: !!b && b.phase === 0 && b.index % 4 === 0,
@@ -218,8 +229,10 @@ export class GameView {
       this.setHero('whiff', dir, RULES.stagger * TICK_MS);
       this.burst(heroX + dir * 40, floor - 210, 'sweat', 1);
       ui.popup('whiff', ev.lane);
-    } else if (ev.type === 'locked') {
+    } else if (ev.type === 'locked') {                                  // pressed while staggered: show it is the mashing (persona P4)
       gsap.fromTo(this.heroState, { lunge: 6 }, { lunge: 0, duration: 0.12, ease: 'elastic.out(1, 0.3)', overwrite: true });
+      this.dizzy();
+      ui.locked?.();
     } else if (ev.type === 'hurt') {
       const n = sim.chart[ev.note];
       this.setHero('hurt', dir, 260);                                   // art: faces the attacker, flinches backwards
