@@ -28,7 +28,7 @@
 | G11 | **外部 skill 依賴未入庫** | `pokesurvivor-asset-dev`（`~/.codex/skills/`）、`gdd-framework`、`codex-image` 不在 repo，`anim_frames.py` 寫死路徑 → 換機或給同事就斷 |
 | G12 | **法規缺塊** | 台灣「線上技巧賽發獎」無法源分析；新品類（貪食蛇、塔防、左右打怪）的分級預判；加拿大；法務要的「技巧主導證明」格式（bot 數據是否被接受）；隱私（COPPA / CCPA）、18+ 驗證、KYC |
 | ~~G19~~ ✅ 2026-10-19（平面與 2.5D） | **地形 / 場景的程式實作** → 範本地形模組（見 [11 §7](11_terrain-style-kit.md)）。崖後遮擋輪廓已補（2026-10-19）。仍缺：等角與真 3D 地形、AI 生成材質接入實例 |
-| G13 | **平台與發佈** | PWA / Capacitor 上架流程、App Store 5.3 送審材料、IARC 分級、托管與 CDN 快取、CI（規範說「CI 擋包體」但沒有 CI 設定） |
+| G13 | **平台與發佈** | PWA / Capacitor 上架流程、App Store 5.3 送審材料、IARC 分級、托管與 CDN 快取、CI（本機 pre-commit hook 已有：`.githooks/` + `shared/tools/precommit.mjs`，2026-10-21；遠端 CI、包體與 30 種子 playtest 的自動把關仍無） |
 
 ## P2 — 品質與長線
 

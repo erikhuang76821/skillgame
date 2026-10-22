@@ -2,7 +2,7 @@
 
 - **用途**：下一款遊戲要「找現成圖 / 照同一套 prompt 重生 / 改題材衍生」時查這頁
 - **範圍**：SwarmDuel 所有視覺資產（AI 生成圖、程式繪製 0 bytes 資產、特效配方、UI 皮）＋ 生圖 prompt 原文
-- **機器可讀版**：[assets/asset-index.json](assets/asset-index.json)（67 筆資產＋`promptBlocks` 模板字串；路徑以 repo 根為基準）
+- **機器可讀版**：[assets/asset-index.json](assets/asset-index.json)（68 筆資產＋`promptBlocks` 模板字串；路徑以 repo 根為基準）
 - **權威來源**：[asset_pipeline.md](../SwarmDuel/docs/asset_pipeline.md)（契約、驗收紀錄）、[anim_prompts.py](../SwarmDuel/tools/anim_prompts.py)、[anim_frames.py](../SwarmDuel/tools/anim_frames.py)、[derive_native.py](../SwarmDuel/tools/derive_native.py)。本頁只是索引
 - 盤點日期：2026-10-19
 
@@ -140,6 +140,7 @@
 | `tpl.fx.overlay` | [overlay.js](../.claude/skills/lite-skillgame-stack/templates/src/fx/overlay.js) | CSS `#fx-vignette` radial 55% → `rgba(200,0,0,.65)`；`#fx-flash` 白 screen | flash α0.6 / 0.12 s；hurt 0.6 s `power2.out` | 未用 |
 | `tpl.fx.shockwave` | [shockwave.js](../.claude/skills/lite-skillgame-stack/templates/src/fx/shockwave.js) | GLSL 位移環 filter，只在播放期間掛 | radius 260、width 40、amp 18、0.45 s `power2.out` | **禁用**（無 filter）→ `vfx.howl_ring` |
 | `tpl.fx.particles` | [particles.js](../.claude/skills/lite-skillgame-stack/templates/src/fx/particles.js) | ParticleContainer 1 DC、4 px 白點、add 混色、固定池 | burst 24、speed 420、life 0.5 s、gravity 900、max 512 | 未用（改 `burst()` sprite 池） |
+| `tpl.terrain.dust` | [dust.png](../.claude/skills/lite-skillgame-stack/templates/src/assets/terrain/dust.png) · [prompt](../.claude/skills/lite-skillgame-stack/templates/src/assets/terrain/dust.prompt.txt) | AI 生成無縫地表 tile（[11](11_terrain-style-kit.md) ② v2 提詞）＋ `tile_prep.py` 後處理 | `terrainConfig.js` 的 `src`；載入失敗退回 `noiseTile()` | 範本示範用；新遊戲換題材重生並登錄到自己的 `art/manifest.json` |
 | — | [feel.js](../.claude/skills/lite-skillgame-stack/templates/src/fx/feel.js) | 其他：hitStop 0.03/0.06/0.1 s、squash 1.25×0.8 `elastic.out(1,0.35)`、popup rise 40 / 0.6 s、UI in 0.25 `back.out(1.7)` | — | — |
 
 ## 4. Prompt 庫（原文，`{…}` 為佔位符）

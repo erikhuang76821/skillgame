@@ -27,7 +27,7 @@
 | [07 題材與活動](07_themes-and-liveops.md) | 選皮流程、題材與禁忌、節慶檔期 |
 | [08 生產流程](08_production-workflow.md) | 從點子到原型的 10 步、指令、skill 所在位置 |
 | [09 知識缺口](09_knowledge-gaps.md) | 快速生成還缺什麼（P0 / P1 / P2）與補齊順序 |
-| [10 資產庫](10_asset-library.md) | 67 筆視覺資產（生成圖、程式繪製、特效配方、UI 皮）、生圖 prompt 原文模板、中英關鍵字索引；機器可讀版 [assets/asset-index.json](assets/asset-index.json) |
+| [10 資產庫](10_asset-library.md) | 68 筆視覺資產（生成圖、程式繪製、特效配方、UI 皮）、生圖 prompt 原文模板、中英關鍵字索引；機器可讀版 [assets/asset-index.json](assets/asset-index.json) |
 | [11 地表設定集](11_terrain-style-kit.md) | 共用美術規則＋地表生成＋地形整合提詞（v1 原文 / v2 修訂）、各遊戲參數表、平面 / 2.5D / 等角 / 3D 變體、驗收清單 |
 | [12 品類實作配方](12_genre-recipes.md) | 節奏 / 時機（子 tick 判定、種子譜面）與確定性物理（撞球）兩份配方、範例遊戲、技巧主導實測與調校教訓、其他品類對應 |
 | [13 輸入公平性](13_input-fairness.md) | 時間戳輸入（幀率無關）、延遲校正規則、防巨集 / 防腳本統計 |

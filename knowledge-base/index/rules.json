@@ -62,9 +62,9 @@
       "category": "fairness",
       "level": "must",
       "scope": { "selector": { "kind": "game-source", "path": "game/src/sim/" } },
-      "constraints": [{ "name": "forbidden", "check": "sim/ 內不得出現 gsap、pixi、document、Math.random、Date", "overridePolicy": "forbid" }],
-      "measurement": "grep -rnE \"gsap|pixi|document|Math\\.random|Date\" src/sim/（排除 core/ 註解）",
-      "enforcement": { "type": "review", "checklist": "交付前執行上列 grep，結果為空" },
+      "constraints": [{ "name": "forbidden", "value": ["gsap", "pixi", "document", "window", "Math.random", "Date", "performance", "localStorage"], "unit": "identifier", "check": "sim/ 內（含 core/）的程式碼不得出現這些識別字；註解不算", "overridePolicy": "forbid" }],
+      "measurement": "game-audit 掃描 <Game>/game/src/sim/ 所有 .js / .mjs，去掉註解後以完整單字比對",
+      "enforcement": { "type": "script", "ref": "shared/tools/game-audit.mjs" },
       "whyRef": "knowledge-base/01_skill-integrity.md",
       "howRef": ".claude/skills/lite-skillgame-stack/SKILL.md",
       "source": "CLAUDE.md",
@@ -274,6 +274,80 @@
       "whyRef": "knowledge-base/05_juice-and-feel.md、knowledge-base/14_audio.md",
       "howRef": ".claude/skills/lite-skillgame-stack/references/bootstrap.md §1",
       "source": "GateLane 檢討（2026-10-21）：feel.js / sfx.js 與範本完全相同",
+      "reviewedAt": "2026-10-21"
+    },
+    {
+      "id": "RULE-REPORT-FRESH",
+      "category": "process",
+      "level": "must",
+      "scope": { "selector": { "kind": "game-folder" } },
+      "constraints": [{ "name": "matchVersion", "check": "docs/skill_dominance_report.md 與 docs/playtest_report.md 標記的 sim 版本（「<id> vN」或「sim vN」）等於 sim.js 匯出的 GAME.version；dominance 報告的 id 等於 GAME.id", "overridePolicy": "forbid" }],
+      "measurement": "game-audit 匯入 <Game>/game/src/sim/sim.js 讀 GAME，比對報告開頭的版本標記",
+      "enforcement": { "type": "script", "ref": "shared/tools/game-audit.mjs" },
+      "whyRef": "knowledge-base/16_difficulty-curve.md §6 調校流程第 3 步（影響結果的改動要重產報告）",
+      "howRef": ".claude/skills/lite-skillgame-stack/templates/tools/lib/dominance.mjs（toMarkdown 寫入 id 與版本）",
+      "source": "audit 第二版（2026-10-21）",
+      "reviewedAt": "2026-10-21"
+    },
+    {
+      "id": "RULE-SPEC-CONSTANTS",
+      "category": "process",
+      "level": "must",
+      "scope": { "selector": { "kind": "game-folder" } },
+      "constraints": [
+        { "name": "match", "check": "gdd/05_game_spec.md 寫成 `NAME` = 數值、或表格「`NAME` | 數值」的常數，若 sim.js 有同名匯出（或 GAME / RULES 的同名欄位），數值必須相同", "overridePolicy": "forbid" },
+        { "name": "minMatched", "op": ">=", "value": 1, "unit": "constant", "overridePolicy": "with-reason" }
+      ],
+      "measurement": "game-audit 解析規格裡的反引號常數，匯入 sim.js 比對；找不到同名匯出的名稱（狀態欄位、事件名）略過",
+      "enforcement": { "type": "script", "ref": "shared/tools/game-audit.mjs" },
+      "whyRef": ".claude/skills/lite-skillgame-stack/references/game-spec-template.md（每節對應一段程式、數字對應同名常數）",
+      "howRef": "knowledge-base/08_production-workflow.md 步驟 3、5",
+      "source": "audit 第二版（2026-10-21）",
+      "reviewedAt": "2026-10-21"
+    },
+    {
+      "id": "RULE-SPEC-FAIRNESS",
+      "category": "fairness",
+      "level": "must",
+      "scope": { "selector": { "kind": "game-folder" } },
+      "constraints": [{ "name": "answers", "value": ["E1", "E2", "E3", "E4", "E5", "E6", "E7"], "unit": "row", "overridePolicy": "forbid" }],
+      "measurement": "gdd/05_game_spec.md §10 的表格每一列 | E# | 問題 | 本作答案 | 都要有答案（不得為空、—、待補、TODO）",
+      "enforcement": { "type": "script", "ref": "shared/tools/game-audit.mjs" },
+      "whyRef": "knowledge-base/01_skill-integrity.md §2 精髓七條",
+      "howRef": ".claude/skills/lite-skillgame-stack/references/game-spec-template.md §10",
+      "source": "audit 第二版（2026-10-21）",
+      "reviewedAt": "2026-10-21"
+    },
+    {
+      "id": "RULE-KB-CITED",
+      "category": "process",
+      "level": "should",
+      "scope": { "selector": { "kind": "game-folder" } },
+      "constraints": [{ "name": "stages", "value": [
+        { "stage": "立項", "pages": ["01_skill-integrity", "02_market-and-legal"] },
+        { "stage": "難度曲線", "pages": ["16_difficulty-curve"] },
+        { "stage": "手感 / 音效", "pages": ["05_juice-and-feel", "14_audio", "15_reference-games"] },
+        { "stage": "美術 / 資產", "pages": ["06_art-pipeline", "10_asset-library", "11_terrain-style-kit", "assets/asset-index.json"] },
+        { "stage": "技術", "pages": ["04_tech-stack"] }
+      ], "unit": "stage", "overridePolicy": "with-reason" }],
+      "measurement": "<Game>/README.md 或 gdd/ 內，每個階段至少連到一頁 knowledge-base/（bootstrap.md §0 必讀清單的「讀過哪些頁寫進 README」）",
+      "enforcement": { "type": "script", "ref": "shared/tools/game-audit.mjs" },
+      "whyRef": "knowledge-base/README.md「開新遊戲：必讀路徑」",
+      "howRef": ".claude/skills/lite-skillgame-stack/references/bootstrap.md §0",
+      "source": "audit 第二版（2026-10-21）",
+      "reviewedAt": "2026-10-21"
+    },
+    {
+      "id": "RULE-ASSET-REGISTER",
+      "category": "art",
+      "level": "should",
+      "scope": { "selector": { "kind": "art-asset" } },
+      "constraints": [{ "name": "registered", "value": [".png", ".webp", ".jpg", ".jpeg", ".ktx2", ".ogg", ".mp3", ".m4a", ".wav"], "unit": "extension", "overridePolicy": "with-reason" }],
+      "measurement": "<Game>/game/src/assets/ 與 public/ 內這些副檔名的檔案，都要登錄在 <Game>/art/manifest.json，或知識庫資產索引 knowledge-base/assets/asset-index.json 的 files，或（過渡期）<Game>/art/raw/LOG.md、art/atlas.json 有提到檔名",
+      "enforcement": { "type": "script", "ref": "shared/tools/game-audit.mjs" },
+      "whyRef": "knowledge-base/decisions/2026-10-21-kb-asset-architecture.md §5.3（manifest 是資產唯一來源）",
+      "howRef": "knowledge-base/10_asset-library.md",
+      "source": "audit 第二版（2026-10-21）",
       "reviewedAt": "2026-10-21"
     }
   ]

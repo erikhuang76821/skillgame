@@ -2783,6 +2783,39 @@
     "打擊感"
    ],
    "anims": []
+  },
+  {
+   "id": "tpl.terrain.dust",
+   "type": "場景",
+   "name": "skill 範本地表材質 dust（AI 生成 tile）",
+   "native": null,
+   "files": {
+    "shipped": [
+     ".claude/skills/lite-skillgame-stack/templates/src/assets/terrain/dust.png"
+    ],
+    "raw": [],
+    "frames": [],
+    "prompt": [
+     ".claude/skills/lite-skillgame-stack/templates/src/assets/terrain/dust.prompt.txt"
+    ]
+   },
+   "status": "template",
+   "statusNote": "knowledge-base/11 ② v2 提詞生成的無縫 tile（乾燥塵土、夜晚荒原），經 tools/tile_prep.py 後處理、tile_check.py 驗收；terrainConfig.js 的 src 載入，失敗退回 noiseTile()。新遊戲沿用前先換題材重生",
+   "keywords": [
+    "terrain",
+    "地表",
+    "dust",
+    "塵土",
+    "tile",
+    "材質",
+    "seamless",
+    "無縫",
+    "template",
+    "範本",
+    "ground",
+    "地面"
+   ],
+   "anims": []
   }
  ],
  "promptBlocks": {

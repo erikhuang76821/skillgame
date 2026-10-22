@@ -17,7 +17,7 @@
 | 8 | 打擊感 / UI | [05](05_juice-and-feel.md) | `FEEL`、GSAP | juice、DOM HUD、結算 | LOW 模式資訊不丟 |
 | 9 | 包體 / 效能 | [04](04_tech-stack.md) §5–6 | `npm run size`、drawCalls.js、Spector.js | size budget 實測 | ≤ 8 MB、DC ≤ 5 |
 | 10 | 交付自檢 | [04](04_tech-stack.md) §9 | — | — | 清單全勾 |
-| 11 | 完整度把關 | `rules.json` 的 `RULE-GAME-*`、`RULE-AF-ADAPTATION` | `npm run audit`（[shared/tools/game-audit.mjs](../shared/tools/game-audit.mjs)） | — | 必要項目全過；警告項有處理或寫明理由 |
+| 11 | 完整度把關 | `rules.json` 的 `RULE-GAME-*`、`RULE-AF-ADAPTATION` | `npm run audit`（[shared/tools/game-audit.mjs](../shared/tools/game-audit.mjs)）；commit 時由 pre-commit hook 自動跑（`git config core.hooksPath .githooks`） | — | 必要項目全過（含報告版本、規格常數對帳、§10 答案、sim 純度）；警告項有處理或寫明理由 |
 
 ## 2. 常用指令
 
@@ -59,7 +59,7 @@ codex exec --skip-git-repo-check --sandbox read-only < art/prompts/<asset>.txt
 | `pokesurvivor-asset-dev` | `~/.codex/skills/` | sprite 契約、`sprite_sheet.py` pack / validate | 不在 repo；`anim_frames.py` 寫死此路徑 |
 | `skill-dominance.mjs`、`lib/dominance.mjs`、`bots.mjs` | 範本 `tools/` | 技巧主導報告（通用統計 + 本作 bot） | `bots.mjs` 每款要依規格重寫 |
 | `humanBots.mjs`、`playtest.mjs`、`lib/curve.mjs` | 範本 `tools/`（2026-10-21 抽入）；節奏類完整版在 `TwinStrike/game/tools/` | 人性化試玩、難度曲線驗收（[16](16_difficulty-curve.md)） | `humanBots` / `playtest` 的單位、負荷模型與 DI 每款改寫；`lib/curve.mjs` 不改 |
-| `game-audit.mjs` | repo `shared/tools/` | 完整度把關（gdd、報告、改造對照、範本殘留） | 要求清單在 `rules.json`，不寫在程式裡 |
+| `game-audit.mjs`、`precommit.mjs` | repo `shared/tools/`、`.githooks/` | 完整度把關（gdd、報告版本、規格對帳、§10、sim 純度、改造對照、範本殘留、知識庫引用、資產登錄）；pre-commit 只跑碰到的遊戲 | 要求清單在 `rules.json`；把關本身的測試 `node --test shared/tools/*.test.mjs`（`fixtures/audit-bad` 故意違反每條規則） |
 | `anim_prompts.py / gen_anim.sh / anim_frames.py / anim_preview.py` | `SwarmDuel/tools/` | 8 方向像素動畫管線 | 只適用像素俯視角色 |
 | `.claude/launch.json` | repo | dev server 預覽（swarm-duel :5173） | 新遊戲要加一筆 |
 

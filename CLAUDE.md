@@ -36,4 +36,4 @@
 |---|---|---|
 | SwarmDuel | `RULE-FX-FILTER` = 不使用任何 filter（衝擊波改用 sprite 擴散環），見 `SwarmDuel/config/rules.overrides.json`。尚未建規則、仍以文件為準：sprite 不用 KTX2；不做通用粒子系統；WebGPU 關閉 | `SwarmDuel/gdd/10_tech_constraints.md`、`SwarmDuel/docs/size_budget.md` |
 
-新遊戲用 `.claude/skills/lite-skillgame-stack/templates/` 起手。開工前照 [`bootstrap.md` §0](.claude/skills/lite-skillgame-stack/references/bootstrap.md) 讀完知識庫必讀頁（題目來自廣告玩法或既有遊戲時，對應 `af-*.md` 的改造清單要在 gdd/05 §13 逐條回應，「復刻」不例外）；交付前 `npm run audit` 必過（`RULE-GAME-*`、`RULE-AF-ADAPTATION`）。
+新遊戲用 `.claude/skills/lite-skillgame-stack/templates/` 起手。開工前照 [`bootstrap.md` §0](.claude/skills/lite-skillgame-stack/references/bootstrap.md) 讀完知識庫必讀頁（題目來自廣告玩法或既有遊戲時，對應 `af-*.md` 的改造清單要在 gdd/05 §13 逐條回應，「復刻」不例外）；交付前 `npm run audit` 必過（`RULE-GAME-*`、`RULE-REPORT-FRESH`、`RULE-SPEC-*`、`RULE-AF-ADAPTATION`、`RULE-SIM-PURITY`）。本機 pre-commit hook 每個 clone 啟用一次：`git config core.hooksPath .githooks`（只跑這次 commit 碰到的遊戲的 `npm test` 與 audit，必要項目未過就擋下）。
