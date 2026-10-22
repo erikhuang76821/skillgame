@@ -205,7 +205,7 @@ SKILLGAME/
 | 欄位 | 說明 |
 |---|---|
 | `id` | 跨遊戲唯一：`<game>.<kind>.<name>` |
-| `kind` | `sprite-sheet` / `background` / `fx-sheet` / `key-art` / `ui` / `procedural` / `audio-recipe` |
+| `kind` | `sprite-sheet` / `background` / `fx-sheet` / `key-art` / `ui` / `reference`（身分參考圖，2026-10-22 加入）/ `procedural` / `audio-recipe` |
 | `status` | 沿用現行：`shipped` / `raw-only` / `rejected-take` / `placeholder` / `procedural` / `template` |
 | `files` | 相對於 `pathBase` |
 | `provenance` | 生成工具、job、參考圖；AI 生成的商用權利追溯 |
@@ -354,3 +354,12 @@ Claude（claude-opus-5-5）、Codex（gpt-6-astra）、Gemini 4 Argon（High）�
 | 判定一致性 | 兩款遊戲 test、size、技巧主導、playtest D1–D8 的輸出與改動前**逐行相同**（耗時欄位除外） |
 | 寫死常數 | 上述程式中 grep 不到 0.7、8 MB、12 pp、0.6、0.5、90–99%、4 的倍數 |
 | 未做 | SwarmDuel 的技巧主導腳本本來就只出報告、不判定，未改；KTX2、通用粒子、WebGPU 三項 SwarmDuel 覆寫尚未建規則，仍以文件為準 |
+
+### 第 2 階段（2026-10-22，分支 `kb/asset-manifest`）
+
+- `SwarmDuel/art/manifest.json`（63 筆）、`shared/recipes/manifest.json`（範本 5 筆）、`shared/recipes/prompt-blocks.json` 由舊 `knowledge-base/assets/asset-index.json` 機械轉出（舊 id 保留為 `legacyId`），舊檔刪除。
+- TwinStrike 由主線直接建立正式 `TwinStrike/art/manifest.json`（17 筆：身分圖、9 格姿勢、三種敵人、背景、特效、主視覺、未採用版本、佔位美術、3 份音效配方），**不需要唯讀轉接器**；`art/raw/LOG.md` 保留為敘述版生成紀錄。
+- `shared/tools/index-build.mjs` 產生 `knowledge-base/index/assets.json`（85 筆）與 `INDEX.md`（規則 ↔ 知識庫頁 ↔ 資產）。驗證：id 唯一且以遊戲名開頭、kind / status / reusePolicy 合法、檔案存在、`derivedFrom` / `provenance.reference` 可解析、`contentHash` 與主檔一致（文字檔以 LF 計算）。
+- 與 §5.4 的差異：不寫 `builtAt` 時間戳，改記各來源 manifest 的 sha256，重建結果逐位元組相同，`--check` 才能當 commit 關卡；pre-commit 在 `art/`、`game/src/assets/`、`shared/recipes/`、`knowledge-base/index/` 有變動時執行。
+- `game-audit` 的 `RULE-ASSET-REGISTER` 改讀 manifest（範本複本以內容雜湊比對），移除 LOG.md / atlas.json 的過渡判斷。測試：`shared/tools/index-build.test.mjs`（4 項）。
+- GateLane 尚無 manifest（目前只有範本複本 `dust.png`，以雜湊視為已登錄）；正式美術進來時由 GateLane 主線建立。

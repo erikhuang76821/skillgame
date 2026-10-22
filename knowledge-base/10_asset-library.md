@@ -2,7 +2,8 @@
 
 - **用途**：下一款遊戲要「找現成圖 / 照同一套 prompt 重生 / 改題材衍生」時查這頁
 - **範圍**：SwarmDuel 所有視覺資產（AI 生成圖、程式繪製 0 bytes 資產、特效配方、UI 皮）＋ 生圖 prompt 原文
-- **機器可讀版**：[assets/asset-index.json](assets/asset-index.json)（68 筆資產＋`promptBlocks` 模板字串；路徑以 repo 根為基準）
+- **機器可讀版**：[index/assets.json](index/assets.json)（產生物，全部遊戲 85 筆＋`promptBlocks`；路徑以 repo 根為基準），導覽版 [index/INDEX.md](index/INDEX.md)
+- **資產來源（2026-10-22 起）**：每款 `<Game>/art/manifest.json`（[SwarmDuel](../SwarmDuel/art/manifest.json)、[TwinStrike](../TwinStrike/art/manifest.json)）與 [shared/recipes/](../shared/recipes/manifest.json)（範本資產、[prompt 模板](../shared/recipes/prompt-blocks.json)）；改完跑 `node shared/tools/index-build.mjs`，commit 時 hook 會檢查索引是否最新。本頁 §2–§5 是 SwarmDuel 的人工導覽（id 為 manifest 的 `legacyId`）；TwinStrike 的 Q 版貼紙資產見 INDEX.md
 - **權威來源**：[asset_pipeline.md](../SwarmDuel/docs/asset_pipeline.md)（契約、驗收紀錄）、[anim_prompts.py](../SwarmDuel/tools/anim_prompts.py)、[anim_frames.py](../SwarmDuel/tools/anim_frames.py)、[derive_native.py](../SwarmDuel/tools/derive_native.py)。本頁只是索引
 - 盤點日期：2026-10-19
 

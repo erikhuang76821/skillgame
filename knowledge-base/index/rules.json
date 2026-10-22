@@ -327,7 +327,7 @@
         { "stage": "立項", "pages": ["01_skill-integrity", "02_market-and-legal"] },
         { "stage": "難度曲線", "pages": ["16_difficulty-curve"] },
         { "stage": "手感 / 音效", "pages": ["05_juice-and-feel", "14_audio", "15_reference-games"] },
-        { "stage": "美術 / 資產", "pages": ["06_art-pipeline", "10_asset-library", "11_terrain-style-kit", "assets/asset-index.json"] },
+        { "stage": "美術 / 資產", "pages": ["06_art-pipeline", "10_asset-library", "11_terrain-style-kit", "index/assets.json", "index/INDEX.md"] },
         { "stage": "技術", "pages": ["04_tech-stack"] }
       ], "unit": "stage", "overridePolicy": "with-reason" }],
       "measurement": "<Game>/README.md 或 gdd/ 內，每個階段至少連到一頁 knowledge-base/（bootstrap.md §0 必讀清單的「讀過哪些頁寫進 README」）",
@@ -343,7 +343,7 @@
       "level": "should",
       "scope": { "selector": { "kind": "art-asset" } },
       "constraints": [{ "name": "registered", "value": [".png", ".webp", ".jpg", ".jpeg", ".ktx2", ".ogg", ".mp3", ".m4a", ".wav"], "unit": "extension", "overridePolicy": "with-reason" }],
-      "measurement": "<Game>/game/src/assets/ 與 public/ 內這些副檔名的檔案，都要登錄在 <Game>/art/manifest.json，或知識庫資產索引 knowledge-base/assets/asset-index.json 的 files，或（過渡期）<Game>/art/raw/LOG.md、art/atlas.json 有提到檔名",
+      "measurement": "<Game>/game/src/assets/ 與 public/ 內這些副檔名的檔案，都要列在某個 art/manifest.json 的 files（本作的，或 shared/recipes/manifest.json）；未修改的範本複本以內容雜湊相同視為已登錄。中央索引 knowledge-base/index/assets.json 由 node shared/tools/index-build.mjs 從 manifest 產生",
       "enforcement": { "type": "script", "ref": "shared/tools/game-audit.mjs" },
       "whyRef": "knowledge-base/decisions/2026-10-21-kb-asset-architecture.md §5.3（manifest 是資產唯一來源）",
       "howRef": "knowledge-base/10_asset-library.md",

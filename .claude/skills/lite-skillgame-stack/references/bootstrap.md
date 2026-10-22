@@ -17,7 +17,7 @@
 - **「復刻」只復刻玩法結構與操作**：規格書的改造清單照做，或在 gdd/05 §13 逐條寫不採用的理由；名稱、美術、音效全部原創。
 - **完成條件**：`npm test`、`npm run size`、`node tools/skill-dominance.mjs 30`、`npm run playtest`、`npm run audit` 全過。`audit`（`shared/tools/game-audit.mjs`）不只看檔案在不在，也拿文件對照程式（規則全在 `knowledge-base/index/rules.json`）：
   - 必要：`RULE-GAME-DOCS`（gdd 齊全、規格 §0–§12）、`RULE-GAME-REPORTS`（報告無未通過項）、`RULE-REPORT-FRESH`（報告的 sim 版本 = `GAME.version`）、`RULE-SPEC-CONSTANTS`（規格寫成 `` `NAME` = 數值 `` 的常數與 sim 同名匯出一致）、`RULE-SPEC-FAIRNESS`（§10 精髓七條都有答案）、`RULE-AF-ADAPTATION`、`RULE-SIM-PURITY`（sim/ 程式碼沒有 DOM / 時鐘 / 未播種亂數）
-  - 警告：`RULE-TEMPLATE-LEFTOVER`、`RULE-KB-CITED`（README / gdd 每階段連到知識庫）、`RULE-ASSET-REGISTER`（遊戲內圖檔 / 音檔登錄在 `art/manifest.json` 或[資產索引](../../../../knowledge-base/assets/asset-index.json)；先查 [10 資產庫](../../../../knowledge-base/10_asset-library.md) 有沒有可重用或可照 prompt 重生的資產）
+  - 警告：`RULE-TEMPLATE-LEFTOVER`、`RULE-KB-CITED`（README / gdd 每階段連到知識庫）、`RULE-ASSET-REGISTER`（遊戲內圖檔 / 音檔都登錄在本作 `art/manifest.json`，改完跑 `node shared/tools/index-build.mjs`；動手前先查[中央資產索引](../../../../knowledge-base/index/INDEX.md)與 [10 資產庫](../../../../knowledge-base/10_asset-library.md)，有沒有可重用、可照 prompt 重生、或標 `reusable` 的配方）
 - **pre-commit**：`git config core.hooksPath .githooks` 後，commit 時自動跑碰到的遊戲的 `npm test` 與 audit。
 - 完整流程與每步驗收：[08 生產流程](../../../../knowledge-base/08_production-workflow.md)。
 

@@ -13,7 +13,7 @@
 | 5 | 確定性 sim + 測試 | [04](04_tech-stack.md) §4、規格 | 範本 `sim/core/`（不改）；依規格改寫 `sim/sim.js`、`test/determinism.test.mjs`（可用規格裡的 AI 提示詞） | `sim/`、`test/` | `npm test` 全過、golden match 更新 |
 | 6 | 技巧主導驗證 | [01](01_skill-integrity.md) §4 | 依規格 §9 改寫 `tools/bots.mjs`；`node tools/skill-dominance.mjs 30 --out ../docs/skill_dominance_report.md` | 報告 | 技巧佔比 ≥ 70%、最強 vs 次強 ≥ 70%（未過 exit 1） |
 | 6b | 難度曲線 | [16](16_difficulty-curve.md) | 腳本（難度級 + 段落表）寫進 sim；範本的 `tools/humanBots.mjs` + `tools/playtest.mjs`（依品類改寫單位與 DI）→ `npm run playtest` | `gdd/07_difficulty_curve.md`、`docs/playtest_report.md/.html` | D1–D8 全過（失敗 exit 1）；調校紀錄寫進 gdd/07 |
-| 7 | 美術 | [06](06_art-pipeline.md)、[07](07_themes-and-liveops.md) | `codex-image`、`pokesurvivor-asset-dev`（`~/.codex/skills/`） | atlas + metadata | 身分一致、真 alpha、validate 通過 |
+| 7 | 美術 | [06](06_art-pipeline.md)、[07](07_themes-and-liveops.md) | `codex-image`、`pokesurvivor-asset-dev`（`~/.codex/skills/`） | atlas + metadata、`art/manifest.json`（每張圖的 prompt、job、參考圖、採用與否） | 身分一致、真 alpha、validate 通過；`node shared/tools/index-build.mjs` 無錯誤 |
 | 8 | 打擊感 / UI | [05](05_juice-and-feel.md) | `FEEL`、GSAP | juice、DOM HUD、結算 | LOW 模式資訊不丟 |
 | 9 | 包體 / 效能 | [04](04_tech-stack.md) §5–6 | `npm run size`、drawCalls.js、Spector.js | size budget 實測 | ≤ 8 MB、DC ≤ 5 |
 | 10 | 交付自檢 | [04](04_tech-stack.md) §9 | — | — | 清單全勾 |
@@ -59,6 +59,7 @@ codex exec --skip-git-repo-check --sandbox read-only < art/prompts/<asset>.txt
 | `pokesurvivor-asset-dev` | `~/.codex/skills/` | sprite 契約、`sprite_sheet.py` pack / validate | 不在 repo；`anim_frames.py` 寫死此路徑 |
 | `skill-dominance.mjs`、`lib/dominance.mjs`、`bots.mjs` | 範本 `tools/` | 技巧主導報告（通用統計 + 本作 bot） | `bots.mjs` 每款要依規格重寫 |
 | `humanBots.mjs`、`playtest.mjs`、`lib/curve.mjs` | 範本 `tools/`（2026-10-21 抽入）；節奏類完整版在 `TwinStrike/game/tools/` | 人性化試玩、難度曲線驗收（[16](16_difficulty-curve.md)） | `humanBots` / `playtest` 的單位、負荷模型與 DI 每款改寫；`lib/curve.mjs` 不改 |
+| `index-build.mjs` | repo `shared/tools/` | 從各款 `art/manifest.json` 與 `shared/recipes/` 產生 `knowledge-base/index/assets.json`、`INDEX.md`；驗證檔案存在、id 唯一、參照、內容雜湊 | `--update-hashes` 重算雜湊；`--check` 由 pre-commit 執行 |
 | `game-audit.mjs`、`precommit.mjs` | repo `shared/tools/`、`.githooks/` | 完整度把關（gdd、報告版本、規格對帳、§10、sim 純度、改造對照、範本殘留、知識庫引用、資產登錄）；pre-commit 只跑碰到的遊戲 | 要求清單在 `rules.json`；把關本身的測試 `node --test shared/tools/*.test.mjs`（`fixtures/audit-bad` 故意違反每條規則） |
 | `anim_prompts.py / gen_anim.sh / anim_frames.py / anim_preview.py` | `SwarmDuel/tools/` | 8 方向像素動畫管線 | 只適用像素俯視角色 |
 | `.claude/launch.json` | repo | dev server 預覽（swarm-duel :5173） | 新遊戲要加一筆 |

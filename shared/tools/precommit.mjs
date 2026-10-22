@@ -1,7 +1,8 @@
 // Pre-commit checks, scoped to what is staged (installed by `git config core.hooksPath .githooks`).
-//   <Game>/…                         -> that game's `npm test` + game-audit (must-level failures block the commit)
+//   <Game>/… outside art/            -> that game's `npm test` + game-audit (must-level failures block the commit)
 //   templates/ of lite-skillgame-stack -> the template's `npm test` (includes the D-gate playtest on 8 seeds)
 //   shared/tools/ or rules.json      -> the audit's own tests; every game's audit is printed for information only
+//   art/, game/src/assets/, shared/recipes/, knowledge-base/index/ -> index-build --check (central asset index is fresh)
 // Manual run on chosen paths: node shared/tools/precommit.mjs --files TwinStrike/README.md …
 // Slow gates (`npm run build && npm run size`, `npm run playtest` on 30 seeds) stay manual / CI (knowledge-base/08).
 import { execFileSync, spawnSync } from 'node:child_process';
@@ -18,7 +19,10 @@ const staged = (fi >= 0 ? process.argv.slice(fi + 1).join('\n')
   .split('\n').map(s => s.trim().replace(/\\/g, '/')).filter(Boolean);
 if (!staged.length) process.exit(0);
 
-const games = [...new Set(staged.map(p => p.split('/')[0]))].filter(g => !g.startsWith('.') && existsSync(join(root, g, 'game')));
+// A game is tested + audited only when something outside its art/ changed; art-only changes (manifest, raw images,
+// prompts) cannot affect gdd or sim, so they get the central-index check below and nothing else.
+const games = [...new Set(staged.filter(p => p.split('/')[1] !== 'art').map(p => p.split('/')[0]))]
+  .filter(g => !g.startsWith('.') && existsSync(join(root, g, 'game')));
 const touches = prefix => staged.some(p => p.startsWith(prefix));
 const failures = [];
 const run = (label, cmd, args, cwd) => {
@@ -33,6 +37,9 @@ if (touches('shared/tools/') || touches('knowledge-base/index/rules.json')) {
   console.log('\n（規則有改：以下各遊戲 audit 只供參考，不擋這次 commit）');
   for (const g of readdirSync(root).filter(d => !d.startsWith('.') && existsSync(join(root, d, 'game')))) printResults(g, await auditGame(root, g));
 }
+// Asset manifests, shipped media, recipes or rules changed -> the generated central index must be rebuilt in the same commit
+if (staged.some(p => /\/art\/|\/game\/src\/assets\/|^shared\/recipes\/|^knowledge-base\/index\//.test(p)))
+  run('中央資產索引（index-build --check）', process.execPath, ['shared/tools/index-build.mjs', '--check'], root);
 if (touches(TEMPLATE)) run('範本 npm test', 'npm', ['test'], join(root, TEMPLATE));
 for (const g of games) {
   run(`${g} npm test`, 'npm', ['test'], join(root, g, 'game'));

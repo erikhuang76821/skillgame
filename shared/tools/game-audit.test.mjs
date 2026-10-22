@@ -54,3 +54,8 @@ test('should-level findings are warnings, not failures', () => {
   assert.ok(find('RULE-KB-CITED').length > 0);
   assert.ok(r.filter(x => x.level === 'should').every(x => x.ok === false));
 });
+
+test('shipped media missing from every art/manifest.json is a RULE-ASSET-REGISTER warning', () => {
+  const c = find('RULE-ASSET-REGISTER')[0];
+  assert.equal(c.level, 'should'); assert.match(c.detail, /unregistered\.png/);
+});

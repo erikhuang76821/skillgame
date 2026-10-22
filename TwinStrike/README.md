@@ -9,7 +9,7 @@
 | [gdd/05_game_spec.md](gdd/05_game_spec.md) | 玩法規格（sim v6；關鍵數值寫成 `NAME` = 值，`npm run audit` 與 sim 對帳） |
 | [gdd/10_tech_constraints.md](gdd/10_tech_constraints.md) | 技術限制：選型、分層、確定性、輸入與驗分、預算 |
 | [gdd/11_risks_open.md](gdd/11_risks_open.md) | 風險與未解問題 |
-| [gdd/02_art_spec.md](gdd/02_art_spec.md) | 美術規格（Q 版貼紙風、色票、禁忌、資產清單、預算）；prompt 在 [art/prompts/](art/prompts/) |
+| [gdd/02_art_spec.md](gdd/02_art_spec.md) | 美術規格（Q 版貼紙風、色票、禁忌、資產清單、預算）；prompt 在 [art/prompts/](art/prompts/)；資產登錄 [art/manifest.json](art/manifest.json)（17 筆，進中央索引） |
 | [gdd/07_difficulty_curve.md](gdd/07_difficulty_curve.md) | 腳本化難度曲線（樂句庫、12 段腳本、人性化試玩）；報告 [docs/difficulty_curve.md](docs/difficulty_curve.md) |
 | [gdd/06_combo_feel.md](gdd/06_combo_feel.md) | 連擊節奏感：5 個連擊階段的場景動效、文字動態、對拍分層 BGM |
 | [docs/persona_playtest.md](docs/persona_playtest.md) | **角色扮演模擬試玩**（6 位虛擬玩家 × 3 局，標示為模擬）與 6 個設計問題；`node tools/persona-playtest.mjs --out ../playtest-data/simulated` |

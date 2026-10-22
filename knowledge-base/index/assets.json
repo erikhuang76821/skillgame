@@ -1,0 +1,3665 @@
+{
+ "generated": true,
+ "schemaVersion": 1,
+ "about": "產生物，禁止手改。來源：各款 <Game>/art/manifest.json 與 shared/recipes/（manifest.json、prompt-blocks.json）；重建：node shared/tools/index-build.mjs。路徑以 repo 根為基準。",
+ "sources": [
+  {
+   "path": "shared/recipes/manifest.json",
+   "sha256": "sha256:980b761771d7ee8219b568986aafd7e7f3912d0015d89d821728bef9934fe916"
+  },
+  {
+   "path": "SwarmDuel/art/manifest.json",
+   "sha256": "sha256:29e1d204df9deaa56432762d42d6dbf88e3edca2a5c89e67a8e755624f11203b"
+  },
+  {
+   "path": "TwinStrike/art/manifest.json",
+   "sha256": "sha256:ba0d586fc5c5f82179457891988c8221a9b91ea98142b761992fbc6269644e2d"
+  }
+ ],
+ "counts": {
+  "total": 85,
+  "byGame": {
+   "SwarmDuel": 63,
+   "TwinStrike": 17,
+   "shared": 5
+  },
+  "byKind": {
+   "audio-recipe": 3,
+   "background": 3,
+   "fx-sheet": 5,
+   "key-art": 4,
+   "procedural": 35,
+   "reference": 2,
+   "sprite-sheet": 19,
+   "ui": 14
+  },
+  "byStatus": {
+   "placeholder": 6,
+   "procedural": 35,
+   "raw-only": 5,
+   "rejected-take": 5,
+   "shipped": 28,
+   "template": 6
+  }
+ },
+ "assets": [
+  {
+   "id": "shared.tpl.fx.shake",
+   "legacyId": "tpl.fx.shake",
+   "kind": "fx-sheet",
+   "status": "template",
+   "name": "skill 範本 shake.js",
+   "type": "特效",
+   "files": {
+    "raw": [],
+    "prompt": [],
+    "shipped": [
+     ".claude/skills/lite-skillgame-stack/templates/src/fx/shake.js"
+    ]
+   },
+   "recipe": "抖 #stage-shake DOM 容器；FEEL.shake light 4px/0.12s、crit 8px/0.25s、boss 14px/0.4s；step 0.032s；rotPerPx 0.05°；線性衰減",
+   "note": "抖 #stage-shake DOM 容器；FEEL.shake light 4px/0.12s、crit 8px/0.25s、boss 14px/0.4s；step 0.032s；rotPerPx 0.05°；線性衰減",
+   "keywords": [
+    "screen shake",
+    "震屏",
+    "dom",
+    "gsap",
+    "template",
+    "範本",
+    "juice",
+    "打擊感"
+   ],
+   "reusePolicy": "template",
+   "contentHash": "sha256:d289b04556ba2c04fb8439dbebeb790a756e6c6bf59026fc3960ae2c43aa1c31",
+   "game": "shared"
+  },
+  {
+   "id": "shared.tpl.fx.overlay",
+   "legacyId": "tpl.fx.overlay",
+   "kind": "fx-sheet",
+   "status": "template",
+   "name": "skill 範本 overlay.js",
+   "type": "特效",
+   "files": {
+    "raw": [],
+    "prompt": [],
+    "shipped": [
+     ".claude/skills/lite-skillgame-stack/templates/src/fx/overlay.js"
+    ]
+   },
+   "recipe": "CSS #fx-vignette radial 55%→rgba(200,0,0,.65)；#fx-flash 白 screen；FEEL.flash α0.6/0.12s；hurt 0.6s power2.out",
+   "note": "CSS #fx-vignette radial 55%→rgba(200,0,0,.65)；#fx-flash 白 screen；FEEL.flash α0.6/0.12s；hurt 0.6s power2.out",
+   "keywords": [
+    "vignette",
+    "暗角",
+    "flash",
+    "閃白",
+    "hurt",
+    "受傷",
+    "css",
+    "template",
+    "範本",
+    "juice",
+    "打擊感"
+   ],
+   "reusePolicy": "template",
+   "contentHash": "sha256:071972e7857357bcafe5db5b3c51bf51e4aad9d9052df3861a3357981e645158",
+   "game": "shared"
+  },
+  {
+   "id": "shared.tpl.fx.shockwave",
+   "legacyId": "tpl.fx.shockwave",
+   "kind": "fx-sheet",
+   "status": "template",
+   "name": "skill 範本 shockwave.js",
+   "type": "特效",
+   "files": {
+    "raw": [],
+    "prompt": [],
+    "shipped": [
+     ".claude/skills/lite-skillgame-stack/templates/src/fx/shockwave.js"
+    ]
+   },
+   "recipe": "GLSL 位移環 filter：radius 260、width 40、amp 18、0.45s power2.out；只在播放期間掛 filter。SwarmDuel 禁用 filter（改 vfx.howl_ring）",
+   "note": "GLSL 位移環 filter：radius 260、width 40、amp 18、0.45s power2.out；只在播放期間掛 filter。SwarmDuel 禁用 filter（改 vfx.howl_ring）",
+   "keywords": [
+    "shockwave",
+    "衝擊波",
+    "filter",
+    "glsl",
+    "distortion",
+    "template",
+    "範本",
+    "juice",
+    "打擊感"
+   ],
+   "reusePolicy": "template",
+   "contentHash": "sha256:04d65a1262102eab3abfb9f88132579a78a3e43444a9a732a139031fc870ca37",
+   "game": "shared"
+  },
+  {
+   "id": "shared.tpl.fx.particles",
+   "legacyId": "tpl.fx.particles",
+   "kind": "fx-sheet",
+   "status": "template",
+   "name": "skill 範本 particles.js",
+   "type": "特效",
+   "files": {
+    "raw": [],
+    "prompt": [],
+    "shipped": [
+     ".claude/skills/lite-skillgame-stack/templates/src/fx/particles.js"
+    ]
+   },
+   "recipe": "ParticleContainer 1 DC、4 px 白點 generateTexture、add 混色；burst 24、speed 420、life 0.5s、gravity 900、max 512；用 Math.random（只限 render 層）",
+   "note": "ParticleContainer 1 DC、4 px 白點 generateTexture、add 混色；burst 24、speed 420、life 0.5s、gravity 900、max 512；用 Math.random（只限 render 層）",
+   "keywords": [
+    "particle",
+    "粒子",
+    "particlecontainer",
+    "burst",
+    "template",
+    "範本",
+    "juice",
+    "打擊感"
+   ],
+   "reusePolicy": "template",
+   "contentHash": "sha256:e699951e1a8fb618c84e88743be0dfd7548b7af200aab57871e0ade6dbb5fb0a",
+   "game": "shared"
+  },
+  {
+   "id": "shared.tpl.terrain.dust",
+   "legacyId": "tpl.terrain.dust",
+   "kind": "background",
+   "status": "template",
+   "name": "skill 範本地表材質 dust（AI 生成 tile）",
+   "type": "場景",
+   "files": {
+    "raw": [],
+    "prompt": [
+     ".claude/skills/lite-skillgame-stack/templates/src/assets/terrain/dust.prompt.txt"
+    ],
+    "shipped": [
+     ".claude/skills/lite-skillgame-stack/templates/src/assets/terrain/dust.png"
+    ]
+   },
+   "note": "knowledge-base/11 ② v2 提詞生成的無縫 tile（乾燥塵土、夜晚荒原），經 tools/tile_prep.py 後處理、tile_check.py 驗收；terrainConfig.js 的 src 載入，失敗退回 noiseTile()。新遊戲沿用前先換題材重生",
+   "keywords": [
+    "terrain",
+    "地表",
+    "dust",
+    "塵土",
+    "tile",
+    "材質",
+    "seamless",
+    "無縫",
+    "template",
+    "範本",
+    "ground",
+    "地面"
+   ],
+   "reusePolicy": "template",
+   "contentHash": "sha256:ec69f3961bc1f1260b5a28540cad0209847ea59cf72ee31b5761798c12783dd1",
+   "game": "shared"
+  },
+  {
+   "id": "swarmduel.chr.sasq.identity_v01",
+   "legacyId": "chr.sasq.identity_v01",
+   "kind": "sprite-sheet",
+   "status": "raw-only",
+   "name": "Sasq 身分參考圖 v0.1（大圖）",
+   "type": "角色",
+   "files": {
+    "raw": [
+     "SwarmDuel/art/raw/hero_bigfoot_1.png"
+    ],
+    "prompt": [
+     "SwarmDuel/art/prompts/hero_bigfoot.txt"
+    ],
+    "shipped": []
+   },
+   "technical": {
+    "native": {
+     "w": 32,
+     "h": 40
+    },
+    "rawSize": {
+     "w": 1938,
+     "h": 811
+    }
+   },
+   "note": "v0.1 身分圖；直接縮小會糊眼、掉輪廓，已被 native_hero_1 取代為參考",
+   "keywords": [
+    "sasq",
+    "bigfoot",
+    "sasquatch",
+    "cryptid",
+    "hero",
+    "英雄",
+    "大腳怪",
+    "plaid scarf",
+    "紅格紋圍巾",
+    "identity sheet",
+    "身分圖",
+    "16-bit",
+    "pixel",
+    "chibi",
+    "3-pose"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:f36e18422c2f3e1821e4d993d84c88f9283fc206ab621827bfccc64ad1b00b6e",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.chr.sasq.identity",
+   "legacyId": "chr.sasq.identity",
+   "kind": "sprite-sheet",
+   "status": "raw-only",
+   "name": "Sasq 真低解析度身分圖（正/側/背）",
+   "type": "角色",
+   "files": {
+    "raw": [
+     "SwarmDuel/art/raw/native_hero_1.png",
+     "SwarmDuel/art/raw/ref/sasq_down.png",
+     "SwarmDuel/art/raw/ref/sasq_right.png",
+     "SwarmDuel/art/raw/ref/sasq_up.png"
+    ],
+    "prompt": [
+     "SwarmDuel/art/prompts/native_hero.txt"
+    ],
+    "shipped": []
+   },
+   "technical": {
+    "native": {
+     "w": 32,
+     "h": 40
+    },
+    "rawSize": {
+     "w": 1942,
+     "h": 809
+    }
+   },
+   "note": "動畫生成的附圖 1（身分）；ref/ 為 anim_prompts.py 切出的附圖 2（最近方向姿勢），無 prompt",
+   "keywords": [
+    "sasq",
+    "bigfoot",
+    "cryptid",
+    "hero",
+    "英雄",
+    "identity sheet",
+    "身分圖",
+    "reference",
+    "參考圖",
+    "true low-res",
+    "低解析度",
+    "pixel",
+    "3-pose"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:6cdf07690175ad474ae1f86f8842da61a40999ee37a7f5c35b0feea0adf061cf",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.chr.sasq.idle",
+   "legacyId": "chr.sasq.idle",
+   "kind": "sprite-sheet",
+   "status": "shipped",
+   "name": "Sasq Idle（呼吸 2 格）",
+   "type": "角色",
+   "files": {
+    "raw": [
+     "SwarmDuel/art/raw/anim/sasq_Idle_down.png",
+     "SwarmDuel/art/raw/anim/sasq_Idle_down_t1.png",
+     "SwarmDuel/art/raw/anim/sasq_Idle_down_right.png",
+     "SwarmDuel/art/raw/anim/sasq_Idle_down_right_t1.png",
+     "SwarmDuel/art/raw/anim/sasq_Idle_right.png",
+     "SwarmDuel/art/raw/anim/sasq_Idle_right_t1.png",
+     "SwarmDuel/art/raw/anim/sasq_Idle_up_right.png",
+     "SwarmDuel/art/raw/anim/sasq_Idle_up_right_t1.png",
+     "SwarmDuel/art/raw/anim/sasq_Idle_up_right_t2.png",
+     "SwarmDuel/art/raw/anim/sasq_Idle_up_right_t3.png",
+     "SwarmDuel/art/raw/anim/sasq_Idle_up.png",
+     "SwarmDuel/art/raw/anim/sasq_Idle_up_t1.png"
+    ],
+    "prompt": [
+     "SwarmDuel/art/prompts/anim/sasq_Idle_down.txt",
+     "SwarmDuel/art/prompts/anim/sasq_Idle_down_right.txt",
+     "SwarmDuel/art/prompts/anim/sasq_Idle_right.txt",
+     "SwarmDuel/art/prompts/anim/sasq_Idle_up_right.txt",
+     "SwarmDuel/art/prompts/anim/sasq_Idle_up.txt"
+    ],
+    "shipped": [
+     "SwarmDuel/game/src/assets/sasq_idle.png",
+     "SwarmDuel/game/src/assets/sasq_idle.json"
+    ],
+    "frames": [
+     "SwarmDuel/art/frames/sasq/Idle"
+    ]
+   },
+   "technical": {
+    "native": {
+     "w": 32,
+     "h": 40
+    }
+   },
+   "anims": [
+    {
+     "name": "Idle",
+     "frames": 2,
+     "durations": [
+      36,
+      24
+     ],
+     "durationUnit": "1/60 s tick",
+     "anchor": {
+      "x": 16,
+      "y": 39
+     },
+     "directions": [
+      "down",
+      "down_right",
+      "right",
+      "up_right",
+      "up",
+      "up_left",
+      "left",
+      "down_left"
+     ],
+     "generatedDirections": [
+      "down",
+      "down_right",
+      "right",
+      "up_right",
+      "up"
+     ],
+     "mirroredDirections": {
+      "up_left": "up_right",
+      "left": "right",
+      "down_left": "down_right"
+     },
+     "frameSize": {
+      "w": 32,
+      "h": 40
+     },
+     "sheetRows": 8,
+     "framesDir": "SwarmDuel/art/frames/sasq/Idle"
+    }
+   ],
+   "keywords": [
+    "sasq",
+    "bigfoot",
+    "cryptid",
+    "hero",
+    "英雄",
+    "idle",
+    "待機",
+    "breathing",
+    "呼吸",
+    "8-direction",
+    "8 方向",
+    "sprite sheet",
+    "pixel",
+    "16-bit",
+    "animation",
+    "動畫"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:a641204a7121bf4ba12ac906d0babaed31796bdb09c422bc038f67b3c6502297",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.chr.sasq.walk",
+   "legacyId": "chr.sasq.walk",
+   "kind": "sprite-sheet",
+   "status": "shipped",
+   "name": "Sasq Walk（接觸/經過 4 格）",
+   "type": "角色",
+   "files": {
+    "raw": [
+     "SwarmDuel/art/raw/anim/sasq_Walk_down.png",
+     "SwarmDuel/art/raw/anim/sasq_Walk_down_t1.png",
+     "SwarmDuel/art/raw/anim/sasq_Walk_down_right.png",
+     "SwarmDuel/art/raw/anim/sasq_Walk_down_right_t1.png",
+     "SwarmDuel/art/raw/anim/sasq_Walk_right.png",
+     "SwarmDuel/art/raw/anim/sasq_Walk_right_t1.png",
+     "SwarmDuel/art/raw/anim/sasq_Walk_up_right.png",
+     "SwarmDuel/art/raw/anim/sasq_Walk_up_right_t1.png",
+     "SwarmDuel/art/raw/anim/sasq_Walk_up_right_t2.png",
+     "SwarmDuel/art/raw/anim/sasq_Walk_up_right_t3.png",
+     "SwarmDuel/art/raw/anim/sasq_Walk_up.png",
+     "SwarmDuel/art/raw/anim/sasq_Walk_up_t1.png"
+    ],
+    "prompt": [
+     "SwarmDuel/art/prompts/anim/sasq_Walk_down.txt",
+     "SwarmDuel/art/prompts/anim/sasq_Walk_down_right.txt",
+     "SwarmDuel/art/prompts/anim/sasq_Walk_right.txt",
+     "SwarmDuel/art/prompts/anim/sasq_Walk_up_right.txt",
+     "SwarmDuel/art/prompts/anim/sasq_Walk_up.txt"
+    ],
+    "shipped": [
+     "SwarmDuel/game/src/assets/sasq_walk.png",
+     "SwarmDuel/game/src/assets/sasq_walk.json"
+    ],
+    "frames": [
+     "SwarmDuel/art/frames/sasq/Walk"
+    ]
+   },
+   "technical": {
+    "native": {
+     "w": 32,
+     "h": 40
+    }
+   },
+   "anims": [
+    {
+     "name": "Walk",
+     "frames": 4,
+     "durations": [
+      8,
+      8,
+      8,
+      8
+     ],
+     "durationUnit": "1/60 s tick",
+     "anchor": {
+      "x": 16,
+      "y": 39
+     },
+     "directions": [
+      "down",
+      "down_right",
+      "right",
+      "up_right",
+      "up",
+      "up_left",
+      "left",
+      "down_left"
+     ],
+     "generatedDirections": [
+      "down",
+      "down_right",
+      "right",
+      "up_right",
+      "up"
+     ],
+     "mirroredDirections": {
+      "up_left": "up_right",
+      "left": "right",
+      "down_left": "down_right"
+     },
+     "frameSize": {
+      "w": 32,
+      "h": 40
+     },
+     "sheetRows": 8,
+     "framesDir": "SwarmDuel/art/frames/sasq/Walk"
+    }
+   ],
+   "note": "遊戲中衝刺（Dash）也播 Walk，alpha 0.55",
+   "keywords": [
+    "sasq",
+    "bigfoot",
+    "cryptid",
+    "hero",
+    "英雄",
+    "walk",
+    "走路",
+    "walk cycle",
+    "dash",
+    "8-direction",
+    "8 方向",
+    "sprite sheet",
+    "pixel",
+    "16-bit",
+    "animation",
+    "動畫"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:a01d352397ca2e62796835591aceaec0ae36f9149b0ff9288f6cfb996269d7c1",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.chr.sasq.placeholder_v02",
+   "legacyId": "chr.sasq.placeholder_v02",
+   "kind": "sprite-sheet",
+   "status": "placeholder",
+   "name": "Sasq 4 方向單格佔位（v0.2）",
+   "type": "角色",
+   "files": {
+    "raw": [
+     "SwarmDuel/art/native/placeholder_v02/sasq.png",
+     "SwarmDuel/art/native/placeholder_v02/sasq.json",
+     "SwarmDuel/art/native/sasq/down.png",
+     "SwarmDuel/art/native/sasq/right.png",
+     "SwarmDuel/art/native/sasq/up.png",
+     "SwarmDuel/art/native/sasq/left.png"
+    ],
+    "prompt": [
+     "SwarmDuel/art/prompts/native_hero.txt"
+    ],
+    "shipped": []
+   },
+   "technical": {
+    "native": {
+     "w": 32,
+     "h": 40
+    }
+   },
+   "anims": [
+    {
+     "name": "Static",
+     "frames": 1,
+     "durations": [
+      60
+     ],
+     "durationUnit": "1/60 s tick",
+     "anchor": {
+      "x": 16,
+      "y": 39
+     },
+     "directions": [
+      "down",
+      "right",
+      "up",
+      "left"
+     ],
+     "frameSize": {
+      "w": 32,
+      "h": 40
+     },
+     "sheetRows": 4
+    }
+   ],
+   "keywords": [
+    "sasq",
+    "bigfoot",
+    "placeholder",
+    "佔位",
+    "4-direction",
+    "static"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:025f4461c267bf7f0f01eb4738c01b7e9fd3a6ac64ab1b758fdb8a4145a40b4b",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.enm.greyling.identity_v01",
+   "legacyId": "enm.greyling.identity_v01",
+   "kind": "sprite-sheet",
+   "status": "raw-only",
+   "name": "Greyling 身分參考圖 v0.1（大圖）",
+   "type": "敵人",
+   "files": {
+    "raw": [
+     "SwarmDuel/art/raw/enemy_greyling_1.png"
+    ],
+    "prompt": [
+     "SwarmDuel/art/prompts/enemy_greyling.txt"
+    ],
+    "shipped": []
+   },
+   "technical": {
+    "native": {
+     "w": 28,
+     "h": 28
+    },
+    "rawSize": {
+     "w": 1801,
+     "h": 873
+    }
+   },
+   "note": "prompt 寫 24×24；實際原生框後改 28×28",
+   "keywords": [
+    "greyling",
+    "alien",
+    "外星人",
+    "grey alien",
+    "drone pilot",
+    "swarm",
+    "蟲群",
+    "enemy",
+    "敵人",
+    "identity sheet",
+    "身分圖",
+    "jetpack",
+    "antenna",
+    "16-bit",
+    "pixel"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:6775c5fc808e43ea44fa8d7b5bfe7aecaf90ef0ddb577ccbe309bd7ca6e97e7c",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.enm.greyling.identity",
+   "legacyId": "enm.greyling.identity",
+   "kind": "sprite-sheet",
+   "status": "raw-only",
+   "name": "Greyling 真低解析度身分圖（正/側/背）",
+   "type": "敵人",
+   "files": {
+    "raw": [
+     "SwarmDuel/art/raw/native_greyling_1.png",
+     "SwarmDuel/art/raw/ref/greyling_down.png",
+     "SwarmDuel/art/raw/ref/greyling_right.png",
+     "SwarmDuel/art/raw/ref/greyling_up.png"
+    ],
+    "prompt": [
+     "SwarmDuel/art/prompts/native_greyling.txt"
+    ],
+    "shipped": []
+   },
+   "technical": {
+    "native": {
+     "w": 28,
+     "h": 28
+    },
+    "rawSize": {
+     "w": 1881,
+     "h": 836
+    }
+   },
+   "note": "動畫附圖 1；prompt 寫 24×24、遊戲用 28×28",
+   "keywords": [
+    "greyling",
+    "alien",
+    "外星人",
+    "enemy",
+    "敵人",
+    "identity sheet",
+    "身分圖",
+    "reference",
+    "true low-res",
+    "低解析度",
+    "pixel"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:f03a9ae3a8ec1931f919907eb65570e010cbfaae3f6e9fde5ccbd864df355850",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.enm.greyling.walk",
+   "legacyId": "enm.greyling.walk",
+   "kind": "sprite-sheet",
+   "status": "shipped",
+   "name": "Greyling Walk（4 格）",
+   "type": "敵人",
+   "files": {
+    "raw": [
+     "SwarmDuel/art/raw/anim/greyling_Walk_down.png",
+     "SwarmDuel/art/raw/anim/greyling_Walk_down_t1.png",
+     "SwarmDuel/art/raw/anim/greyling_Walk_down_right.png",
+     "SwarmDuel/art/raw/anim/greyling_Walk_down_right_t1.png",
+     "SwarmDuel/art/raw/anim/greyling_Walk_right.png",
+     "SwarmDuel/art/raw/anim/greyling_Walk_right_t1.png",
+     "SwarmDuel/art/raw/anim/greyling_Walk_up_right.png",
+     "SwarmDuel/art/raw/anim/greyling_Walk_up_right_t1.png",
+     "SwarmDuel/art/raw/anim/greyling_Walk_up_right_t2.png",
+     "SwarmDuel/art/raw/anim/greyling_Walk_up.png",
+     "SwarmDuel/art/raw/anim/greyling_Walk_up_t1.png"
+    ],
+    "prompt": [
+     "SwarmDuel/art/prompts/anim/greyling_Walk_down.txt",
+     "SwarmDuel/art/prompts/anim/greyling_Walk_down_right.txt",
+     "SwarmDuel/art/prompts/anim/greyling_Walk_right.txt",
+     "SwarmDuel/art/prompts/anim/greyling_Walk_up_right.txt",
+     "SwarmDuel/art/prompts/anim/greyling_Walk_up.txt"
+    ],
+    "shipped": [
+     "SwarmDuel/game/src/assets/greyling_walk.png",
+     "SwarmDuel/game/src/assets/greyling_walk.json"
+    ],
+    "frames": [
+     "SwarmDuel/art/frames/greyling/Walk"
+    ]
+   },
+   "technical": {
+    "native": {
+     "w": 28,
+     "h": 28
+    }
+   },
+   "anims": [
+    {
+     "name": "Walk",
+     "frames": 4,
+     "durations": [
+      9,
+      9,
+      9,
+      9
+     ],
+     "durationUnit": "1/60 s tick",
+     "anchor": {
+      "x": 14,
+      "y": 27
+     },
+     "directions": [
+      "down",
+      "down_right",
+      "right",
+      "up_right",
+      "up",
+      "up_left",
+      "left",
+      "down_left"
+     ],
+     "generatedDirections": [
+      "down",
+      "down_right",
+      "right",
+      "up_right",
+      "up"
+     ],
+     "mirroredDirections": {
+      "up_left": "up_right",
+      "left": "right",
+      "down_left": "down_right"
+     },
+     "frameSize": {
+      "w": 28,
+      "h": 28
+     },
+     "sheetRows": 8,
+     "framesDir": "SwarmDuel/art/frames/greyling/Walk"
+    }
+   ],
+   "note": "沒有 Idle：靜止時停在 Walk 某格；每隻以 id 錯開起始格",
+   "keywords": [
+    "greyling",
+    "alien",
+    "外星人",
+    "grey alien",
+    "swarm",
+    "蟲群",
+    "enemy",
+    "敵人",
+    "walk",
+    "走路",
+    "8-direction",
+    "8 方向",
+    "sprite sheet",
+    "pixel",
+    "animation",
+    "動畫"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:43fb895024f06a86183caf0b5522d763051fb65e84d0ee0f81ee14eee12a6781",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.enm.greyling.placeholder_v02",
+   "legacyId": "enm.greyling.placeholder_v02",
+   "kind": "sprite-sheet",
+   "status": "placeholder",
+   "name": "Greyling 4 方向單格佔位（v0.2）",
+   "type": "敵人",
+   "files": {
+    "raw": [
+     "SwarmDuel/art/native/placeholder_v02/greyling.png",
+     "SwarmDuel/art/native/placeholder_v02/greyling.json",
+     "SwarmDuel/art/native/greyling/down.png",
+     "SwarmDuel/art/native/greyling/right.png",
+     "SwarmDuel/art/native/greyling/up.png",
+     "SwarmDuel/art/native/greyling/left.png"
+    ],
+    "prompt": [
+     "SwarmDuel/art/prompts/native_greyling.txt"
+    ],
+    "shipped": []
+   },
+   "technical": {
+    "native": {
+     "w": 28,
+     "h": 28
+    }
+   },
+   "anims": [
+    {
+     "name": "Static",
+     "frames": 1,
+     "durations": [
+      60
+     ],
+     "durationUnit": "1/60 s tick",
+     "anchor": {
+      "x": 14,
+      "y": 27
+     },
+     "directions": [
+      "down",
+      "right",
+      "up",
+      "left"
+     ],
+     "frameSize": {
+      "w": 28,
+      "h": 28
+     },
+     "sheetRows": 4
+    }
+   ],
+   "keywords": [
+    "greyling",
+    "alien",
+    "placeholder",
+    "佔位",
+    "4-direction",
+    "static"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:d2f67f41fafb6967f31056410f5d13af519c8f0e81d3c23045b34c0c275c3229",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.enm.probe",
+   "legacyId": "enm.probe",
+   "kind": "sprite-sheet",
+   "status": "placeholder",
+   "name": "probe（Greyling 換色＋縮放）",
+   "type": "敵人",
+   "files": {
+    "raw": [],
+    "prompt": [],
+    "shipped": [
+     "SwarmDuel/game/src/assets/greyling_walk.png"
+    ]
+   },
+   "technical": {
+    "native": {
+     "w": 28,
+     "h": 28
+    }
+   },
+   "recipe": {
+    "scale": 1.5,
+    "tint": "0x9fd8ff",
+    "source": "SwarmDuel/game/src/sim/content.js"
+   },
+   "note": "0 B 換色佔位：小、衝刺型；ux_gap #2 待各自生成",
+   "keywords": [
+    "alien",
+    "外星人",
+    "enemy",
+    "敵人",
+    "tint variant",
+    "換色",
+    "palette swap",
+    "probe",
+    "scout",
+    "fast",
+    "dash enemy"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:43fb895024f06a86183caf0b5522d763051fb65e84d0ee0f81ee14eee12a6781",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.enm.hulk",
+   "legacyId": "enm.hulk",
+   "kind": "sprite-sheet",
+   "status": "placeholder",
+   "name": "hulk（Greyling 換色＋縮放）",
+   "type": "敵人",
+   "files": {
+    "raw": [],
+    "prompt": [],
+    "shipped": [
+     "SwarmDuel/game/src/assets/greyling_walk.png"
+    ]
+   },
+   "technical": {
+    "native": {
+     "w": 28,
+     "h": 28
+    }
+   },
+   "recipe": {
+    "scale": 3,
+    "tint": "0xc0a8ff",
+    "source": "SwarmDuel/game/src/sim/content.js"
+   },
+   "note": "0 B 換色佔位：大、肉盾；ux_gap #2 待各自生成",
+   "keywords": [
+    "alien",
+    "外星人",
+    "enemy",
+    "敵人",
+    "tint variant",
+    "換色",
+    "palette swap",
+    "hulk",
+    "tank",
+    "brute"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:43fb895024f06a86183caf0b5522d763051fb65e84d0ee0f81ee14eee12a6781",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.enm.saucer_scout",
+   "legacyId": "enm.saucer_scout",
+   "kind": "sprite-sheet",
+   "status": "placeholder",
+   "name": "saucer_scout（Greyling 換色＋縮放）",
+   "type": "敵人",
+   "files": {
+    "raw": [],
+    "prompt": [],
+    "shipped": [
+     "SwarmDuel/game/src/assets/greyling_walk.png"
+    ]
+   },
+   "technical": {
+    "native": {
+     "w": 28,
+     "h": 28
+    }
+   },
+   "recipe": {
+    "scale": 5,
+    "tint": "0xffd36b",
+    "source": "SwarmDuel/game/src/sim/content.js"
+   },
+   "note": "0 B 換色佔位：頭目 1（GDD 原生框 64×40，未生成）；ux_gap #2 待各自生成",
+   "keywords": [
+    "alien",
+    "外星人",
+    "enemy",
+    "敵人",
+    "tint variant",
+    "換色",
+    "palette swap",
+    "boss",
+    "頭目",
+    "saucer",
+    "ufo",
+    "飛碟"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:43fb895024f06a86183caf0b5522d763051fb65e84d0ee0f81ee14eee12a6781",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.enm.mother_probe",
+   "legacyId": "enm.mother_probe",
+   "kind": "sprite-sheet",
+   "status": "placeholder",
+   "name": "mother_probe（Greyling 換色＋縮放）",
+   "type": "敵人",
+   "files": {
+    "raw": [],
+    "prompt": [],
+    "shipped": [
+     "SwarmDuel/game/src/assets/greyling_walk.png"
+    ]
+   },
+   "technical": {
+    "native": {
+     "w": 28,
+     "h": 28
+    }
+   },
+   "recipe": {
+    "scale": 6,
+    "tint": "0xff8080",
+    "source": "SwarmDuel/game/src/sim/content.js"
+   },
+   "note": "0 B 換色佔位：頭目 2（GDD 原生框 64×64，未生成）；ux_gap #2 待各自生成",
+   "keywords": [
+    "alien",
+    "外星人",
+    "enemy",
+    "敵人",
+    "tint variant",
+    "換色",
+    "palette swap",
+    "boss",
+    "頭目",
+    "mothership",
+    "母艦"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:43fb895024f06a86183caf0b5522d763051fb65e84d0ee0f81ee14eee12a6781",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.prp.pine",
+   "legacyId": "prp.pine",
+   "kind": "sprite-sheet",
+   "status": "shipped",
+   "name": "太平洋西北松樹",
+   "type": "道具",
+   "files": {
+    "raw": [
+     "SwarmDuel/art/raw/prop_pine_1.png"
+    ],
+    "prompt": [
+     "SwarmDuel/art/prompts/prop_pine.txt"
+    ],
+    "shipped": [
+     "SwarmDuel/game/src/assets/pine.png"
+    ]
+   },
+   "technical": {
+    "native": {
+     "w": 24,
+     "h": 40
+    }
+   },
+   "anims": [
+    {
+     "name": "Static",
+     "frames": 1,
+     "anchor": {
+      "x": 12,
+      "y": 39
+     },
+     "directions": [
+      "down"
+     ]
+    }
+   ],
+   "note": "world.js 以 anchor (0.5, 39/40) 依腳底 Y 排序；場地邊界一圈",
+   "keywords": [
+    "pine",
+    "松樹",
+    "tree",
+    "樹",
+    "forest",
+    "森林",
+    "pacific northwest",
+    "campground",
+    "營地",
+    "prop",
+    "道具",
+    "y-sort",
+    "pixel"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:ee9ebf4a16c6b570991665be383dc660667a09fffc9a80d6ab11cd87d6cfbee4",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.icn.pinecone",
+   "legacyId": "icn.pinecone",
+   "kind": "ui",
+   "status": "shipped",
+   "name": "松果投擲（武器 Pinecone Toss）",
+   "type": "圖示",
+   "files": {
+    "raw": [
+     "SwarmDuel/art/raw/icon_pinecone_1.png"
+    ],
+    "prompt": [
+     "SwarmDuel/art/prompts/icon_pinecone.txt"
+    ],
+    "shipped": [
+     "SwarmDuel/game/src/assets/icons.png",
+     "SwarmDuel/game/src/assets/icons.json"
+    ]
+   },
+   "technical": {
+    "native": {
+     "w": 64,
+     "h": 64
+    },
+    "rawSize": {
+     "w": 1254,
+     "h": 1254
+    }
+   },
+   "keywords": [
+    "icon",
+    "圖示",
+    "ui",
+    "upgrade card",
+    "升級卡",
+    "pixel",
+    "16-bit",
+    "48px",
+    "atlas",
+    "weapon",
+    "武器",
+    "pinecone",
+    "松果",
+    "throw",
+    "projectile"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:a1d2c080d68417fef294bdf93637d244361f4928f6f84f6ba99d27efaa76278a",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.icn.campfire",
+   "legacyId": "icn.campfire",
+   "kind": "ui",
+   "status": "shipped",
+   "name": "營火環（武器 Campfire Ring）",
+   "type": "圖示",
+   "files": {
+    "raw": [
+     "SwarmDuel/art/raw/icon_campfire_1.png"
+    ],
+    "prompt": [
+     "SwarmDuel/art/prompts/icon_campfire.txt"
+    ],
+    "shipped": [
+     "SwarmDuel/game/src/assets/icons.png",
+     "SwarmDuel/game/src/assets/icons.json"
+    ]
+   },
+   "technical": {
+    "native": {
+     "w": 64,
+     "h": 64
+    },
+    "rawSize": {
+     "w": 1254,
+     "h": 1254
+    }
+   },
+   "keywords": [
+    "icon",
+    "圖示",
+    "ui",
+    "upgrade card",
+    "升級卡",
+    "pixel",
+    "16-bit",
+    "48px",
+    "atlas",
+    "weapon",
+    "武器",
+    "campfire",
+    "營火",
+    "fire",
+    "orbit",
+    "環繞"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:a1d2c080d68417fef294bdf93637d244361f4928f6f84f6ba99d27efaa76278a",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.icn.static_fur",
+   "legacyId": "icn.static_fur",
+   "kind": "ui",
+   "status": "shipped",
+   "name": "靜電毛（武器 Static Fur）",
+   "type": "圖示",
+   "files": {
+    "raw": [
+     "SwarmDuel/art/raw/icon_static_fur_1.png"
+    ],
+    "prompt": [
+     "SwarmDuel/art/prompts/icon_static_fur.txt"
+    ],
+    "shipped": [
+     "SwarmDuel/game/src/assets/icons.png",
+     "SwarmDuel/game/src/assets/icons.json"
+    ]
+   },
+   "technical": {
+    "native": {
+     "w": 64,
+     "h": 64
+    },
+    "rawSize": {
+     "w": 1312,
+     "h": 1199
+    }
+   },
+   "keywords": [
+    "icon",
+    "圖示",
+    "ui",
+    "upgrade card",
+    "升級卡",
+    "pixel",
+    "16-bit",
+    "48px",
+    "atlas",
+    "weapon",
+    "武器",
+    "static",
+    "electric",
+    "靜電",
+    "aura",
+    "lightning"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:a1d2c080d68417fef294bdf93637d244361f4928f6f84f6ba99d27efaa76278a",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.icn.p_speed",
+   "legacyId": "icn.p_speed",
+   "kind": "ui",
+   "status": "shipped",
+   "name": "Trail Legs +10% 移速；結算 dodges 列",
+   "type": "圖示",
+   "files": {
+    "raw": [
+     "SwarmDuel/art/raw/icon_p_speed_1.png"
+    ],
+    "prompt": [
+     "SwarmDuel/art/prompts/icon_p_speed.txt"
+    ],
+    "shipped": [
+     "SwarmDuel/game/src/assets/icons.png",
+     "SwarmDuel/game/src/assets/icons.json"
+    ]
+   },
+   "technical": {
+    "native": {
+     "w": 64,
+     "h": 64
+    },
+    "rawSize": {
+     "w": 1536,
+     "h": 1024
+    }
+   },
+   "keywords": [
+    "icon",
+    "圖示",
+    "ui",
+    "upgrade card",
+    "升級卡",
+    "pixel",
+    "16-bit",
+    "48px",
+    "atlas",
+    "passive",
+    "被動",
+    "speed",
+    "移速",
+    "foot",
+    "腳"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:a1d2c080d68417fef294bdf93637d244361f4928f6f84f6ba99d27efaa76278a",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.icn.p_might",
+   "legacyId": "icn.p_might",
+   "kind": "ui",
+   "status": "shipped",
+   "name": "Big Fists +10% 傷害",
+   "type": "圖示",
+   "files": {
+    "raw": [
+     "SwarmDuel/art/raw/icon_p_might_1.png"
+    ],
+    "prompt": [
+     "SwarmDuel/art/prompts/icon_p_might.txt"
+    ],
+    "shipped": [
+     "SwarmDuel/game/src/assets/icons.png",
+     "SwarmDuel/game/src/assets/icons.json"
+    ]
+   },
+   "technical": {
+    "native": {
+     "w": 64,
+     "h": 64
+    },
+    "rawSize": {
+     "w": 1536,
+     "h": 1024
+    }
+   },
+   "keywords": [
+    "icon",
+    "圖示",
+    "ui",
+    "upgrade card",
+    "升級卡",
+    "pixel",
+    "16-bit",
+    "48px",
+    "atlas",
+    "passive",
+    "被動",
+    "damage",
+    "傷害",
+    "fist",
+    "拳"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:a1d2c080d68417fef294bdf93637d244361f4928f6f84f6ba99d27efaa76278a",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.icn.p_magnet",
+   "legacyId": "icn.p_magnet",
+   "kind": "ui",
+   "status": "shipped",
+   "name": "Ecto Sense +25% 拾取半徑",
+   "type": "圖示",
+   "files": {
+    "raw": [
+     "SwarmDuel/art/raw/icon_p_magnet_1.png"
+    ],
+    "prompt": [
+     "SwarmDuel/art/prompts/icon_p_magnet.txt"
+    ],
+    "shipped": [
+     "SwarmDuel/game/src/assets/icons.png",
+     "SwarmDuel/game/src/assets/icons.json"
+    ]
+   },
+   "technical": {
+    "native": {
+     "w": 64,
+     "h": 64
+    },
+    "rawSize": {
+     "w": 1536,
+     "h": 1024
+    }
+   },
+   "keywords": [
+    "icon",
+    "圖示",
+    "ui",
+    "upgrade card",
+    "升級卡",
+    "pixel",
+    "16-bit",
+    "48px",
+    "atlas",
+    "passive",
+    "被動",
+    "magnet",
+    "磁鐵",
+    "pickup radius"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:a1d2c080d68417fef294bdf93637d244361f4928f6f84f6ba99d27efaa76278a",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.icn.p_cooldown",
+   "legacyId": "icn.p_cooldown",
+   "kind": "ui",
+   "status": "shipped",
+   "name": "Quick Reflex −8% 冷卻；結算 survival 列",
+   "type": "圖示",
+   "files": {
+    "raw": [
+     "SwarmDuel/art/raw/icon_p_cooldown_1.png"
+    ],
+    "prompt": [
+     "SwarmDuel/art/prompts/icon_p_cooldown.txt"
+    ],
+    "shipped": [
+     "SwarmDuel/game/src/assets/icons.png",
+     "SwarmDuel/game/src/assets/icons.json"
+    ]
+   },
+   "technical": {
+    "native": {
+     "w": 64,
+     "h": 64
+    },
+    "rawSize": {
+     "w": 1254,
+     "h": 1254
+    }
+   },
+   "keywords": [
+    "icon",
+    "圖示",
+    "ui",
+    "upgrade card",
+    "升級卡",
+    "pixel",
+    "16-bit",
+    "48px",
+    "atlas",
+    "passive",
+    "被動",
+    "cooldown",
+    "冷卻",
+    "stopwatch",
+    "碼錶"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:a1d2c080d68417fef294bdf93637d244361f4928f6f84f6ba99d27efaa76278a",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.icn.p_hp",
+   "legacyId": "icn.p_hp",
+   "kind": "ui",
+   "status": "shipped",
+   "name": "Thick Fur +20 HP",
+   "type": "圖示",
+   "files": {
+    "raw": [
+     "SwarmDuel/art/raw/icon_p_hp_1.png"
+    ],
+    "prompt": [
+     "SwarmDuel/art/prompts/icon_p_hp.txt"
+    ],
+    "shipped": [
+     "SwarmDuel/game/src/assets/icons.png",
+     "SwarmDuel/game/src/assets/icons.json"
+    ]
+   },
+   "technical": {
+    "native": {
+     "w": 64,
+     "h": 64
+    },
+    "rawSize": {
+     "w": 1254,
+     "h": 1254
+    }
+   },
+   "keywords": [
+    "icon",
+    "圖示",
+    "ui",
+    "upgrade card",
+    "升級卡",
+    "pixel",
+    "16-bit",
+    "48px",
+    "atlas",
+    "passive",
+    "被動",
+    "hp",
+    "health",
+    "heart",
+    "愛心",
+    "fur"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:a1d2c080d68417fef294bdf93637d244361f4928f6f84f6ba99d27efaa76278a",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.icn.snack",
+   "legacyId": "icn.snack",
+   "kind": "ui",
+   "status": "shipped",
+   "name": "Camp Snack 補 30 HP",
+   "type": "圖示",
+   "files": {
+    "raw": [
+     "SwarmDuel/art/raw/icon_snack_1.png"
+    ],
+    "prompt": [
+     "SwarmDuel/art/prompts/icon_snack.txt"
+    ],
+    "shipped": [
+     "SwarmDuel/game/src/assets/icons.png",
+     "SwarmDuel/game/src/assets/icons.json"
+    ]
+   },
+   "technical": {
+    "native": {
+     "w": 64,
+     "h": 64
+    },
+    "rawSize": {
+     "w": 1286,
+     "h": 1223
+    }
+   },
+   "keywords": [
+    "icon",
+    "圖示",
+    "ui",
+    "upgrade card",
+    "升級卡",
+    "pixel",
+    "16-bit",
+    "48px",
+    "atlas",
+    "heal",
+    "補血",
+    "food",
+    "食物",
+    "hot dog",
+    "熱狗",
+    "corn dog"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:a1d2c080d68417fef294bdf93637d244361f4928f6f84f6ba99d27efaa76278a",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.icn.bounty",
+   "legacyId": "icn.bounty",
+   "kind": "ui",
+   "status": "shipped",
+   "name": "Bounty +100 分；標題每日卡、結算 bonus",
+   "type": "圖示",
+   "files": {
+    "raw": [
+     "SwarmDuel/art/raw/icon_bounty_1.png"
+    ],
+    "prompt": [
+     "SwarmDuel/art/prompts/icon_bounty.txt"
+    ],
+    "shipped": [
+     "SwarmDuel/game/src/assets/icons.png",
+     "SwarmDuel/game/src/assets/icons.json"
+    ]
+   },
+   "technical": {
+    "native": {
+     "w": 64,
+     "h": 64
+    },
+    "rawSize": {
+     "w": 1254,
+     "h": 1254
+    }
+   },
+   "keywords": [
+    "icon",
+    "圖示",
+    "ui",
+    "upgrade card",
+    "升級卡",
+    "pixel",
+    "16-bit",
+    "48px",
+    "atlas",
+    "score",
+    "分數",
+    "bounty",
+    "賞金",
+    "sheriff star",
+    "警長星",
+    "gold",
+    "badge"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:a1d2c080d68417fef294bdf93637d244361f4928f6f84f6ba99d27efaa76278a",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.icn.skull",
+   "legacyId": "icn.skull",
+   "kind": "ui",
+   "status": "shipped",
+   "name": "HUD 擊殺數；結算 kills 列",
+   "type": "圖示",
+   "files": {
+    "raw": [
+     "SwarmDuel/art/raw/icon_skull_1.png"
+    ],
+    "prompt": [
+     "SwarmDuel/art/prompts/icon_skull.txt"
+    ],
+    "shipped": [
+     "SwarmDuel/game/src/assets/icons.png",
+     "SwarmDuel/game/src/assets/icons.json"
+    ]
+   },
+   "technical": {
+    "native": {
+     "w": 64,
+     "h": 64
+    },
+    "rawSize": {
+     "w": 1254,
+     "h": 1254
+    }
+   },
+   "keywords": [
+    "icon",
+    "圖示",
+    "ui",
+    "upgrade card",
+    "升級卡",
+    "pixel",
+    "16-bit",
+    "48px",
+    "atlas",
+    "kills",
+    "擊殺",
+    "skull",
+    "骷髏",
+    "alien skull"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:a1d2c080d68417fef294bdf93637d244361f4928f6f84f6ba99d27efaa76278a",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.icn.ecto",
+   "legacyId": "icn.ecto",
+   "kind": "ui",
+   "status": "shipped",
+   "name": "Ecto 經驗球；結算 ecto 列",
+   "type": "圖示",
+   "files": {
+    "raw": [
+     "SwarmDuel/art/raw/icon_ecto_1.png"
+    ],
+    "prompt": [
+     "SwarmDuel/art/prompts/icon_ecto.txt"
+    ],
+    "shipped": [
+     "SwarmDuel/game/src/assets/icons.png",
+     "SwarmDuel/game/src/assets/icons.json"
+    ]
+   },
+   "technical": {
+    "native": {
+     "w": 64,
+     "h": 64
+    },
+    "rawSize": {
+     "w": 1254,
+     "h": 1254
+    }
+   },
+   "keywords": [
+    "icon",
+    "圖示",
+    "ui",
+    "upgrade card",
+    "升級卡",
+    "pixel",
+    "16-bit",
+    "48px",
+    "atlas",
+    "ecto",
+    "ectoplasm",
+    "xp",
+    "經驗",
+    "orb",
+    "lime",
+    "glow"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:a1d2c080d68417fef294bdf93637d244361f4928f6f84f6ba99d27efaa76278a",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.icn.p_speed.alt",
+   "legacyId": "icn.p_speed.alt",
+   "kind": "ui",
+   "status": "rejected-take",
+   "name": "Trail Legs 圖示第 2 張（未採用）",
+   "type": "圖示",
+   "files": {
+    "raw": [
+     "SwarmDuel/art/raw/icon_p_speed_2.png"
+    ],
+    "prompt": [
+     "SwarmDuel/art/prompts/icon_p_speed.txt"
+    ],
+    "shipped": []
+   },
+   "technical": {
+    "native": {
+     "w": 64,
+     "h": 64
+    },
+    "rawSize": {
+     "w": 1374,
+     "h": 1145
+    }
+   },
+   "note": "icon_atlas() 只讀 _1；文件未記錄此張",
+   "keywords": [
+    "icon",
+    "圖示",
+    "p_speed",
+    "foot",
+    "alt take"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:47854c39c29243e9fbcee61743c8f1b23fcd284766c407a29eab2e701815e6a6",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.key.key_art",
+   "legacyId": "key.key_art",
+   "kind": "key-art",
+   "status": "shipped",
+   "name": "主視覺：夜間營地＋飛碟＋外星人包圍",
+   "type": "主視覺",
+   "files": {
+    "raw": [
+     "SwarmDuel/art/raw/key_art_1.png"
+    ],
+    "prompt": [
+     "SwarmDuel/art/prompts/key_art.txt"
+    ],
+    "shipped": [
+     "SwarmDuel/game/src/assets/key_art.webp"
+    ]
+   },
+   "technical": {
+    "native": {
+     "w": 960,
+     "h": 540
+    },
+    "rawSize": {
+     "w": 1672,
+     "h": 941
+    }
+   },
+   "note": "WebP q78 寬 960；標題畫面 cover 裁切；桌機兩側 CSS blur(28px) 背景",
+   "keywords": [
+    "key art",
+    "主視覺",
+    "title",
+    "標題",
+    "night",
+    "夜晚",
+    "camp",
+    "營地",
+    "campfire",
+    "營火",
+    "ufo",
+    "flying saucer",
+    "飛碟",
+    "rv",
+    "露營車",
+    "pine",
+    "松樹",
+    "swarm",
+    "16:9",
+    "moonlight",
+    "月光",
+    "pacific northwest",
+    "cryptid",
+    "bigfoot"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:dfbc27ee38e311e0d75d3700f62551ffb3745807aa2a7bd552ce0227f92b9a88",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.prc.ground.grass",
+   "legacyId": "prc.ground.grass",
+   "kind": "procedural",
+   "status": "procedural",
+   "name": "夜間草地 tile",
+   "type": "場景",
+   "files": {
+    "raw": [],
+    "prompt": [],
+    "shipped": [
+     "SwarmDuel/game/src/render/textures.js#L44"
+    ]
+   },
+   "technical": {
+    "native": {
+     "w": 64,
+     "h": 64
+    }
+   },
+   "recipe": "底色 #1d3a30＋260 個 hash32(91,6,i) 決定位置的 1–2 px 色點（GRASS 5 色）；TilingSprite tileScale=2",
+   "keywords": [
+    "ground",
+    "地面",
+    "grass",
+    "草地",
+    "tile",
+    "night",
+    "夜晚",
+    "background",
+    "背景"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:830257a4e6863c5b2c2acfba722521e968955f75c788a735bf657aa76e629a14",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.prc.decor.tuft",
+   "legacyId": "prc.decor.tuft",
+   "kind": "procedural",
+   "status": "procedural",
+   "name": "地面裝飾：草叢",
+   "type": "場景",
+   "files": {
+    "raw": [],
+    "prompt": [],
+    "shipped": [
+     "SwarmDuel/game/src/render/textures.js#L23"
+    ]
+   },
+   "technical": {
+    "native": {
+     "w": 9,
+     "h": 6
+    }
+   },
+   "recipe": "1 px fillRect 手繪；scatterDecor() 以 hash32(4242,6,i) 撒 360 個、隨機左右翻（world.js:110）",
+   "keywords": [
+    "decor",
+    "裝飾",
+    "tuft",
+    "草叢",
+    "ground",
+    "地面",
+    "grass"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:830257a4e6863c5b2c2acfba722521e968955f75c788a735bf657aa76e629a14",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.prc.decor.rock",
+   "legacyId": "prc.decor.rock",
+   "kind": "procedural",
+   "status": "procedural",
+   "name": "地面裝飾：石頭",
+   "type": "場景",
+   "files": {
+    "raw": [],
+    "prompt": [],
+    "shipped": [
+     "SwarmDuel/game/src/render/textures.js#L27"
+    ]
+   },
+   "technical": {
+    "native": {
+     "w": 11,
+     "h": 8
+    }
+   },
+   "recipe": "1 px fillRect 手繪；scatterDecor() 以 hash32(4242,6,i) 撒 360 個、隨機左右翻（world.js:110）",
+   "keywords": [
+    "decor",
+    "裝飾",
+    "rock",
+    "石頭",
+    "ground",
+    "地面",
+    "stone"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:830257a4e6863c5b2c2acfba722521e968955f75c788a735bf657aa76e629a14",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.prc.decor.flower",
+   "legacyId": "prc.decor.flower",
+   "kind": "procedural",
+   "status": "procedural",
+   "name": "地面裝飾：藍花",
+   "type": "場景",
+   "files": {
+    "raw": [],
+    "prompt": [],
+    "shipped": [
+     "SwarmDuel/game/src/render/textures.js#L31"
+    ]
+   },
+   "technical": {
+    "native": {
+     "w": 5,
+     "h": 5
+    }
+   },
+   "recipe": "1 px fillRect 手繪；scatterDecor() 以 hash32(4242,6,i) 撒 360 個、隨機左右翻（world.js:110）",
+   "keywords": [
+    "decor",
+    "裝飾",
+    "flower",
+    "藍花",
+    "ground",
+    "地面"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:830257a4e6863c5b2c2acfba722521e968955f75c788a735bf657aa76e629a14",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.prc.decor.mushroom",
+   "legacyId": "prc.decor.mushroom",
+   "kind": "procedural",
+   "status": "procedural",
+   "name": "地面裝飾：紅蘑菇",
+   "type": "場景",
+   "files": {
+    "raw": [],
+    "prompt": [],
+    "shipped": [
+     "SwarmDuel/game/src/render/textures.js#L32"
+    ]
+   },
+   "technical": {
+    "native": {
+     "w": 6,
+     "h": 6
+    }
+   },
+   "recipe": "1 px fillRect 手繪；scatterDecor() 以 hash32(4242,6,i) 撒 360 個、隨機左右翻（world.js:110）",
+   "keywords": [
+    "decor",
+    "裝飾",
+    "mushroom",
+    "紅蘑菇",
+    "ground",
+    "地面"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:830257a4e6863c5b2c2acfba722521e968955f75c788a735bf657aa76e629a14",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.prc.decor.log",
+   "legacyId": "prc.decor.log",
+   "kind": "procedural",
+   "status": "procedural",
+   "name": "地面裝飾：原木",
+   "type": "場景",
+   "files": {
+    "raw": [],
+    "prompt": [],
+    "shipped": [
+     "SwarmDuel/game/src/render/textures.js#L33"
+    ]
+   },
+   "technical": {
+    "native": {
+     "w": 22,
+     "h": 8
+    }
+   },
+   "recipe": "1 px fillRect 手繪；scatterDecor() 以 hash32(4242,6,i) 撒 360 個、隨機左右翻（world.js:110）",
+   "keywords": [
+    "decor",
+    "裝飾",
+    "log",
+    "原木",
+    "ground",
+    "地面",
+    "wood"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:830257a4e6863c5b2c2acfba722521e968955f75c788a735bf657aa76e629a14",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.prc.decor.dirt",
+   "legacyId": "prc.decor.dirt",
+   "kind": "procedural",
+   "status": "procedural",
+   "name": "地面裝飾：泥地",
+   "type": "場景",
+   "files": {
+    "raw": [],
+    "prompt": [],
+    "shipped": [
+     "SwarmDuel/game/src/render/textures.js#L37"
+    ]
+   },
+   "technical": {
+    "native": {
+     "w": 28,
+     "h": 14
+    }
+   },
+   "recipe": "1 px fillRect 手繪；scatterDecor() 以 hash32(4242,6,i) 撒 360 個、隨機左右翻（world.js:110）",
+   "keywords": [
+    "decor",
+    "裝飾",
+    "dirt",
+    "泥地",
+    "ground",
+    "地面",
+    "mud"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:830257a4e6863c5b2c2acfba722521e968955f75c788a735bf657aa76e629a14",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.prc.campfire",
+   "legacyId": "prc.campfire",
+   "kind": "procedural",
+   "status": "procedural",
+   "name": "營火（2 格）",
+   "type": "道具",
+   "files": {
+    "raw": [],
+    "prompt": [],
+    "shipped": [
+     "SwarmDuel/game/src/render/textures.js#L85"
+    ]
+   },
+   "technical": {
+    "native": {
+     "w": 24,
+     "h": 22
+    }
+   },
+   "recipe": "木柴＋三顆石頭＋火焰；f=0/1 偏移 1 px 交替；rich 時每 8 幀換格（world.js:197）",
+   "keywords": [
+    "campfire",
+    "營火",
+    "fire",
+    "火",
+    "camp",
+    "營地",
+    "2-frame",
+    "animation"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:830257a4e6863c5b2c2acfba722521e968955f75c788a735bf657aa76e629a14",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.prc.tent",
+   "legacyId": "prc.tent",
+   "kind": "procedural",
+   "status": "procedural",
+   "name": "帳篷",
+   "type": "道具",
+   "files": {
+    "raw": [],
+    "prompt": [],
+    "shipped": [
+     "SwarmDuel/game/src/render/textures.js#L92"
+    ]
+   },
+   "technical": {
+    "native": {
+     "w": 30,
+     "h": 22
+    }
+   },
+   "recipe": "逐列三角形、左右兩藍（#2f6b8f/#23506b）＋門口暖光 #f2b45a",
+   "keywords": [
+    "tent",
+    "帳篷",
+    "camp",
+    "營地"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:830257a4e6863c5b2c2acfba722521e968955f75c788a735bf657aa76e629a14",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.prc.orb",
+   "legacyId": "prc.orb",
+   "kind": "procedural",
+   "status": "procedural",
+   "name": "Ecto 經驗球",
+   "type": "道具",
+   "files": {
+    "raw": [],
+    "prompt": [],
+    "shipped": [
+     "SwarmDuel/game/src/render/textures.js#L52"
+    ]
+   },
+   "technical": {
+    "native": {
+     "w": 7,
+     "h": 7
+    }
+   },
+   "recipe": "十字＋圓角 7×7，暗綠邊 #1f5410、萊姆 #7fe63a、高光 #d9ffb0；v≥20 時 tint 金 0xffd36b、放大 3×；rich 時上下 bob 2 px（world.js:179）",
+   "keywords": [
+    "ecto",
+    "orb",
+    "經驗球",
+    "xp",
+    "pickup",
+    "拾取",
+    "lime"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:830257a4e6863c5b2c2acfba722521e968955f75c788a735bf657aa76e629a14",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.prc.pinecone_shot",
+   "legacyId": "prc.pinecone_shot",
+   "kind": "procedural",
+   "status": "procedural",
+   "name": "松果投射物",
+   "type": "特效",
+   "files": {
+    "raw": [],
+    "prompt": [],
+    "shipped": [
+     "SwarmDuel/game/src/render/textures.js#L56"
+    ]
+   },
+   "technical": {
+    "native": {
+     "w": 6,
+     "h": 7
+    }
+   },
+   "recipe": "6×7 棕色松果；rich 時每 tick 旋轉 0.35 rad（world.js:185）",
+   "keywords": [
+    "pinecone",
+    "松果",
+    "projectile",
+    "投射物",
+    "weapon"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:830257a4e6863c5b2c2acfba722521e968955f75c788a735bf657aa76e629a14",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.prc.flame",
+   "legacyId": "prc.flame",
+   "kind": "procedural",
+   "status": "procedural",
+   "name": "營火環火焰",
+   "type": "特效",
+   "files": {
+    "raw": [],
+    "prompt": [],
+    "shipped": [
+     "SwarmDuel/game/src/render/textures.js#L60"
+    ]
+   },
+   "technical": {
+    "native": {
+     "w": 7,
+     "h": 9
+    }
+   },
+   "recipe": "7×9 火苗 3 階（#ff6a1a/#ffd04a/#fff4c2）；rich 時 scale.y 每 12 tick 拉高 0.5（world.js:191）",
+   "keywords": [
+    "flame",
+    "火焰",
+    "fire",
+    "orbit",
+    "campfire ring",
+    "weapon"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:830257a4e6863c5b2c2acfba722521e968955f75c788a735bf657aa76e629a14",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.prc.hotdog",
+   "legacyId": "prc.hotdog",
+   "kind": "procedural",
+   "status": "procedural",
+   "name": "熱狗拾取物",
+   "type": "道具",
+   "files": {
+    "raw": [],
+    "prompt": [],
+    "shipped": [
+     "SwarmDuel/game/src/render/textures.js#L64"
+    ]
+   },
+   "technical": {
+    "native": {
+     "w": 12,
+     "h": 7
+    }
+   },
+   "recipe": "麵包＋香腸＋芥末點",
+   "keywords": [
+    "hot dog",
+    "熱狗",
+    "snack",
+    "heal",
+    "pickup",
+    "拾取"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:830257a4e6863c5b2c2acfba722521e968955f75c788a735bf657aa76e629a14",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.prc.shadow",
+   "legacyId": "prc.shadow",
+   "kind": "procedural",
+   "status": "procedural",
+   "name": "腳底陰影",
+   "type": "特效",
+   "files": {
+    "raw": [],
+    "prompt": [],
+    "shipped": [
+     "SwarmDuel/game/src/render/textures.js#L68"
+    ]
+   },
+   "technical": {
+    "native": {
+     "w": 14,
+     "h": 5
+    }
+   },
+   "recipe": "rgba(0,6,4,0.45) 兩矩形拼橢圓；英雄 scale 3、敵人 scale×0.9",
+   "keywords": [
+    "shadow",
+    "陰影",
+    "drop shadow"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:830257a4e6863c5b2c2acfba722521e968955f75c788a735bf657aa76e629a14",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.prc.spark",
+   "legacyId": "prc.spark",
+   "kind": "procedural",
+   "status": "procedural",
+   "name": "碎片/火花粒子",
+   "type": "特效",
+   "files": {
+    "raw": [],
+    "prompt": [],
+    "shipped": [
+     "SwarmDuel/game/src/render/textures.js#L69"
+    ]
+   },
+   "technical": {
+    "native": {
+     "w": 3,
+     "h": 3
+    }
+   },
+   "recipe": "3×3 白十字，tint 上色；碎片池上限 140",
+   "keywords": [
+    "spark",
+    "火花",
+    "particle",
+    "粒子",
+    "debris",
+    "碎片"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:830257a4e6863c5b2c2acfba722521e968955f75c788a735bf657aa76e629a14",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.prc.darkness",
+   "legacyId": "prc.darkness",
+   "kind": "procedural",
+   "status": "procedural",
+   "name": "夜色暗角（跟隨英雄的光圈）",
+   "type": "特效",
+   "files": {
+    "raw": [],
+    "prompt": [],
+    "shipped": [
+     "SwarmDuel/game/src/render/textures.js#L71"
+    ]
+   },
+   "technical": {
+    "native": {
+     "w": 256,
+     "h": 256
+    }
+   },
+   "recipe": "radial gradient 0→7% 全透明、20% α0.45、40% α0.66、100% α0.74（rgba(3,6,16)）；linear 取樣，拉到 3200×3200 跟隨英雄",
+   "keywords": [
+    "darkness",
+    "暗角",
+    "vignette",
+    "night",
+    "夜晚",
+    "lighting",
+    "光照",
+    "20 minutes till dawn"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:830257a4e6863c5b2c2acfba722521e968955f75c788a735bf657aa76e629a14",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.prc.glow",
+   "legacyId": "prc.glow",
+   "kind": "procedural",
+   "status": "procedural",
+   "name": "營火暖光",
+   "type": "特效",
+   "files": {
+    "raw": [],
+    "prompt": [],
+    "shipped": [
+     "SwarmDuel/game/src/render/textures.js#L80"
+    ]
+   },
+   "technical": {
+    "native": {
+     "w": 128,
+     "h": 128
+    }
+   },
+   "recipe": "radial gradient 橘 α0.85→0.3→0；scale 3.2、blendMode add；rich 時 alpha 0.85±0.15 sin 閃爍",
+   "keywords": [
+    "glow",
+    "光暈",
+    "fire light",
+    "additive",
+    "lighting",
+    "光照"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:830257a4e6863c5b2c2acfba722521e968955f75c788a735bf657aa76e629a14",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.prc.flash_sheet",
+   "legacyId": "prc.flash_sheet",
+   "kind": "procedural",
+   "status": "procedural",
+   "name": "受擊白色剪影 sheet",
+   "type": "特效",
+   "files": {
+    "raw": [],
+    "prompt": [],
+    "shipped": [
+     "SwarmDuel/game/src/render/textures.js#L105"
+    ]
+   },
+   "recipe": "原 sheet drawImage 後 source-in 填白；每個動畫建一次；英雄 invuln>24、敵人 flash>3 時換用",
+   "keywords": [
+    "hit flash",
+    "閃白",
+    "受擊",
+    "white silhouette"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:830257a4e6863c5b2c2acfba722521e968955f75c788a735bf657aa76e629a14",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.vfx.howl_ring",
+   "legacyId": "vfx.howl_ring",
+   "kind": "procedural",
+   "status": "procedural",
+   "name": "Howl 衝擊波環（sprite 擴散環，無 filter）",
+   "type": "特效",
+   "files": {
+    "raw": [],
+    "prompt": [],
+    "shipped": [
+     "SwarmDuel/game/src/render/world.js#L290"
+    ]
+   },
+   "recipe": "Graphics 圓 r=160、fill α0.12、stroke 8 px α0.95（doubled 金 0xffd36b，否則 0xe8f6ff）；rich：scale 0.2→1 0.35 s power2.out＋alpha→0 0.3 s delay 0.15＋shake 8；低特效：靜態 0.12 s",
+   "keywords": [
+    "howl",
+    "吼叫",
+    "shockwave",
+    "衝擊波",
+    "ring",
+    "擴散環",
+    "skill",
+    "技能",
+    "aoe"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:7af6a9c25b76f2b5fb64ea33e15cefe2e75a7d65f2e4ff147d3d2dcec1fba46b",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.vfx.graze_star",
+   "legacyId": "vfx.graze_star",
+   "kind": "procedural",
+   "status": "procedural",
+   "name": "Perfect Dodge 金星",
+   "type": "特效",
+   "files": {
+    "raw": [],
+    "prompt": [],
+    "shipped": [
+     "SwarmDuel/game/src/render/world.js#L280"
+    ]
+   },
+   "recipe": "Graphics star 4 角、外徑 16、內徑 6，金 0xffd36b、描邊 2 px 0x3a2508；rich：上飄 28、alpha→0、rotation 1.2，0.4 s；低特效：靜態 0.15 s",
+   "keywords": [
+    "graze",
+    "dodge",
+    "閃避",
+    "perfect dodge",
+    "star",
+    "星星",
+    "feedback"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:7af6a9c25b76f2b5fb64ea33e15cefe2e75a7d65f2e4ff147d3d2dcec1fba46b",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.vfx.damage_number",
+   "legacyId": "vfx.damage_number",
+   "kind": "procedural",
+   "status": "procedural",
+   "name": "傷害數字",
+   "type": "特效",
+   "files": {
+    "raw": [],
+    "prompt": [],
+    "shipped": [
+     "SwarmDuel/game/src/render/world.js#L246"
+    ]
+   },
+   "recipe": "BitmapText Pixelify Sans 22 px 粗體白、4 px 0x05080c 描邊；上限 32；每幀 y−1.1、life 26、最後 8 幀淡出；只在 rich",
+   "keywords": [
+    "damage number",
+    "傷害數字",
+    "popup",
+    "跳字",
+    "text"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:7af6a9c25b76f2b5fb64ea33e15cefe2e75a7d65f2e4ff147d3d2dcec1fba46b",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.vfx.kill_burst",
+   "legacyId": "vfx.kill_burst",
+   "kind": "procedural",
+   "status": "procedural",
+   "name": "擊殺碎片爆",
+   "type": "特效",
+   "files": {
+    "raw": [],
+    "prompt": [],
+    "shipped": [
+     "SwarmDuel/game/src/render/world.js#L275"
+    ]
+   },
+   "recipe": "burst()：一般 5 顆、速度 2.2、色 [0x8ff03c,0xc9d3dc,0xffffff]；頭目 40 顆、4.5、金白綠＋shake 18；重力 0.12/幀、life 18–27",
+   "keywords": [
+    "kill",
+    "擊殺",
+    "burst",
+    "爆",
+    "debris",
+    "碎片",
+    "particle",
+    "粒子",
+    "boss"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:7af6a9c25b76f2b5fb64ea33e15cefe2e75a7d65f2e4ff147d3d2dcec1fba46b",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.vfx.hurt_burst",
+   "legacyId": "vfx.hurt_burst",
+   "kind": "procedural",
+   "status": "procedural",
+   "name": "英雄受傷紅白碎片＋震屏",
+   "type": "特效",
+   "files": {
+    "raw": [],
+    "prompt": [],
+    "shipped": [
+     "SwarmDuel/game/src/render/world.js#L271"
+    ]
+   },
+   "recipe": "rich：shake 10＋8 顆 [0xff4a3a,0xffffff]；英雄白閃（invuln>24）後閃爍 α0.45",
+   "keywords": [
+    "hurt",
+    "受傷",
+    "damage",
+    "particle",
+    "shake"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:7af6a9c25b76f2b5fb64ea33e15cefe2e75a7d65f2e4ff147d3d2dcec1fba46b",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.vfx.screen_shake",
+   "legacyId": "vfx.screen_shake",
+   "kind": "procedural",
+   "status": "procedural",
+   "name": "鏡頭震動（root 位移）",
+   "type": "特效",
+   "files": {
+    "raw": [],
+    "prompt": [],
+    "shipped": [
+     "SwarmDuel/game/src/render/world.js#L230"
+    ]
+   },
+   "recipe": "shake 幀數遞減；offset = ((shake*7)%5−2, (shake*3)%5−2)×2 px；確定性、無 Math.random",
+   "keywords": [
+    "screen shake",
+    "震屏",
+    "camera",
+    "鏡頭",
+    "juice"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:7af6a9c25b76f2b5fb64ea33e15cefe2e75a7d65f2e4ff147d3d2dcec1fba46b",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.vfx.static_aura",
+   "legacyId": "vfx.static_aura",
+   "kind": "procedural",
+   "status": "procedural",
+   "name": "靜電毛光環",
+   "type": "特效",
+   "files": {
+    "raw": [],
+    "prompt": [],
+    "shipped": [
+     "SwarmDuel/game/src/render/world.js#L205"
+    ]
+   },
+   "recipe": "Graphics circle r=武器半徑，fill 0x7fd7ff α0.1、stroke 2 px 0x9fe4ff α0.55；跟隨英雄（y−10）",
+   "keywords": [
+    "static fur",
+    "靜電",
+    "aura",
+    "光環",
+    "electric",
+    "weapon"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:7af6a9c25b76f2b5fb64ea33e15cefe2e75a7d65f2e4ff147d3d2dcec1fba46b",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.vfx.beam_warning",
+   "legacyId": "vfx.beam_warning",
+   "kind": "procedural",
+   "status": "procedural",
+   "name": "光束預警圈＋光束",
+   "type": "特效",
+   "files": {
+    "raw": [],
+    "prompt": [],
+    "shipped": [
+     "SwarmDuel/game/src/render/world.js#L212"
+    ]
+   },
+   "recipe": "預警：紅圈 fill α0.15、3 px stroke 閃爍（warn>>2&1）；發射：萊姆柱 1.2r×900 α0.35＋落點圓 α0.6",
+   "keywords": [
+    "beam",
+    "光束",
+    "warning",
+    "預警",
+    "telegraph",
+    "ufo",
+    "hazard"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:7af6a9c25b76f2b5fb64ea33e15cefe2e75a7d65f2e4ff147d3d2dcec1fba46b",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.vfx.hp_bar",
+   "legacyId": "vfx.hp_bar",
+   "kind": "procedural",
+   "status": "procedural",
+   "name": "腳下血條",
+   "type": "UI",
+   "files": {
+    "raw": [],
+    "prompt": [],
+    "shipped": [
+     "SwarmDuel/game/src/render/world.js#L80"
+    ]
+   },
+   "technical": {
+    "native": {
+     "w": 52,
+     "h": 8
+    }
+   },
+   "recipe": "Texture.WHITE 52×8 底 0x05080c＋48×4 填色，>50% 綠 0x5fe05a、>25% 黃 0xffc23a、否則紅 0xff4a3a",
+   "keywords": [
+    "hp bar",
+    "血條",
+    "health",
+    "survivor.io"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:7af6a9c25b76f2b5fb64ea33e15cefe2e75a7d65f2e4ff147d3d2dcec1fba46b",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.vfx.enemy_hover",
+   "legacyId": "vfx.enemy_hover",
+   "kind": "procedural",
+   "status": "procedural",
+   "name": "敵人懸浮＋錯開動畫",
+   "type": "特效",
+   "files": {
+    "raw": [],
+    "prompt": [],
+    "shipped": [
+     "SwarmDuel/game/src/render/world.js#L171"
+    ]
+   },
+   "recipe": "rich：y += round(sin((t+id*7)/9)*1.5)；起始格 = id % n",
+   "keywords": [
+    "hover",
+    "懸浮",
+    "bob",
+    "swarm",
+    "desync"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:7af6a9c25b76f2b5fb64ea33e15cefe2e75a7d65f2e4ff147d3d2dcec1fba46b",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.ui.panel",
+   "legacyId": "ui.panel",
+   "kind": "procedural",
+   "status": "procedural",
+   "name": "斜角面板",
+   "type": "UI",
+   "files": {
+    "raw": [],
+    "prompt": [],
+    "shipped": [
+     "SwarmDuel/game/src/ui/theme.js#L24"
+    ]
+   },
+   "recipe": "roundRect：4 px 下移陰影 α0.55＋邊 0x0a1018＋本體 0x16222e＋頂部亮條 α0.6（高 min(26,h/3)）",
+   "keywords": [
+    "panel",
+    "面板",
+    "card",
+    "ui skin"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:1d5664f36b2c3d4cfa94d1c08abd87149c015f0fa45c7f040c0618f0f07e96b7",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.ui.button",
+   "legacyId": "ui.button",
+   "kind": "procedural",
+   "status": "procedural",
+   "name": "3D 膠囊按鈕（primary/secondary/gold）",
+   "type": "UI",
+   "files": {
+    "raw": [],
+    "prompt": [],
+    "shipped": [
+     "SwarmDuel/game/src/ui/theme.js#L35"
+    ]
+   },
+   "recipe": "下層深色 y+6、上層主色＋3 px 墨線、亮條 h×0.28；按下時上層下沉 5 px",
+   "keywords": [
+    "button",
+    "按鈕",
+    "pill",
+    "膠囊",
+    "cta",
+    "play"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:1d5664f36b2c3d4cfa94d1c08abd87149c015f0fa45c7f040c0618f0f07e96b7",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.ui.pips",
+   "legacyId": "ui.pips",
+   "kind": "procedural",
+   "status": "procedural",
+   "name": "等級點",
+   "type": "UI",
+   "files": {
+    "raw": [],
+    "prompt": [],
+    "shipped": [
+     "SwarmDuel/game/src/ui/theme.js#L77"
+    ]
+   },
+   "recipe": "16×10 圓角、間距 22，亮 C.gold／暗 0x0d151d",
+   "keywords": [
+    "pips",
+    "等級點",
+    "level",
+    "progress"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:1d5664f36b2c3d4cfa94d1c08abd87149c015f0fa45c7f040c0618f0f07e96b7",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.ui.banner",
+   "legacyId": "ui.banner",
+   "kind": "procedural",
+   "status": "procedural",
+   "name": "緞帶標題",
+   "type": "UI",
+   "files": {
+    "raw": [],
+    "prompt": [],
+    "shipped": [
+     "SwarmDuel/game/src/ui/panels.js#L30"
+    ]
+   },
+   "recipe": "兩側燕尾 poly＋540×80 本體＋白亮條 α0.28；46 px 字 8 px 描邊",
+   "keywords": [
+    "ribbon",
+    "緞帶",
+    "banner",
+    "level up",
+    "results",
+    "結算"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:bc4e91ce65e42624d615a6fd6376dcb44e0e84c674645998cb77b77bc7b842ef",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.ui.logo",
+   "legacyId": "ui.logo",
+   "kind": "procedural",
+   "status": "procedural",
+   "name": "SWARM / DUEL 文字 Logo",
+   "type": "UI",
+   "files": {
+    "raw": [],
+    "prompt": [],
+    "shipped": [
+     "SwarmDuel/game/src/ui/panels.js#L41"
+    ]
+   },
+   "recipe": "Pixelify Sans 118 px，0xffe9a8/0xffc23a、14 px 0x2a1408 描邊、8 px 硬陰影",
+   "keywords": [
+    "logo",
+    "標題",
+    "title",
+    "text logo"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:bc4e91ce65e42624d615a6fd6376dcb44e0e84c674645998cb77b77bc7b842ef",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.ui.hud",
+   "legacyId": "ui.hud",
+   "kind": "procedural",
+   "status": "procedural",
+   "name": "HUD：經驗條、等級徽章、計時膠囊、擊殺、連擊、Dash 膠囊、Howl 按鈕、搖桿",
+   "type": "UI",
+   "files": {
+    "raw": [],
+    "prompt": [],
+    "shipped": [
+     "SwarmDuel/game/src/ui/hud.js#L19"
+    ]
+   },
+   "recipe": "Graphics＋Texture.WHITE＋panel()；經驗條 688×24、萊姆填色＋0xd9ffb0 亮條；金色等級圓 r30",
+   "keywords": [
+    "hud",
+    "xp bar",
+    "經驗條",
+    "timer",
+    "計時",
+    "combo",
+    "連擊",
+    "howl button",
+    "joystick",
+    "搖桿"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:644c5cd6913aafd5b5575a9d72856e1ffa8bead86ee56f89eeee5a2654e528d4",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "swarmduel.ui.font.pixelify",
+   "legacyId": "ui.font.pixelify",
+   "kind": "ui",
+   "status": "shipped",
+   "name": "Pixelify Sans 字型（400/700，latin）",
+   "type": "UI",
+   "files": {
+    "raw": [],
+    "prompt": [],
+    "shipped": [
+     "SwarmDuel/game/src/main.js#L13"
+    ]
+   },
+   "note": "@fontsource 打包約 16 KB；非生成資產",
+   "keywords": [
+    "font",
+    "字型",
+    "pixel font",
+    "像素字"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:4fa3d7daea65396ac914c1a1311f103e49c00e31c258979c80dd45aa13c6736f",
+   "game": "SwarmDuel"
+  },
+  {
+   "id": "twinstrike.ref.cat.identity",
+   "kind": "reference",
+   "status": "raw-only",
+   "name": "貓師父身分參考圖（採用 t1b）",
+   "files": {
+    "raw": [
+     "TwinStrike/art/raw/cat_identity.png",
+     "TwinStrike/art/raw/cat_identity_t1b.png",
+     "TwinStrike/art/raw/cat_identity_t1b_alpha.png"
+    ],
+    "prompt": [
+     "TwinStrike/art/prompts/hero_cat_identity.txt",
+     "TwinStrike/art/prompts/_history/hero_cat_identity_t1.txt"
+    ],
+    "shipped": []
+   },
+   "technical": {
+    "size": [
+     1536,
+     1024
+    ],
+    "format": "png"
+   },
+   "styleTags": [
+    "chibi",
+    "sticker",
+    "thick-outline",
+    "flat-color"
+   ],
+   "provenance": {
+    "tool": "picanywhere",
+    "job": "job_20261019-203943_326#1",
+    "postprocess": "art/tools/dechecker.py（畫出來的棋盤格去背）"
+   },
+   "note": "所有角色、背景、特效、主視覺生成時的風格附圖",
+   "keywords": [
+    "cat",
+    "貓",
+    "貓師父",
+    "hero",
+    "主角",
+    "identity",
+    "身分圖",
+    "kung fu",
+    "功夫"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:c676c454fc60383db19f0294e8a481bcf1aa775d36383ef650610b4d7a025861",
+   "game": "TwinStrike"
+  },
+  {
+   "id": "twinstrike.ref.cat.identity.t1a",
+   "kind": "reference",
+   "status": "rejected-take",
+   "name": "貓師父身分圖 t1a（未採用）",
+   "files": {
+    "raw": [
+     "TwinStrike/art/raw/cat_identity_t1a.png",
+     "TwinStrike/art/raw/cat_identity_t1a_alpha.png"
+    ],
+    "prompt": [
+     "TwinStrike/art/prompts/_history/hero_cat_identity_t1.txt"
+    ],
+    "shipped": []
+   },
+   "technical": {
+    "size": [
+     1536,
+     1024
+    ],
+    "format": "png"
+   },
+   "provenance": {
+    "tool": "picanywhere",
+    "job": "job_20261019-203943_326#0"
+   },
+   "keywords": [
+    "cat",
+    "貓",
+    "identity"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:2a109fed021ec899d0c08707d3975603b3529a2de6e738e9d70cc50d94236b51",
+   "game": "TwinStrike"
+  },
+  {
+   "id": "twinstrike.chr.cat",
+   "kind": "sprite-sheet",
+   "status": "shipped",
+   "name": "貓師父 9 格姿勢",
+   "files": {
+    "raw": [
+     "TwinStrike/art/raw/cat_poses_t1.png"
+    ],
+    "prompt": [
+     "TwinStrike/art/prompts/hero_cat_poses.txt",
+     "TwinStrike/art/prompts/_history/hero_cat_poses_t1.txt"
+    ],
+    "shipped": [
+     "TwinStrike/game/src/assets/cat.png",
+     "TwinStrike/game/src/assets/cat.json"
+    ]
+   },
+   "technical": {
+    "cell": [
+     384,
+     256
+    ],
+    "anchor": [
+     0.5,
+     0.95
+    ],
+    "frames": [
+     "idle_a",
+     "idle_b",
+     "jab",
+     "kick",
+     "palm",
+     "whiff",
+     "hurt",
+     "win",
+     "ko"
+    ],
+    "format": "png8",
+    "atlas": "cat"
+   },
+   "styleTags": [
+    "chibi",
+    "sticker",
+    "side-view"
+   ],
+   "provenance": {
+    "tool": "codex-lobster",
+    "mode": "edit",
+    "job": "job_mvgbbqz209fc61063393a2ac",
+    "reference": [
+     "twinstrike.ref.cat.identity"
+    ],
+    "pack": "art/tools/pack_atlas.py（art/atlas.json）"
+   },
+   "derivedFrom": "twinstrike.ref.cat.identity",
+   "keywords": [
+    "cat",
+    "貓",
+    "hero",
+    "主角",
+    "jab",
+    "kick",
+    "palm",
+    "出拳",
+    "踢",
+    "姿勢",
+    "poses"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:4dce3b7d0f77b5cb22b6189d24e77ce9463ce130632c5fb267b6dbeb96d47080",
+   "game": "TwinStrike"
+  },
+  {
+   "id": "twinstrike.enm.mouse",
+   "kind": "sprite-sheet",
+   "status": "shipped",
+   "name": "老鼠（步兵）3 格",
+   "files": {
+    "raw": [
+     "TwinStrike/art/raw/mouse_poses.png",
+     "TwinStrike/art/raw/mouse_poses_t1.png"
+    ],
+    "prompt": [
+     "TwinStrike/art/prompts/enemy_mouse.txt",
+     "TwinStrike/art/prompts/_history/enemy_mouse_t1.txt"
+    ],
+    "shipped": [
+     "TwinStrike/game/src/assets/enemies.png",
+     "TwinStrike/game/src/assets/enemies.json"
+    ]
+   },
+   "technical": {
+    "cell": [
+     288,
+     224
+    ],
+    "anchor": [
+     0.5,
+     0.95
+    ],
+    "frames": [
+     "mouse.run_a",
+     "mouse.run_b",
+     "mouse.hit"
+    ],
+    "format": "png8",
+    "atlas": "enemies"
+   },
+   "styleTags": [
+    "chibi",
+    "sticker",
+    "side-view"
+   ],
+   "provenance": {
+    "tool": "codex-lobster",
+    "mode": "edit",
+    "job": "job_mvhh4geabe6870743a626670",
+    "reference": [
+     "twinstrike.ref.cat.identity"
+    ],
+    "pack": "art/tools/pack_atlas.py"
+   },
+   "keywords": [
+    "mouse",
+    "老鼠",
+    "grunt",
+    "步兵",
+    "enemy",
+    "敵人",
+    "run"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:a01b7f21d977dc61787e24083ee208e16a714d4c015232692817445b78d5280a",
+   "game": "TwinStrike"
+  },
+  {
+   "id": "twinstrike.enm.squirrel",
+   "kind": "sprite-sheet",
+   "status": "shipped",
+   "name": "飛鼠（疾兵）3 格（採用 t2）",
+   "files": {
+    "raw": [
+     "TwinStrike/art/raw/squirrel_poses.png",
+     "TwinStrike/art/raw/squirrel_poses_t2.png"
+    ],
+    "prompt": [
+     "TwinStrike/art/prompts/enemy_squirrel.txt",
+     "TwinStrike/art/prompts/_history/enemy_squirrel_t2.txt"
+    ],
+    "shipped": [
+     "TwinStrike/game/src/assets/enemies.png",
+     "TwinStrike/game/src/assets/enemies.json"
+    ]
+   },
+   "technical": {
+    "cell": [
+     288,
+     224
+    ],
+    "anchor": [
+     0.5,
+     0.95
+    ],
+    "frames": [
+     "squirrel.glide_a",
+     "squirrel.glide_b",
+     "squirrel.hit"
+    ],
+    "format": "png8",
+    "atlas": "enemies"
+   },
+   "styleTags": [
+    "chibi",
+    "sticker",
+    "side-view"
+   ],
+   "provenance": {
+    "tool": "codex-lobster",
+    "mode": "edit",
+    "job": "job_mvhjf8c238b19b7283926006",
+    "reference": [
+     "twinstrike.ref.cat.identity",
+     "twinstrike.enm.mouse"
+    ],
+    "pack": "art/tools/pack_atlas.py"
+   },
+   "note": "t2 的 prompt 加「粗外框、平塗、無漸層」才與貓、老鼠一致",
+   "keywords": [
+    "squirrel",
+    "飛鼠",
+    "runner",
+    "疾兵",
+    "glide",
+    "enemy",
+    "敵人"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:a01b7f21d977dc61787e24083ee208e16a714d4c015232692817445b78d5280a",
+   "game": "TwinStrike"
+  },
+  {
+   "id": "twinstrike.enm.squirrel.t1",
+   "kind": "sprite-sheet",
+   "status": "rejected-take",
+   "name": "飛鼠 t1（未採用：貼紙感不足）",
+   "files": {
+    "raw": [
+     "TwinStrike/art/raw/squirrel_poses_t1.png"
+    ],
+    "prompt": [
+     "TwinStrike/art/prompts/_history/enemy_squirrel_t1.txt"
+    ],
+    "shipped": []
+   },
+   "provenance": {
+    "tool": "codex-lobster",
+    "job": "job_mvhh5ikp7b9724c0d4ad91c6",
+    "reference": [
+     "twinstrike.ref.cat.identity"
+    ]
+   },
+   "keywords": [
+    "squirrel",
+    "飛鼠"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:965515e705676c8248451e6f8d13fd35ce9245bcb007948b05fea2b5785f53e6",
+   "game": "TwinStrike"
+  },
+  {
+   "id": "twinstrike.enm.tanuki",
+   "kind": "sprite-sheet",
+   "status": "shipped",
+   "name": "狸貓（重甲 / 頭目）4 格",
+   "files": {
+    "raw": [
+     "TwinStrike/art/raw/tanuki_poses.png",
+     "TwinStrike/art/raw/tanuki_poses_t1.png"
+    ],
+    "prompt": [
+     "TwinStrike/art/prompts/enemy_tanuki.txt",
+     "TwinStrike/art/prompts/_history/enemy_tanuki_t1.txt"
+    ],
+    "shipped": [
+     "TwinStrike/game/src/assets/enemies.png",
+     "TwinStrike/game/src/assets/enemies.json"
+    ]
+   },
+   "technical": {
+    "cell": [
+     288,
+     224
+    ],
+    "anchor": [
+     0.5,
+     0.95
+    ],
+    "frames": [
+     "tanuki.walk_a",
+     "tanuki.walk_b",
+     "tanuki.block",
+     "tanuki.hit"
+    ],
+    "format": "png8",
+    "atlas": "enemies"
+   },
+   "styleTags": [
+    "chibi",
+    "sticker",
+    "side-view"
+   ],
+   "provenance": {
+    "tool": "codex-lobster",
+    "mode": "edit",
+    "job": "job_mvhh6kps9ba5539045959671",
+    "reference": [
+     "twinstrike.ref.cat.identity"
+    ],
+    "pack": "art/tools/pack_atlas.py"
+   },
+   "note": "楓葉為橘紅，無綠色頭飾（RULE-ART-TW-TABOO）",
+   "keywords": [
+    "tanuki",
+    "狸貓",
+    "brute",
+    "重甲",
+    "boss",
+    "頭目",
+    "enemy",
+    "敵人",
+    "block"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:a01b7f21d977dc61787e24083ee208e16a714d4c015232692817445b78d5280a",
+   "game": "TwinStrike"
+  },
+  {
+   "id": "twinstrike.bg.dojo",
+   "kind": "background",
+   "status": "shipped",
+   "name": "道場背景（直版 720×1280）",
+   "files": {
+    "raw": [
+     "TwinStrike/art/raw/bg_dojo.png",
+     "TwinStrike/art/raw/bg_dojo_t1.png"
+    ],
+    "prompt": [
+     "TwinStrike/art/prompts/bg_dojo.txt",
+     "TwinStrike/art/prompts/_history/bg_dojo_t1.txt"
+    ],
+    "shipped": [
+     "TwinStrike/game/src/assets/bg_dojo.webp"
+    ]
+   },
+   "technical": {
+    "size": [
+     720,
+     1280
+    ],
+    "format": "webp",
+    "floorLineY": 876
+   },
+   "styleTags": [
+    "sticker",
+    "flat-color",
+    "interior"
+   ],
+   "provenance": {
+    "tool": "codex-lobster",
+    "mode": "edit",
+    "job": "job_mvhk48c5f2095288f19c2fec",
+    "reference": [
+     "twinstrike.ref.cat.identity"
+    ],
+    "postprocess": "art/tools/bake_bg.py（裁切、地板線對齊腳底）"
+   },
+   "keywords": [
+    "dojo",
+    "道場",
+    "background",
+    "背景",
+    "interior",
+    "室內",
+    "wood",
+    "木地板"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:3a3dd33fdb19b5723827a9f3bf3ae419649b926b3bd058c2f9c4d38178abf331",
+   "game": "TwinStrike"
+  },
+  {
+   "id": "twinstrike.fx.sheet",
+   "kind": "fx-sheet",
+   "status": "shipped",
+   "name": "特效貼紙 6 格",
+   "files": {
+    "raw": [
+     "TwinStrike/art/raw/fx_sheet.png",
+     "TwinStrike/art/raw/fx_sheet_t1.png"
+    ],
+    "prompt": [
+     "TwinStrike/art/prompts/fx_sheet.txt",
+     "TwinStrike/art/prompts/_history/fx_sheet_t1.txt"
+    ],
+    "shipped": [
+     "TwinStrike/game/src/assets/fx.png",
+     "TwinStrike/game/src/assets/fx.json"
+    ]
+   },
+   "technical": {
+    "cell": [
+     160,
+     160
+    ],
+    "anchor": [
+     0.5,
+     0.5
+    ],
+    "frames": [
+     "fx.paw",
+     "fx.star",
+     "fx.fur",
+     "fx.leaf",
+     "fx.sweat",
+     "fx.birds"
+    ],
+    "format": "png8",
+    "atlas": "fx"
+   },
+   "styleTags": [
+    "sticker",
+    "thick-outline"
+   ],
+   "provenance": {
+    "tool": "codex-lobster",
+    "mode": "edit",
+    "job": "job_mvhlp48ve86e98bb21bd3997",
+    "reference": [
+     "twinstrike.ref.cat.identity"
+    ],
+    "pack": "art/tools/pack_atlas.py（assign: nearest、center）"
+   },
+   "note": "肉球衝擊線越過等分線 → 切格依最近大區塊歸屬",
+   "keywords": [
+    "fx",
+    "特效",
+    "paw",
+    "肉球",
+    "star",
+    "星星",
+    "fur",
+    "leaf",
+    "葉子",
+    "sweat",
+    "汗",
+    "birds",
+    "暈眩",
+    "sticker",
+    "貼紙"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:674be06322a794471f4f1c0809b7f031a0f9dae405e697483352898b20fc5bbf",
+   "game": "TwinStrike"
+  },
+  {
+   "id": "twinstrike.keyart.title",
+   "kind": "key-art",
+   "status": "shipped",
+   "name": "主視覺（標題畫面，採用 t2a）",
+   "files": {
+    "raw": [
+     "TwinStrike/art/raw/key_art.png",
+     "TwinStrike/art/raw/key_art_t2a.png"
+    ],
+    "prompt": [
+     "TwinStrike/art/prompts/key_art.txt",
+     "TwinStrike/art/prompts/_history/key_art_t2.txt"
+    ],
+    "shipped": [
+     "TwinStrike/game/src/assets/title_keyart.webp"
+    ]
+   },
+   "technical": {
+    "size": [
+     720,
+     1280
+    ],
+    "format": "webp",
+    "sourceSize": [
+     1672,
+     941
+    ],
+    "logoSafeTop": 0.25
+   },
+   "provenance": {
+    "tool": "codex-lobster",
+    "mode": "edit",
+    "job": "job_mvhpnxoxc065daf8a5ddbc00",
+    "reference": [
+     "twinstrike.ref.cat.identity",
+     "twinstrike.enm.mouse",
+     "twinstrike.enm.squirrel",
+     "twinstrike.enm.tanuki",
+     "twinstrike.bg.dojo",
+     "twinstrike.keyart.t1"
+    ],
+    "postprocess": "art/tools/bake_keyart.py（直版裁切）"
+   },
+   "keywords": [
+    "key art",
+    "主視覺",
+    "title",
+    "標題",
+    "logo",
+    "cast",
+    "全員"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:af011d2068ee989d27d870eaa12f58b6f7bb56c8f0b060df7f44d1a634a33a12",
+   "game": "TwinStrike"
+  },
+  {
+   "id": "twinstrike.keyart.t1",
+   "kind": "key-art",
+   "status": "rejected-take",
+   "name": "主視覺 t1（未採用：Logo 空間不足）",
+   "files": {
+    "raw": [
+     "TwinStrike/art/raw/key_art_t1.png"
+    ],
+    "prompt": [
+     "TwinStrike/art/prompts/_history/key_art_t1.txt"
+    ],
+    "shipped": []
+   },
+   "provenance": {
+    "tool": "codex-lobster",
+    "job": "job_mvhp8zoea191ae10d2868c68",
+    "reference": [
+     "twinstrike.ref.cat.identity"
+    ]
+   },
+   "keywords": [
+    "key art",
+    "主視覺"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:c96177f2518c984c52fb7b01764a6b3cf012e8154b698d9a109f96caeca1cde5",
+   "game": "TwinStrike"
+  },
+  {
+   "id": "twinstrike.keyart.t2b",
+   "kind": "key-art",
+   "status": "rejected-take",
+   "name": "主視覺 t2b（未採用）",
+   "files": {
+    "raw": [
+     "TwinStrike/art/raw/key_art_t2b.png"
+    ],
+    "prompt": [
+     "TwinStrike/art/prompts/_history/key_art_t2.txt"
+    ],
+    "shipped": []
+   },
+   "provenance": {
+    "tool": "codex-lobster",
+    "job": "job_mvhpnxoxc065daf8a5ddbc00#1",
+    "reference": [
+     "twinstrike.ref.cat.identity"
+    ]
+   },
+   "keywords": [
+    "key art",
+    "主視覺"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:295d36d91a1995e3ef21730734bb3633d8773a40b2a4509a8a10cf734d52610f",
+   "game": "TwinStrike"
+  },
+  {
+   "id": "twinstrike.prc.placeholder-art",
+   "kind": "procedural",
+   "status": "procedural",
+   "name": "佔位美術（Canvas 2D 程式繪製 atlas，0 bytes）",
+   "files": {
+    "raw": [],
+    "prompt": [],
+    "shipped": [
+     "TwinStrike/game/src/render/placeholderArt.js"
+    ]
+   },
+   "recipe": "規格（gdd/02 §3.3）列出的每一格都用 Canvas 2D 畫進同一張 atlas，幀名、格尺寸、錨點與正式圖相同，可無痛替換",
+   "reusePolicy": "reusable",
+   "keywords": [
+    "placeholder",
+    "佔位",
+    "procedural",
+    "程式繪製",
+    "canvas",
+    "atlas"
+   ],
+   "contentHash": "sha256:c960c185bf3efd256fd73be3f7401ef8122eb2e0bd83e250e5bc8dfe65fb061c",
+   "game": "TwinStrike"
+  },
+  {
+   "id": "twinstrike.aud.sfx",
+   "kind": "audio-recipe",
+   "status": "shipped",
+   "name": "打擊音效與 UI 音效合成配方",
+   "files": {
+    "raw": [],
+    "prompt": [],
+    "shipped": [
+     "TwinStrike/game/src/audio/sfx.js"
+    ]
+   },
+   "recipe": "RECIPES：perfect / great / good / whiff / hurt / block / shieldBreak / heal / jab / kick / palm / crack / boom / swish / echo / shimmer / accent / 敵人叫聲 / UI；osc + noise + 濾波 + 包絡，0 bytes",
+   "reusePolicy": "reusable",
+   "keywords": [
+    "sfx",
+    "音效",
+    "hit",
+    "打擊",
+    "punch",
+    "kick",
+    "web audio",
+    "合成"
+   ],
+   "contentHash": "sha256:9f095ce95c6bb7f6854f8add05c171ccfb3f90a46ab3ceeae14ca620500a6141",
+   "game": "TwinStrike"
+  },
+  {
+   "id": "twinstrike.aud.keysound",
+   "kind": "audio-recipe",
+   "status": "shipped",
+   "name": "keysound（命中音跟 BGM 和弦）與拍點吸附",
+   "files": {
+    "raw": [],
+    "prompt": [],
+    "shipped": [
+     "TwinStrike/game/src/audio/keysound.js",
+     "TwinStrike/game/src/audio/hitFx.js"
+    ]
+   },
+   "recipe": "命中音高取當下和弦音（BASS [0,0,7,9]），依樂句堆疊層數；按下即預判並吸附到最近拍點（音訊時鐘排程）",
+   "reusePolicy": "reusable",
+   "keywords": [
+    "keysound",
+    "音game",
+    "rhythm",
+    "節奏",
+    "beat snap",
+    "拍點",
+    "chord",
+    "和弦"
+   ],
+   "contentHash": "sha256:9e6faa8b74c62a6951afac3cae60626379a3c13ff3dfa7d56a7d0eb7cc8b4f21",
+   "game": "TwinStrike"
+  },
+  {
+   "id": "twinstrike.aud.bgm",
+   "kind": "audio-recipe",
+   "status": "shipped",
+   "name": "程序化 BGM（照譜面拍長排程）",
+   "files": {
+    "raw": [],
+    "prompt": [],
+    "shipped": [
+     "TwinStrike/game/src/audio/bgm.js"
+    ]
+   },
+   "recipe": "taiko / shaker / clap / bass / arp 分層，依 combo 階段疊加；lowpass 匯流排；拍長取自 sim 段落腳本",
+   "reusePolicy": "reusable",
+   "keywords": [
+    "bgm",
+    "音樂",
+    "procedural",
+    "程序化",
+    "layered",
+    "分層",
+    "taiko"
+   ],
+   "contentHash": "sha256:9242cd9fd7f757d81fc202c5223d0e82eb69836e9735eddc0aaa680f37b1bce3",
+   "game": "TwinStrike"
+  },
+  {
+   "id": "twinstrike.scene.dust",
+   "kind": "background",
+   "status": "template",
+   "name": "範本地表 tile 複本（未使用）",
+   "files": {
+    "raw": [],
+    "prompt": [],
+    "shipped": [
+     "TwinStrike/game/src/assets/terrain/dust.png"
+    ]
+   },
+   "derivedFrom": "shared.tpl.terrain.dust",
+   "reusePolicy": "template",
+   "note": "從範本複製而來；main.js 沒有載入 terrain，不進 dist",
+   "keywords": [
+    "terrain",
+    "地表",
+    "dust",
+    "template"
+   ],
+   "contentHash": "sha256:ec69f3961bc1f1260b5a28540cad0209847ea59cf72ee31b5761798c12783dd1",
+   "game": "TwinStrike"
+  }
+ ],
+ "promptBlocks": {
+  "_note": "原文取自 SwarmDuel/art/prompts 與 tools/anim_prompts.py；{大括號} 為佔位符。",
+  "header": "Generate one image with your image generation tool. Do not write any files.",
+  "styleLock": "Style lock (shared by every asset in this game): original 16-bit pixel art for a top-down 3/4 overhead action game, chunky clean pixel clusters, 1-pixel dark contour, limited palette with 3 tones per material (shadow / mid / highlight), light from the upper-left, bold saturated Saturday-morning-cartoon colors aimed at a North American audience. Original design only: no Pokemon, no existing franchise characters. Actual transparent background (alpha), NOT a painted checkerboard. No text, no labels, no ground plane, no cast shadow, no gradients, no smooth airbrush shading, no blur.",
+  "identitySheet": "Generate one image with your image generation tool. Do not write any files.\n\nCreate a character identity reference sheet for an original {ROLE: game hero | swarm enemy}: \"{NAME}\", {CHARACTER_DESC}.\nShow exactly three full-body poses of the SAME character side by side, same scale, evenly spaced{, standing idle}: (1) facing the camera / down, (2) facing right, (3) facing away / up.\nTarget native game frame after processing: about {W}x{H} pixels per pose with feet at bottom-center{, so draw with big readable pixel blocks}.\nStyle lock (shared by every asset in this game): original 16-bit pixel art for a top-down 3/4 overhead action game, chunky clean pixel clusters, 1-pixel dark contour, limited palette with 3 tones per material (shadow / mid / highlight), light from the upper-left, bold saturated Saturday-morning-cartoon colors aimed at a North American audience. Original design only: no Pokemon, no existing franchise characters. Actual transparent background (alpha), NOT a painted checkerboard. No text, no labels, no ground plane, no cast shadow, no gradients, no smooth airbrush shading, no blur.",
+  "nativeLowResTail": "Draw it as TRUE LOW-RESOLUTION pixel art: each pose is exactly 32x40 art pixels, and the whole image is upscaled with nearest-neighbour so every art pixel is a clean, equal, hard-edged square block (about 16x16 screen pixels per art pixel). No sub-pixel detail, no anti-aliasing, no gradients, no smooth curves. 1-art-pixel dark outline around the whole silhouette. Limited palette (max 16 colors). Light from upper-left. Actual transparent background (alpha). No text, labels, ground, or shadow.",
+  "nativeSheet": "Generate one image with your image generation tool. Do not write any files.\n\nCreate a sprite reference sheet for an original {ROLE: top-down 3/4 action game hero | swarm enemy}: \"{NAME}\", {CHARACTER_DESC}. Show exactly three {standing idle }poses side by side with wide transparent gaps: (1) facing the camera, (2) facing right, (3) facing away.\nDraw it as TRUE LOW-RESOLUTION pixel art: each pose is exactly {W}x{H} art pixels, and the whole image is upscaled with nearest-neighbour so every art pixel is a clean, equal, hard-edged square block (about 16x16 screen pixels per art pixel). No sub-pixel detail, no anti-aliasing, no gradients, no smooth curves. 1-art-pixel dark outline around the whole silhouette. Limited palette (max 16 colors). Light from upper-left. Actual transparent background (alpha). No text, labels, ground, or shadow.",
+  "animStrip": "Generate one image with your image generation tool. Do not write any files.\n\nDraw an animation strip for the original game character {CHARACTER_DESC}.\nAttached image 1 is the accepted identity sheet (front, right side, back): copy its exact species, proportions, face, colors, accessories, outline and pixel-art style. Attached image 2 is the identity pose closest to the requested facing.{IF_WALK_AND_HAS_IDLE: Attached image 3 is the accepted Idle frame for this exact facing: keep its camera, size and proportions.}\n\nAction: {ANIM}. Facing: {FACING}. Every frame faces the same direction.\nShow exactly {N} frames of the SAME character in ONE horizontal row, left to right, same scale, feet on the same ground line, separated by wide transparent gaps:\n{BEATS: - frame i: ...}\nOnly the limbs/body described change between frames; head size, colors, scarf/suit details and outline stay identical.{IF_SASQ_WALK_AND_HAS_IDLE: The hanging scarf tail stays on the same side of the body as in attached image 3.}\n\nDraw it as TRUE LOW-RESOLUTION pixel art: each frame is exactly {W}x{H} art pixels, and the whole image is upscaled with nearest-neighbour so every art pixel is a clean, equal, hard-edged square block (about 16x16 screen pixels per art pixel). No sub-pixel detail, no anti-aliasing, no gradients, no smooth curves. 1-art-pixel dark outline around the whole silhouette. Limited palette (max 16 colors). Light from upper-left. Actual transparent background (alpha). No text, labels, frame numbers, grid, ground, or shadow.",
+  "animBeats": {
+   "Idle": {
+    "frames": 2,
+    "beats": [
+     "frame 1: relaxed standing pose, arms down",
+     "frame 2: the same standing pose breathing in: head and shoulders exactly 1 art pixel lower, arms 1 art pixel further from the body; feet do not move"
+    ]
+   },
+   "Walk": {
+    "frames": 4,
+    "beats": [
+     "frame 1: contact pose, left foot forward and right foot back, arms swinging opposite to the legs",
+     "frame 2: passing pose, legs together under the body, body 1 art pixel higher",
+     "frame 3: contact pose, right foot forward and left foot back (mirror of the frame 1 leg/arm positions)",
+     "frame 4: passing pose, legs together under the body, body 1 art pixel higher"
+    ]
+   }
+  },
+  "facing": {
+   "down": "facing the camera (front view, viewer sees the face)",
+   "down_right": "three-quarter FRONT view turned toward the viewer's right (face visible, body angled 45 degrees to the right, toward the bottom-right of the screen)",
+   "right": "side profile facing the viewer's right",
+   "up_right": "three-quarter BACK view: the character walks away toward the top-right of the screen, body rotated 45 degrees, so we see its back AND its right side (right arm and right shoulder fully visible, left arm mostly hidden behind the body, face hidden). Every frame keeps exactly this rotation and size",
+   "up": "facing away from the camera (back view, face not visible)"
+  },
+  "nearestRef": {
+   "down": "down",
+   "down_right": "down",
+   "right": "right",
+   "up_right": "up",
+   "up": "up"
+  },
+  "characterDesc": {
+   "sasq": "\"Sasq\", a young friendly Bigfoot with chestnut-brown shaggy fur, tan face, big eyes, a red-and-black plaid scarf, chunky feet, chibi proportions (head ~40% of height)",
+   "greyling": "\"Greyling\", a tiny grey alien with a big round head, huge glossy black eyes, a short antenna with a lime-green glowing tip, and a small silver suit with a jetpack"
+  },
+  "icon": "Generate one image with your image generation tool. Do not write any files.\n\nCreate one isolated pixel-art game icon: {ICON_SUBJECT}\nChunky 16-bit pixel art game UI icon in the style of mobile roguelite survivor games (bold, saturated, high contrast), 2-pixel dark outline, 3 tones per material, upper-left light, readable at 48x48 pixels. Single centered object with generous transparent padding. Actual transparent background (alpha), not a checkerboard. No text, no letters, no numbers, no frame, no background shape.",
+  "iconSubjects": {
+   "pinecone": "a brown pinecone mid-throw with two small motion lines",
+   "campfire": "a small ring of three orange flames orbiting in a circle",
+   "static_fur": "a tuft of brown fur crackling with cyan electric sparks",
+   "p_speed": "a big furry brown foot with a green speed swoosh",
+   "p_might": "a clenched big furry brown fist with a white impact star",
+   "p_magnet": "a glowing lime-green ectoplasm orb being pulled by a horseshoe magnet",
+   "p_cooldown": "a silver camping stopwatch with a lime-green arrow circling it",
+   "p_hp": "a red heart made of thick shaggy fur",
+   "snack": "a grilled hot dog with mustard on a stick",
+   "bounty": "a gold sheriff star badge with a shine",
+   "skull": "a small grey alien skull with big black eye sockets",
+   "ecto": "a single glowing lime-green ectoplasm droplet orb"
+  },
+  "prop": "Generate one image with your image generation tool. Do not write any files.\n\nCreate one isolated 2D game prop: {PROP_DESC}. Single object only, centered, bottom-center foot anchor at the base of the {BASE_PART}, full object inside the frame with safe transparent padding.\nTarget native art frame after processing: {W}x{H} pixels.\nStyle lock (shared by every asset in this game): original 16-bit pixel art for a top-down 3/4 overhead action game, chunky clean pixel clusters, 1-pixel dark contour, limited palette with 3 tones per material (shadow / mid / highlight), light from the upper-left, bold saturated Saturday-morning-cartoon colors aimed at a North American audience. Original design only: no Pokemon, no existing franchise characters. Actual transparent background (alpha), NOT a painted checkerboard. No text, no labels, no ground plane, no cast shadow, no gradients, no smooth airbrush shading, no blur.",
+  "keyArt": "Generate one image with your image generation tool. Do not write any files.\n\nCreate a 16:9 pixel-art key art scene for an original {GENRE} set in {SETTING}: {HERO_DESC} stands center, surrounded by {ENEMY_SWARM_DESC}, {SCENE_PROPS}. Same 16-bit pixel art style: chunky pixel clusters, 1-pixel dark contours, limited palette, {LIGHTING}, bold Saturday-morning-cartoon colors for a North American audience. Leave empty dark sky space at the top for a logo to be added later. No text, no letters, no logo, no UI.",
+  "glossarySuffixes": {
+   "uiAsset": "game UI asset, isolated on transparent background, centered, high readability at small size",
+   "characterSheet": "full body character design, front view, clean silhouette, consistent style sheet",
+   "negativeCasino": "no slot machine, no casino chips, no playing-card suits, no dice, no jackpot text",
+   "negativeText": "no text"
+  }
+ }
+}

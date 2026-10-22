@@ -8,9 +8,10 @@
 //   cd <Game>/game && npm run audit                     the game this folder belongs to
 // Exit 1 when a must-level check fails; should-level findings are printed as warnings.
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
-import { basename, extname, join, relative } from 'node:path';
+import { extname, join, relative } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { loadRules } from './rules.mjs';
+import { fileHash, loadManifests } from './index-build.mjs';
 
 const TEMPLATES = join('.claude', 'skills', 'lite-skillgame-stack', 'templates');
 const FAIL_MARK = /❌|✘|\*\*未通過\*\*|\bFAIL\b/;
@@ -162,14 +163,19 @@ export async function auditGame(root, game) {
     if (!ok) add('RULE-KB-CITED', 'should', false, `知識庫引用：${stage}`, `README / gdd 沒有連到 ${pages.map(p => `knowledge-base/${p}`).join(' 或 ')}`);
   }
 
-  // RULE-ASSET-REGISTER (should): shipped media is registered in the game's manifest or the KB asset index
+  // RULE-ASSET-REGISTER (should): shipped media is registered in an art/manifest.json (this game's, or shared/recipes/
+  // for an unchanged template copy: same content hash counts). knowledge-base/index/assets.json is built from them.
   const exts = rules.value('RULE-ASSET-REGISTER', 'registered');
-  const registry = [join(dir, 'art', 'manifest.json'), join(root, 'knowledge-base', 'assets', 'asset-index.json'), join(dir, 'art', 'raw', 'LOG.md'), join(dir, 'art', 'atlas.json')]
-    .map(read).filter(Boolean).join('\n');
+  const { manifests } = loadManifests(root);
+  const paths = new Set(), hashes = new Set();
+  for (const { m } of manifests) for (const a of m.assets) {
+    for (const f of Object.values(a.files).flat()) paths.add(m.pathBase + f.split('#')[0]);
+    if (a.contentHash) hashes.add(a.contentHash);
+  }
   const media = [...walk(join(dir, 'game', 'src', 'assets')), ...walk(join(dir, 'game', 'public'))].filter(f => exts.includes(extname(f).toLowerCase()));
-  const unregistered = media.filter(f => !registry.includes(basename(f)) && !registry.includes(`/${basename(f, extname(f))}"`));   // atlas.json lists outputs without extension
+  const unregistered = media.filter(f => !paths.has(relative(root, f).replace(/\\/g, '/')) && !hashes.has(fileHash(f)));
   if (unregistered.length) add('RULE-ASSET-REGISTER', 'should', false, `資產登錄（${media.length - unregistered.length}/${media.length}）`,
-    `未登錄：${unregistered.slice(0, 5).map(f => relative(join(dir, 'game'), f).replace(/\\/g, '/')).join('、')}${unregistered.length > 5 ? '…' : ''}（寫進 art/manifest.json，見 knowledge-base/10_asset-library.md）`);
+    `未登錄：${unregistered.slice(0, 5).map(f => relative(join(dir, 'game'), f).replace(/\\/g, '/')).join('、')}${unregistered.length > 5 ? '…' : ''}（寫進 ${game}/art/manifest.json 後跑 node shared/tools/index-build.mjs，見 knowledge-base/10_asset-library.md）`);
   return results;
 }
 

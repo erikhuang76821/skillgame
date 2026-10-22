@@ -1,0 +1,747 @@
+{
+  "schemaVersion": 1,
+  "game": "TwinStrike",
+  "pathBase": "TwinStrike/",
+  "about": "TwinStrike 資產的唯一來源（knowledge-base/decisions/2026-10-21-kb-asset-architecture.md §5.3）。改了圖就改這裡；中央索引 knowledge-base/index/assets.json 由 node shared/tools/index-build.mjs 產生。生成紀錄的敘述版見 art/raw/LOG.md。",
+  "assets": [
+    {
+      "id": "twinstrike.ref.cat.identity",
+      "kind": "reference",
+      "status": "raw-only",
+      "name": "貓師父身分參考圖（採用 t1b）",
+      "files": {
+        "raw": [
+          "art/raw/cat_identity.png",
+          "art/raw/cat_identity_t1b.png",
+          "art/raw/cat_identity_t1b_alpha.png"
+        ],
+        "prompt": [
+          "art/prompts/hero_cat_identity.txt",
+          "art/prompts/_history/hero_cat_identity_t1.txt"
+        ],
+        "shipped": []
+      },
+      "technical": {
+        "size": [
+          1536,
+          1024
+        ],
+        "format": "png"
+      },
+      "styleTags": [
+        "chibi",
+        "sticker",
+        "thick-outline",
+        "flat-color"
+      ],
+      "provenance": {
+        "tool": "picanywhere",
+        "job": "job_20261019-203943_326#1",
+        "postprocess": "art/tools/dechecker.py（畫出來的棋盤格去背）"
+      },
+      "note": "所有角色、背景、特效、主視覺生成時的風格附圖",
+      "keywords": [
+        "cat",
+        "貓",
+        "貓師父",
+        "hero",
+        "主角",
+        "identity",
+        "身分圖",
+        "kung fu",
+        "功夫"
+      ],
+      "reusePolicy": "game-only",
+      "contentHash": "sha256:c676c454fc60383db19f0294e8a481bcf1aa775d36383ef650610b4d7a025861"
+    },
+    {
+      "id": "twinstrike.ref.cat.identity.t1a",
+      "kind": "reference",
+      "status": "rejected-take",
+      "name": "貓師父身分圖 t1a（未採用）",
+      "files": {
+        "raw": [
+          "art/raw/cat_identity_t1a.png",
+          "art/raw/cat_identity_t1a_alpha.png"
+        ],
+        "prompt": [
+          "art/prompts/_history/hero_cat_identity_t1.txt"
+        ],
+        "shipped": []
+      },
+      "technical": {
+        "size": [
+          1536,
+          1024
+        ],
+        "format": "png"
+      },
+      "provenance": {
+        "tool": "picanywhere",
+        "job": "job_20261019-203943_326#0"
+      },
+      "keywords": [
+        "cat",
+        "貓",
+        "identity"
+      ],
+      "reusePolicy": "game-only",
+      "contentHash": "sha256:2a109fed021ec899d0c08707d3975603b3529a2de6e738e9d70cc50d94236b51"
+    },
+    {
+      "id": "twinstrike.chr.cat",
+      "kind": "sprite-sheet",
+      "status": "shipped",
+      "name": "貓師父 9 格姿勢",
+      "files": {
+        "raw": [
+          "art/raw/cat_poses_t1.png"
+        ],
+        "prompt": [
+          "art/prompts/hero_cat_poses.txt",
+          "art/prompts/_history/hero_cat_poses_t1.txt"
+        ],
+        "shipped": [
+          "game/src/assets/cat.png",
+          "game/src/assets/cat.json"
+        ]
+      },
+      "technical": {
+        "cell": [
+          384,
+          256
+        ],
+        "anchor": [
+          0.5,
+          0.95
+        ],
+        "frames": [
+          "idle_a",
+          "idle_b",
+          "jab",
+          "kick",
+          "palm",
+          "whiff",
+          "hurt",
+          "win",
+          "ko"
+        ],
+        "format": "png8",
+        "atlas": "cat"
+      },
+      "styleTags": [
+        "chibi",
+        "sticker",
+        "side-view"
+      ],
+      "provenance": {
+        "tool": "codex-lobster",
+        "mode": "edit",
+        "job": "job_mvgbbqz209fc61063393a2ac",
+        "reference": [
+          "twinstrike.ref.cat.identity"
+        ],
+        "pack": "art/tools/pack_atlas.py（art/atlas.json）"
+      },
+      "derivedFrom": "twinstrike.ref.cat.identity",
+      "keywords": [
+        "cat",
+        "貓",
+        "hero",
+        "主角",
+        "jab",
+        "kick",
+        "palm",
+        "出拳",
+        "踢",
+        "姿勢",
+        "poses"
+      ],
+      "reusePolicy": "game-only",
+      "contentHash": "sha256:4dce3b7d0f77b5cb22b6189d24e77ce9463ce130632c5fb267b6dbeb96d47080"
+    },
+    {
+      "id": "twinstrike.enm.mouse",
+      "kind": "sprite-sheet",
+      "status": "shipped",
+      "name": "老鼠（步兵）3 格",
+      "files": {
+        "raw": [
+          "art/raw/mouse_poses.png",
+          "art/raw/mouse_poses_t1.png"
+        ],
+        "prompt": [
+          "art/prompts/enemy_mouse.txt",
+          "art/prompts/_history/enemy_mouse_t1.txt"
+        ],
+        "shipped": [
+          "game/src/assets/enemies.png",
+          "game/src/assets/enemies.json"
+        ]
+      },
+      "technical": {
+        "cell": [
+          288,
+          224
+        ],
+        "anchor": [
+          0.5,
+          0.95
+        ],
+        "frames": [
+          "mouse.run_a",
+          "mouse.run_b",
+          "mouse.hit"
+        ],
+        "format": "png8",
+        "atlas": "enemies"
+      },
+      "styleTags": [
+        "chibi",
+        "sticker",
+        "side-view"
+      ],
+      "provenance": {
+        "tool": "codex-lobster",
+        "mode": "edit",
+        "job": "job_mvhh4geabe6870743a626670",
+        "reference": [
+          "twinstrike.ref.cat.identity"
+        ],
+        "pack": "art/tools/pack_atlas.py"
+      },
+      "keywords": [
+        "mouse",
+        "老鼠",
+        "grunt",
+        "步兵",
+        "enemy",
+        "敵人",
+        "run"
+      ],
+      "reusePolicy": "game-only",
+      "contentHash": "sha256:a01b7f21d977dc61787e24083ee208e16a714d4c015232692817445b78d5280a"
+    },
+    {
+      "id": "twinstrike.enm.squirrel",
+      "kind": "sprite-sheet",
+      "status": "shipped",
+      "name": "飛鼠（疾兵）3 格（採用 t2）",
+      "files": {
+        "raw": [
+          "art/raw/squirrel_poses.png",
+          "art/raw/squirrel_poses_t2.png"
+        ],
+        "prompt": [
+          "art/prompts/enemy_squirrel.txt",
+          "art/prompts/_history/enemy_squirrel_t2.txt"
+        ],
+        "shipped": [
+          "game/src/assets/enemies.png",
+          "game/src/assets/enemies.json"
+        ]
+      },
+      "technical": {
+        "cell": [
+          288,
+          224
+        ],
+        "anchor": [
+          0.5,
+          0.95
+        ],
+        "frames": [
+          "squirrel.glide_a",
+          "squirrel.glide_b",
+          "squirrel.hit"
+        ],
+        "format": "png8",
+        "atlas": "enemies"
+      },
+      "styleTags": [
+        "chibi",
+        "sticker",
+        "side-view"
+      ],
+      "provenance": {
+        "tool": "codex-lobster",
+        "mode": "edit",
+        "job": "job_mvhjf8c238b19b7283926006",
+        "reference": [
+          "twinstrike.ref.cat.identity",
+          "twinstrike.enm.mouse"
+        ],
+        "pack": "art/tools/pack_atlas.py"
+      },
+      "note": "t2 的 prompt 加「粗外框、平塗、無漸層」才與貓、老鼠一致",
+      "keywords": [
+        "squirrel",
+        "飛鼠",
+        "runner",
+        "疾兵",
+        "glide",
+        "enemy",
+        "敵人"
+      ],
+      "reusePolicy": "game-only",
+      "contentHash": "sha256:a01b7f21d977dc61787e24083ee208e16a714d4c015232692817445b78d5280a"
+    },
+    {
+      "id": "twinstrike.enm.squirrel.t1",
+      "kind": "sprite-sheet",
+      "status": "rejected-take",
+      "name": "飛鼠 t1（未採用：貼紙感不足）",
+      "files": {
+        "raw": [
+          "art/raw/squirrel_poses_t1.png"
+        ],
+        "prompt": [
+          "art/prompts/_history/enemy_squirrel_t1.txt"
+        ],
+        "shipped": []
+      },
+      "provenance": {
+        "tool": "codex-lobster",
+        "job": "job_mvhh5ikp7b9724c0d4ad91c6",
+        "reference": [
+          "twinstrike.ref.cat.identity"
+        ]
+      },
+      "keywords": [
+        "squirrel",
+        "飛鼠"
+      ],
+      "reusePolicy": "game-only",
+      "contentHash": "sha256:965515e705676c8248451e6f8d13fd35ce9245bcb007948b05fea2b5785f53e6"
+    },
+    {
+      "id": "twinstrike.enm.tanuki",
+      "kind": "sprite-sheet",
+      "status": "shipped",
+      "name": "狸貓（重甲 / 頭目）4 格",
+      "files": {
+        "raw": [
+          "art/raw/tanuki_poses.png",
+          "art/raw/tanuki_poses_t1.png"
+        ],
+        "prompt": [
+          "art/prompts/enemy_tanuki.txt",
+          "art/prompts/_history/enemy_tanuki_t1.txt"
+        ],
+        "shipped": [
+          "game/src/assets/enemies.png",
+          "game/src/assets/enemies.json"
+        ]
+      },
+      "technical": {
+        "cell": [
+          288,
+          224
+        ],
+        "anchor": [
+          0.5,
+          0.95
+        ],
+        "frames": [
+          "tanuki.walk_a",
+          "tanuki.walk_b",
+          "tanuki.block",
+          "tanuki.hit"
+        ],
+        "format": "png8",
+        "atlas": "enemies"
+      },
+      "styleTags": [
+        "chibi",
+        "sticker",
+        "side-view"
+      ],
+      "provenance": {
+        "tool": "codex-lobster",
+        "mode": "edit",
+        "job": "job_mvhh6kps9ba5539045959671",
+        "reference": [
+          "twinstrike.ref.cat.identity"
+        ],
+        "pack": "art/tools/pack_atlas.py"
+      },
+      "note": "楓葉為橘紅，無綠色頭飾（RULE-ART-TW-TABOO）",
+      "keywords": [
+        "tanuki",
+        "狸貓",
+        "brute",
+        "重甲",
+        "boss",
+        "頭目",
+        "enemy",
+        "敵人",
+        "block"
+      ],
+      "reusePolicy": "game-only",
+      "contentHash": "sha256:a01b7f21d977dc61787e24083ee208e16a714d4c015232692817445b78d5280a"
+    },
+    {
+      "id": "twinstrike.bg.dojo",
+      "kind": "background",
+      "status": "shipped",
+      "name": "道場背景（直版 720×1280）",
+      "files": {
+        "raw": [
+          "art/raw/bg_dojo.png",
+          "art/raw/bg_dojo_t1.png"
+        ],
+        "prompt": [
+          "art/prompts/bg_dojo.txt",
+          "art/prompts/_history/bg_dojo_t1.txt"
+        ],
+        "shipped": [
+          "game/src/assets/bg_dojo.webp"
+        ]
+      },
+      "technical": {
+        "size": [
+          720,
+          1280
+        ],
+        "format": "webp",
+        "floorLineY": 876
+      },
+      "styleTags": [
+        "sticker",
+        "flat-color",
+        "interior"
+      ],
+      "provenance": {
+        "tool": "codex-lobster",
+        "mode": "edit",
+        "job": "job_mvhk48c5f2095288f19c2fec",
+        "reference": [
+          "twinstrike.ref.cat.identity"
+        ],
+        "postprocess": "art/tools/bake_bg.py（裁切、地板線對齊腳底）"
+      },
+      "keywords": [
+        "dojo",
+        "道場",
+        "background",
+        "背景",
+        "interior",
+        "室內",
+        "wood",
+        "木地板"
+      ],
+      "reusePolicy": "game-only",
+      "contentHash": "sha256:3a3dd33fdb19b5723827a9f3bf3ae419649b926b3bd058c2f9c4d38178abf331"
+    },
+    {
+      "id": "twinstrike.fx.sheet",
+      "kind": "fx-sheet",
+      "status": "shipped",
+      "name": "特效貼紙 6 格",
+      "files": {
+        "raw": [
+          "art/raw/fx_sheet.png",
+          "art/raw/fx_sheet_t1.png"
+        ],
+        "prompt": [
+          "art/prompts/fx_sheet.txt",
+          "art/prompts/_history/fx_sheet_t1.txt"
+        ],
+        "shipped": [
+          "game/src/assets/fx.png",
+          "game/src/assets/fx.json"
+        ]
+      },
+      "technical": {
+        "cell": [
+          160,
+          160
+        ],
+        "anchor": [
+          0.5,
+          0.5
+        ],
+        "frames": [
+          "fx.paw",
+          "fx.star",
+          "fx.fur",
+          "fx.leaf",
+          "fx.sweat",
+          "fx.birds"
+        ],
+        "format": "png8",
+        "atlas": "fx"
+      },
+      "styleTags": [
+        "sticker",
+        "thick-outline"
+      ],
+      "provenance": {
+        "tool": "codex-lobster",
+        "mode": "edit",
+        "job": "job_mvhlp48ve86e98bb21bd3997",
+        "reference": [
+          "twinstrike.ref.cat.identity"
+        ],
+        "pack": "art/tools/pack_atlas.py（assign: nearest、center）"
+      },
+      "note": "肉球衝擊線越過等分線 → 切格依最近大區塊歸屬",
+      "keywords": [
+        "fx",
+        "特效",
+        "paw",
+        "肉球",
+        "star",
+        "星星",
+        "fur",
+        "leaf",
+        "葉子",
+        "sweat",
+        "汗",
+        "birds",
+        "暈眩",
+        "sticker",
+        "貼紙"
+      ],
+      "reusePolicy": "game-only",
+      "contentHash": "sha256:674be06322a794471f4f1c0809b7f031a0f9dae405e697483352898b20fc5bbf"
+    },
+    {
+      "id": "twinstrike.keyart.title",
+      "kind": "key-art",
+      "status": "shipped",
+      "name": "主視覺（標題畫面，採用 t2a）",
+      "files": {
+        "raw": [
+          "art/raw/key_art.png",
+          "art/raw/key_art_t2a.png"
+        ],
+        "prompt": [
+          "art/prompts/key_art.txt",
+          "art/prompts/_history/key_art_t2.txt"
+        ],
+        "shipped": [
+          "game/src/assets/title_keyart.webp"
+        ]
+      },
+      "technical": {
+        "size": [
+          720,
+          1280
+        ],
+        "format": "webp",
+        "sourceSize": [
+          1672,
+          941
+        ],
+        "logoSafeTop": 0.25
+      },
+      "provenance": {
+        "tool": "codex-lobster",
+        "mode": "edit",
+        "job": "job_mvhpnxoxc065daf8a5ddbc00",
+        "reference": [
+          "twinstrike.ref.cat.identity",
+          "twinstrike.enm.mouse",
+          "twinstrike.enm.squirrel",
+          "twinstrike.enm.tanuki",
+          "twinstrike.bg.dojo",
+          "twinstrike.keyart.t1"
+        ],
+        "postprocess": "art/tools/bake_keyart.py（直版裁切）"
+      },
+      "keywords": [
+        "key art",
+        "主視覺",
+        "title",
+        "標題",
+        "logo",
+        "cast",
+        "全員"
+      ],
+      "reusePolicy": "game-only",
+      "contentHash": "sha256:af011d2068ee989d27d870eaa12f58b6f7bb56c8f0b060df7f44d1a634a33a12"
+    },
+    {
+      "id": "twinstrike.keyart.t1",
+      "kind": "key-art",
+      "status": "rejected-take",
+      "name": "主視覺 t1（未採用：Logo 空間不足）",
+      "files": {
+        "raw": [
+          "art/raw/key_art_t1.png"
+        ],
+        "prompt": [
+          "art/prompts/_history/key_art_t1.txt"
+        ],
+        "shipped": []
+      },
+      "provenance": {
+        "tool": "codex-lobster",
+        "job": "job_mvhp8zoea191ae10d2868c68",
+        "reference": [
+          "twinstrike.ref.cat.identity"
+        ]
+      },
+      "keywords": [
+        "key art",
+        "主視覺"
+      ],
+      "reusePolicy": "game-only",
+      "contentHash": "sha256:c96177f2518c984c52fb7b01764a6b3cf012e8154b698d9a109f96caeca1cde5"
+    },
+    {
+      "id": "twinstrike.keyart.t2b",
+      "kind": "key-art",
+      "status": "rejected-take",
+      "name": "主視覺 t2b（未採用）",
+      "files": {
+        "raw": [
+          "art/raw/key_art_t2b.png"
+        ],
+        "prompt": [
+          "art/prompts/_history/key_art_t2.txt"
+        ],
+        "shipped": []
+      },
+      "provenance": {
+        "tool": "codex-lobster",
+        "job": "job_mvhpnxoxc065daf8a5ddbc00#1",
+        "reference": [
+          "twinstrike.ref.cat.identity"
+        ]
+      },
+      "keywords": [
+        "key art",
+        "主視覺"
+      ],
+      "reusePolicy": "game-only",
+      "contentHash": "sha256:295d36d91a1995e3ef21730734bb3633d8773a40b2a4509a8a10cf734d52610f"
+    },
+    {
+      "id": "twinstrike.prc.placeholder-art",
+      "kind": "procedural",
+      "status": "procedural",
+      "name": "佔位美術（Canvas 2D 程式繪製 atlas，0 bytes）",
+      "files": {
+        "raw": [],
+        "prompt": [],
+        "shipped": [
+          "game/src/render/placeholderArt.js"
+        ]
+      },
+      "recipe": "規格（gdd/02 §3.3）列出的每一格都用 Canvas 2D 畫進同一張 atlas，幀名、格尺寸、錨點與正式圖相同，可無痛替換",
+      "reusePolicy": "reusable",
+      "keywords": [
+        "placeholder",
+        "佔位",
+        "procedural",
+        "程式繪製",
+        "canvas",
+        "atlas"
+      ],
+      "contentHash": "sha256:c960c185bf3efd256fd73be3f7401ef8122eb2e0bd83e250e5bc8dfe65fb061c"
+    },
+    {
+      "id": "twinstrike.aud.sfx",
+      "kind": "audio-recipe",
+      "status": "shipped",
+      "name": "打擊音效與 UI 音效合成配方",
+      "files": {
+        "raw": [],
+        "prompt": [],
+        "shipped": [
+          "game/src/audio/sfx.js"
+        ]
+      },
+      "recipe": "RECIPES：perfect / great / good / whiff / hurt / block / shieldBreak / heal / jab / kick / palm / crack / boom / swish / echo / shimmer / accent / 敵人叫聲 / UI；osc + noise + 濾波 + 包絡，0 bytes",
+      "reusePolicy": "reusable",
+      "keywords": [
+        "sfx",
+        "音效",
+        "hit",
+        "打擊",
+        "punch",
+        "kick",
+        "web audio",
+        "合成"
+      ],
+      "contentHash": "sha256:9f095ce95c6bb7f6854f8add05c171ccfb3f90a46ab3ceeae14ca620500a6141"
+    },
+    {
+      "id": "twinstrike.aud.keysound",
+      "kind": "audio-recipe",
+      "status": "shipped",
+      "name": "keysound（命中音跟 BGM 和弦）與拍點吸附",
+      "files": {
+        "raw": [],
+        "prompt": [],
+        "shipped": [
+          "game/src/audio/keysound.js",
+          "game/src/audio/hitFx.js"
+        ]
+      },
+      "recipe": "命中音高取當下和弦音（BASS [0,0,7,9]），依樂句堆疊層數；按下即預判並吸附到最近拍點（音訊時鐘排程）",
+      "reusePolicy": "reusable",
+      "keywords": [
+        "keysound",
+        "音game",
+        "rhythm",
+        "節奏",
+        "beat snap",
+        "拍點",
+        "chord",
+        "和弦"
+      ],
+      "contentHash": "sha256:9e6faa8b74c62a6951afac3cae60626379a3c13ff3dfa7d56a7d0eb7cc8b4f21"
+    },
+    {
+      "id": "twinstrike.aud.bgm",
+      "kind": "audio-recipe",
+      "status": "shipped",
+      "name": "程序化 BGM（照譜面拍長排程）",
+      "files": {
+        "raw": [],
+        "prompt": [],
+        "shipped": [
+          "game/src/audio/bgm.js"
+        ]
+      },
+      "recipe": "taiko / shaker / clap / bass / arp 分層，依 combo 階段疊加；lowpass 匯流排；拍長取自 sim 段落腳本",
+      "reusePolicy": "reusable",
+      "keywords": [
+        "bgm",
+        "音樂",
+        "procedural",
+        "程序化",
+        "layered",
+        "分層",
+        "taiko"
+      ],
+      "contentHash": "sha256:9242cd9fd7f757d81fc202c5223d0e82eb69836e9735eddc0aaa680f37b1bce3"
+    },
+    {
+      "id": "twinstrike.scene.dust",
+      "kind": "background",
+      "status": "template",
+      "name": "範本地表 tile 複本（未使用）",
+      "files": {
+        "raw": [],
+        "prompt": [],
+        "shipped": [
+          "game/src/assets/terrain/dust.png"
+        ]
+      },
+      "derivedFrom": "shared.tpl.terrain.dust",
+      "reusePolicy": "template",
+      "note": "從範本複製而來；main.js 沒有載入 terrain，不進 dist",
+      "keywords": [
+        "terrain",
+        "地表",
+        "dust",
+        "template"
+      ],
+      "contentHash": "sha256:ec69f3961bc1f1260b5a28540cad0209847ea59cf72ee31b5761798c12783dd1"
+    }
+  ]
+}
