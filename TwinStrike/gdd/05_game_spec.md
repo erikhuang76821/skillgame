@@ -5,6 +5,7 @@
 > 配方：[knowledge-base/12 §1 節奏 / 時機](../../knowledge-base/12_genre-recipes.md)（`core/timing.js` 原樣使用）、[13 輸入公平](../../knowledge-base/13_input-fairness.md)。
 > 題材與玩法解耦：本檔只用中性名詞（主角 / 敵人 / 左 / 右），題材見 [01_theme_proposals.md](01_theme_proposals.md)。
 > 數值已用 bot 實測回寫（見文末「實測結果與調校紀錄」），真人試玩後再調；改數值先改本檔，再改 `game/src/sim/sim.js` 的同名常數。
+> **可對帳格式**：本檔寫成 `` `NAME` = 數值 `` 的常數（`NAME` 是 sim.js 的匯出名，或 `RULES.x`、`WINDOWS.x`、`GAME.x`），`npm run audit`（`RULE-SPEC-CONSTANTS`）會逐一和程式比對，不一致就擋 commit。
 
 **一句話**：主角站在畫面中央，敵人從左右兩側走近；敵人踏進攻擊範圍的那一刻點對應那一側出招。點早了、點錯邊都算空揮，空揮後有硬直；被敵人打到要扣血。
 
@@ -15,12 +16,12 @@
 | 欄位 | 值 |
 |---|---|
 | id | `twin-strike`（暫定代號；**上線前**可隨正式名稱改，上線後不改） |
-| version | 6（2026-10-21 Critical Perfect ±20 ms +1 分；v5 4 / 8 小節樂句重排；v4 狸貓頭目、v3 腳本化難度曲線見 07；v2 容錯調整見文末） |
+| version | `GAME.version` = 6（2026-10-21 Critical Perfect ±20 ms +1 分；v5 4 / 8 小節樂句重排；v4 狸貓頭目、v3 腳本化難度曲線見 07；v2 容錯調整見文末） |
 | 技巧軸 | 時機（主）＋ 讀敵 / 克制狂按（副） |
-| 局長 | 90 s = **5400 tick**（60 TPS）；`maxTicks = 5400` |
+| 局長 | 90 s；`MATCH_TICKS` = 5400 tick（60 TPS）；`GAME.maxTicks` = 5400 |
 | 對戰格式 | 同種子非同步：每日挑戰（全服同種子）＋ 6–20 人錦標賽；單人練習可重玩同種子 |
 | 世界座標 | 720 × 1280 直版，固定視窗（E3）；長螢幕多出的區域只放 HUD |
-| 定點精度 | sim 無連續座標。時間單位是子 tick（`SUB = 16`，約 1.04 ms）；敵人位置由 render 依時間推算 |
+| 定點精度 | sim 無連續座標。時間單位是子 tick（`SUB` = 16 份 / tick，約 1.04 ms）；敵人位置由 render 依時間推算 |
 | 未來模式（不在 v1） | **Blind**：隱藏重甲的方向標記（高段位賽道），sim 不變，只改 render |
 
 ## §1 狀態（sim 物件）
@@ -31,7 +32,7 @@
 | `tick` | int | 0 | | ✓ |
 | `chart` | `{t, lane, kind, group}[]` | `buildChart(seed)` | 依 t 遞增，id = 陣列 index；只依種子 | —（由 seed 決定） |
 | `judge` | `createJudge(chart)` | — | `core/timing.js`：`next grade[] combo maxCombo counts[4] score whiffs` | ✓（score、combo、whiffs、grade[]） |
-| `hp` | int | `HP_MAX = 6` | | ✓ |
+| `hp` | int | `RULES.hpMax` = 6 | | ✓ |
 | `guardUntil` | int（tick） | 0 | 扣血後的保護期：`tick < guardUntil` 時漏接不扣血 | ✓ |
 | `staggerUntil` | int（tick） | 0 | `tick < staggerUntil` 時處於硬直 | ✓ |
 | `lockedTaps` | int | 0 | 硬直中被忽略的點擊數（統計 / 風控用） | ✓ |
@@ -47,7 +48,7 @@
 | 1 | 疾兵 | 44 tick（0.73 s） | 1 | 預告短，考讀敵 |
 | 2 | 重甲 | 78 tick（1.30 s） | 3 | 一隻敵人＝同一 `group` 的 3 個音符；出場時頭上顯示 3 個方向標記 |
 
-> 敵人「出現在畫面」的 tick = `t / SUB − APPROACH[kind]`。這是玩家（和 bot）能看到這個音符的最早時刻。
+> 預告時間 `RULES.approach` = 66, 44, 78 tick（依 kind 0 / 1 / 2）。敵人「出現在畫面」的 tick = `t / SUB − approach[kind]`。這是玩家（和 bot）能看到這個音符的最早時刻。
 
 ## §2 輸入編碼（每 tick 1 byte）
 
@@ -76,11 +77,11 @@
 
 v3 起改成固定腳本 + 樂句庫，設計與調校紀錄見 [07_difficulty_curve.md](07_difficulty_curve.md)。
 
-- 12 個段落、71 小節；拍速 112 → 171 BPM 逐段上升（無雙段 138 / 164）；難度級 L1 → L8，每級只加一個新要素。
+- 12 個段落、49 小節（4 / 8 小節樂句）；拍速 113 → 171 BPM 逐段上升（無雙段 138 / 164）；難度級 L1 → L8，每級只加一個新要素；L9–L11 是狸貓頭目小節（`BOSS_LEVEL` = 9），放在 B、C、D、E 段末。
 - 音符時間 = 小節起點 + 第 k 個八分音符 × 拍長 / 2（子 tick 精確）；重甲 = 連續 2–3 個八分音（同一 `group`）。
-- 調息段開始時回 1 血（`heal` 事件），共 3 次。
-- 間距規則（`checkSpacing`，1,000 個種子測試）：任兩音符 ≥ 6 tick；同側相鄰 ≥ 7 tick；八分音在最快 20 tick/拍時為 10 tick。
-- 第 1 個音符在 tick 120 之後；最後一個在 tick 5056 之前。音符數 221–246 個（1,000 個種子）。
+- 調息段（A2、B2、D2）開始時回 1 血（`heal` 事件），共 3 次。
+- 間距規則（`checkSpacing`，1,000 個種子測試）：任兩音符 `RULES.minGap` = 6 tick 以上；同側相鄰 `RULES.minGapSameLane` = 7 tick 以上；八分音在最快 21 tick/拍時為 10.5 tick。
+- 第 1 個音符在 tick 120 之後；最後一個不晚於 `RULES.lastNoteTick` = 5280（實測 ≤ 5072）。音符數 206–226 個（1,000 個種子）。
 
 ## §4 Tick 順序
 
@@ -90,8 +91,8 @@ v3 起改成固定腳本 + 樂句庫，設計與調校紀錄見 [07_difficulty_c
 3. 套用輸入：
    a. tick < staggerUntil → 有點擊就 lockedTaps++、emit 'locked'，不判定
    b. 否則依序處理 IN_L、IN_R：judgeTap(judge, chart, tapTime, lane, WINDOWS)
-      - 命中 → emit 'hit'；combo 是 REGEN_COMBO 的倍數且 hp < HP_MAX → hp +1、emit 'heal'
-      - 空揮 → staggerUntil = tick + STAGGER、emit 'whiff'（judgeTap 已把 combo 歸零、whiffs++）
+      - 命中 → emit 'hit'；combo 是 RULES.regenCombo 的倍數且 hp < RULES.hpMax → hp +1、emit 'heal'
+      - 空揮 → staggerUntil = tick + RULES.stagger、emit 'whiff'（judgeTap 已把 combo 歸零、whiffs++）
 4. judgeMisses(judge, chart, tick * SUB, WINDOWS, onMiss)
       - onMiss：hurts++；不在安全段 → hp--；emit 'hurt'；hp 歸零 → deathTick = tick、emit 'death'
 5. 段落切換 → emit 'segment'
@@ -102,18 +103,18 @@ v3 起改成固定腳本 + 樂句庫，設計與調校紀錄見 [07_difficulty_c
 
 | 規則 | 條件（整數） | 效果 | 事件 |
 |---|---|---|---|
-| 命中 | 點擊那一側在好窗（±110 ms）內有最早一個未判定的音符 | 依誤差給 Perfect / Great / Good，combo +1 | `{type:'hit', note, lane, grade, pts, kind, last}`（`last` = 重甲的最後一擊） |
-| 空揮 | 點擊那一側在好窗內沒有音符（點太早、點錯邊、重複點） | combo 歸零、whiffs++、硬直 `STAGGER = 12` tick（200 ms） | `{type:'whiff', lane}` |
-| 連擊回血 | 命中後 `combo % REGEN_COMBO == 0`（`REGEN_COMBO = 12`）且 hp < 6 | hp +1 | `{type:'heal', hp}` |
+| 命中 | 點擊那一側在 Good 窗（±135 ms）內有最早一個未判定的音符 | 依誤差給 Perfect / Great / Good，combo +1 | `{type:'hit', note, lane, grade, pts, kind, last}`（`last` = 重甲的最後一擊） |
+| 空揮 | 點擊那一側在 Good 窗內沒有音符（點太早、點錯邊、重複點） | combo 歸零、whiffs++、硬直 `RULES.stagger` = 12 tick（200 ms） | `{type:'whiff', lane}` |
+| 連擊回血 | 命中後 combo 是 `RULES.regenCombo` = 12 的倍數，且 hp < 6 | hp +1 | `{type:'heal', hp}` |
 | 硬直中點擊 | `tick < staggerUntil` | 不判定、不延長硬直 | `{type:'locked'}` |
 | 漏接 | 音符的晚窗已過還沒判定 | 記 Miss、combo 歸零；不在安全段 hp −1 | `{type:'hurt', note, lane, hp, safe}` |
-| 安全段 | 音符屬於 S1（暖身）、S3、S5 | 漏接不扣血（仍歸零 combo、記 Miss） | — |
-| 無雙段 | S3、S5 | 只換演出；**分數不加倍** | `{type:'segment', id, fever}` |
+| 安全段 | 音符屬於 W（暖身）、F1、F2（無雙） | 漏接不扣血（仍歸零 combo、記 Miss） | — |
+| 無雙段 | F1、F2 | 只換演出；**分數不加倍** | `{type:'segment', id, fever}` |
 | 死亡 | hp == 0 | 結束；之後的音符不結算 | `{type:'death'}` |
 
-判定窗（半寬，`sim.js` 的 `WINDOWS`，比 `core/timing.js` 預設 35 / 70 / 110 寬）：Perfect 45 ms、Great 85 ms、Good 135 ms。
+判定窗（半寬，`sim.js` 的 `WINDOWS`，單位子 tick，比 `core/timing.js` 預設 35 / 70 / 110 ms 寬）：`WINDOWS.perfect` = 43（45 ms）、`WINDOWS.great` = 82（85 ms）、`WINDOWS.good` = 130（135 ms）。
 
-保護期：扣血後 `GUARD = 30` tick（0.5 s）內的漏接只歸零 combo、記 Miss，不再扣血（hurt 事件 `safe: true`）。一次空揮常連帶漏掉 1–2 個敵人，保護期讓它只算一次傷害。畫面上的「攻擊範圍」就是 Good 窗。
+保護期：扣血後 `RULES.guard` = 30 tick（0.5 s）內的漏接只歸零 combo、記 Miss，不再扣血（hurt 事件 `safe: true`）。一次空揮常連帶漏掉 1–2 個敵人，保護期讓它只算一次傷害。畫面上的「攻擊範圍」就是 Good 窗。
 
 > 為什麼硬直不延長：連按時，只有第一次空揮會造成硬直，硬直中的點擊不會再延長它，玩家不會被一次失誤鎖死。代價是硬直期間到點的敵人會打到你。
 
@@ -127,8 +128,8 @@ v3 起改成固定腳本 + 樂句庫，設計與調校紀錄見 [07_difficulty_c
 | 漏接 | 0 分；combo 歸零＋扣血 | — | |
 | 存活 / 剩餘時間 / 剩餘血量 / 回血 | **不計分** | — | 避免「活著就有分」（SwarmDuel R9 教訓） |
 
-- **Critical Perfect（v6）**：Perfect 且誤差 ≤ ±20 ms（`CRITICAL`）每下再 +`critBonus`（1 分）；只當同分時的區分，像 maimai 的 101%。理論最高分因此 = 下式 + 音符數。
-- **理論最高分** = `maxScore(chart)` = 前 50 個音符 `Σ(100 + c)` = 6,225，第 51 個起每個 150 → `6,225 + 150 × (N − 50)`。N = 300 時為 43,725。上傳分數超過 → 判異常。
+- **Critical Perfect（v6）**：Perfect 且誤差在 `CRITICAL` = 19 子 tick（±20 ms）以內，每下再加 `RULES.critBonus` = 1 分；只當同分時的區分，像 maimai 的 101%。理論最高分因此 = 下式 + 音符數。
+- **理論最高分** = `maxScore(sim)` = 前 50 個音符 `Σ(100 + c)` = 6,225，第 51 個起每個 150，再加每個音符的 Critical 1 分 → `6,225 + 150 × (N − 50) + N`。N = 220 時為 31,945。上傳分數超過 → 判異常。
 - **達成率** = `score / maxScore(chart)`：跨種子比較（段位、賽季）用達成率，同種子排行用原始分數。
 - 結算明細 `scoreBreakdown()`：Perfect / Great / Good / Miss 數、空揮數、硬直中點擊數、最大 combo、被打中次數、達成率，逐項顯示（E4）。
 - 沒有連殺倍率、沒有重甲擊破獎勵：撞球配方證明非線性加成會放大運氣（[12 §2](../../knowledge-base/12_genre-recipes.md)）。實測後若技巧佔比有餘裕，才考慮加。

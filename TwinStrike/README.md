@@ -5,7 +5,10 @@
 | 文件 | 內容 |
 |---|---|
 | [gdd/01_theme_proposals.md](gdd/01_theme_proposals.md) | 題材方案：**已選 A 喵拳道場** |
-| [gdd/05_game_spec.md](gdd/05_game_spec.md) | 玩法規格 v1（sim、輸入、計分、bot、驗收） |
+| [gdd/03_skill_integrity.md](gdd/03_skill_integrity.md) | 技巧完整性：精髓七條落實、去隨機化、證據與缺口 |
+| [gdd/05_game_spec.md](gdd/05_game_spec.md) | 玩法規格（sim v6；關鍵數值寫成 `NAME` = 值，`npm run audit` 與 sim 對帳） |
+| [gdd/10_tech_constraints.md](gdd/10_tech_constraints.md) | 技術限制：選型、分層、確定性、輸入與驗分、預算 |
+| [gdd/11_risks_open.md](gdd/11_risks_open.md) | 風險與未解問題 |
 | [gdd/02_art_spec.md](gdd/02_art_spec.md) | 美術規格（Q 版貼紙風、色票、禁忌、資產清單、預算）；prompt 在 [art/prompts/](art/prompts/) |
 | [gdd/07_difficulty_curve.md](gdd/07_difficulty_curve.md) | 腳本化難度曲線（樂句庫、12 段腳本、人性化試玩）；報告 [docs/difficulty_curve.md](docs/difficulty_curve.md) |
 | [gdd/06_combo_feel.md](gdd/06_combo_feel.md) | 連擊節奏感：5 個連擊階段的場景動效、文字動態、對拍分層 BGM |
