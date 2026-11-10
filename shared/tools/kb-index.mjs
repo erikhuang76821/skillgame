@@ -16,6 +16,7 @@
 // Front-matter is a deliberately small YAML subset: `key: value` or `key: [a, b]`, one per line.
 // A marker may override page facets for its card (`key=a,b`). An H3 becomes its own card only when it carries a marker;
 // it then records its H2 card as `parent`, and its text is left out of the parent's body.
+// `line` / `end` are 1-based: the heading line and the last non-blank line of the card (child H3 cards sit inside).
 // Required fields, id format and the size threshold come from RULE-KB-CARDS / RULE-KB-CARD-SIZE (rules.mjs).
 // Called by index-build.mjs, which writes knowledge-base/index/kb.json.
 import { createHash } from 'node:crypto';
@@ -115,7 +116,7 @@ export function parsePage(text, path, ctx) {
     if (f.id && !marker.id.startsWith(`${f.id}.`)) errors.push(`${where}: 卡片 id「${marker.id}」要以「${f.id}.」開頭`);
     if (!/^KB-[a-z0-9-]+\.[a-z0-9-]+$/.test(marker.id)) errors.push(`${where}: 卡片 id「${marker.id}」只能用小寫英數與 -`);
     const tags = { ...pageTags, ...marker.overrides };
-    const card = { id: marker.id, page: f.id, path, line: i + 1, heading: parent ? [parent.heading[0], heading] : [heading],
+    const card = { id: marker.id, page: f.id, path, line: i + 1, end: i + 1, heading: parent ? [parent.heading[0], heading] : [heading],
       ...(parent ? { parent: parent.id } : {}), kind: tags.kind,
       facets: Object.fromEntries(FACET_KEYS.filter(k => tags[k] !== undefined).map(k => [k, tags[k]])),
       rules: tags.rules ?? [], reviewedAt: f.reviewedAt, body: [] };
@@ -142,13 +143,15 @@ export function parsePage(text, path, ctx) {
       }
       h3 = null;                                                       // plain H3: its text stays in the H2 card
     }
-    (h3 ?? h2)?.body.push(l);
+    const into = h3 ?? h2;
+    if (into) { into.body.push(l); if (l.trim()) into.end = i + 1; }
   }
 
   for (const c of cards) {
     const body = c.body.join('\n').trim();
     c.tokens = tokens(body);
     c.hash = 'sha256:' + createHash('sha256').update(body).digest('hex').slice(0, 16);
+    if (ctx.keepBody) c.text = body;
     delete c.body;
     if (c.tokens > ctx.maxTokens) warnings.push(`${path}:${c.line} ${c.id} 約 ${c.tokens} tokens，超過 ${ctx.maxTokens}（RULE-KB-CARD-SIZE）：拆段或顯式切 H3`);
   }
@@ -164,14 +167,19 @@ export function kbFiles(root) {
   return walk(KB).sort();
 }
 
-/** Parse every page; returns { errors, warnings, data } where data is the kb.json payload (without the header). */
-export function buildKb(root) {
+/** The parsePage context for this repo (vocabulary, rule ids, RULE-KB-CARDS / RULE-KB-CARD-SIZE values). */
+export function kbContext(root) {
   const rules = loadRules({ from: root, game: null });
-  const ctx = {
+  return {
     vocab: loadVocabulary(root), ruleIds: new Set(rules.rules.map(r => r.id)),
     pageFields: rules.value('RULE-KB-CARDS', 'pageFields'), pageIdRe: new RegExp(rules.value('RULE-KB-CARDS', 'pageId')),
     maxTokens: rules.value('RULE-KB-CARD-SIZE', 'maxTokens'),
   };
+}
+
+/** Parse every page; returns { errors, warnings, data } where data is the kb.json payload (without the header). */
+export function buildKb(root) {
+  const ctx = kbContext(root);
   const errors = [], warnings = [], pages = [], cards = [], unindexed = [], seen = new Map();
   for (const path of kbFiles(root)) {
     const r = parsePage(readFileSync(join(root, path), 'utf8'), path, ctx);

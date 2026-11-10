@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "game": "GateLane",
+  "genre": ["lane-shooter"],
+  "skillAxis": ["aim", "planning"],
+  "renderer": ["2d"],
+  "source": ["af-gate-lane-shooter"],
+  "jurisdiction": ["TW", "US-*"],
+  "artStyle": ["procedural"]
+}

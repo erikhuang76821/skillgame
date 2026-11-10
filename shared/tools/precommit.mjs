@@ -1,5 +1,6 @@
 // Pre-commit checks, scoped to what is staged (installed by `git config core.hooksPath .githooks`).
-//   <Game>/… outside art/            -> that game's `npm test` + game-audit (must-level failures block the commit)
+//   <Game>/… outside art/ and game.profile.json -> that game's `npm test` + game-audit (must-level failures block the commit)
+//   <Game>/game.profile.json         -> the shared/tools tests (they validate every profile)
 //   templates/ of lite-skillgame-stack -> the template's `npm test` (includes the D-gate playtest on 8 seeds)
 //   shared/tools/ or rules.json      -> the audit's own tests; every game's audit is printed for information only
 //   art/, game/src/assets/, shared/recipes/, shared/index/, shared/tests/, knowledge-base/ -> index-build --check (asset, knowledge-card and test indexes are fresh)
@@ -19,9 +20,11 @@ const staged = (fi >= 0 ? process.argv.slice(fi + 1).join('\n')
   .split('\n').map(s => s.trim().replace(/\\/g, '/')).filter(Boolean);
 if (!staged.length) process.exit(0);
 
-// A game is tested + audited only when something outside its art/ changed; art-only changes (manifest, raw images,
-// prompts) cannot affect gdd or sim, so they get the central-index check below and nothing else.
-const games = [...new Set(staged.filter(p => p.split('/')[1] !== 'art').map(p => p.split('/')[0]))]
+// A game is tested + audited only when something outside its art/ and game.profile.json changed: art-only changes
+// (manifest, raw images, prompts) and the profile (facets read by context.mjs) cannot affect gdd or sim, so they get the
+// central-index check / the shared tests below and nothing else.
+const isProfile = p => /^[^/]+\/game\.profile\.json$/.test(p);
+const games = [...new Set(staged.filter(p => p.split('/')[1] !== 'art' && !isProfile(p)).map(p => p.split('/')[0]))]
   .filter(g => !g.startsWith('.') && existsSync(join(root, g, 'game')));
 const touches = prefix => staged.some(p => p.startsWith(prefix));
 const failures = [];
@@ -31,7 +34,7 @@ const run = (label, cmd, args, cwd) => {
   if (r.status !== 0) failures.push(label);
 };
 
-if (touches('shared/tools/') || touches('knowledge-base/index/rules.json')) {
+if (touches('shared/tools/') || touches('knowledge-base/index/rules.json') || staged.some(isProfile)) {   // context.test.mjs validates every profile
   const tests = readdirSync(join(root, 'shared', 'tools')).filter(f => f.endsWith('.test.mjs')).map(f => `shared/tools/${f}`);
   run('shared/tools 測試（game-audit 規則）', process.execPath, ['--test', ...tests], root);
   console.log('\n（規則有改：以下各遊戲 audit 只供參考，不擋這次 commit）');

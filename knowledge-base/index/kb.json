@@ -364,6 +364,7 @@
    "page": "KB-skill-integrity",
    "path": "knowledge-base/01_skill-integrity.md",
    "line": 13,
+   "end": 18,
    "heading": [
     "1. 每個系統都要回答的三個問題"
    ],
@@ -386,6 +387,7 @@
    "page": "KB-skill-integrity",
    "path": "knowledge-base/01_skill-integrity.md",
    "line": 20,
+   "end": 33,
    "heading": [
     "2. 精髓七條（新遊戲直接沿用為檢查表）"
    ],
@@ -410,6 +412,7 @@
    "page": "KB-skill-integrity",
    "path": "knowledge-base/01_skill-integrity.md",
    "line": 35,
+   "end": 47,
    "heading": [
     "3. 去隨機化手法（把一般遊戲的隨機改成公平）"
    ],
@@ -432,6 +435,7 @@
    "page": "KB-skill-integrity",
    "path": "knowledge-base/01_skill-integrity.md",
    "line": 49,
+   "end": 66,
    "heading": [
     "4. 證據：Skill Dominance 測試（上線門檻）"
    ],
@@ -456,6 +460,7 @@
    "page": "KB-skill-integrity",
    "path": "knowledge-base/01_skill-integrity.md",
    "line": 68,
+   "end": 77,
    "heading": [
     "5. 每局驗證流程"
    ],
@@ -479,6 +484,7 @@
    "page": "KB-skill-integrity",
    "path": "knowledge-base/01_skill-integrity.md",
    "line": 79,
+   "end": 86,
    "heading": [
     "6. 計分設計通則（來自規則卡交叉比對）"
    ],
@@ -501,6 +507,7 @@
    "page": "KB-market-legal",
    "path": "knowledge-base/02_market-and-legal.md",
    "line": 13,
+   "end": 24,
    "heading": [
     "1. 兩市場一頁對照"
    ],
@@ -523,6 +530,7 @@
    "page": "KB-market-legal",
    "path": "knowledge-base/02_market-and-legal.md",
    "line": 26,
+   "end": 40,
    "heading": [
     "2. 北美法規快查"
    ],
@@ -548,6 +556,7 @@
    "page": "KB-market-legal",
    "path": "knowledge-base/02_market-and-legal.md",
    "line": 42,
+   "end": 53,
    "heading": [
     "3. 台灣法規快查"
    ],
@@ -573,6 +582,7 @@
    "page": "KB-market-legal",
    "path": "knowledge-base/02_market-and-legal.md",
    "line": 55,
+   "end": 63,
    "heading": [
     "4. 排除標準（什麼不算 Skill Game）"
    ],
@@ -600,6 +610,7 @@
    "page": "KB-market-legal",
    "path": "knowledge-base/02_market-and-legal.md",
    "line": 65,
+   "end": 70,
    "heading": [
     "5. 新作設計清單"
    ],
@@ -623,6 +634,7 @@
    "page": "KB-market-legal",
    "path": "knowledge-base/02_market-and-legal.md",
    "line": 72,
+   "end": 75,
    "heading": [
     "6. 需追蹤的時效事件（2026-10 之後）"
    ],
@@ -646,6 +658,7 @@
    "page": "KB-market-legal",
    "path": "knowledge-base/02_market-and-legal.md",
    "line": 77,
+   "end": 84,
    "heading": [
     "7. 已知資料矛盾（引用前注意）"
    ],
@@ -669,6 +682,7 @@
    "page": "KB-design-patterns",
    "path": "knowledge-base/03_design-patterns.md",
    "line": 13,
+   "end": 31,
    "heading": [
     "1. 規則卡索引（依技巧軸）"
    ],
@@ -691,6 +705,7 @@
    "page": "KB-design-patterns",
    "path": "knowledge-base/03_design-patterns.md",
    "line": 33,
+   "end": 44,
    "heading": [
     "2. 公平 / 去運氣模式"
    ],
@@ -714,6 +729,7 @@
    "page": "KB-design-patterns",
    "path": "knowledge-base/03_design-patterns.md",
    "line": 46,
+   "end": 54,
    "heading": [
     "3. 計分公式慣例"
    ],
@@ -736,6 +752,7 @@
    "page": "KB-design-patterns",
    "path": "knowledge-base/03_design-patterns.md",
    "line": 56,
+   "end": 64,
    "heading": [
     "4. 局長基準"
    ],
@@ -759,6 +776,7 @@
    "page": "KB-design-patterns",
    "path": "knowledge-base/03_design-patterns.md",
    "line": 66,
+   "end": 75,
    "heading": [
     "5. 變現模式"
    ],
@@ -781,6 +799,7 @@
    "page": "KB-design-patterns",
    "path": "knowledge-base/03_design-patterns.md",
    "line": 77,
+   "end": 80,
    "heading": [
     "6. 跨市場可借用規則（knowledge/README 精選）"
    ],
@@ -803,6 +822,7 @@
    "page": "KB-tech-stack",
    "path": "knowledge-base/04_tech-stack.md",
    "line": 14,
+   "end": 22,
    "heading": [
     "1. 硬指標"
    ],
@@ -834,6 +854,7 @@
    "page": "KB-tech-stack",
    "path": "knowledge-base/04_tech-stack.md",
    "line": 24,
+   "end": 39,
    "heading": [
     "2. 技術棧白名單（版本鎖確切值，不加 `^`）"
    ],
@@ -859,6 +880,7 @@
    "page": "KB-tech-stack",
    "path": "knowledge-base/04_tech-stack.md",
    "line": 41,
+   "end": 60,
    "heading": [
     "3. 分層與迴圈契約"
    ],
@@ -884,6 +906,7 @@
    "page": "KB-tech-stack",
    "path": "knowledge-base/04_tech-stack.md",
    "line": 62,
+   "end": 79,
    "heading": [
     "4. 確定性規則（跨引擎重播一致）"
    ],
@@ -912,6 +935,7 @@
    "page": "KB-tech-stack",
    "path": "knowledge-base/04_tech-stack.md",
    "line": 81,
+   "end": 99,
    "heading": [
     "5. Draw Call 與資源管線"
    ],
@@ -940,6 +964,7 @@
    "page": "KB-tech-stack",
    "path": "knowledge-base/04_tech-stack.md",
    "line": 101,
+   "end": 115,
    "heading": [
     "6. 包體預算範本（≤ 8 MB）"
    ],
@@ -967,6 +992,7 @@
    "page": "KB-tech-stack",
    "path": "knowledge-base/04_tech-stack.md",
    "line": 117,
+   "end": 129,
    "heading": [
     "7. 手機直版 RWD 規格（SwarmDuel 實作，可沿用）"
    ],
@@ -992,6 +1018,7 @@
    "page": "KB-tech-stack",
    "path": "knowledge-base/04_tech-stack.md",
    "line": 131,
+   "end": 138,
    "heading": [
     "8. 範本與起手"
    ],
@@ -1017,6 +1044,7 @@
    "page": "KB-tech-stack",
    "path": "knowledge-base/04_tech-stack.md",
    "line": 140,
+   "end": 150,
    "heading": [
     "9. 交付前自檢"
    ],
@@ -1042,6 +1070,7 @@
    "page": "KB-juice-feel",
    "path": "knowledge-base/05_juice-and-feel.md",
    "line": 13,
+   "end": 29,
    "heading": [
     "1. 效果做法與成本"
    ],
@@ -1066,6 +1095,7 @@
    "page": "KB-juice-feel",
    "path": "knowledge-base/05_juice-and-feel.md",
    "line": 31,
+   "end": 61,
    "heading": [
     "2. GSAP 必設參數"
    ],
@@ -1088,6 +1118,7 @@
    "page": "KB-juice-feel",
    "path": "knowledge-base/05_juice-and-feel.md",
    "line": 63,
+   "end": 72,
    "heading": [
     "3. 降級與無障礙"
    ],
@@ -1111,6 +1142,7 @@
    "page": "KB-juice-feel",
    "path": "knowledge-base/05_juice-and-feel.md",
    "line": 74,
+   "end": 82,
    "heading": [
     "4. Spine 要點（4.3）"
    ],
@@ -1134,6 +1166,7 @@
    "page": "KB-juice-feel",
    "path": "knowledge-base/05_juice-and-feel.md",
    "line": 84,
+   "end": 89,
    "heading": [
     "5. 調手感流程"
    ],
@@ -1156,6 +1189,7 @@
    "page": "KB-art-pipeline",
    "path": "knowledge-base/06_art-pipeline.md",
    "line": 13,
+   "end": 24,
    "heading": [
     "1. Sprite 契約（8 方向角色）"
    ],
@@ -1181,6 +1215,7 @@
    "page": "KB-art-pipeline",
    "path": "knowledge-base/06_art-pipeline.md",
    "line": 26,
+   "end": 38,
    "heading": [
     "2. 生圖流程（v1.0，可重跑）"
    ],
@@ -1203,6 +1238,7 @@
    "page": "KB-art-pipeline",
    "path": "knowledge-base/06_art-pipeline.md",
    "line": 40,
+   "end": 49,
    "heading": [
     "3. 踩過的坑"
    ],
@@ -1225,6 +1261,7 @@
    "page": "KB-art-pipeline",
    "path": "knowledge-base/06_art-pipeline.md",
    "line": 51,
+   "end": 59,
    "heading": [
     "4. 其他資產"
    ],
@@ -1247,6 +1284,7 @@
    "page": "KB-art-pipeline",
    "path": "knowledge-base/06_art-pipeline.md",
    "line": 61,
+   "end": 65,
    "heading": [
     "5. 授權"
    ],
@@ -1270,6 +1308,7 @@
    "page": "KB-themes-liveops",
    "path": "knowledge-base/07_themes-and-liveops.md",
    "line": 12,
+   "end": 21,
    "heading": [
     "1. 選皮流程"
    ],
@@ -1292,6 +1331,7 @@
    "page": "KB-themes-liveops",
    "path": "knowledge-base/07_themes-and-liveops.md",
    "line": 23,
+   "end": 31,
    "heading": [
     "2. 題材重點"
    ],
@@ -1314,6 +1354,7 @@
    "page": "KB-themes-liveops",
    "path": "knowledge-base/07_themes-and-liveops.md",
    "line": 33,
+   "end": 41,
    "heading": [
     "3. 活動檔期（2026 Q4–2027）"
    ],
@@ -1336,6 +1377,7 @@
    "page": "KB-themes-liveops",
    "path": "knowledge-base/07_themes-and-liveops.md",
    "line": 43,
+   "end": 46,
    "heading": [
     "4. 本地化成本（SwarmDuel 的經驗）"
    ],
@@ -1359,6 +1401,7 @@
    "page": "KB-production-workflow",
    "path": "knowledge-base/08_production-workflow.md",
    "line": 12,
+   "end": 28,
    "heading": [
     "1. 流程總覽"
    ],
@@ -1381,6 +1424,7 @@
    "page": "KB-production-workflow",
    "path": "knowledge-base/08_production-workflow.md",
    "line": 30,
+   "end": 59,
    "heading": [
     "2. 常用指令"
    ],
@@ -1403,6 +1447,7 @@
    "page": "KB-production-workflow",
    "path": "knowledge-base/08_production-workflow.md",
    "line": 61,
+   "end": 75,
    "heading": [
     "3. Skill / 工具所在位置"
    ],
@@ -1425,6 +1470,7 @@
    "page": "KB-production-workflow",
    "path": "knowledge-base/08_production-workflow.md",
    "line": 77,
+   "end": 80,
    "heading": [
     "4. 給其他 AI 的啟動提示詞"
    ],
@@ -1447,6 +1493,7 @@
    "page": "KB-asset-library",
    "path": "knowledge-base/10_asset-library.md",
    "line": 18,
+   "end": 30,
    "heading": [
     "1. 怎麼用"
    ],
@@ -1471,6 +1518,7 @@
    "page": "KB-asset-library",
    "path": "knowledge-base/10_asset-library.md",
    "line": 355,
+   "end": 397,
    "heading": [
     "6. 缺口與生成教訓"
    ],
@@ -1495,6 +1543,7 @@
    "page": "KB-terrain-style-kit",
    "path": "knowledge-base/11_terrain-style-kit.md",
    "line": 14,
+   "end": 26,
    "heading": [
     "0. 怎麼用"
    ],
@@ -1517,6 +1566,7 @@
    "page": "KB-terrain-style-kit",
    "path": "knowledge-base/11_terrain-style-kit.md",
    "line": 28,
+   "end": 69,
    "heading": [
     "1. 原版提詞（v1，使用者定稿，原文保留）"
    ],
@@ -1539,6 +1589,7 @@
    "page": "KB-terrain-style-kit",
    "path": "knowledge-base/11_terrain-style-kit.md",
    "line": 71,
+   "end": 115,
    "heading": [
     "2. 差異分析：建議調整與補充"
    ],
@@ -1561,6 +1612,7 @@
    "page": "KB-terrain-style-kit",
    "path": "knowledge-base/11_terrain-style-kit.md",
    "line": 117,
+   "end": 189,
    "heading": [
     "3. 修訂版提詞（v2：v1 ＋ 差異，仍只替換【】）"
    ],
@@ -1583,6 +1635,7 @@
    "page": "KB-terrain-style-kit",
    "path": "knowledge-base/11_terrain-style-kit.md",
    "line": 191,
+   "end": 213,
    "heading": [
     "4. 各遊戲參數表（彈性設計的核心：數值只放這裡）"
    ],
@@ -1605,6 +1658,7 @@
    "page": "KB-terrain-style-kit",
    "path": "knowledge-base/11_terrain-style-kit.md",
    "line": 215,
+   "end": 227,
    "heading": [
     "5. 立體地圖面：依視角的變體"
    ],
@@ -1627,6 +1681,7 @@
    "page": "KB-terrain-style-kit",
    "path": "knowledge-base/11_terrain-style-kit.md",
    "line": 229,
+   "end": 244,
    "heading": [
     "6. ⑤ 驗收清單"
    ],
@@ -1649,6 +1704,7 @@
    "page": "KB-terrain-style-kit",
    "path": "knowledge-base/11_terrain-style-kit.md",
    "line": 246,
+   "end": 285,
    "heading": [
     "7. 參考實作（範本內建，2026-10-19）"
    ],
@@ -1672,6 +1728,7 @@
    "page": "KB-genre-recipes",
    "path": "knowledge-base/12_genre-recipes.md",
    "line": 12,
+   "end": 30,
    "heading": [
     "1. 節奏 / 時機（太鼓、maimai、OFDP、Timberman、Blackout Bingo 塗記）"
    ],
@@ -1698,6 +1755,7 @@
    "page": "KB-genre-recipes",
    "path": "knowledge-base/12_genre-recipes.md",
    "line": 32,
+   "end": 61,
    "heading": [
     "2. 確定性物理（撞球、泡泡龍、冰球、彈珠）"
    ],
@@ -1724,6 +1782,7 @@
    "page": "KB-genre-recipes",
    "path": "knowledge-base/12_genre-recipes.md",
    "line": 63,
+   "end": 69,
    "heading": [
     "3. 共通做法（兩份配方都適用）"
    ],
@@ -1747,6 +1806,7 @@
    "page": "KB-genre-recipes",
    "path": "knowledge-base/12_genre-recipes.md",
    "line": 71,
+   "end": 81,
    "heading": [
     "4. 其他品類的對應"
    ],
@@ -1770,6 +1830,7 @@
    "page": "KB-input-fairness",
    "path": "knowledge-base/13_input-fairness.md",
    "line": 13,
+   "end": 25,
    "heading": [
     "1. 問題與對策"
    ],
@@ -1793,6 +1854,7 @@
    "page": "KB-input-fairness",
    "path": "knowledge-base/13_input-fairness.md",
    "line": 27,
+   "end": 42,
    "heading": [
     "2. 用法（範本 `main.js`）"
    ],
@@ -1816,6 +1878,7 @@
    "page": "KB-input-fairness",
    "path": "knowledge-base/13_input-fairness.md",
    "line": 44,
+   "end": 53,
    "heading": [
     "3. 延遲校正的規則"
    ],
@@ -1839,6 +1902,7 @@
    "page": "KB-input-fairness",
    "path": "knowledge-base/13_input-fairness.md",
    "line": 55,
+   "end": 63,
    "heading": [
     "4. 防巨集 / 防腳本（伺服器風控用）"
    ],
@@ -1862,6 +1926,7 @@
    "page": "KB-input-fairness",
    "path": "knowledge-base/13_input-fairness.md",
    "line": 65,
+   "end": 70,
    "heading": [
     "5. 還沒做到的"
    ],
@@ -1885,6 +1950,7 @@
    "page": "KB-audio",
    "path": "knowledge-base/14_audio.md",
    "line": 13,
+   "end": 22,
    "heading": [
     "1. 架構"
    ],
@@ -1907,6 +1973,7 @@
    "page": "KB-audio",
    "path": "knowledge-base/14_audio.md",
    "line": 24,
+   "end": 37,
    "heading": [
     "2. 配方表（起手值，跟 FEEL 一樣在檔案裡調）"
    ],
@@ -1929,6 +1996,7 @@
    "page": "KB-audio",
    "path": "knowledge-base/14_audio.md",
    "line": 39,
+   "end": 48,
    "heading": [
     "3. 混音原則"
    ],
@@ -1951,6 +2019,7 @@
    "page": "KB-audio",
    "path": "knowledge-base/14_audio.md",
    "line": 50,
+   "end": 58,
    "heading": [
     "4. 節奏遊戲的時鐘對齊"
    ],
@@ -1973,6 +2042,7 @@
    "page": "KB-audio",
    "path": "knowledge-base/14_audio.md",
    "line": 60,
+   "end": 65,
    "heading": [
     "5. 還沒做到的"
    ],
@@ -1995,6 +2065,7 @@
    "page": "KB-reference-games",
    "path": "knowledge-base/15_reference-games.md",
    "line": 15,
+   "end": 29,
    "heading": [
     "0. 一眼結論"
    ],
@@ -2017,6 +2088,7 @@
    "page": "KB-reference-games",
    "path": "knowledge-base/15_reference-games.md",
    "line": 31,
+   "end": 70,
    "heading": [
     "1. 技術棧與包體"
    ],
@@ -2040,6 +2112,7 @@
    "page": "KB-reference-games",
    "path": "knowledge-base/15_reference-games.md",
    "line": 72,
+   "end": 137,
    "heading": [
     "2. 物件製作規範"
    ],
@@ -2062,6 +2135,7 @@
    "page": "KB-reference-games",
    "path": "knowledge-base/15_reference-games.md",
    "line": 139,
+   "end": 170,
    "heading": [
     "3. 音效應用"
    ],
@@ -2084,6 +2158,7 @@
    "page": "KB-reference-games",
    "path": "knowledge-base/15_reference-games.md",
    "line": 172,
+   "end": 212,
    "heading": [
     "4. 過場與演出"
    ],
@@ -2107,6 +2182,7 @@
    "page": "KB-reference-games",
    "path": "knowledge-base/15_reference-games.md",
    "line": 214,
+   "end": 233,
    "heading": [
     "5. UI/UX"
    ],
@@ -2129,6 +2205,7 @@
    "page": "KB-reference-games",
    "path": "knowledge-base/15_reference-games.md",
    "line": 235,
+   "end": 274,
    "heading": [
     "6. 可借用 / 要避開"
    ],
@@ -2153,6 +2230,7 @@
    "page": "KB-reference-games",
    "path": "knowledge-base/15_reference-games.md",
    "line": 276,
+   "end": 290,
    "heading": [
     "7. 對照 skill game 公平性原則"
    ],
@@ -2175,6 +2253,7 @@
    "page": "KB-reference-games",
    "path": "knowledge-base/15_reference-games.md",
    "line": 292,
+   "end": 304,
    "heading": [
     "8. 拿不到 / 未驗證"
    ],
@@ -2199,6 +2278,7 @@
    "page": "KB-ad-funnel-games",
    "path": "knowledge-base/16_ad-funnel-games.md",
    "line": 13,
+   "end": 23,
    "heading": [
     "0. 一眼結論"
    ],
@@ -2222,6 +2302,7 @@
    "page": "KB-ad-funnel-games",
    "path": "knowledge-base/16_ad-funnel-games.md",
    "line": 25,
+   "end": 53,
    "heading": [
     "1. 規格書索引"
    ],
@@ -2245,6 +2326,7 @@
    "page": "KB-ad-funnel-games",
    "path": "knowledge-base/16_ad-funnel-games.md",
    "line": 55,
+   "end": 70,
    "heading": [
     "2. 改成 skill game 的難易排序"
    ],
@@ -2268,6 +2350,7 @@
    "page": "KB-ad-funnel-games",
    "path": "knowledge-base/16_ad-funnel-games.md",
    "line": 72,
+   "end": 85,
    "heading": [
     "3. 共通規則（給新專案）"
    ],
@@ -2293,6 +2376,7 @@
    "page": "KB-ad-funnel-games",
    "path": "knowledge-base/16_ad-funnel-games.md",
    "line": 87,
+   "end": 97,
    "heading": [
     "4. 投放與法規快查"
    ],
@@ -2316,6 +2400,7 @@
    "page": "KB-ad-funnel-games",
    "path": "knowledge-base/16_ad-funnel-games.md",
    "line": 99,
+   "end": 103,
    "heading": [
     "5. 缺口"
    ],
@@ -2339,6 +2424,7 @@
    "page": "KB-difficulty-curve",
    "path": "knowledge-base/16_difficulty-curve.md",
    "line": 14,
+   "end": 25,
    "heading": [
     "1. 核心觀念：設計和驗收是同一件事的兩面"
    ],
@@ -2361,6 +2447,7 @@
    "page": "KB-difficulty-curve",
    "path": "knowledge-base/16_difficulty-curve.md",
    "line": 27,
+   "end": 64,
    "heading": [
     "2. 設計規範"
    ],
@@ -2383,6 +2470,7 @@
    "page": "KB-difficulty-curve",
    "path": "knowledge-base/16_difficulty-curve.md",
    "line": 66,
+   "end": 95,
    "heading": [
     "3. 驗收：人性化自動試玩"
    ],
@@ -2406,6 +2494,7 @@
    "page": "KB-difficulty-curve",
    "path": "knowledge-base/16_difficulty-curve.md",
    "line": 97,
+   "end": 111,
    "heading": [
     "4. 驗收門檻（任一不過 → exit 1，不能上線）"
    ],
@@ -2436,6 +2525,7 @@
    "page": "KB-difficulty-curve",
    "path": "knowledge-base/16_difficulty-curve.md",
    "line": 113,
+   "end": 136,
    "heading": [
     "5. 調校流程"
    ],
@@ -2458,6 +2548,7 @@
    "page": "KB-difficulty-curve",
    "path": "knowledge-base/16_difficulty-curve.md",
    "line": 138,
+   "end": 149,
    "heading": [
     "6. 套用到其他品類"
    ],
@@ -2480,6 +2571,7 @@
    "page": "KB-difficulty-curve",
    "path": "knowledge-base/16_difficulty-curve.md",
    "line": 151,
+   "end": 159,
    "heading": [
     "7. 給新遊戲的檢查清單"
    ],
@@ -2502,6 +2594,7 @@
    "page": "KB-af-gate-lane-shooter",
    "path": "knowledge-base/ad-funnel/af-gate-lane-shooter.md",
    "line": 23,
+   "end": 26,
    "heading": [
     "一句話玩法"
    ],
@@ -2532,6 +2625,7 @@
    "page": "KB-af-gate-lane-shooter",
    "path": "knowledge-base/ad-funnel/af-gate-lane-shooter.md",
    "line": 28,
+   "end": 36,
    "heading": [
     "為什麼廣告有效（Hook）"
    ],
@@ -2561,6 +2655,7 @@
    "page": "KB-af-gate-lane-shooter",
    "path": "knowledge-base/ad-funnel/af-gate-lane-shooter.md",
    "line": 38,
+   "end": 72,
    "heading": [
     "遊戲規格"
    ],
@@ -2591,6 +2686,7 @@
    "page": "KB-af-gate-lane-shooter",
    "path": "knowledge-base/ad-funnel/af-gate-lane-shooter.md",
    "line": 74,
+   "end": 79,
    "heading": [
     "可玩廣告（Playable Ad）結構"
    ],
@@ -2620,6 +2716,7 @@
    "page": "KB-af-gate-lane-shooter",
    "path": "knowledge-base/ad-funnel/af-gate-lane-shooter.md",
    "line": 81,
+   "end": 89,
    "heading": [
     "技巧要素"
    ],
@@ -2650,6 +2747,7 @@
    "page": "KB-af-gate-lane-shooter",
    "path": "knowledge-base/ad-funnel/af-gate-lane-shooter.md",
    "line": 91,
+   "end": 95,
    "heading": [
     "隨機 / 選擇噱頭"
    ],
@@ -2679,6 +2777,7 @@
    "page": "KB-af-gate-lane-shooter",
    "path": "knowledge-base/ad-funnel/af-gate-lane-shooter.md",
    "line": 97,
+   "end": 107,
    "heading": [
     "Skill Game 化改造（必做）"
    ],
@@ -2711,6 +2810,7 @@
    "page": "KB-af-gate-lane-shooter",
    "path": "knowledge-base/ad-funnel/af-gate-lane-shooter.md",
    "line": 109,
+   "end": 119,
    "heading": [
     "HTML5 輕量實作規格"
    ],
@@ -2741,6 +2841,7 @@
    "page": "KB-af-gate-lane-shooter",
    "path": "knowledge-base/ad-funnel/af-gate-lane-shooter.md",
    "line": 121,
+   "end": 125,
    "heading": [
     "主題與美術風格"
    ],
@@ -2771,6 +2872,7 @@
    "page": "KB-af-gate-lane-shooter",
    "path": "knowledge-base/ad-funnel/af-gate-lane-shooter.md",
    "line": 127,
+   "end": 131,
    "heading": [
     "可借用 / 要避開"
    ],
@@ -2801,6 +2903,7 @@
    "page": "KB-af-gate-lane-shooter",
    "path": "knowledge-base/ad-funnel/af-gate-lane-shooter.md",
    "line": 133,
+   "end": 146,
    "heading": [
     "來源"
    ],

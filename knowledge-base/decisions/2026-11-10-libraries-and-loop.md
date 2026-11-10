@@ -384,3 +384,18 @@ C 以前不改任何現有流程；D 才讓 bootstrap §0 從手寫變產生物�
 | 產生物 | `knowledge-base/index/tests.json`（測試卡＋逐條覆蓋）；INDEX.md 規則表加「測試卡」欄；`--check` 與 pre-commit 一併涵蓋 `shared/tests/` |
 | 未做 | 各遊戲實例（哪款能跑哪張卡）留給 C 階段的 `context.mjs` 依 `needs` 判斷；`TEST-PERSONA-PLAYTEST`、`TEST-HUMAN-PLAYTEST` 的程式只在 TwinStrike，第二款需要時再共用化；N9 人機一致性規則尚未建立，`TEST-HUMAN-PLAYTEST` 暫不 implements 任何規則 |
 | 測試 | `shared/tools/tests-index.test.mjs` 6 項；shared/tools 全部 28 項通過 |
+
+### C 階段（2026-11-10，同分支）
+
+| 項目 | 結果 |
+|---|---|
+| profile | `GateLane`、`TwinStrike`、`SwarmDuel` 各一份 `game.profile.json`（genre / skillAxis / renderer / source / jurisdiction / artStyle），由 facets.json 驗證 |
+| 取用器 | `shared/tools/context.mjs <Game> --pull <steps.json> --step <id> [--json]`：有效規則（套用覆寫、依 profile 排除不適用者）、保底卡片＋排序截斷、卡片原文（與 kb-index 同一解析器，雜湊不符即警告 kb.json 過期）、測試卡（依 `needs` 判斷能不能跑、由便宜到貴）、資產分類、知識缺口 |
+| 語意補充 | ① `pull.kb` 可以是選擇器陣列（聯集）：法規要用 jurisdiction 篩、其他內容不能被它擋掉，只能分開寫。② **所有 key 都未知的卡片不算命中**：否則 `{ source }` 這種單一 key 選擇器會把全部沒標 source 的卡拉進來（試點第一版改編階段因此有 77 段落在預算外）。③ 缺口分兩級：`none`（完全沒有卡片涵蓋，建議開 backlog）與 `generic-only`（只有 `"*"` 通用卡，只提示） |
+| kb.json | 卡片加 `end`（最後一個非空行），供取用器定位 |
+| 試點 | `shared/tools/fixtures/context-pilot.json` 把 bootstrap §0 七個階段寫成取用宣告。GateLane 七個階段的最終脈絡包**全部涵蓋手寫必讀頁**，預算內、無截斷；不適用規則正確排除（`RULE-CURVE-BEATGRID` / `-PHRASE`、`RULE-DRAWCALL-3D`），TwinStrike 則納入節奏規則 |
+| 手寫表以外的卡片（供人工判斷是否誤取） | 立項：廣告玩法頁 9 段（本作是改編題，合理）＋參考遊戲摘要；改編：設計模式 2、市場法規 3、參考遊戲摘要；規格：skill-integrity 6、`tech-stack.determinism`、`difficulty-curve.humanized-playtest`、af 改造、廣告共通規則；難度：`skill-integrity.dominance-test`（保底）；手感：`tech-stack.portrait-rwd`；美術：`juice-feel.spine`、`reference-games.borrow-avoid`；技術：af `html5-spec`、`input-fairness.usage`、`skill-integrity.match-verify`。目前看來都與該階段相關，未見明顯誤取 |
+| 發現的知識缺口 | `artStyle=procedural`（none）：GateLane 美術全程式繪製，但沒有卡片標這個風格；相關內容在 `10_asset-library` §3（已標 skip，屬資產資料）與範本特效。`genre=lane-shooter` 在難度、手感只有通用卡（generic-only） |
+| pre-commit | 只改 `<Game>/game.profile.json` 時，比照只改 `art/`：不跑該遊戲的 test + audit（profile 不影響 gdd / sim），改跑 shared/tools 測試（其中驗證所有 profile）。起因：提交 SwarmDuel 的 profile 會觸發 SwarmDuel audit，而它有 4 項既有的 must 失敗（範本前的舊結構） |
+| 未做 | 資產還沒有 facet（只能依 game / kind / status / reusePolicy 篩）；evidence 目錄尚不存在，所以沒有資產會被列為「可直接用」；節點圖與 `loop.mjs` 屬 D 階段 |
+| 測試 | `shared/tools/context.test.mjs` 13 項（含七個試點階段各一項）；shared/tools 全部 41 項通過 |
