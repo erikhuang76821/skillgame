@@ -9,6 +9,7 @@
 | 日期 | 決策 | 狀態 |
 |---|---|---|
 | 2026-10-21 | [知識庫＋資產的規則索引、資產索引與遷移](decisions/2026-10-21-kb-asset-architecture.md)：規則集中於 `index/rules.json`、資產分款登錄後彙整、語意檔名、四階段遷移 | 第 0、1 階段已完成（`index/rules.json`、`shared/tools/rules.mjs`、把關程式改讀規則）；第 2、3 階段未做 |
+| 2026-11-10 | [三庫分離（知識 / 資產 / 測試）＋迴圈工程與動態索引](decisions/2026-11-10-libraries-and-loop.md)：共用 facet、測試庫登錄、節點圖 N0–N11、`context.mjs` 依節點×遊戲 profile 取脈絡包 | 已定案（三方討論收斂），未實作；先做 GateLane A→C 切片 |
 
 ## 開新遊戲：必讀路徑
 
