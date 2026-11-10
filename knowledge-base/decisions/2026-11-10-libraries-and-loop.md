@@ -2,7 +2,7 @@
 
 | 欄位 | 內容 |
 |---|---|
-| 狀態 | **已定案，尚未實作**（2026-11-10 企劃接受 §8 裁決）；§2–§6 中被裁決修改的地方以 §8 為準；延續 [2026-10-21 規則與資產索引決策](2026-10-21-kb-asset-architecture.md)（其 §2 原則全部保留） |
+| 狀態 | **已定案，A–D 已實作**（2026-11-10 企劃接受 §8 裁決；執行紀錄見 §10，E 未做）；§2–§6 中被裁決修改的地方以 §8 為準；延續 [2026-10-21 規則與資產索引決策](2026-10-21-kb-asset-architecture.md)（其 §2 原則全部保留） |
 | 日期 | 2026-11-10 |
 | 範圍 | 知識庫、資產庫、**新增測試庫**、**新增迴圈定義與取用器**、各遊戲的 profile / 迴圈狀態 |
 | 不在範圍 | 遊戲程式本身；已定案的 rules.json / manifest schema（只加欄位，不改語意） |
@@ -300,7 +300,7 @@ SKILLGAME/
 │  └─ tests.json                 產生物
 └─ <Game>/
    ├─ game.profile.json
-   ├─ loop/state.json            （git 追蹤；一款一檔，只有該款 session 寫）
+   ├─ loop/state.json            快取，不進 git（§8 第 3 項；.gitignore）
    └─ docs/loop/                 每輪紀錄
 ```
 
@@ -399,3 +399,17 @@ C 以前不改任何現有流程；D 才讓 bootstrap §0 從手寫變產生物�
 | pre-commit | 只改 `<Game>/game.profile.json` 時，比照只改 `art/`：不跑該遊戲的 test + audit（profile 不影響 gdd / sim），改跑 shared/tools 測試（其中驗證所有 profile）。起因：提交 SwarmDuel 的 profile 會觸發 SwarmDuel audit，而它有 4 項既有的 must 失敗（範本前的舊結構） |
 | 未做 | 資產還沒有 facet（只能依 game / kind / status / reusePolicy 篩）；evidence 目錄尚不存在，所以沒有資產會被列為「可直接用」；節點圖與 `loop.mjs` 屬 D 階段 |
 | 測試 | `shared/tools/context.test.mjs` 13 項（含七個試點階段各一項）；shared/tools 全部 41 項通過 |
+
+### D 階段（2026-11-10，同分支）
+
+| 項目 | 結果 |
+|---|---|
+| 節點圖 | `shared/loop/nodes.json`：N0–N11 十二個節點，取用宣告由 C 試點的七個 step 轉入（立項 → N0＋N1、改編＋規格 → N2、難度 → N5、手感 → N7、美術 → N6、技術 → N4＋N8）。欄位：after、produces、requires、pull、budget、gate（must 規則＋tests 測試卡）、onFail（rule 自動路由；when 只是提示）、maxIterations、checkpoint。index-build 驗證（規則、測試卡、facet、路由目標、循環），錯誤擋 `--check` |
+| `loop.mjs` | `status` / `next` / `gate` / `log`。狀態每次由 `<Game>/docs/loop/*.md` 重建（`key: <JSON>` 一行一欄，合法 YAML），`<Game>/loop/state.json` 只是快取並列入 `.gitignore`。inputHash ＝ 上游（遞移）produces ＋ requires 的內容雜湊，outputHash ＝ 本節點 produces；雜湊不符即「需重驗」。重試依 (node, inputHash) 計；核准綁 inputHash＋outputHash |
+| 關卡 | cheap 全跑；medium / heavy / human 首敗即停，其餘標「未跑」（不算通過）。`TEST-AUDIT` 在程序內呼叫 `auditGame`，**只取本節點 gate 規則的結果**（其他規則的失敗不會擋這個節點）。review 規則與 checkpoint → 關卡 pass 但「等核准」，由人跑 `log --approve <名字>`；沒有真人資料的 N9 可 `--approve … --waive --note 理由` |
+| 路由 | 失敗規則對到 onFail.rule → goto；對不到 → 最上游把該規則列在 gate 的節點（排除 N10 的 `"*"`），都沒有就本節點；多個失敗取最上游。失敗回退寫 `rollback`，被退回的節點標「被退回」直到重跑關卡。同一輸入失敗達 maxIterations → 交給人並附最後三輪 |
+| 取用語意補充 | **source / genre / renderer 是「本作是什麼」的 facet**：卡片標了具體值、而本作 profile 沒有這個值時，即使選擇器沒問這個 key 也排除。起因：TwinStrike 的 N1（只篩 topic=fairness）會拿到 af-gate-lane-shooter 的段落。GateLane 試點七個階段仍全部涵蓋 |
+| bootstrap §0 | 手寫「階段 → 必讀頁」表改為產生物：index-build 依 nodes.json × kb.json 寫進 `bootstrap.md` 的 `generated:loop-mustread` 標記之間，`--check` 比對；通用 profile 為每個 facet `"*"`、source = original（改編題的 af 段落由 N2 依本作 profile 取得，表下註明）。pre-commit 在 `shared/loop/` 或 bootstrap.md 有變動時也跑 `--check` 與 shared/tools 測試 |
+| 試點 | GateLane 沒有任何紀錄，所以目前位置是 N0。`loop.mjs gate GateLane` 跑完 N0：`RULE-LEGAL-EXCLUDE-CHANCE` 屬 review → 關卡 pass、等企劃核准，自動寫出 `GateLane/docs/loop/2026-11-10-N0-kickoff-1.md`，路由 → N1。另以 `--dry` 試跑 N4：`RULE-SIM-PURITY`、`RULE-SPEC-CONSTANTS`、`TEST-UNIT` 全過（上游未核准，只供參考）。GateLane 資料夾本身尚未進 git，紀錄檔也一樣留在工作區 |
+| 未做 | `RULE-KB-CITED` 的 stages 仍是 rules.json 裡手寫的階段 → 頁對照，尚未改成從節點圖推得；N9 人機一致性規則與試玩 log schema 尚未建立；E 階段（N11 晉升指令、pre-commit 依節點跑關卡） |
+| 測試 | `shared/tools/loop.test.mjs` 9 項（節點圖驗證、試點對照、profile 篩選、事件格式、狀態推導、關卡順序、路由、bootstrap 表）；shared/tools 全部 50 項通過 |

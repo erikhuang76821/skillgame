@@ -2,6 +2,7 @@
 // §4.4, §8). Joins a step declaration (what it pulls, its token budget, its gate rules) with <Game>/game.profile.json
 // against the generated indexes (kb.json, tests.json, assets.json) and the rules resolver (effective values, overrides).
 //
+//   node shared/tools/context.mjs <Game> --node <node id> [--json]            (a node of shared/loop/nodes.json)
 //   node shared/tools/context.mjs <Game> --pull <steps.json> --step <id> [--json]
 //
 // A step: { id, name, pull: { kb, rules, tests, assets }, budget: { kbTokens }, gate: { must: [rule id or RULE-X-*] } }
@@ -25,6 +26,16 @@ const readJson = p => JSON.parse(readFileSync(p, 'utf8'));
 const list = v => (v === undefined || v === null ? [] : Array.isArray(v) ? v : [v]);
 const COST_ORDER = ['cheap', 'medium', 'heavy', 'human'];
 const PROFILE_KEYS = new Set(['schemaVersion', 'game', ...FACET_KEYS]);
+// Facets that say what a game *is*: a card tagged with a concrete value here is about such games only, so it is left out
+// for a game whose profile has none of those values even when the selector does not ask about the key (an
+// af-gate-lane-shooter card is not general fairness advice for a rhythm game).
+export const SCOPED_FACETS = ['source', 'genre', 'renderer'];
+export function fitsProfile(facets, profile) {
+  return SCOPED_FACETS.every(k => {
+    const have = facets[k], mine = list(profile[k]);
+    return !have || have.includes('*') || !mine.length || mine.includes('*') || have.some(v => mine.includes(v));
+  });
+}
 
 /** <Game>/game.profile.json, validated against shared/index/facets.json. */
 export function loadProfile(root, game, vocab = loadVocabulary(root)) {
@@ -69,19 +80,19 @@ export function facetMatch(facets, sel) {
 
 /** Does a rule's scope selector apply to this game? Only keys the profile can answer are checked. */
 export function ruleApplies(rule, profile) {
-  const sel = rule.scope?.selector ?? {};
-  for (const k of ['genre', 'renderer']) if (sel[k] && profile[k] && !list(profile[k]).includes(sel[k])) return false;
-  if (sel.source === 'ad-funnel' && !list(profile.source).some(s => s.startsWith('af-'))) return false;
+  const sel = rule.scope?.selector ?? {}, any = k => list(profile[k]).includes('*');   // a "*" profile (generic, e.g. the bootstrap table) fits every scope
+  for (const k of ['genre', 'renderer']) if (sel[k] && profile[k] && !any(k) && !list(profile[k]).includes(sel[k])) return false;
+  if (sel.source === 'ad-funnel' && !any('source') && !list(profile.source).some(s => s.startsWith('af-'))) return false;
   return true;
 }
 
 const idMatch = (id, pats) => pats.some(p => (p.endsWith('*') ? id.startsWith(p.slice(0, -1)) : id === p));
 
-/** Build one step's context pack. Returns { errors, warnings, pack }. */
-export function buildContext(root, game, step) {
+/** Build one step's context pack. Returns { errors, warnings, pack }. opts.profile replaces <Game>/game.profile.json. */
+export function buildContext(root, game, step, opts = {}) {
   const errors = [], warnings = [];
   const vocab = loadVocabulary(root);
-  const { profile, errors: pe } = loadProfile(root, game, vocab);
+  const { profile, errors: pe } = opts.profile ? { profile: opts.profile, errors: [] } : loadProfile(root, game, vocab);
   errors.push(...pe);
   if (!profile) return { errors, warnings, pack: null };
   const idx = name => readJson(join(root, 'knowledge-base', 'index', name));
@@ -125,7 +136,7 @@ export function buildContext(root, game, step) {
   const budget = step.budget?.kbTokens ?? 0;
   const floor = kb.cards.filter(c => c.rules.some(r => gateIds.has(r)));
   const floorIds = new Set(floor.map(c => c.id));
-  const candidates = kb.cards.filter(c => !floorIds.has(c.id)).map(c => ({ c, m: best(c) })).filter(x => x.m)
+  const candidates = kb.cards.filter(c => !floorIds.has(c.id) && fitsProfile(c.facets, profile)).map(c => ({ c, m: best(c) })).filter(x => x.m)
     .sort((a, b) => b.m.exact - a.m.exact || a.m.unknown - b.m.unknown || a.m.k - b.m.k
       || (b.c.reviewedAt ?? '').localeCompare(a.c.reviewedAt ?? '') || a.c.id.localeCompare(b.c.id));
   const floorTokens = floor.reduce((n, c) => n + c.tokens, 0);
@@ -235,13 +246,14 @@ export function renderPack(pack, errors = [], warnings = []) {
 const isMain = process.argv[1] && fileURLToPath(import.meta.url).replace(/\\/g, '/').endsWith(process.argv[1].replace(/\\/g, '/').split('/').pop());
 if (isMain) {
   const args = process.argv.slice(2), opt = n => { const i = args.indexOf(n); return i >= 0 ? args[i + 1] : null; };
-  const game = args[0], pullFile = opt('--pull'), stepId = opt('--step');
-  if (!game || game.startsWith('--') || !pullFile || !stepId) {
-    console.error('用法：node shared/tools/context.mjs <Game> --pull <steps.json> --step <id> [--json]'); process.exit(2);
+  const game = args[0], nodeId = opt('--node'), pullFile = opt('--pull'), stepId = nodeId ?? opt('--step');
+  if (!game || game.startsWith('--') || !stepId || (!nodeId && !pullFile)) {
+    console.error('用法：node shared/tools/context.mjs <Game> --node <id> [--json]｜--pull <steps.json> --step <id> [--json]'); process.exit(2);
   }
   const root = findRoot(process.cwd());
-  const step = readJson(pullFile).steps.find(s => s.id === stepId);
-  if (!step) { console.error(`${pullFile} 沒有 step ${stepId}`); process.exit(2); }
+  const src = nodeId ? join(root, 'shared', 'loop', 'nodes.json') : pullFile;
+  const doc = readJson(src), step = (doc.nodes ?? doc.steps).find(s => s.id === stepId);
+  if (!step) { console.error(`${src} 沒有 ${stepId}`); process.exit(2); }
   const { errors, warnings, pack } = buildContext(root, game, step);
   if (!pack) { console.error(errors.join('\n')); process.exit(1); }
   process.stdout.write(args.includes('--json') ? JSON.stringify({ errors, warnings, ...pack }, null, 1) + '\n' : renderPack(pack, errors, warnings));

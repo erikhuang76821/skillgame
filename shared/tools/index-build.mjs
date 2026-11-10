@@ -6,6 +6,7 @@
 //
 //   node shared/tools/index-build.mjs                  validate + rebuild
 //   node shared/tools/index-build.mjs --check          validate + fail if the generated files are stale (pre-commit)
+//   Also validates shared/loop/nodes.json and regenerates the bootstrap.md §0 must-read table between its markers.
 //   node shared/tools/index-build.mjs --update-hashes  rewrite each manifest's contentHash from the files, then rebuild
 // No wall-clock timestamps in the output, so a rebuild of unchanged sources is byte-identical.
 import { createHash } from 'node:crypto';
@@ -13,8 +14,9 @@ import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { extname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { findRoot } from './rules.mjs';
-import { buildKb } from './kb-index.mjs';
+import { buildKb, loadVocabulary } from './kb-index.mjs';
 import { buildTests } from './tests-index.mjs';
+import { applyMustRead, checkNodes, loadNodes } from './loop.mjs';
 
 export const KINDS = ['sprite-sheet', 'background', 'fx-sheet', 'key-art', 'ui', 'reference', 'procedural', 'audio-recipe'];
 export const STATUSES = ['shipped', 'raw-only', 'rejected-take', 'placeholder', 'procedural', 'template'];
@@ -120,8 +122,12 @@ export function buildIndex(root) {
     about: '產生物，禁止手改。來源：shared/tests/registry.json（測試卡）對照 knowledge-base/index/rules.json（規則的 enforcement 為準，不回寫）；重建：node shared/tools/index-build.mjs。',
     ...tests.data,
   };
+  const nodes = checkNodes(loadNodes(root), {
+    ruleIds: readJson(join(root, 'knowledge-base', 'index', 'rules.json')).rules.map(r => r.id),
+    testIds: readJson(join(root, 'shared', 'tests', 'registry.json')).tests.map(t => t.id), vocab: loadVocabulary(root),
+  });
   return {
-    errors: [...errors, ...kb.errors, ...tests.errors], warnings: [...kb.warnings, ...tests.warnings], json: JSON.stringify(json, null, 1) + '\n',
+    errors: [...errors, ...kb.errors, ...tests.errors, ...nodes.errors], warnings: [...kb.warnings, ...tests.warnings, ...nodes.warnings], json: JSON.stringify(json, null, 1) + '\n',
     kb: JSON.stringify(kbJson, null, 1) + '\n', tests: JSON.stringify(testsJson, null, 1) + '\n',
     md: indexMd(root, assets, json.counts, kb.data, tests.data),
   };
@@ -164,10 +170,16 @@ if (isMain) {
   const jp = join(root, OUT_JSON), mp = join(root, OUT_MD), kp = join(root, OUT_KB), tp = join(root, OUT_TESTS);
   if (args.includes('--check')) {
     const stale = [[jp, json], [kp, kb], [tp, tests], [mp, md]].filter(([p, s]) => !existsSync(p) || norm(readFileSync(p, 'utf8')) !== s).map(([p]) => p);
+    const must = applyMustRead(root, loadNodes(root));                 // bootstrap §0 table, built from the kb.json on disk (a stale kb.json is reported above)
+    if (must.error) { console.error(`✘ ${must.error}`); process.exit(1); }
+    if (must.changed) stale.push(must.path);
     if (stale.length) { console.error(`✘ 中央索引過期：${stale.map(p => p.slice(root.length + 1)).join('、')}。請跑 node shared/tools/index-build.mjs 後一起 commit。`); process.exit(1); }
-    console.log('✔ 中央資產、知識卡、測試卡索引是最新的');
+    console.log('✔ 中央資產、知識卡、測試卡索引與 bootstrap §0 必讀表是最新的');
   } else {
     writeFileSync(jp, json, 'utf8'); writeFileSync(kp, kb, 'utf8'); writeFileSync(tp, tests, 'utf8'); writeFileSync(mp, md, 'utf8');
+    const must = applyMustRead(root, loadNodes(root));                 // after kb.json is written: the table reads it
+    if (must.error) { console.error(`✘ ${must.error}`); process.exit(1); }
+    if (must.changed) writeFileSync(must.path, must.text, 'utf8');
     const kc = JSON.parse(kb).counts, tc = JSON.parse(tests).counts;
     console.log(`✔ ${OUT_JSON.replace(/\\/g, '/')}：${JSON.parse(json).counts.total} 筆；${OUT_KB.replace(/\\/g, '/')}：${kc.cards} 張卡 / ${kc.pages} 頁；`
       + `${OUT_TESTS.replace(/\\/g, '/')}：${tc.tests} 張測試卡，規則覆蓋 ${tc.covered}/${tc.rules}；${OUT_MD.replace(/\\/g, '/')}`);

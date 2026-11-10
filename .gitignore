@@ -9,3 +9,5 @@ Thumbs.db
 .vscode/
 .idea/
 .claude/settings.local.json
+# loop state is a cache rebuilt from <Game>/docs/loop/ (decision 2026-11-10 §8 item 3)
+/*/loop/state.json

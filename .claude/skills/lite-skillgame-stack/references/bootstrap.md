@@ -2,18 +2,31 @@
 
 ## 0. 開工前必讀（每款新遊戲都要；範本只帶程式，設計知識在知識庫）
 
-依階段讀完再動手，讀過哪些頁寫進 `<NewGame>/README.md`。**只看範本與單一規格書就開工，是 GateLane 漏掉難度曲線、手感與改造的原因**（2026-10-21 檢討）。
+依節點讀完再動手，讀過哪些頁寫進 `<NewGame>/README.md`。**只看範本與單一規格書就開工，是 GateLane 漏掉難度曲線、手感與改造的原因**（2026-10-21 檢討）。
 
-| 階段 | 必讀（repo `knowledge-base/`） | 產出 |
-|---|---|---|
-| 立項 | [README](../../../../knowledge-base/README.md)、[01 技巧完整性](../../../../knowledge-base/01_skill-integrity.md)、[02 市場與法規](../../../../knowledge-base/02_market-and-legal.md)（排除標準） | `gdd/03_skill_integrity.md` |
-| 來源是廣告玩法或既有遊戲（「復刻」「改編」） | 對應的 `ad-funnel/af-*.md` **整份**，尤其「Skill Game 化改造（必做）」；[16 廣告導流玩法](../../../../knowledge-base/16_ad-funnel-games.md) §3 | `gdd/05_game_spec.md` §13 逐條回應 |
-| 玩法規格 | [03 設計模式](../../../../knowledge-base/03_design-patterns.md)、[12 品類配方](../../../../knowledge-base/12_genre-recipes.md)、[13 輸入公平](../../../../knowledge-base/13_input-fairness.md)、[game-spec-template.md](game-spec-template.md) | `gdd/05_game_spec.md` §0–§12 |
-| 難度曲線 | [16 難度曲線](../../../../knowledge-base/16_difficulty-curve.md)（D1–D8） | `gdd/07_difficulty_curve.md`、`docs/playtest_report.md` |
-| 手感 / 音效 | [05 打擊感](../../../../knowledge-base/05_juice-and-feel.md)、[14 音效](../../../../knowledge-base/14_audio.md)、[15 參考遊戲](../../../../knowledge-base/15_reference-games.md) | 改寫 `fx/feel.js`、`audio/sfx.js`（不沿用示範遊戲數值） |
-| 美術 | [06 美術管線](../../../../knowledge-base/06_art-pipeline.md)、[07 題材](../../../../knowledge-base/07_themes-and-liveops.md)、[10 資產庫](../../../../knowledge-base/10_asset-library.md)、[11 地表設定集](../../../../knowledge-base/11_terrain-style-kit.md) | `art/`、美術規格 |
-| 技術 / 風險 | [04 技術框架](../../../../knowledge-base/04_tech-stack.md) | `gdd/10_tech_constraints.md`、`gdd/11_risks_open.md` |
+下表由節點圖（`shared/loop/nodes.json`）× 知識卡索引產生，不要手改（`index-build --check` 會擋）。節點只宣告 facet 查詢，知識庫新增或改標的段落會自動出現在對應節點。實際做的時候用 `node shared/tools/loop.mjs next <NewGame>`：依本作 profile 篩選，並附段落全文、有效規則與可跑的測試。
 
+<!-- generated:loop-mustread (shared/loop/nodes.json × knowledge-base/index/kb.json; node shared/tools/index-build.mjs) -->
+| 節點 | 必讀（知識卡所在頁；`*` profile、節點預算內） | 產出 | 關卡 |
+|---|---|---|---|
+| **N0-kickoff** 立項 ✋ | [02_market-and-legal](../../../../knowledge-base/02_market-and-legal.md)（7）、[16_ad-funnel-games](../../../../knowledge-base/16_ad-funnel-games.md)（5）、[15_reference-games](../../../../knowledge-base/15_reference-games.md)（1）、[01_skill-integrity](../../../../knowledge-base/01_skill-integrity.md)（3）、[06_art-pipeline](../../../../knowledge-base/06_art-pipeline.md)（1） | `game.profile.json`、`README.md` | `RULE-LEGAL-EXCLUDE-CHANCE` |
+| **N1-derandomize** 去隨機化 | [01_skill-integrity](../../../../knowledge-base/01_skill-integrity.md)（5）、[03_design-patterns](../../../../knowledge-base/03_design-patterns.md)（1）、[16_difficulty-curve](../../../../knowledge-base/16_difficulty-curve.md)（1）、[13_input-fairness](../../../../knowledge-base/13_input-fairness.md)（3）、[04_tech-stack](../../../../knowledge-base/04_tech-stack.md)（1） | `gdd/03_skill_integrity.md` | — |
+| **N2-spec** 玩法規格（含改編題改造對照） ✋ | [01_skill-integrity](../../../../knowledge-base/01_skill-integrity.md)（6）、[16_ad-funnel-games](../../../../knowledge-base/16_ad-funnel-games.md)（5）、[12_genre-recipes](../../../../knowledge-base/12_genre-recipes.md)（4）、[13_input-fairness](../../../../knowledge-base/13_input-fairness.md)（4）、[03_design-patterns](../../../../knowledge-base/03_design-patterns.md)（5）、[16_difficulty-curve](../../../../knowledge-base/16_difficulty-curve.md)（1）、[02_market-and-legal](../../../../knowledge-base/02_market-and-legal.md)（3）、[15_reference-games](../../../../knowledge-base/15_reference-games.md)（1）、[04_tech-stack](../../../../knowledge-base/04_tech-stack.md)（1） | `gdd/05_game_spec.md`、`gdd/10_tech_constraints.md`、`gdd/11_risks_open.md` | `RULE-SPEC-FAIRNESS`、`RULE-AF-ADAPTATION` |
+| **N3-scaffold** 起手（複製範本） | [12_genre-recipes](../../../../knowledge-base/12_genre-recipes.md)（4）、[11_terrain-style-kit](../../../../knowledge-base/11_terrain-style-kit.md)（1） | `game/package.json` | `TEST-UNIT` |
+| **N4-sim** 確定性 sim、bots、golden | [04_tech-stack](../../../../knowledge-base/04_tech-stack.md)（4）、[03_design-patterns](../../../../knowledge-base/03_design-patterns.md)（1）、[16_difficulty-curve](../../../../knowledge-base/16_difficulty-curve.md)（1）、[12_genre-recipes](../../../../knowledge-base/12_genre-recipes.md)（4）、[13_input-fairness](../../../../knowledge-base/13_input-fairness.md)（4）、[01_skill-integrity](../../../../knowledge-base/01_skill-integrity.md)（2） | `game/src/sim/sim.js`、`game/test/determinism.test.mjs`、`game/tools/bots.mjs` | `RULE-SIM-PURITY`、`RULE-SPEC-CONSTANTS`、`TEST-UNIT` |
+| **N5-tune** 技巧主導與難度曲線 | [01_skill-integrity](../../../../knowledge-base/01_skill-integrity.md)（1）、[16_difficulty-curve](../../../../knowledge-base/16_difficulty-curve.md)（7） | `docs/skill_dominance_report.md`、`docs/playtest_report.md`、`gdd/07_difficulty_curve.md` | `RULE-SKILL-DOMINANCE`、`RULE-CURVE-*` |
+| **N6-art** 美術：生成、審查、登錄 ✋ | [10_asset-library](../../../../knowledge-base/10_asset-library.md)（2）、[06_art-pipeline](../../../../knowledge-base/06_art-pipeline.md)（5）、[05_juice-and-feel](../../../../knowledge-base/05_juice-and-feel.md)（1）、[11_terrain-style-kit](../../../../knowledge-base/11_terrain-style-kit.md)（5）、[07_themes-and-liveops](../../../../knowledge-base/07_themes-and-liveops.md)（3） | `art/`、`game/src/assets/` | `RULE-ASSET-REGISTER`、`RULE-ART-TW-TABOO` |
+| **N7-feel** 手感、音效、UI | [05_juice-and-feel](../../../../knowledge-base/05_juice-and-feel.md)（5）、[14_audio](../../../../knowledge-base/14_audio.md)（4）、[04_tech-stack](../../../../knowledge-base/04_tech-stack.md)（1）、[15_reference-games](../../../../knowledge-base/15_reference-games.md)（3） | `game/src/fx/feel.js`、`game/src/audio/sfx.js`、`game/src/ui/` | `RULE-FX-FILTER`、`RULE-TEMPLATE-LEFTOVER` |
+| **N8-budget** 包體與 Draw Call | [04_tech-stack](../../../../knowledge-base/04_tech-stack.md)（6）、[13_input-fairness](../../../../knowledge-base/13_input-fairness.md)（1）、[01_skill-integrity](../../../../knowledge-base/01_skill-integrity.md)（1） | — | `RULE-BUNDLE-SIZE`、`RULE-NO-RUNTIME-CDN`、`RULE-DRAWCALL-*` |
+| **N9-human** 人工試玩（對照 bot） ✋ | [03_design-patterns](../../../../knowledge-base/03_design-patterns.md)（1）、[16_difficulty-curve](../../../../knowledge-base/16_difficulty-curve.md)（6）、[13_input-fairness](../../../../knowledge-base/13_input-fairness.md)（3）、[01_skill-integrity](../../../../knowledge-base/01_skill-integrity.md)（1） | `playtest-data/` | `TEST-HUMAN-PLAYTEST` |
+| **N10-release** 發布關卡（全量） ✋ | [01_skill-integrity](../../../../knowledge-base/01_skill-integrity.md)（2）、[02_market-and-legal](../../../../knowledge-base/02_market-and-legal.md)（1）、[04_tech-stack](../../../../knowledge-base/04_tech-stack.md)（4）、[05_juice-and-feel](../../../../knowledge-base/05_juice-and-feel.md)（1）、[10_asset-library](../../../../knowledge-base/10_asset-library.md)（2）、[16_difficulty-curve](../../../../knowledge-base/16_difficulty-curve.md)（1） | — | 全部有效規則、`TEST-UNIT` |
+| **N11-feedback** 回饋到三庫 ✋ | — | — | — |
+
+✋ = 人工檢查點。括號內是取到的段落數。本作實際要讀的段落（依 profile、含全文）：`node shared/tools/loop.mjs next <Game>`。
+<!-- /generated:loop-mustread -->
+
+- **來源是廣告玩法或既有遊戲（「復刻」「改編」）**：N2 會取對應 `ad-funnel/af-*.md` 的全部段落，尤其「Skill Game 化改造（必做）」；`gdd/05_game_spec.md` §13 要逐條回應。
+- 玩法規格照 [game-spec-template.md](game-spec-template.md) 填 §0–§12。
 - **「復刻」只復刻玩法結構與操作**：規格書的改造清單照做，或在 gdd/05 §13 逐條寫不採用的理由；名稱、美術、音效全部原創。
 - **完成條件**：`npm test`、`npm run size`、`node tools/skill-dominance.mjs 30`、`npm run playtest`、`npm run audit` 全過。`audit`（`shared/tools/game-audit.mjs`）不只看檔案在不在，也拿文件對照程式（規則全在 `knowledge-base/index/rules.json`）：
   - 必要：`RULE-GAME-DOCS`（gdd 齊全、規格 §0–§12）、`RULE-GAME-REPORTS`（報告無未通過項）、`RULE-REPORT-FRESH`（報告的 sim 版本 = `GAME.version`）、`RULE-SPEC-CONSTANTS`（規格寫成 `` `NAME` = 數值 `` 的常數與 sim 同名匯出一致）、`RULE-SPEC-FAIRNESS`（§10 精髓七條都有答案）、`RULE-AF-ADAPTATION`、`RULE-SIM-PURITY`（sim/ 程式碼沒有 DOM / 時鐘 / 未播種亂數）

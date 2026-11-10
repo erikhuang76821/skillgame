@@ -2,8 +2,10 @@
 //   <Game>/… outside art/ and game.profile.json -> that game's `npm test` + game-audit (must-level failures block the commit)
 //   <Game>/game.profile.json         -> the shared/tools tests (they validate every profile)
 //   templates/ of lite-skillgame-stack -> the template's `npm test` (includes the D-gate playtest on 8 seeds)
-//   shared/tools/ or rules.json      -> the audit's own tests; every game's audit is printed for information only
-//   art/, game/src/assets/, shared/recipes/, shared/index/, shared/tests/, knowledge-base/ -> index-build --check (asset, knowledge-card and test indexes are fresh)
+//   shared/tools/, shared/loop/ or rules.json -> the shared/tools tests; every game's audit is printed for information only
+//   art/, game/src/assets/, shared/recipes/, shared/index/, shared/tests/, shared/loop/, knowledge-base/, bootstrap.md
+//                                    -> index-build --check (asset / knowledge-card / test indexes and the bootstrap §0 table are fresh)
+//   <Game>/docs/loop/ (loop events) count as that game's files like any other doc
 // Manual run on chosen paths: node shared/tools/precommit.mjs --files TwinStrike/README.md …
 // Slow gates (`npm run build && npm run size`, `npm run playtest` on 30 seeds) stay manual / CI (knowledge-base/08).
 import { execFileSync, spawnSync } from 'node:child_process';
@@ -34,14 +36,14 @@ const run = (label, cmd, args, cwd) => {
   if (r.status !== 0) failures.push(label);
 };
 
-if (touches('shared/tools/') || touches('knowledge-base/index/rules.json') || staged.some(isProfile)) {   // context.test.mjs validates every profile
+if (touches('shared/tools/') || touches('shared/loop/') || touches('knowledge-base/index/rules.json') || staged.some(isProfile)) {   // context.test.mjs validates every profile
   const tests = readdirSync(join(root, 'shared', 'tools')).filter(f => f.endsWith('.test.mjs')).map(f => `shared/tools/${f}`);
   run('shared/tools 測試（game-audit 規則）', process.execPath, ['--test', ...tests], root);
   console.log('\n（規則有改：以下各遊戲 audit 只供參考，不擋這次 commit）');
   for (const g of readdirSync(root).filter(d => !d.startsWith('.') && existsSync(join(root, d, 'game')))) printResults(g, await auditGame(root, g));
 }
 // Asset manifests, shipped media, recipes, facets, test registry, knowledge pages or rules changed -> the generated indexes must be rebuilt in the same commit
-if (staged.some(p => /\/art\/|\/game\/src\/assets\/|^shared\/recipes\/|^shared\/index\/|^shared\/tests\/|^knowledge-base\//.test(p)))
+if (staged.some(p => /\/art\/|\/game\/src\/assets\/|^shared\/recipes\/|^shared\/index\/|^shared\/tests\/|^shared\/loop\/|^knowledge-base\/|references\/bootstrap\.md$/.test(p)))
   run('中央索引：資產＋知識卡＋測試卡（index-build --check）', process.execPath, ['shared/tools/index-build.mjs', '--check'], root);
 if (touches(TEMPLATE)) run('範本 npm test', 'npm', ['test'], join(root, TEMPLATE));
 for (const g of games) {
