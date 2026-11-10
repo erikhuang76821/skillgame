@@ -1,9 +1,17 @@
+---
+id: KB-design-patterns
+kind: method
+topic: [design]
+genre: ["*"]
+reviewedAt: 2026-10-21
+---
 # 03 玩法規則庫與設計模式
 
 > 來源：[SwarmDuel/knowledge/rules/](../SwarmDuel/knowledge/rules/)（38 張規則卡）、範本 [_TEMPLATE_rules.md](../SwarmDuel/knowledge/_TEMPLATE_rules.md)、[_notes/genres-snake-td-lane.md](../SwarmDuel/knowledge/_notes/genres-snake-td-lane.md)
 > 卡片欄位：表頭（市場、形態、代表產品、熱度、技巧 vs 運氣）→ 一句話玩法 → 規則書（勝負、流程、計分、操作、公平機制）→ 技巧要素 → 運氣來源 → 參賽與變現 → 主題美術 → 可借用設計 → 法規風險 → 來源。
 
 ## 1. 規則卡索引（依技巧軸）
+<!-- card: KB-design-patterns.rule-card-index; kind=research -->
 
 | 技巧軸 | 卡片 | 局長 | 最值得借的設計 |
 |---|---|---|---|
@@ -23,6 +31,7 @@
 偏薄的卡（數值多未證實）：Diamond Strike、Pool Payday、Bingo Cash、Pop-A-Shot、Skee-Ball、台灣投籃機、傳說對決、Word Cube 2。Rush Royale 原版運氣主導，只當去隨機化練習題。
 
 ## 2. 公平 / 去運氣模式
+<!-- card: KB-design-patterns.fairness-patterns; topic=fairness,design -->
 
 | 問題 | 模式 | 來源 |
 |---|---|---|
@@ -35,6 +44,7 @@
 | 計時爭議 | 第一次操作才計時、暫停不停表 | Solitaire Cube、Word Cube |
 
 ## 3. 計分公式慣例
+<!-- card: KB-design-patterns.scoring; topic=scoring -->
 
 - 剩餘時間獎勵按秒計且有上限（+4/s 上限 1,200；+10/s 上限 1,800）
 - 遞增連擊表；乘法型獎勵（清色、倍率）
@@ -44,6 +54,7 @@
 - 星等用門檻劃分
 
 ## 4. 局長基準
+<!-- card: KB-design-patterns.session-length; topic=scoring,design -->
 
 | 形態 | 局長 |
 |---|---|
@@ -53,6 +64,7 @@
 | 棋類 | 5–15 分 |
 
 ## 5. 變現模式
+<!-- card: KB-design-patterns.monetization; topic=monetization -->
 
 | 模式 | 要點 |
 |---|---|
@@ -63,5 +75,6 @@
 | **不賣**（Skill 遊戲共通） | 排位數值、復活、次數票、loot box、對手資料 / 種子預覽 |
 
 ## 6. 跨市場可借用規則（knowledge/README 精選）
+<!-- card: KB-design-patterns.borrowable-rules; kind=research -->
 
 同種子非同步對戰 · 基礎分 + 連擊 + 時間獎勵（有上限）· 失誤有代價 · 技巧換道具 · 過關門檻延長時間 · 透明保底不歸零 · 卡片存檔 + 全國排行 · 公開評級 · 禁手 + 開局交換 · 固定波次腳本 · 一鍵雙向攻守 · 年度版本 + 聯賽 + 世錦賽

@@ -1,9 +1,18 @@
+---
+id: KB-tech-stack
+kind: principle
+topic: [tech]
+genre: ["*"]
+renderer: ["*"]
+reviewedAt: 2026-10-21
+---
 # 04 技術框架 — 輕量 HTML5 Skill Game
 
 > 權威來源是 repo skill **`lite-skillgame-stack`**（[.claude/skills/lite-skillgame-stack/SKILL.md](../.claude/skills/lite-skillgame-stack/SKILL.md)）；本頁是索引與摘要，數值衝突時以 skill 與專案自己的 `gdd/10_tech_constraints.md` 為準。
 > 其他來源：[SwarmDuel/gdd/10_tech_constraints.md](../SwarmDuel/gdd/10_tech_constraints.md)、[SwarmDuel/docs/size_budget.md](../SwarmDuel/docs/size_budget.md)、`SwarmDuel/game/src/sim/{rng,fixed,replay}.js`
 
 ## 1. 硬指標
+<!-- card: KB-tech-stack.hard-limits; topic=tech,budget; rules=RULE-BUNDLE-SIZE,RULE-DRAWCALL-2D,RULE-DRAWCALL-3D,RULE-NO-RUNTIME-CDN -->
 
 | 指標 | 值 |
 |---|---|
@@ -13,6 +22,7 @@
 | 執行期 | 不從 CDN 載入任何程式、字型、wasm、transcoder |
 
 ## 2. 技術棧白名單（版本鎖確切值，不加 `^`）
+<!-- card: KB-tech-stack.whitelist -->
 
 | 用途 | 選擇 | 已驗證版本 |
 |---|---|---|
@@ -29,6 +39,7 @@
 實測大小：Pixi + GSAP + 遊戲程式 ≈ 710 KB（gzip 230 KB）；KTX2 transcoder ≈ 0.9 MB；Draco wasm ≈ 280 KB；Meshopt ≈ 32 KB。
 
 ## 3. 分層與迴圈契約
+<!-- card: KB-tech-stack.layering; kind=method -->
 
 ```
 input 佇列 ─▶ sim.step()（固定 1/60 s，可一幀多步）─▶ sim.events
@@ -49,6 +60,7 @@ input 佇列 ─▶ sim.step()（固定 1/60 s，可一幀多步）─▶ sim.ev
 - 動畫格以 **sim tick** 推進（暫停 / 選卡時凍結）。
 
 ## 4. 確定性規則（跨引擎重播一致）
+<!-- card: KB-tech-stack.determinism; kind=method; topic=tech,fairness; rules=RULE-SIM-PURITY -->
 
 | 規則 | 原因 |
 |---|---|
@@ -67,6 +79,7 @@ input 佇列 ─▶ sim.step()（固定 1/60 s，可一幀多步）─▶ sim.ev
 - 180 s × 60 = 10,800 bytes → RLE 後 < 2 KB
 
 ## 5. Draw Call 與資源管線
+<!-- card: KB-tech-stack.drawcalls; kind=method; topic=budget; rules=RULE-DRAWCALL-2D,RULE-DRAWCALL-3D -->
 
 - 同場景一起出現的東西放同一張 atlas（Pixi 8 一批 ≤ 16 張貼圖）。
 - 打斷合批：換 blend mode、filter、mask、Graphics 與 Sprite 交錯、Text、RenderTexture → 集中、要少。
@@ -86,6 +99,7 @@ input 佇列 ─▶ sim.step()（固定 1/60 s，可一幀多步）─▶ sim.ev
 量測：`templates/src/debug/drawCalls.js`（包 `gl.draw*` 計數）、Spector.js。
 
 ## 6. 包體預算範本（≤ 8 MB）
+<!-- card: KB-tech-stack.bundle-budget; kind=method; topic=budget; rules=RULE-BUNDLE-SIZE -->
 
 | 類別 | 上限 |
 |---|---|
@@ -101,6 +115,7 @@ input 佇列 ─▶ sim.step()（固定 1/60 s，可一幀多步）─▶ sim.ev
 參考實績：SwarmDuel 原型 978 KB（brotli 460 KB），完整版預算 5.4 MB。
 
 ## 7. 手機直版 RWD 規格（SwarmDuel 實作，可沿用）
+<!-- card: KB-tech-stack.portrait-rwd; kind=method; topic=ux -->
 
 | 項目 | 規格 |
 |---|---|
@@ -114,6 +129,7 @@ input 佇列 ─▶ sim.step()（固定 1/60 s，可一幀多步）─▶ sim.ev
 | 外殼 | PWA（`orientation: portrait`），必要時 Capacitor |
 
 ## 8. 範本與起手
+<!-- card: KB-tech-stack.template; kind=method; topic=process -->
 
 ```bash
 cp -r .claude/skills/lite-skillgame-stack/templates <NewGame>/game
@@ -122,6 +138,7 @@ cp -r .claude/skills/lite-skillgame-stack/templates <NewGame>/game
 範本內容：`index.html`（`#stage > #stage-shake > canvas`，`#fx`、`#hud` 為兄弟節點）、`main.js`（GSAP 全域設定 + 固定步長迴圈 + 結束時 `verify` 重播驗分）、`sim/core/`、`sim/sim.js`（示範 Beat Tap）、`test/{core,determinism}.test.mjs`、`tools/{bots,skill-dominance}.mjs`、地形模組（`render/terrain*.js`、`tools/tile_check.py`，見 [11 §7](11_terrain-style-kit.md)）、`fx/{feel,shake,overlay,shockwave,particles}.js`、`render/spineActor.js`、`debug/drawCalls.js`、`scripts/size-check.mjs`。已驗證 `npm test` 41/41、build 637 KB（brotli 190 KB）、含地形背景與遮擋示範基礎 DC 1；另含品類配方範例、時間戳輸入、合成音效（見 [12](12_genre-recipes.md)～[14](14_audio.md)）。玩法規格範本：[game-spec-template.md](../.claude/skills/lite-skillgame-stack/references/game-spec-template.md)。目錄結構見 skill 的 [references/bootstrap.md](../.claude/skills/lite-skillgame-stack/references/bootstrap.md)。
 
 ## 9. 交付前自檢
+<!-- card: KB-tech-stack.delivery-check; kind=method; topic=process -->
 
 - [ ] `npm run build && npm run size` 通過
 - [ ] 基礎 DC ≤ 5（2D）/ ≤ 9（3D），寫明峰值

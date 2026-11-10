@@ -1,9 +1,17 @@
+---
+id: KB-audio
+kind: method
+topic: [audio]
+genre: ["*"]
+reviewedAt: 2026-10-21
+---
 # 14 音效 — Web Audio 程式合成（0 bytes）
 
 > 補 [09](09_knowledge-gaps.md) G6。模組：[`src/audio/sfx.js`](../.claude/skills/lite-skillgame-stack/templates/src/audio/sfx.js)，範本示範已接上（perfect / whiff / miss / boom / click，M 鍵靜音）。
 > 規則與打擊感相同：音效只在 render 層，由 sim 事件觸發，不回寫 sim（[05](05_juice-and-feel.md)）。
 
 ## 1. 架構
+<!-- card: KB-audio.architecture -->
 
 | 元件 | 做法 |
 |---|---|
@@ -14,6 +22,7 @@
 | 隨機 | ±4% 音高變化讓連打不機械；這是 render 層，可以用 `Math.random` |
 
 ## 2. 配方表（起手值，跟 FEEL 一樣在檔案裡調）
+<!-- card: KB-audio.recipes -->
 
 | 名稱 | 組成 | 長度 | 用途 |
 |---|---|---|---|
@@ -28,6 +37,7 @@
 實測（OfflineAudioContext 22.05 kHz）：7 個配方都有聲音、峰值 0.05–0.51（< 1，不爆音）、無 NaN；即時播放 `AudioContext` 狀態 running。
 
 ## 3. 混音原則
+<!-- card: KB-audio.mixing -->
 
 | 原則 | 做法 |
 |---|---|
@@ -38,6 +48,7 @@
 | 包體 | SFX 0 bytes；音樂才用檔案（Opus 48–64 kbps 單聲道循環，延遲載入，見 [04](04_tech-stack.md) §6） |
 
 ## 4. 節奏遊戲的時鐘對齊
+<!-- card: KB-audio.rhythm-clock; genre=rhythm -->
 
 1. 音樂用 `AudioContext.currentTime` 排程（不要用 `<audio>`：起播延遲不固定）。
 2. 對局開始時記下 `audioT0 = ctx.currentTime + 0.1`（預留排程時間）與 `perfT0 = performance.now() + 100`，用 `perfT0` 建 `InputClock`。
@@ -47,6 +58,7 @@
 > 實作參考：[15 §3](15_reference-games.md)——《三國奇兵》以全合成撐出五聲音階 BGM 與拾取連擊升音；《9527》的 bgm / sfx 分軌 → master → compressor（-14 dB / knee 18 / 6:1 / 4 ms / 160 ms）與逐 key 節流可直接照抄。
 
 ## 5. 還沒做到的
+<!-- card: KB-audio.todo; kind=gap -->
 
 - 音樂：無（需另找授權或 AI 生成音樂並確認權利）。
 - iOS 靜音鍵：Web Audio 在 iOS 靜音模式下預設不出聲，需提示玩家。

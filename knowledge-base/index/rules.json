@@ -349,6 +349,37 @@
       "howRef": "knowledge-base/10_asset-library.md",
       "source": "audit 第二版（2026-10-21）",
       "reviewedAt": "2026-10-21"
+    },
+    {
+      "id": "RULE-KB-CARDS",
+      "category": "process",
+      "level": "must",
+      "scope": { "selector": { "kind": "kb-page" } },
+      "constraints": [
+        { "name": "pageFields", "value": ["id", "kind", "topic", "reviewedAt"], "unit": "field", "overridePolicy": "forbid" },
+        { "name": "pageId", "value": "^KB-[a-z0-9-]+$", "unit": "regex", "overridePolicy": "forbid" },
+        { "name": "allH2Carded", "check": "有 front-matter 的頁，每個 H2 標題下第一個非空行都是 <!-- card: <頁 id>.<slug> … --> 或 <!-- card: skip; reason=… -->；H3 卡片只能顯式標記", "overridePolicy": "forbid" },
+        { "name": "facets", "check": "facet 值都在 shared/index/facets.json（或為 \"*\"）；kind 在 kbKinds；rules[] 都存在於本檔；卡片 id 全庫唯一", "overridePolicy": "forbid" }
+      ],
+      "measurement": "node shared/tools/index-build.mjs 讀 knowledge-base/**/*.md 中以 --- front-matter 開頭的頁，產生 knowledge-base/index/kb.json；沒有 front-matter 的頁不進索引（列為未分卡）",
+      "enforcement": { "type": "script", "ref": "shared/tools/kb-index.mjs（由 index-build 呼叫，--check 為 pre-commit 關卡）" },
+      "whyRef": "knowledge-base/decisions/2026-11-10-libraries-and-loop.md §3.1、§8",
+      "howRef": "knowledge-base/decisions/2026-11-10-libraries-and-loop.md §3.1",
+      "source": "2026-11-10 三庫分離決策 A 階段",
+      "reviewedAt": "2026-11-10"
+    },
+    {
+      "id": "RULE-KB-CARD-SIZE",
+      "category": "process",
+      "level": "should",
+      "scope": { "selector": { "kind": "kb-card" } },
+      "constraints": [{ "name": "maxTokens", "op": "<=", "value": 2000, "unit": "token-estimate", "overridePolicy": "with-reason" }],
+      "measurement": "卡片本文（標題下到下一張卡為止，不含已獨立成卡的 H3）的估計 token：CJK 與全形字元各算 1，其餘字元數 ÷ 4 無條件進位。超過只警告，由作者拆段或顯式切 H3，取用器不截斷卡片",
+      "enforcement": { "type": "script", "ref": "shared/tools/kb-index.mjs" },
+      "whyRef": "knowledge-base/decisions/2026-11-10-libraries-and-loop.md §8 第 1 項",
+      "howRef": "knowledge-base/decisions/2026-11-10-libraries-and-loop.md §8 第 1 項",
+      "source": "2026-11-10 三庫分離決策；門檻取節點脈絡預算的三分之一（實測 107 個 H2 中位數約 260、移出資產資料後最大約 1,800）",
+      "reviewedAt": "2026-11-10"
     }
   ]
 }

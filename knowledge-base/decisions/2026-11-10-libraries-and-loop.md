@@ -359,3 +359,17 @@ C 以前不改任何現有流程；D 才讓 bootstrap §0 從手寫變產生物�
   - Codex：有條件採納三庫與迴圈，以 GateLane 小型試點驗證取用、事件重建與依賴路由，保留規則來源權威後再擴展。
   - Gemini：先以 GateLane 跑 A→C 切片，廢隱式萬用與 answers 空殼、禁回寫 rules.json、由 git 紀錄推算平行狀態，並強制 N9 schema 與最上游回退。
 - 企劃初選被修改的兩項：段落粒度（自動切 H3 → 固定 H2＋顯式 H3）、answers（AI 初稿 → A 階段不做）。2026-11-10 企劃接受全部裁決。
+
+## 10. 執行紀錄
+
+### A 階段（2026-11-10，分支 `kb/libraries-and-loop`）
+
+| 項目 | 結果 |
+|---|---|
+| 詞彙 | `shared/index/facets.json`：topic 17、genre 11、skillAxis 5、renderer 2、jurisdiction 4、artStyle 6、source（original＋af-*.md 檔名自動加入）、kbKinds 6 |
+| 規則 | 新增 `RULE-KB-CARDS`（must：front-matter 必填欄位、頁 id 格式、每個 H2 都有卡片或 skip、facet / kind / rules 合法、id 唯一）、`RULE-KB-CARD-SIZE`（should：每卡估計 ≤ 2,000 tokens，超過只警告） |
+| 程式 | `shared/tools/kb-index.mjs`（解析與驗證）；`index-build.mjs` 產生 `knowledge-base/index/kb.json`，`--check` 一併比對，INDEX.md 加「知識卡」表；pre-commit 在 `knowledge-base/`、`shared/index/` 有變動時跑 `--check` |
+| 卡片 | GateLane 會用到的 17 頁（bootstrap §0 必讀頁＋`af-gate-lane-shooter`）：103 張卡、4 段略過；最大卡約 1,786 tokens，無警告。其餘 23 頁未分卡（列在 kb.json 的 `unindexed`） |
+| 與裁決的差異 | `10_asset-library` 的 §2–§5（資產總表、程式繪製資產、Prompt 庫、關鍵字索引）**沒有搬檔**，而是標 `card: skip` 並註明改查 `index/assets.json`：這些資料已在各款 manifest（keywords、procedural）與 `promptBlocks` 中；頁面改寫留到舊決策的第 3 階段，避免同時改路徑與內容 |
+| reviewedAt | 取各頁 git 最後改動日（2026-10-21 / 22），不是逐頁重新複核的日期 |
+| 測試 | `shared/tools/kb-index.test.mjs` 9 項；shared/tools 全部 22 項通過；三款遊戲 audit 結果與改動前相同（SwarmDuel 的 4 項 must 失敗是既有的舊結構問題） |

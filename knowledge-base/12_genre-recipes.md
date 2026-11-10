@@ -1,9 +1,16 @@
+---
+id: KB-genre-recipes
+kind: recipe
+topic: [design, tech]
+reviewedAt: 2026-10-21
+---
 # 12 品類實作配方 — 節奏 / 時機、確定性物理
 
 > 補 [09](09_knowledge-gaps.md) G2。每份配方 = 一個 core 模組（可直接 import）＋一個無畫面的範例遊戲（`GameDef`＋三級 bot＋技巧主導測試）。範例在範本 `templates/examples/`，複製範本時一起帶走；不需要就刪掉該資料夾與 `test/recipes.test.mjs` 對應段落。
 > 寫規格時對照 [game-spec-template.md](../.claude/skills/lite-skillgame-stack/references/game-spec-template.md)；輸入時間戳與延遲校正見 [13](13_input-fairness.md)。
 
 ## 1. 節奏 / 時機（太鼓、maimai、OFDP、Timberman、Blackout Bingo 塗記）
+<!-- card: KB-genre-recipes.rhythm; genre=rhythm; skillAxis=timing -->
 
 **模組**：[`src/sim/core/timing.js`](../.claude/skills/lite-skillgame-stack/templates/src/sim/core/timing.js) **範例**：[`examples/rhythm/`](../.claude/skills/lite-skillgame-stack/templates/examples/rhythm/sim.js)（2 軌、150 BPM、約 50 秒）
 
@@ -23,6 +30,7 @@
 **做新遊戲時要改的**：樣式權重（難度）、BPM（`beatTicks`）、軌數、窗口、combo 上限。音樂與譜面對齊用 `audio` 的時鐘（[14](14_audio.md) §4）。
 
 ## 2. 確定性物理（撞球、泡泡龍、冰球、彈珠）
+<!-- card: KB-genre-recipes.physics; genre=physics; skillAxis=aim -->
 
 **模組**：[`src/sim/core/physics.js`](../.claude/skills/lite-skillgame-stack/templates/src/sim/core/physics.js) **範例**：[`examples/billiards/`](../.claude/skills/lite-skillgame-stack/templates/examples/billiards/sim.js)（單人清台、種子決定球型、14 顆球 24 桿）
 
@@ -53,6 +61,7 @@
 **結論**：撞球類天生比節奏類更吃球型（交互項大）。三個槓桿依效果排序：① 拿掉非線性加成（計分）② 加長單局並同步加球數（平均掉運氣，但別讓高手碰到滿分天花板）③ 限制種子產生的球型（題目公平）。v7 在四組種子都過 70%，測試會在兩組種子上檢查（`test/recipes.test.mjs`）。
 
 ## 3. 共通做法（兩份配方都適用）
+<!-- card: KB-genre-recipes.common; genre=* -->
 
 1. 先寫規格 §2 輸入、§3 隨機、§6 計分，再寫 sim。
 2. 範例 bot 只讀「真人看得到的資訊」，誤差用 `hash32` 產生的近似常態分布（4 個均勻分布相加）。
@@ -60,6 +69,7 @@
 4. **非線性加成（連擊倍率、連進倍率）先關掉測一次**：SwarmDuel 的存活獎勵、撞球的連進倍率都證明它們會放大運氣。
 
 ## 4. 其他品類的對應
+<!-- card: KB-genre-recipes.other-genres; genre=* -->
 
 | 品類（規則卡） | 用哪份配方 | 另外要做 |
 |---|---|---|

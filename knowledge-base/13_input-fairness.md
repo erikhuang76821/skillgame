@@ -1,9 +1,17 @@
+---
+id: KB-input-fairness
+kind: method
+topic: [input, fairness]
+genre: ["*"]
+reviewedAt: 2026-10-21
+---
 # 13 輸入公平性 — 時間戳輸入、延遲校正、防巨集
 
 > 補 [09](09_knowledge-gaps.md) G4。模組：[`src/sim/core/input.js`](../.claude/skills/lite-skillgame-stack/templates/src/sim/core/input.js)，測試：`test/input.test.mjs`，範本 `main.js` 已接上。
 > 為什麼重要：時機型 skill game（節奏、OFDP、Timberman、塗記速度）比的是毫秒；如果判定跟著「哪一幀處理到點擊」走，120 Hz 手機的玩家天生比 60 Hz 或掉幀的玩家準——這是裝置造成的不公平，不是技巧。
 
 ## 1. 問題與對策
+<!-- card: KB-input-fairness.problems -->
 
 | 問題 | 傳統做法的後果 | 對策（範本做法） |
 |---|---|---|
@@ -17,6 +25,7 @@
 驗證：`test/input.test.mjs` 用同一組真人點擊時間，分別以 30 / 60 / 120 / 144 Hz 與一次 90 ms 卡頓模擬，**產生的輸入紀錄逐 byte 相同**。
 
 ## 2. 用法（範本 `main.js`）
+<!-- card: KB-input-fairness.usage; topic=input,tech -->
 
 ```js
 clock = new InputClock(performance.now(), OFFSET, TICK_MS);   // 每局開始
@@ -33,6 +42,7 @@ rec.meta.lateTaps = taps.late;                                // 結束時，給
 ```
 
 ## 3. 延遲校正的規則
+<!-- card: KB-input-fairness.latency-calibration -->
 
 | 規則 | 理由 |
 |---|---|
@@ -43,6 +53,7 @@ rec.meta.lateTaps = taps.late;                                // 結束時，給
 | 排位前強制做一次，之後可在設定重做 | 換耳機 / 換手機時延遲會變 |
 
 ## 4. 防巨集 / 防腳本（伺服器風控用）
+<!-- card: KB-input-fairness.anti-macro -->
 
 | 函式 | 看什麼 | 預設門檻 | 適用 |
 |---|---|---|---|
@@ -52,6 +63,7 @@ rec.meta.lateTaps = taps.late;                                // 結束時，給
 這兩個只是**標記**，不直接作廢——真正的處理流程（人工複查、高額獎金局抽查、誤判申訴）仍屬 [09](09_knowledge-gaps.md) G9。門檻要用真人試玩資料重設。
 
 ## 5. 還沒做到的
+<!-- card: KB-input-fairness.todo; kind=gap -->
 
 - ~~校正畫面 UI~~ ✅ 2026-10-21：實作範例在 [TwinStrike/game/src/ui/calibration.js](../TwinStrike/game/src/ui/calibration.js)（聽拍 + 看閃光兩輪，觸控 offset 與音訊延遲分開量；說明見 [TwinStrike gdd/06 §8.1](../TwinStrike/gdd/06_combo_feel.md)）。
 - 鍵盤 / 手把輸入同樣適用（`KeyboardEvent.timeStamp`），範本只接了 pointer。

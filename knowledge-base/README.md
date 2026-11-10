@@ -50,5 +50,6 @@
 ## 維護
 
 - 原始資料更新後，同步修改對應頁的摘要。
+- 有 front-matter 的頁是**知識卡**（[index/kb.json](index/kb.json)）：新增 H2 時在標題下加 `<!-- card: <頁 id>.<slug> -->`（或 `<!-- card: skip; reason=… -->`），facet 值只能用 [shared/index/facets.json](../shared/index/facets.json)；改完跑 `node shared/tools/index-build.mjs`。規則：`RULE-KB-CARDS`、`RULE-KB-CARD-SIZE`。
 - 未證實的數值保留「（未證實）」標記。
 - 缺口補上後，到 [09](09_knowledge-gaps.md) 劃掉並連到新文件。

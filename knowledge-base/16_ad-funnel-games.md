@@ -1,9 +1,17 @@
+---
+id: KB-ad-funnel-games
+kind: research
+topic: [market, design]
+genre: ["*"]
+reviewedAt: 2026-10-21
+---
 # 16 廣告導流玩法 — 2025–2026 熱門素材的規格書
 
 > 調查 2025–2026 在台灣、北美買量廣告中最紅的玩法，每款一份遊戲說明／規格書，含「怎麼改成 skill game」與 HTML5 輕量實作估算。
 > 規格書：[ad-funnel/](ad-funnel/)（17 份，範本 [_TEMPLATE_spec.md](ad-funnel/_TEMPLATE_spec.md)）；趨勢筆記：[_notes-sort-jam.md](ad-funnel/_notes-sort-jam.md)、[_notes-runner-fake-ads.md](ad-funnel/_notes-runner-fake-ads.md)。營收／下載均為第三方估算；原作沒查到的數值標「（未證實）」，我們自己提的設計值標「建議值」。
 
 ## 0. 一眼結論
+<!-- card: KB-ad-funnel-games.summary -->
 
 | # | 結論 |
 |---|---|
@@ -15,6 +23,7 @@
 | 6 | 17 款全部可在 **2–6 DC、≈ 2.4–4.6 MB** 內實作，符合 [04 技術框架](04_tech-stack.md) 的預算。 |
 
 ## 1. 規格書索引
+<!-- card: KB-ad-funnel-games.spec-index -->
 
 ### 1.1 解謎排序（jam / sort）
 
@@ -44,6 +53,7 @@
 | [畫線護主](ad-funnel/af-draw-to-protect.md) | Save the Doge | 無近年熱度證據 | 真實 | 畫線形狀＋長度（真技巧） | 4 / 2.9 MB |
 
 ## 2. 改成 skill game 的難易排序
+<!-- card: KB-ad-funnel-games.adaptation-ranking -->
 
 依「原作已有多少真技巧、要補多少」排序（越前面越容易）：
 
@@ -60,6 +70,7 @@
 | 9 | [數字塔](ad-funnel/af-number-tower.md)、[求救經營](ad-funnel/af-distress-idle-arcade.md) | 需整個即時化才成立 |
 
 ## 3. 共通規則（給新專案）
+<!-- card: KB-ad-funnel-games.common-rules; kind=principle; rules=RULE-AF-ADAPTATION -->
 
 > **改造是必做，不是建議。** 原作多半是「選擇噱頭」，照原作復刻做不出技巧主導（GateLane 2026-10-21：照原作自動射擊、只留加乘門 → 技巧佔比僅 71%、高手兩秒打倒頭目）。規格書的「Skill Game 化改造（必做）」每一條都要在 `gdd/05_game_spec.md` §13 回應（`RULE-AF-ADAPTATION`）；開工必讀清單見 [bootstrap.md §0](../.claude/skills/lite-skillgame-stack/references/bootstrap.md)。
 
@@ -74,6 +85,7 @@
 | 假玩法素材 | 用確定性重播自動產出實機素材；HTML5 本體直接當可玩廣告 | 法規安全 |
 
 ## 4. 投放與法規快查
+<!-- card: KB-ad-funnel-games.ads-legal; topic=market,legal -->
 
 | 項目 | 要點 |
 |---|---|
@@ -85,6 +97,7 @@
 | 台灣 | 公平法第 21 條虛偽不實廣告；遊戲處分集中在機率不實，未查到「玩法不符」處分案 |
 
 ## 5. 缺口
+<!-- card: KB-ad-funnel-games.gaps; kind=gap -->
 
 - 台灣「依格式拆分」的投放量、多數解謎排序作品的台灣下載／營收：需 Sensor Tower、AppGrowing、SocialPeta、廣大大付費報表。
 - 可玩廣告的實際結構多為推定；原作精確數值（暫存格數、倒數秒數、公車容量）需實機量測。

@@ -1,6 +1,7 @@
-// index:build — the central asset index (knowledge-base/decisions/2026-10-21-kb-asset-architecture.md §5.3–5.4).
-// Reads every <Game>/art/manifest.json plus shared/recipes/manifest.json (the only hand-edited sources), validates
-// them, and writes the generated files knowledge-base/index/assets.json and knowledge-base/index/INDEX.md.
+// index:build — the central indexes (knowledge-base/decisions/2026-10-21-kb-asset-architecture.md §5.3–5.4,
+// 2026-11-10-libraries-and-loop.md §3.1). Reads every <Game>/art/manifest.json plus shared/recipes/manifest.json, and the
+// front-matter / card markers of knowledge-base pages (kb-index.mjs); validates them and writes the generated files
+// knowledge-base/index/assets.json, kb.json and INDEX.md.
 //
 //   node shared/tools/index-build.mjs                  validate + rebuild
 //   node shared/tools/index-build.mjs --check          validate + fail if the generated files are stale (pre-commit)
@@ -11,12 +12,14 @@ import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { extname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { findRoot } from './rules.mjs';
+import { buildKb } from './kb-index.mjs';
 
 export const KINDS = ['sprite-sheet', 'background', 'fx-sheet', 'key-art', 'ui', 'reference', 'procedural', 'audio-recipe'];
 export const STATUSES = ['shipped', 'raw-only', 'rejected-take', 'placeholder', 'procedural', 'template'];
 export const REUSE = ['game-only', 'reusable', 'template'];
 const OUT_JSON = join('knowledge-base', 'index', 'assets.json');
 const OUT_MD = join('knowledge-base', 'index', 'INDEX.md');
+const OUT_KB = join('knowledge-base', 'index', 'kb.json');
 const SHARED = join('shared', 'recipes', 'manifest.json');
 const BLOCKS = join('shared', 'recipes', 'prompt-blocks.json');
 const TEXT = new Set(['.json', '.js', '.mjs', '.txt', '.md', '.py']);
@@ -102,18 +105,30 @@ export function buildIndex(root) {
     counts: { total: assets.length, byGame: count(assets, 'game'), byKind: count(assets, 'kind'), byStatus: count(assets, 'status') },
     assets, promptBlocks: blocks,
   };
-  return { errors, json: JSON.stringify(json, null, 1) + '\n', md: indexMd(root, assets, json.counts) };
+  const kb = buildKb(root);
+  const kbJson = {
+    generated: true, schemaVersion: 1,
+    about: '產生物，禁止手改。來源：knowledge-base/ 各頁的 front-matter 與 <!-- card: … --> 標記，詞彙 shared/index/facets.json；重建：node shared/tools/index-build.mjs。',
+    ...kb.data,
+  };
+  return {
+    errors: [...errors, ...kb.errors], warnings: kb.warnings, json: JSON.stringify(json, null, 1) + '\n',
+    kb: JSON.stringify(kbJson, null, 1) + '\n', md: indexMd(root, assets, json.counts, kb.data),
+  };
 }
 
-function indexMd(root, assets, counts) {
+function indexMd(root, assets, counts, kb) {
   const rules = readJson(join(root, 'knowledge-base', 'index', 'rules.json')).rules;
   const link = ref => { const p = ref?.match(/^[\w./-]+/)?.[0]; return p ? `[${p.split('/').pop()}](../../${p})` : ''; };   // "a/b.md §3（…）" -> a/b.md
   const out = [
     '# 規則 ↔ 知識庫 ↔ 資產 索引（自動產生）', '',
-    '> 產生物，禁止手改：`node shared/tools/index-build.mjs`。規則來源 [rules.json](rules.json)，資產來源各款 `art/manifest.json` 與 `shared/recipes/`；機器可讀版 [assets.json](assets.json)。', '',
+    '> 產生物，禁止手改：`node shared/tools/index-build.mjs`。規則來源 [rules.json](rules.json)，資產來源各款 `art/manifest.json` 與 `shared/recipes/`，知識卡來源各頁 front-matter；機器可讀版 [assets.json](assets.json)、[kb.json](kb.json)。', '',
     `## 規則（${rules.length} 條）`, '',
     '| 規則 | 等級 | 把關 | 為什麼 | 怎麼做 |', '|---|---|---|---|---|',
     ...rules.map(r => `| \`${r.id}\` | ${r.level} | ${r.enforcement.type === 'script' ? '程式' : '人工審查'} | ${link(r.whyRef)} | ${link(r.howRef)} |`),
+    '', `## 知識卡（${kb.counts.cards} 張，${kb.counts.pages} 頁；未分卡 ${kb.counts.unindexed} 頁）`, '',
+    '| 頁 | id | kind | topic | 卡片 | 略過 |', '|---|---|---|---|---|---|',
+    ...kb.pages.map(p => `| [${p.path.split('/').pop()}](../../${p.path}) | \`${p.id}\` | ${p.kind} | ${(p.facets.topic ?? []).join(', ')} | ${p.cards} | ${p.skipped} |`),
     '', `## 資產（${counts.total} 筆）`, '',
     `依遊戲：${Object.entries(counts.byGame).map(([g, n]) => `${g} ${n}`).join('、')}　依狀態：${Object.entries(counts.byStatus).map(([s, n]) => `${s} ${n}`).join('、')}`, '',
   ];
@@ -132,15 +147,17 @@ const isMain = process.argv[1] && fileURLToPath(import.meta.url).endsWith(proces
 if (isMain) {
   const root = findRoot(process.cwd()), args = process.argv.slice(2);
   if (args.includes('--update-hashes')) console.log(`contentHash 更新 ${updateHashes(root)} 筆`);
-  const { errors, json, md } = buildIndex(root);
-  if (errors.length) { console.error(`✘ manifest 有 ${errors.length} 個錯誤：\n- ${errors.join('\n- ')}`); process.exit(1); }
-  const jp = join(root, OUT_JSON), mp = join(root, OUT_MD);
+  const { errors, warnings, json, kb, md } = buildIndex(root);
+  if (warnings.length) console.warn(`⚠ ${warnings.length} 個警告：\n- ${warnings.join('\n- ')}`);
+  if (errors.length) { console.error(`✘ manifest / 知識卡有 ${errors.length} 個錯誤：\n- ${errors.join('\n- ')}`); process.exit(1); }
+  const jp = join(root, OUT_JSON), mp = join(root, OUT_MD), kp = join(root, OUT_KB);
   if (args.includes('--check')) {
-    const stale = [[jp, json], [mp, md]].filter(([p, s]) => !existsSync(p) || norm(readFileSync(p, 'utf8')) !== s).map(([p]) => p);
+    const stale = [[jp, json], [kp, kb], [mp, md]].filter(([p, s]) => !existsSync(p) || norm(readFileSync(p, 'utf8')) !== s).map(([p]) => p);
     if (stale.length) { console.error(`✘ 中央索引過期：${stale.map(p => p.slice(root.length + 1)).join('、')}。請跑 node shared/tools/index-build.mjs 後一起 commit。`); process.exit(1); }
-    console.log('✔ 中央資產索引是最新的');
+    console.log('✔ 中央資產與知識卡索引是最新的');
   } else {
-    writeFileSync(jp, json, 'utf8'); writeFileSync(mp, md, 'utf8');
-    console.log(`✔ ${OUT_JSON.replace(/\\/g, '/')}：${JSON.parse(json).counts.total} 筆；${OUT_MD.replace(/\\/g, '/')}`);
+    writeFileSync(jp, json, 'utf8'); writeFileSync(kp, kb, 'utf8'); writeFileSync(mp, md, 'utf8');
+    const kc = JSON.parse(kb).counts;
+    console.log(`✔ ${OUT_JSON.replace(/\\/g, '/')}：${JSON.parse(json).counts.total} 筆；${OUT_KB.replace(/\\/g, '/')}：${kc.cards} 張卡 / ${kc.pages} 頁；${OUT_MD.replace(/\\/g, '/')}`);
   }
 }

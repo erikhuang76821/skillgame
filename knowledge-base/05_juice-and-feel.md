@@ -1,9 +1,17 @@
+---
+id: KB-juice-feel
+kind: method
+topic: [juice]
+genre: ["*"]
+reviewedAt: 2026-10-21
+---
 # 05 打擊感與手感（以算代貼）
 
 > 權威來源：[references/juice.md](../.claude/skills/lite-skillgame-stack/references/juice.md)、[references/gsap.md](../.claude/skills/lite-skillgame-stack/references/gsap.md)、[references/spine.md](../.claude/skills/lite-skillgame-stack/references/spine.md)、範本 [templates/src/fx/](../.claude/skills/lite-skillgame-stack/templates/src/fx/)
 > 鐵則：juice 只活在 render / UI 層，由 sim 事件驅動；高低特效的玩家同種子結果必須一致。
 
 ## 1. 效果做法與成本
+<!-- card: KB-juice-feel.effects-cost; rules=RULE-FX-FILTER -->
 
 | 效果 | 做法 | DC 成本 |
 |---|---|---|
@@ -21,6 +29,7 @@
 > **專案覆寫範例**：SwarmDuel 為像素風，**不使用任何 filter**（衝擊波改 sprite 擴散環）、不做通用粒子系統。新專案在 `gdd/10` 寫明自己的覆寫。
 
 ## 2. GSAP 必設參數
+<!-- card: KB-juice-feel.gsap -->
 
 ```js
 gsap.defaults({ duration: 0.25, ease: 'power2.out', overwrite: 'auto' });
@@ -52,6 +61,7 @@ gsap.ticker.lagSmoothing(500, 33);
 > 實作參考：[15 §4.1](15_reference-games.md) 的「震動護眼上限」（≤ 4.2 px、180 ms 不疊加、正弦衰減、閃光 ≤ 0.14）與 Cut-In 刷幕版型（進場 0.16 s、出場 0.14 s、總長約 1 s）；本作規則是演出不得改變 sim 時序、且可跳過。
 
 ## 3. 降級與無障礙
+<!-- card: KB-juice-feel.fallback-a11y; topic=juice,ux -->
 
 | 項目 | HIGH | LOW / `prefers-reduced-motion` |
 |---|---|---|
@@ -62,6 +72,7 @@ gsap.ticker.lagSmoothing(500, 33);
 原則：低特效只拿掉「動態」，**不拿掉「資訊」**（血條、警示圈、倒數照常）；特效不得遮擋判定物件；傷害數字只是裝飾，分數以結算明細為準。
 
 ## 4. Spine 要點（4.3）
+<!-- card: KB-juice-feel.spine; topic=juice,art -->
 
 - `defaultMix = 0.2`；Track 0 = 基礎循環、Track 1+ = 疊加動作（只 key 上半身），播完 `addEmptyAnimation(1, 0.2, 0)`。
 - 換裝 `setSkin` / `new Skin()+addSkin()` 後 `setupPoseSlots()`，不重建物件。
@@ -71,6 +82,7 @@ gsap.ticker.lagSmoothing(500, 33);
 - 匯出：二進位 `.skel` + PMA atlas、頁 ≤ 2048；需 Spine 編輯器授權。
 
 ## 5. 調手感流程
+<!-- card: KB-juice-feel.tuning -->
 
 1. 所有數值放 `fx/feel.js` 的 `FEEL`，dev 掛 `window.FEEL` 即時改。
 2. 長演出用 GSDevTools（只 dev 動態載入）。

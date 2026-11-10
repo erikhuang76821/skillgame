@@ -1,15 +1,24 @@
+---
+id: KB-skill-integrity
+kind: principle
+topic: [fairness]
+genre: ["*"]
+reviewedAt: 2026-10-21
+---
 # 01 Skill Integrity — 技巧遊戲的核心承諾
 
 > 結果主要由玩家技巧決定，**而且可以被證明**。這是所有設計、技術、變現決策的上位原則。
 > 來源：[SwarmDuel/gdd/03_skill_integrity.md](../SwarmDuel/gdd/03_skill_integrity.md)、[SwarmDuel/gdd/02_core_gameplay.md](../SwarmDuel/gdd/02_core_gameplay.md)、[SwarmDuel/docs/skill_dominance_report.md](../SwarmDuel/docs/skill_dominance_report.md)
 
 ## 1. 每個系統都要回答的三個問題
+<!-- card: KB-skill-integrity.three-questions -->
 
 1. 有沒有玩家控制不了、但會影響分數的東西？（運氣）
 2. 雙方條件是否完全相同？（公平）
 3. 能不能拿出證據？（可驗證）
 
 ## 2. 精髓七條（新遊戲直接沿用為檢查表）
+<!-- card: KB-skill-integrity.seven-essentials; rules=RULE-SPEC-FAIRNESS -->
 
 | # | 精髓 | 通用落實方式 |
 |---|---|---|
@@ -24,6 +33,7 @@
 違反任一條預設不做；要做必須在 GDD 寫明例外與理由。
 
 ## 3. 去隨機化手法（把一般遊戲的隨機改成公平）
+<!-- card: KB-skill-integrity.derandomize -->
 
 | 隨機來源 | 一般做法 | Skill Game 做法 |
 |---|---|---|
@@ -37,6 +47,7 @@
 RNG 必須是**無狀態雜湊**，以「事件序號」而非「呼叫順序」取值（玩家行為不同不會讓序列錯位）。實作見 [04_tech-stack.md §4](04_tech-stack.md)。
 
 ## 4. 證據：Skill Dominance 測試（上線門檻）
+<!-- card: KB-skill-integrity.dominance-test; kind=method; rules=RULE-SKILL-DOMINANCE -->
 
 方法（`SwarmDuel/game/tools/skill-dominance.mjs`，可移植）：
 
@@ -55,6 +66,7 @@ RNG 必須是**無狀態雜湊**，以「事件序號」而非「呼叫順序」
 跨種子排行（Daily Seed）用**當日百分位**比較，不用原始分。
 
 ## 5. 每局驗證流程
+<!-- card: KB-skill-integrity.match-verify; kind=method; topic=fairness,tech -->
 
 ```
 客戶端對局 → 上傳 {seed, inputLog, choices, claimedScore}
@@ -65,6 +77,7 @@ RNG 必須是**無狀態雜湊**，以「事件序號」而非「呼叫順序」
 原型在結算畫面就跑同一套重播（1 局 20–90 ms），顯示「Replay verified ✓」。
 
 ## 6. 計分設計通則（來自規則卡交叉比對）
+<!-- card: KB-skill-integrity.scoring; topic=scoring -->
 
 - 基礎分 + 連擊 + 時間獎勵，**各項有上限**（技巧天花板、平衡、異常偵測）
 - 失誤要付代價（21 Blitz：3 次爆牌出局）

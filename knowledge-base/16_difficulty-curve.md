@@ -1,3 +1,10 @@
+---
+id: KB-difficulty-curve
+kind: method
+topic: [difficulty]
+genre: ["*"]
+reviewedAt: 2026-10-21
+---
 # 16 難度曲線設計與驗收規範
 
 > 補 [09](09_knowledge-gaps.md) G5。把「怎麼設計難度曲線」和「怎麼證明曲線是對的」綁成一套流程：**曲線用腳本設計、用自動化試玩驗收、用固定門檻判定**。
@@ -5,6 +12,7 @@
 > 與其他頁的關係：公平性門檻見 [01](01_skill-integrity.md) §4；節奏 / 物理的 sim 配方見 [12](12_genre-recipes.md)；輸入延遲見 [13](13_input-fairness.md)。
 
 ## 1. 核心觀念：設計和驗收是同一件事的兩面
+<!-- card: KB-difficulty-curve.core-idea; kind=principle -->
 
 | | 設計（寫進 sim 的腳本） | 驗收（自動化試玩量出來的） |
 |---|---|---|
@@ -17,6 +25,7 @@
 **規則：曲線的形狀由腳本決定，不由隨機決定。** 種子只能在「同一難度級」裡換內容（樂句、鏡像），所以每個種子的難度形狀一樣，跨日排行才公平。
 
 ## 2. 設計規範
+<!-- card: KB-difficulty-curve.design-rules -->
 
 ### 2.1 腳本化（不要用權重隨機出題）
 
@@ -55,6 +64,7 @@
 > 經驗：放寬容錯**不會**降低技巧主導，反而會提高（喵拳道場 v1 → v2：90% → 98%）。因為中手不再中途倒下，分數差異回到「打得準不準」，而不是「死得早不早」。
 
 ## 3. 驗收：人性化自動試玩
+<!-- card: KB-difficulty-curve.humanized-playtest; topic=difficulty,fairness -->
 
 ### 3.1 為什麼不能只用技巧等級 bot
 
@@ -85,6 +95,7 @@
 > DI 的權重是喵拳道場的起手值；換品類時改成該品類的負荷來源（見 §6），並用人性化 bot 的命中率回頭校正：DI 越高，命中率應該越低（相關係數為負且明顯）。
 
 ## 4. 驗收門檻（任一不過 → exit 1，不能上線）
+<!-- card: KB-difficulty-curve.gates; rules=RULE-CURVE-TREND,RULE-CURVE-LINEARITY,RULE-CURVE-PEAKS,RULE-CURVE-CLIFF,RULE-CURVE-FLOW,RULE-CURVE-BEATGRID,RULE-CURVE-PHRASE -->
 
 | # | 檢查 | 門檻 | 失敗時通常怎麼改 |
 |---|---|---|---|
@@ -100,6 +111,7 @@
 **目標值（不做硬門檻，報告裡要寫）**：新手中位倒下時間落在全長的 55–80%（喵拳道場：58 / 85 秒）；一般玩家全部打完；熟手命中率 ≥ 95%。
 
 ## 5. 調校流程
+<!-- card: KB-difficulty-curve.tuning -->
 
 ```
 腳本 / 容錯參數 ──▶ npm test（確定性、golden）──▶ npm run playtest ──▶ 讀報告
@@ -124,6 +136,7 @@
 | 起手到交鋒持平、決戰暴衝 | 高難度級全擠在最後 | 高難度級提前一段分攤 | R² 0.66 → 0.69，無尖峰 |
 
 ## 6. 套用到其他品類
+<!-- card: KB-difficulty-curve.other-genres -->
 
 | 品類 | 「單位」 | DI 的負荷來源（取代 notes/s × 換邊） | 新要素範例 |
 |---|---|---|---|
@@ -136,6 +149,7 @@
 不論哪個品類，§4 的 D1–D6 都適用；D7–D8 只用於有節拍的品類。
 
 ## 7. 給新遊戲的檢查清單
+<!-- card: KB-difficulty-curve.checklist -->
 
 - [ ] `gdd/07_difficulty_curve.md`：難度級表（每級只加一件事）、腳本表（段落、速度、每單位的級數）、容錯參數表
 - [ ] sim 的腳本與樂句 / 波次是**資料**（表格），不是散在程式裡的條件判斷

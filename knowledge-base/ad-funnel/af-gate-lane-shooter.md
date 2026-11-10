@@ -1,3 +1,12 @@
+---
+id: KB-af-gate-lane-shooter
+kind: research
+topic: [design, market]
+genre: [lane-shooter]
+skillAxis: [aim, planning]
+source: [af-gate-lane-shooter]
+reviewedAt: 2026-10-21
+---
 # 加乘門射擊跑道（Gate Lane Shooter：Last War: Survival / Evony 數字桶）
 
 - **代號**：af-gate-lane-shooter
@@ -12,10 +21,12 @@
 - **技巧 vs 選擇 vs 運氣**：廣告版幾乎全是「選門」；本體小遊戲加入左右閃避與自動射擊，技巧成分低（未證實實際深度）。
 
 ## 一句話玩法
+<!-- card: KB-af-gate-lane-shooter.pitch -->
 
 小隊沿跑道自動射擊，左右移動吃加乘門、射爆數字桶，擋住殭屍潮。
 
 ## 為什麼廣告有效（Hook）
+<!-- card: KB-af-gate-lane-shooter.hook; topic=market -->
 
 | 元素 | 說明 |
 |---|---|
@@ -25,6 +36,7 @@
 | 爽感 / 解壓點 | 士兵數 / 火力數字跳升、子彈海、殭屍成片倒下、Boss 爆炸。 |
 
 ## 遊戲規格
+<!-- card: KB-af-gate-lane-shooter.spec; topic=design,difficulty -->
 
 > 「建議值」為本工作室規格；原作數值未取得者標（未證實）。
 
@@ -60,12 +72,14 @@
 - 4X 主體 IAP 為主（DataEye 2025-03：出海 SLG 的 IAP 占比長期 > 80%，[百鯨](https://www.baijing.cn/article/52113)）。
 
 ## 可玩廣告（Playable Ad）結構
+<!-- card: KB-af-gate-lane-shooter.playable-ad; topic=market -->
 
 - Last War 素材中 playable 只占 3.95%（Insightrackr），主力是影片；playable 長度未證實。
 - 典型影片節奏（觀察歸納，非實測）：0–2 s 殭屍潮壓境 → 2–10 s 錯誤選門示範 → 10–15 s 小隊被淹 / 字幕「只有 1% 的人過得了」類挑釁（未證實具體文案）→ CTA。
 - Playable 建議：2 組門 + 1 組數字桶 + Boss，20 秒內；第 2 組門把 × 門放在殭屍後方逼玩家先清怪。
 
 ## 技巧要素
+<!-- card: KB-af-gate-lane-shooter.skill-elements; topic=fairness,design -->
 
 | 技巧 | 影響 |
 |---|---|
@@ -75,11 +89,13 @@
 | 閃避 | 輪胎 / 負面區 / 側邊衝鋒殭屍 |
 
 ## 隨機 / 選擇噱頭
+<!-- card: KB-af-gate-lane-shooter.randomness; topic=fairness -->
 
 - 廣告版：門值固定、一眼可解 → 假抉擇。
 - 本體：小遊戲難度在後段由主城戰力決定 → 數值 / 付費決定勝負，不是技巧。
 
 ## Skill Game 化改造（必做）
+<!-- card: KB-af-gate-lane-shooter.adaptation; kind=method; topic=fairness,design; rules=RULE-AF-ADAPTATION -->
 
 > 用這份規格書做遊戲時（含「復刻」），玩法規格 `gdd/05_game_spec.md` §13 要逐條回應下列每一條：採用就寫本作做法，不採用就寫理由與替代做法。「復刻」只復刻玩法結構與操作，不跳過本節（`RULE-AF-ADAPTATION`，`npm run audit` 檢查）。
 
@@ -91,6 +107,7 @@
 6. **局長**：75–120 秒；1 條跑道 + 1 Boss。
 
 ## HTML5 輕量實作規格
+<!-- card: KB-af-gate-lane-shooter.html5-spec; kind=method; topic=tech,budget -->
 
 | 項目 | 規格 |
 |---|---|
@@ -102,16 +119,19 @@
 | 包體估計 | 程式 1.0 MB；atlas 0.6 MB；Spine Boss 0.2 MB；音效 0.3 MB；BGM 1.5 MB → **≈ 3.6 MB** |
 
 ## 主題與美術風格
+<!-- card: KB-af-gate-lane-shooter.theme-art; topic=theme,art -->
 
 - 原作：寫實軍事 + 殭屍、藍我方 / 紅敵方。
 - 改造：殭屍血腥度降到卡通；避免「金幣 ×10」「頭獎」字樣；可改「病毒 vs 白血球」「雪球 vs 雪怪」。
 
 ## 可借用 / 要避開
+<!-- card: KB-af-gate-lane-shooter.borrow-avoid; kind=lesson -->
 
 - **可借用**：自動前進 + 單指橫移的零學習門檻；數字桶「打不爆就撞」的張力；Boss 倒數。
 - **要避開**：廣告不做（或做出與本體不同）的玩法 → ASA 先例：Evony 射數字桶廣告被判違反 CAP Code 3.1，因核心是城建（[ASA ruling 2024-04-03](https://asa.org.uk/rulings/top-games-inc-a23-1213924-top-games-inc.html)）；中國 CADPA 2025-02-06 起也禁止廣告展示遊戲中不存在的玩法（[WN Hub](https://wnhub.io/news/marketing/item-47009)）。我們的廣告必須就是實機畫面。
 
 ## 來源
+<!-- card: KB-af-gate-lane-shooter.sources -->
 
 - [AppGrowing — How Last War uses proxy minigames（2026-07-16）](https://appgrowing.net/blog/en/how-last-war-uses-proxy-minigames-to-package-strategy-gameplay/)（存取日期 2026-10）
 - [Insightrackr — Last War Intelligence（2026-04-07 更新）](https://blog.insightrackr.com/en/docs/LastWarIntelligence)（存取日期 2026-10）

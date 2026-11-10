@@ -1,8 +1,16 @@
+---
+id: KB-production-workflow
+kind: method
+topic: [process]
+genre: ["*"]
+reviewedAt: 2026-10-22
+---
 # 08 生產流程與工具 — 從點子到可玩原型
 
 > 把 SwarmDuel 實際走過的流程抽象成新遊戲可重用的步驟。每一步列出現有的知識、工具、驗收標準。
 
 ## 1. 流程總覽
+<!-- card: KB-production-workflow.overview -->
 
 | # | 階段 | 輸入 / 知識 | 工具 / skill | 產出 | 驗收 |
 |---|---|---|---|---|---|
@@ -20,6 +28,7 @@
 | 11 | 完整度把關 | `rules.json` 的 `RULE-GAME-*`、`RULE-AF-ADAPTATION` | `npm run audit`（[shared/tools/game-audit.mjs](../shared/tools/game-audit.mjs)）；commit 時由 pre-commit hook 自動跑（`git config core.hooksPath .githooks`） | — | 必要項目全過（含報告版本、規格常數對帳、§10 答案、sim 純度）；警告項有處理或寫明理由 |
 
 ## 2. 常用指令
+<!-- card: KB-production-workflow.commands -->
 
 ```bash
 cp -r .claude/skills/lite-skillgame-stack/templates <NewGame>/game
@@ -50,6 +59,7 @@ codex exec --skip-git-repo-check --sandbox read-only < art/prompts/<asset>.txt
 ```
 
 ## 3. Skill / 工具所在位置
+<!-- card: KB-production-workflow.tool-locations -->
 
 | 名稱 | 位置 | 用途 | 風險 |
 |---|---|---|---|
@@ -65,5 +75,6 @@ codex exec --skip-git-repo-check --sandbox read-only < art/prompts/<asset>.txt
 | `.claude/launch.json` | repo | dev server 預覽（swarm-duel :5173） | 新遊戲要加一筆 |
 
 ## 4. 給其他 AI 的啟動提示詞
+<!-- card: KB-production-workflow.bootstrap-prompt -->
 
 見 [bootstrap.md §4](../.claude/skills/lite-skillgame-stack/references/bootstrap.md)。

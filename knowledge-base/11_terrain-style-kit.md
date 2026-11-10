@@ -1,3 +1,10 @@
+---
+id: KB-terrain-style-kit
+kind: recipe
+topic: [art]
+genre: ["*"]
+reviewedAt: 2026-10-21
+---
 # 11 地表設定集 — 共用美術規則＋生成提詞＋整合提詞
 
 > 用途：每款新遊戲的地表（地面材質、交界、高低差）都從這套提詞起手。換遊戲時**只替換【】內的內容**，不帶入舊專案名稱、尺寸或技術架構。
@@ -5,6 +12,7 @@
 > 相關：[06 美術管線](06_art-pipeline.md)、[07 題材](07_themes-and-liveops.md)、[04 技術框架](04_tech-stack.md)、[10 資產庫](10_asset-library.md)
 
 ## 0. 怎麼用
+<!-- card: KB-terrain-style-kit.how-to; kind=method -->
 
 | 步驟 | 用哪段 | 產出 |
 |---|---|---|
@@ -18,6 +26,7 @@
 ---
 
 ## 1. 原版提詞（v1，使用者定稿，原文保留）
+<!-- card: KB-terrain-style-kit.prompt-v1 -->
 
 ### ① 共用美術規則
 
@@ -60,6 +69,7 @@
 ---
 
 ## 2. 差異分析：建議調整與補充
+<!-- card: KB-terrain-style-kit.diff-analysis; kind=lesson -->
 
 對照 repo 既有知識（Skill Game 公平原則、像素管線踩過的坑、DC / 包體規範），v1 方向正確；以下是**加上去才不會在不同遊戲間失靈**的差異。標 ★ 為 Skill Game 特有、最重要。
 
@@ -105,6 +115,7 @@ v1 的檢查項保留，另加：2×2 平鋪預覽、灰階截圖、色盲模擬
 ---
 
 ## 3. 修訂版提詞（v2：v1 ＋ 差異，仍只替換【】）
+<!-- card: KB-terrain-style-kit.prompt-v2 -->
 
 ### ① 共用美術規則（v2）
 
@@ -178,6 +189,7 @@ v1 的檢查項保留，另加：2×2 平鋪預覽、灰階截圖、色盲模擬
 ---
 
 ## 4. 各遊戲參數表（彈性設計的核心：數值只放這裡）
+<!-- card: KB-terrain-style-kit.params -->
 
 | 參數 | 說明 | 範例（僅示意，各遊戲自訂） |
 |---|---|---|
@@ -201,6 +213,7 @@ v1 的檢查項保留，另加：2×2 平鋪預覽、灰階截圖、色盲模擬
 ---
 
 ## 5. 立體地圖面：依視角的變體
+<!-- card: KB-terrain-style-kit.3d-variants -->
 
 | 視角 | 地形資料 | 繪製 | 材質需求 | 注意 |
 |---|---|---|---|---|
@@ -214,6 +227,7 @@ v1 的檢查項保留，另加：2×2 平鋪預覽、灰階截圖、色盲模擬
 ---
 
 ## 6. ⑤ 驗收清單
+<!-- card: KB-terrain-style-kit.acceptance; kind=method -->
 
 - [ ] 每個材質 2×2 平鋪無可見接縫；半位移檢查通過
 - [ ] 大面積無明顯重複格紋（變體 + 色偏）
@@ -230,6 +244,7 @@ v1 的檢查項保留，另加：2×2 平鋪預覽、灰階截圖、色盲模擬
 ---
 
 ## 7. 參考實作（範本內建，2026-10-19）
+<!-- card: KB-terrain-style-kit.reference-impl; topic=art,tech -->
 
 範本 `.claude/skills/lite-skillgame-stack/templates/` 已附一套可直接用的平面 / 2.5D 地形，示範遊戲的背景就是它（0 bytes 圖片、基礎 DC 1、手機與桌面 60 FPS）。
 

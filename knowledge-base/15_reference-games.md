@@ -1,3 +1,10 @@
+---
+id: KB-reference-games
+kind: research
+topic: [market, tech, art]
+genre: ["*"]
+reviewedAt: 2026-10-21
+---
 # 15 參考遊戲拆解 — 三國奇兵 / 9527 星際遠征
 
 > 拆解兩款公開的 HTML5 網頁遊戲，補強**物件規範、音效、過場演出**的實作參考。只描述與量測，不複製程式或美術原檔。
@@ -6,6 +13,7 @@
 > 量測原始資料：[assets/ref-games/asset-measurements.json](assets/ref-games/asset-measurements.json)（104 檔：尺寸、編碼、bpp、音檔長度）。截圖都在 [assets/ref-games/](assets/ref-games/)。
 
 ## 0. 一眼結論
+<!-- card: KB-reference-games.summary; topic=market -->
 
 | | 無雙割草：三國奇兵（TK） | 9527 星際遠征（95） |
 |---|---|---|
@@ -21,6 +29,7 @@
 ---
 
 ## 1. 技術棧與包體
+<!-- card: KB-reference-games.tech-bundle; topic=tech,budget -->
 
 | 項目 | TK | 95 | 出處 |
 |---|---|---|---|
@@ -61,6 +70,7 @@
 ---
 
 ## 2. 物件製作規範
+<!-- card: KB-reference-games.object-production; topic=art -->
 
 ### 2.1 TK — 2.5D 人武分離（對標《噠噠特攻》）
 
@@ -127,6 +137,7 @@
 ---
 
 ## 3. 音效應用
+<!-- card: KB-reference-games.audio; topic=audio -->
 
 | 項目 | TK | 95 |
 |---|---|---|
@@ -159,6 +170,7 @@
 ---
 
 ## 4. 過場與演出
+<!-- card: KB-reference-games.cutscenes; topic=ux,juice -->
 
 兩款都**沒有用 GSAP**，全部是 canvas 手寫 tween，DOM 面板只用 `display` 切換。
 
@@ -200,6 +212,7 @@
 ---
 
 ## 5. UI/UX
+<!-- card: KB-reference-games.ui-ux; topic=ux -->
 
 | 項目 | TK | 95 |
 |---|---|---|
@@ -220,6 +233,7 @@
 ---
 
 ## 6. 可借用 / 要避開
+<!-- card: KB-reference-games.borrow-avoid; kind=lesson -->
 
 ### 6.1 可借用（照我們的技術棧改寫）
 
@@ -260,6 +274,7 @@
 ---
 
 ## 7. 對照 skill game 公平性原則
+<!-- card: KB-reference-games.fairness-check; topic=fairness -->
 
 | 原則 | TK | 95 | 我們 |
 |---|---|---|---|
@@ -275,6 +290,7 @@
 ---
 
 ## 8. 拿不到 / 未驗證
+<!-- card: KB-reference-games.unverified; kind=gap -->
 
 | 項目 | 狀況 |
 |---|---|

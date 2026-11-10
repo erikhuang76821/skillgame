@@ -1,8 +1,8 @@
 # 規則 ↔ 知識庫 ↔ 資產 索引（自動產生）
 
-> 產生物，禁止手改：`node shared/tools/index-build.mjs`。規則來源 [rules.json](rules.json)，資產來源各款 `art/manifest.json` 與 `shared/recipes/`；機器可讀版 [assets.json](assets.json)。
+> 產生物，禁止手改：`node shared/tools/index-build.mjs`。規則來源 [rules.json](rules.json)，資產來源各款 `art/manifest.json` 與 `shared/recipes/`，知識卡來源各頁 front-matter；機器可讀版 [assets.json](assets.json)、[kb.json](kb.json)。
 
-## 規則（25 條）
+## 規則（27 條）
 
 | 規則 | 等級 | 把關 | 為什麼 | 怎麼做 |
 |---|---|---|---|---|
@@ -31,6 +31,30 @@
 | `RULE-SPEC-FAIRNESS` | must | 程式 | [01_skill-integrity.md](../../knowledge-base/01_skill-integrity.md) | [game-spec-template.md](../../.claude/skills/lite-skillgame-stack/references/game-spec-template.md) |
 | `RULE-KB-CITED` | should | 程式 | [README.md](../../knowledge-base/README.md) | [bootstrap.md](../../.claude/skills/lite-skillgame-stack/references/bootstrap.md) |
 | `RULE-ASSET-REGISTER` | should | 程式 | [2026-10-21-kb-asset-architecture.md](../../knowledge-base/decisions/2026-10-21-kb-asset-architecture.md) | [10_asset-library.md](../../knowledge-base/10_asset-library.md) |
+| `RULE-KB-CARDS` | must | 程式 | [2026-11-10-libraries-and-loop.md](../../knowledge-base/decisions/2026-11-10-libraries-and-loop.md) | [2026-11-10-libraries-and-loop.md](../../knowledge-base/decisions/2026-11-10-libraries-and-loop.md) |
+| `RULE-KB-CARD-SIZE` | should | 程式 | [2026-11-10-libraries-and-loop.md](../../knowledge-base/decisions/2026-11-10-libraries-and-loop.md) | [2026-11-10-libraries-and-loop.md](../../knowledge-base/decisions/2026-11-10-libraries-and-loop.md) |
+
+## 知識卡（103 張，17 頁；未分卡 23 頁）
+
+| 頁 | id | kind | topic | 卡片 | 略過 |
+|---|---|---|---|---|---|
+| [01_skill-integrity.md](../../knowledge-base/01_skill-integrity.md) | `KB-skill-integrity` | principle | fairness | 6 | 0 |
+| [02_market-and-legal.md](../../knowledge-base/02_market-and-legal.md) | `KB-market-legal` | research | market, legal | 7 | 0 |
+| [03_design-patterns.md](../../knowledge-base/03_design-patterns.md) | `KB-design-patterns` | method | design | 6 | 0 |
+| [04_tech-stack.md](../../knowledge-base/04_tech-stack.md) | `KB-tech-stack` | principle | tech | 9 | 0 |
+| [05_juice-and-feel.md](../../knowledge-base/05_juice-and-feel.md) | `KB-juice-feel` | method | juice | 5 | 0 |
+| [06_art-pipeline.md](../../knowledge-base/06_art-pipeline.md) | `KB-art-pipeline` | method | art | 5 | 0 |
+| [07_themes-and-liveops.md](../../knowledge-base/07_themes-and-liveops.md) | `KB-themes-liveops` | research | theme | 4 | 0 |
+| [08_production-workflow.md](../../knowledge-base/08_production-workflow.md) | `KB-production-workflow` | method | process | 4 | 0 |
+| [10_asset-library.md](../../knowledge-base/10_asset-library.md) | `KB-asset-library` | method | art | 2 | 4 |
+| [11_terrain-style-kit.md](../../knowledge-base/11_terrain-style-kit.md) | `KB-terrain-style-kit` | recipe | art | 8 | 0 |
+| [12_genre-recipes.md](../../knowledge-base/12_genre-recipes.md) | `KB-genre-recipes` | recipe | design, tech | 4 | 0 |
+| [13_input-fairness.md](../../knowledge-base/13_input-fairness.md) | `KB-input-fairness` | method | input, fairness | 5 | 0 |
+| [14_audio.md](../../knowledge-base/14_audio.md) | `KB-audio` | method | audio | 5 | 0 |
+| [15_reference-games.md](../../knowledge-base/15_reference-games.md) | `KB-reference-games` | research | market, tech, art | 9 | 0 |
+| [16_ad-funnel-games.md](../../knowledge-base/16_ad-funnel-games.md) | `KB-ad-funnel-games` | research | market, design | 6 | 0 |
+| [16_difficulty-curve.md](../../knowledge-base/16_difficulty-curve.md) | `KB-difficulty-curve` | method | difficulty | 7 | 0 |
+| [af-gate-lane-shooter.md](../../knowledge-base/ad-funnel/af-gate-lane-shooter.md) | `KB-af-gate-lane-shooter` | research | design, market | 11 | 0 |
 
 ## 資產（85 筆）
 

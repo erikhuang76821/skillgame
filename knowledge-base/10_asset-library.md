@@ -1,3 +1,11 @@
+---
+id: KB-asset-library
+kind: method
+topic: [art]
+genre: ["*"]
+rules: [RULE-ASSET-REGISTER]
+reviewedAt: 2026-10-22
+---
 # 10 資產庫 — 圖像、特效、Prompt 與關鍵字索引
 
 - **用途**：下一款遊戲要「找現成圖 / 照同一套 prompt 重生 / 改題材衍生」時查這頁
@@ -8,6 +16,7 @@
 - 盤點日期：2026-10-19
 
 ## 1. 怎麼用
+<!-- card: KB-asset-library.how-to -->
 
 | 步驟 | 做法 |
 |---|---|
@@ -21,6 +30,7 @@
 **狀態定義**：`shipped` 遊戲內使用中｜`raw-only` 只有原圖（參考用）｜`rejected take` 被拒或未採用的生成｜`placeholder` 佔位（舊版或換色）｜`procedural` 程式繪製 0 bytes｜`template` skill 範本（非 SwarmDuel 實作）
 
 ## 2. 資產總表
+<!-- card: skip; reason=資產資料（SwarmDuel 資產總表），取用改查 index/assets.json -->
 
 契約（全部動畫共用）：8 列方向固定 `down, down_right, right, up_right, up, up_left, left, down_left`；欄 = 影格；`d` 單位 1/60 s；錨點 = 腳底；美術 1 px = 世界 2 單位、最近鄰。只生 5 個方向，`up_left / left / down_left` 為水平鏡像。
 
@@ -84,6 +94,7 @@
 | [greyling_Walk_up_right_t1](../SwarmDuel/art/raw/anim/greyling_Walk_up_right_t1.png) | 拒絕：與 up 幾乎相同（只有天線偏右） |
 
 ## 3. 程式繪製資產與特效配方（0 bytes）
+<!-- card: skip; reason=資產資料（程式繪製資產與特效配方，manifest 中 kind=procedural），取用改查 index/assets.json -->
 
 全部只在 render / UI 層，由 sim 事件驅動；`rich` = 高特效且未開減少動態。SwarmDuel **不用 filter、不做通用粒子系統**。
 
@@ -145,6 +156,7 @@
 | — | [feel.js](../.claude/skills/lite-skillgame-stack/templates/src/fx/feel.js) | 其他：hitStop 0.03/0.06/0.1 s、squash 1.25×0.8 `elastic.out(1,0.35)`、popup rise 40 / 0.6 s、UI in 0.25 `back.out(1.7)` | — | — |
 
 ## 4. Prompt 庫（原文，`{…}` 為佔位符）
+<!-- card: skip; reason=資產資料（prompt 原文），取用改查 index/assets.json 的 promptBlocks -->
 
 所有 prompt 由 stdin 餵給 Codex CLI；**不得要求 codex 存檔**（Windows 沙箱會靜默失敗），PNG 從 `~/.codex/generated_images/{sid}/` 複製。模板字串也在 JSON 的 `promptBlocks`。
 
@@ -277,6 +289,7 @@ Create a 16:9 pixel-art key art scene for an original {GENRE} set in {SETTING}: 
 換題材時：把 §4.1 風格鎖的第一句換成上表關鍵字，保留透明背景、無文字、無既有 IP 等限制句。題材關鍵字另見 [na-themes](../SwarmDuel/knowledge/themes/na-themes.md)、[tw-themes](../SwarmDuel/knowledge/themes/tw-themes.md)；NA 避免原住民服飾 / 神聖物件，現金賽避免轉輪、7 / BAR、Jackpot 等老虎機元素。
 
 ## 5. 關鍵字索引
+<!-- card: skip; reason=資產關鍵字，取用改查 index/assets.json 各資產的 keywords -->
 
 ### 5.1 題材 / 角色
 
@@ -340,6 +353,7 @@ Create a 16:9 pixel-art key art scene for an original {GENRE} set in {SETTING}: 
 JSON 版有完整 314 個關鍵字（每筆資產 `keywords`）。
 
 ## 6. 缺口與生成教訓
+<!-- card: KB-asset-library.gaps-lessons; kind=lesson -->
 
 ### 6.1 尚未存在的資產
 

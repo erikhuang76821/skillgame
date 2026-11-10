@@ -1,9 +1,17 @@
+---
+id: KB-art-pipeline
+kind: method
+topic: [art]
+genre: ["*"]
+reviewedAt: 2026-10-21
+---
 # 06 美術管線 — AI 生圖到遊戲 sprite
 
 > 來源：[SwarmDuel/docs/asset_pipeline.md](../SwarmDuel/docs/asset_pipeline.md)、`SwarmDuel/tools/*.py|sh`、`SwarmDuel/art/prompts/`、`SwarmDuel/game/src/render/spriteContract.js`
 > 外部依賴：`codex-image` skill（`~/.claude/skills/`）、`pokesurvivor-asset-dev` skill（**位於 `~/.codex/skills/`，不在 repo 內**，提供 `sprite_sheet.py`）
 
 ## 1. Sprite 契約（8 方向角色）
+<!-- card: KB-art-pipeline.sprite-contract; artStyle=pixel -->
 
 | 項目 | 規格 |
 |---|---|
@@ -16,6 +24,7 @@
 | 陰影 / 閃光 / 光暈 | 不畫進 sprite，由程式繪製 |
 
 ## 2. 生圖流程（v1.0，可重跑）
+<!-- card: KB-art-pipeline.generation -->
 
 1. **身分參考圖**：一張圖畫同一角色正 / 側 / 背三姿勢（`art/prompts/hero_*.txt`）。
 2. **動畫 prompt 產生**：`python tools/anim_prompts.py` → 每個「角色 × 動作 × 方向」一份；一張圖畫同方向 n 格橫排；附圖 ①身分圖 ②最近姿勢 ③該方向已驗收的 Idle（角色有 Idle 才附）。
@@ -29,6 +38,7 @@
 **Prompt 風格鎖定段落**（所有資產共用）：16-bit 像素、1 px 深色輪廓、每材質 3 色、左上光源、≤ 16 色、TRUE LOW-RESOLUTION 方塊像素、真透明背景、無文字 / 地面 / 陰影、不得使用既有 IP。
 
 ## 3. 踩過的坑
+<!-- card: KB-art-pipeline.pitfalls; kind=lesson -->
 
 | 坑 | 解法 |
 |---|---|
@@ -39,6 +49,7 @@
 | 配件（圍巾）換邊 | prompt 寫「與附圖 3 同側」 |
 
 ## 4. 其他資產
+<!-- card: KB-art-pipeline.other-assets -->
 
 | 資產 | 做法 | 大小 |
 |---|---|---|
@@ -48,6 +59,7 @@
 | 字型 | 像素字型 woff2（Pixelify Sans 400/700） | 36 KB |
 
 ## 5. 授權
+<!-- card: KB-art-pipeline.licensing; topic=art,legal -->
 
 - 不使用不可商用素材（如 PokéSurvivor 原素材為 CC BY-NC），只沿用技術契約。
 - AI 生成圖保留 prompt 與原圖可追溯；**商用前需法務確認 AI 生成內容權利與平台政策**。

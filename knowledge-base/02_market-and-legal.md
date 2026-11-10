@@ -1,9 +1,17 @@
+---
+id: KB-market-legal
+kind: research
+topic: [market, legal]
+genre: ["*"]
+reviewedAt: 2026-10-21
+---
 # 02 市場與法規（北美 / 台灣）
 
 > 資料截至 2026-10；未證實數值以「（未證實）」標示。**本頁不是法律意見**，任何現金或獎品模式上線前都需法務意見書。
 > 來源：[SwarmDuel/knowledge/markets/](../SwarmDuel/knowledge/markets/)、[_notes/](../SwarmDuel/knowledge/_notes/)、[_archive/excluded-chance-gambling/](../SwarmDuel/knowledge/_archive/excluded-chance-gambling/README.md)
 
 ## 1. 兩市場一頁對照
+<!-- card: KB-market-legal.markets; topic=market -->
 
 | 面向 | 北美 | 台灣 |
 |---|---|---|
@@ -16,6 +24,7 @@
 | 空缺機會 | 公平可驗證的新品類 | 左右切換打怪、去隨機化 PvP 塔防、同種子貪食蛇 |
 
 ## 2. 北美法規快查
+<!-- card: KB-market-legal.us-law; topic=legal; jurisdiction=US-* -->
 
 | 項目 | 要點 |
 |---|---|
@@ -31,6 +40,7 @@
 | 平台風險 | Skillz 10-K 承認無合規執照；依賴少數開發商 → 自建或多平台 |
 
 ## 3. 台灣法規快查
+<!-- card: KB-market-legal.tw-law; topic=legal; jurisdiction=TW -->
 
 | 項目 | 要點 |
 |---|---|
@@ -43,6 +53,7 @@
 | 技巧賽獎金 | 無專法，個案認定 → 先請法務 |
 
 ## 4. 排除標準（什麼不算 Skill Game）
+<!-- card: KB-market-legal.exclusion; kind=principle; topic=legal; jurisdiction=*; rules=RULE-LEGAL-EXCLUDE-CHANCE -->
 
 符合任一條即排除（14 張卡已歸檔）：
 
@@ -52,16 +63,19 @@
 邊界：北美手機現金錦標賽（接龍、賓果、21 Blitz）因同牌序同種子仍保留。
 
 ## 5. 新作設計清單
+<!-- card: KB-market-legal.checklist; kind=method -->
 
 **北美**：同種子非同步、不放隱藏 bot（AI 填場要明示且不入獎池）→ 技巧決定主要結果且不可跳過 → 1–5 分鐘、計分可拆解有上限 → 失誤有代價 → 6–20 人非同步錦標賽解流動性 → 競賽語彙（Entry fee / Prize / Trophy），不用賭場語彙 → 長線：年度版本、季票、週賽、聯賽。
 
 **台灣**：技巧主導可證明 → 可解釋的實力分級（飛鏢 Rating、音遊段位）→ 運氣放獨立模式 → 先手優勢用規則補償 → 2–5 分鐘 → 不做虛擬幣輸贏 → LINE 登入分享、好友房、校園賽 → 正體中文、在地題材、與娛樂城語言區隔。
 
 ## 6. 需追蹤的時效事件（2026-10 之後）
+<!-- card: KB-market-legal.watch-events -->
 
 賓州 2027 稅率立法、Skillz v. Tether 審判、Papaya 上訴、Torch 上訴、維吉尼亞 2027 會期、數發部博弈類 18+ 決定、Skillz v. Voodoo。
 
 ## 7. 已知資料矛盾（引用前注意）
+<!-- card: KB-market-legal.contradictions -->
 
 - Clash 系列屬 AviaGames、Cash 系列屬 Papaya（na-themes 寫錯）。
 - 埃及題材：na-themes 列熱門，art-style-glossary 標中高風險——差在「娛樂城版」。
