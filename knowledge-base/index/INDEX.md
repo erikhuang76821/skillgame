@@ -1,38 +1,38 @@
 # 規則 ↔ 知識庫 ↔ 資產 索引（自動產生）
 
-> 產生物，禁止手改：`node shared/tools/index-build.mjs`。規則來源 [rules.json](rules.json)，資產來源各款 `art/manifest.json` 與 `shared/recipes/`，知識卡來源各頁 front-matter；機器可讀版 [assets.json](assets.json)、[kb.json](kb.json)。
+> 產生物，禁止手改：`node shared/tools/index-build.mjs`。規則來源 [rules.json](rules.json)，資產來源各款 `art/manifest.json` 與 `shared/recipes/`，知識卡來源各頁 front-matter，測試卡來源 `shared/tests/registry.json`；機器可讀版 [assets.json](assets.json)、[kb.json](kb.json)、[tests.json](tests.json)。
 
 ## 規則（27 條）
 
-| 規則 | 等級 | 把關 | 為什麼 | 怎麼做 |
-|---|---|---|---|---|
-| `RULE-BUNDLE-SIZE` | must | 程式 | [04_tech-stack.md](../../knowledge-base/04_tech-stack.md) | [stack-and-budget.md](../../.claude/skills/lite-skillgame-stack/references/stack-and-budget.md) |
-| `RULE-NO-RUNTIME-CDN` | must | 程式 | [04_tech-stack.md](../../knowledge-base/04_tech-stack.md) | [SKILL.md](../../.claude/skills/lite-skillgame-stack/SKILL.md) |
-| `RULE-DRAWCALL-2D` | must | 人工審查 | [04_tech-stack.md](../../knowledge-base/04_tech-stack.md) | [drawcalls-assets.md](../../.claude/skills/lite-skillgame-stack/references/drawcalls-assets.md) |
-| `RULE-DRAWCALL-3D` | must | 人工審查 | [04_tech-stack.md](../../knowledge-base/04_tech-stack.md) | [drawcalls-assets.md](../../.claude/skills/lite-skillgame-stack/references/drawcalls-assets.md) |
-| `RULE-SIM-PURITY` | must | 程式 | [01_skill-integrity.md](../../knowledge-base/01_skill-integrity.md) | [SKILL.md](../../.claude/skills/lite-skillgame-stack/SKILL.md) |
-| `RULE-SKILL-DOMINANCE` | must | 程式 | [01_skill-integrity.md](../../knowledge-base/01_skill-integrity.md) | [12_genre-recipes.md](../../knowledge-base/12_genre-recipes.md) |
-| `RULE-CURVE-TREND` | must | 程式 | [16_difficulty-curve.md](../../knowledge-base/16_difficulty-curve.md) | [16_difficulty-curve.md](../../knowledge-base/16_difficulty-curve.md) |
-| `RULE-CURVE-LINEARITY` | must | 程式 | [16_difficulty-curve.md](../../knowledge-base/16_difficulty-curve.md) | [16_difficulty-curve.md](../../knowledge-base/16_difficulty-curve.md) |
-| `RULE-CURVE-PEAKS` | must | 程式 | [16_difficulty-curve.md](../../knowledge-base/16_difficulty-curve.md) | [16_difficulty-curve.md](../../knowledge-base/16_difficulty-curve.md) |
-| `RULE-CURVE-CLIFF` | must | 程式 | [16_difficulty-curve.md](../../knowledge-base/16_difficulty-curve.md) | [16_difficulty-curve.md](../../knowledge-base/16_difficulty-curve.md) |
-| `RULE-CURVE-FLOW` | must | 程式 | [16_difficulty-curve.md](../../knowledge-base/16_difficulty-curve.md) | [16_difficulty-curve.md](../../knowledge-base/16_difficulty-curve.md) |
-| `RULE-CURVE-BEATGRID` | must | 程式 | [16_difficulty-curve.md](../../knowledge-base/16_difficulty-curve.md) | [12_genre-recipes.md](../../knowledge-base/12_genre-recipes.md) |
-| `RULE-CURVE-PHRASE` | must | 程式 | [16_difficulty-curve.md](../../knowledge-base/16_difficulty-curve.md) | [16_difficulty-curve.md](../../knowledge-base/16_difficulty-curve.md) |
-| `RULE-FX-FILTER` | should | 人工審查 | [05_juice-and-feel.md](../../knowledge-base/05_juice-and-feel.md) | [juice.md](../../.claude/skills/lite-skillgame-stack/references/juice.md) |
-| `RULE-LEGAL-EXCLUDE-CHANCE` | should | 人工審查 | [02_market-and-legal.md](../../knowledge-base/02_market-and-legal.md) | [01_skill-integrity.md](../../knowledge-base/01_skill-integrity.md) |
-| `RULE-ART-TW-TABOO` | must | 人工審查 | [tw-themes.md](../../SwarmDuel/knowledge/themes/tw-themes.md) | [02_art_spec.md](../../TwinStrike/gdd/02_art_spec.md) |
-| `RULE-GAME-DOCS` | must | 程式 | [08_production-workflow.md](../../knowledge-base/08_production-workflow.md) | [bootstrap.md](../../.claude/skills/lite-skillgame-stack/references/bootstrap.md) |
-| `RULE-GAME-REPORTS` | must | 程式 | [16_difficulty-curve.md](../../knowledge-base/16_difficulty-curve.md) | [playtest.mjs](../../.claude/skills/lite-skillgame-stack/templates/tools/playtest.mjs) |
-| `RULE-AF-ADAPTATION` | must | 程式 | [16_ad-funnel-games.md](../../knowledge-base/16_ad-funnel-games.md) | [_TEMPLATE_spec.md](../../knowledge-base/ad-funnel/_TEMPLATE_spec.md) |
-| `RULE-TEMPLATE-LEFTOVER` | should | 程式 | [05_juice-and-feel.md](../../knowledge-base/05_juice-and-feel.md) | [bootstrap.md](../../.claude/skills/lite-skillgame-stack/references/bootstrap.md) |
-| `RULE-REPORT-FRESH` | must | 程式 | [16_difficulty-curve.md](../../knowledge-base/16_difficulty-curve.md) | [dominance.mjs](../../.claude/skills/lite-skillgame-stack/templates/tools/lib/dominance.mjs) |
-| `RULE-SPEC-CONSTANTS` | must | 程式 | [game-spec-template.md](../../.claude/skills/lite-skillgame-stack/references/game-spec-template.md) | [08_production-workflow.md](../../knowledge-base/08_production-workflow.md) |
-| `RULE-SPEC-FAIRNESS` | must | 程式 | [01_skill-integrity.md](../../knowledge-base/01_skill-integrity.md) | [game-spec-template.md](../../.claude/skills/lite-skillgame-stack/references/game-spec-template.md) |
-| `RULE-KB-CITED` | should | 程式 | [README.md](../../knowledge-base/README.md) | [bootstrap.md](../../.claude/skills/lite-skillgame-stack/references/bootstrap.md) |
-| `RULE-ASSET-REGISTER` | should | 程式 | [2026-10-21-kb-asset-architecture.md](../../knowledge-base/decisions/2026-10-21-kb-asset-architecture.md) | [10_asset-library.md](../../knowledge-base/10_asset-library.md) |
-| `RULE-KB-CARDS` | must | 程式 | [2026-11-10-libraries-and-loop.md](../../knowledge-base/decisions/2026-11-10-libraries-and-loop.md) | [2026-11-10-libraries-and-loop.md](../../knowledge-base/decisions/2026-11-10-libraries-and-loop.md) |
-| `RULE-KB-CARD-SIZE` | should | 程式 | [2026-11-10-libraries-and-loop.md](../../knowledge-base/decisions/2026-11-10-libraries-and-loop.md) | [2026-11-10-libraries-and-loop.md](../../knowledge-base/decisions/2026-11-10-libraries-and-loop.md) |
+| 規則 | 等級 | 把關 | 測試卡 | 為什麼 | 怎麼做 |
+|---|---|---|---|---|---|
+| `RULE-BUNDLE-SIZE` | must | 程式 | `TEST-SIZE` | [04_tech-stack.md](../../knowledge-base/04_tech-stack.md) | [stack-and-budget.md](../../.claude/skills/lite-skillgame-stack/references/stack-and-budget.md) |
+| `RULE-NO-RUNTIME-CDN` | must | 程式 | `TEST-SIZE` | [04_tech-stack.md](../../knowledge-base/04_tech-stack.md) | [SKILL.md](../../.claude/skills/lite-skillgame-stack/SKILL.md) |
+| `RULE-DRAWCALL-2D` | must | 人工審查 | `TEST-DRAWCALL-REVIEW` | [04_tech-stack.md](../../knowledge-base/04_tech-stack.md) | [drawcalls-assets.md](../../.claude/skills/lite-skillgame-stack/references/drawcalls-assets.md) |
+| `RULE-DRAWCALL-3D` | must | 人工審查 | `TEST-DRAWCALL-REVIEW` | [04_tech-stack.md](../../knowledge-base/04_tech-stack.md) | [drawcalls-assets.md](../../.claude/skills/lite-skillgame-stack/references/drawcalls-assets.md) |
+| `RULE-SIM-PURITY` | must | 程式 | `TEST-AUDIT` | [01_skill-integrity.md](../../knowledge-base/01_skill-integrity.md) | [SKILL.md](../../.claude/skills/lite-skillgame-stack/SKILL.md) |
+| `RULE-SKILL-DOMINANCE` | must | 程式 | `TEST-SKILL-DOMINANCE` | [01_skill-integrity.md](../../knowledge-base/01_skill-integrity.md) | [12_genre-recipes.md](../../knowledge-base/12_genre-recipes.md) |
+| `RULE-CURVE-TREND` | must | 程式 | `TEST-CURVE` | [16_difficulty-curve.md](../../knowledge-base/16_difficulty-curve.md) | [16_difficulty-curve.md](../../knowledge-base/16_difficulty-curve.md) |
+| `RULE-CURVE-LINEARITY` | must | 程式 | `TEST-CURVE` | [16_difficulty-curve.md](../../knowledge-base/16_difficulty-curve.md) | [16_difficulty-curve.md](../../knowledge-base/16_difficulty-curve.md) |
+| `RULE-CURVE-PEAKS` | must | 程式 | `TEST-CURVE` | [16_difficulty-curve.md](../../knowledge-base/16_difficulty-curve.md) | [16_difficulty-curve.md](../../knowledge-base/16_difficulty-curve.md) |
+| `RULE-CURVE-CLIFF` | must | 程式 | `TEST-CURVE` | [16_difficulty-curve.md](../../knowledge-base/16_difficulty-curve.md) | [16_difficulty-curve.md](../../knowledge-base/16_difficulty-curve.md) |
+| `RULE-CURVE-FLOW` | must | 程式 | `TEST-CURVE` | [16_difficulty-curve.md](../../knowledge-base/16_difficulty-curve.md) | [16_difficulty-curve.md](../../knowledge-base/16_difficulty-curve.md) |
+| `RULE-CURVE-BEATGRID` | must | 程式 | `TEST-CURVE` | [16_difficulty-curve.md](../../knowledge-base/16_difficulty-curve.md) | [12_genre-recipes.md](../../knowledge-base/12_genre-recipes.md) |
+| `RULE-CURVE-PHRASE` | must | 程式 | `TEST-CURVE` | [16_difficulty-curve.md](../../knowledge-base/16_difficulty-curve.md) | [16_difficulty-curve.md](../../knowledge-base/16_difficulty-curve.md) |
+| `RULE-FX-FILTER` | should | 人工審查 | `TEST-FX-FILTER-REVIEW` | [05_juice-and-feel.md](../../knowledge-base/05_juice-and-feel.md) | [juice.md](../../.claude/skills/lite-skillgame-stack/references/juice.md) |
+| `RULE-LEGAL-EXCLUDE-CHANCE` | should | 人工審查 | `TEST-LEGAL-EXCLUDE-REVIEW` | [02_market-and-legal.md](../../knowledge-base/02_market-and-legal.md) | [01_skill-integrity.md](../../knowledge-base/01_skill-integrity.md) |
+| `RULE-ART-TW-TABOO` | must | 人工審查 | `TEST-ART-TABOO-REVIEW` | [tw-themes.md](../../SwarmDuel/knowledge/themes/tw-themes.md) | [02_art_spec.md](../../TwinStrike/gdd/02_art_spec.md) |
+| `RULE-GAME-DOCS` | must | 程式 | `TEST-AUDIT` | [08_production-workflow.md](../../knowledge-base/08_production-workflow.md) | [bootstrap.md](../../.claude/skills/lite-skillgame-stack/references/bootstrap.md) |
+| `RULE-GAME-REPORTS` | must | 程式 | `TEST-AUDIT` | [16_difficulty-curve.md](../../knowledge-base/16_difficulty-curve.md) | [playtest.mjs](../../.claude/skills/lite-skillgame-stack/templates/tools/playtest.mjs) |
+| `RULE-AF-ADAPTATION` | must | 程式 | `TEST-AUDIT` | [16_ad-funnel-games.md](../../knowledge-base/16_ad-funnel-games.md) | [_TEMPLATE_spec.md](../../knowledge-base/ad-funnel/_TEMPLATE_spec.md) |
+| `RULE-TEMPLATE-LEFTOVER` | should | 程式 | `TEST-AUDIT` | [05_juice-and-feel.md](../../knowledge-base/05_juice-and-feel.md) | [bootstrap.md](../../.claude/skills/lite-skillgame-stack/references/bootstrap.md) |
+| `RULE-REPORT-FRESH` | must | 程式 | `TEST-AUDIT` | [16_difficulty-curve.md](../../knowledge-base/16_difficulty-curve.md) | [dominance.mjs](../../.claude/skills/lite-skillgame-stack/templates/tools/lib/dominance.mjs) |
+| `RULE-SPEC-CONSTANTS` | must | 程式 | `TEST-AUDIT` | [game-spec-template.md](../../.claude/skills/lite-skillgame-stack/references/game-spec-template.md) | [08_production-workflow.md](../../knowledge-base/08_production-workflow.md) |
+| `RULE-SPEC-FAIRNESS` | must | 程式 | `TEST-AUDIT` | [01_skill-integrity.md](../../knowledge-base/01_skill-integrity.md) | [game-spec-template.md](../../.claude/skills/lite-skillgame-stack/references/game-spec-template.md) |
+| `RULE-KB-CITED` | should | 程式 | `TEST-AUDIT` | [README.md](../../knowledge-base/README.md) | [bootstrap.md](../../.claude/skills/lite-skillgame-stack/references/bootstrap.md) |
+| `RULE-ASSET-REGISTER` | should | 程式 | `TEST-AUDIT` | [2026-10-21-kb-asset-architecture.md](../../knowledge-base/decisions/2026-10-21-kb-asset-architecture.md) | [10_asset-library.md](../../knowledge-base/10_asset-library.md) |
+| `RULE-KB-CARDS` | must | 程式 | `TEST-INDEX` | [2026-11-10-libraries-and-loop.md](../../knowledge-base/decisions/2026-11-10-libraries-and-loop.md) | [2026-11-10-libraries-and-loop.md](../../knowledge-base/decisions/2026-11-10-libraries-and-loop.md) |
+| `RULE-KB-CARD-SIZE` | should | 程式 | `TEST-INDEX` | [2026-11-10-libraries-and-loop.md](../../knowledge-base/decisions/2026-11-10-libraries-and-loop.md) | [2026-11-10-libraries-and-loop.md](../../knowledge-base/decisions/2026-11-10-libraries-and-loop.md) |
 
 ## 知識卡（103 張，17 頁；未分卡 23 頁）
 

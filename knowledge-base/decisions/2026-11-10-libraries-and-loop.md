@@ -373,3 +373,14 @@ C 以前不改任何現有流程；D 才讓 bootstrap §0 從手寫變產生物�
 | 與裁決的差異 | `10_asset-library` 的 §2–§5（資產總表、程式繪製資產、Prompt 庫、關鍵字索引）**沒有搬檔**，而是標 `card: skip` 並註明改查 `index/assets.json`：這些資料已在各款 manifest（keywords、procedural）與 `promptBlocks` 中；頁面改寫留到舊決策的第 3 階段，避免同時改路徑與內容 |
 | reviewedAt | 取各頁 git 最後改動日（2026-10-21 / 22），不是逐頁重新複核的日期 |
 | 測試 | `shared/tools/kb-index.test.mjs` 9 項；shared/tools 全部 22 項通過；三款遊戲 audit 結果與改動前相同（SwarmDuel 的 4 項 must 失敗是既有的舊結構問題） |
+
+### B 階段（2026-11-10，同分支）
+
+| 項目 | 結果 |
+|---|---|
+| 登錄 | `shared/tests/registry.json` 12 張測試卡，只登錄、沒搬程式：`TEST-UNIT`、`TEST-SIZE`、`TEST-SKILL-DOMINANCE`、`TEST-CURVE`（D1–D8 七條）、`TEST-PERSONA-PLAYTEST`、`TEST-HUMAN-PLAYTEST`、`TEST-AUDIT`（十條 audit 規則）、`TEST-INDEX`（repo 層級索引檢查），以及 4 張 review 卡（DC、filter、法規排除、台灣美術禁忌） |
+| 覆蓋 | 依 §8 裁決**不回寫 rules.json**：`shared/tools/tests-index.mjs` 只核對兩邊。script 規則要有非 review 卡、review 規則要有 review 卡；must 缺卡是錯誤、should 缺卡是警告。現況 27/27 條規則都有對應卡 |
+| review 卡 | 不寫 run，也不另寫檢核內容；tests.json 從規則的 `enforcement.checklist` 帶入，避免第二份文字 |
+| 產生物 | `knowledge-base/index/tests.json`（測試卡＋逐條覆蓋）；INDEX.md 規則表加「測試卡」欄；`--check` 與 pre-commit 一併涵蓋 `shared/tests/` |
+| 未做 | 各遊戲實例（哪款能跑哪張卡）留給 C 階段的 `context.mjs` 依 `needs` 判斷；`TEST-PERSONA-PLAYTEST`、`TEST-HUMAN-PLAYTEST` 的程式只在 TwinStrike，第二款需要時再共用化；N9 人機一致性規則尚未建立，`TEST-HUMAN-PLAYTEST` 暫不 implements 任何規則 |
+| 測試 | `shared/tools/tests-index.test.mjs` 6 項；shared/tools 全部 28 項通過 |
