@@ -133,3 +133,63 @@ test('CLI gate --dry runs TEST-AUDIT to completion (no import-cycle deadlock und
   assert.doesNotMatch(r.stderr, /unsettled top-level await/);
   assert.match(r.stdout, /TEST-AUDIT | cheap | ran/);
 });
+
+test('gate: a pending must rule blocks, a pending should rule does not; context errors block', async () => {
+  const node = { id: 'N5-tune', produces: [], gate: { must: ['R-*'] }, checkpoint: null };
+  const mk = level => ({ rules: [{ id: 'R-A', level: 'must', gate: true }], pending: [{ id: 'R-P', level, gate: true, missing: ['scriptedProgression'] }],
+    tests: [{ id: 'T1', kind: 'script', cost: 'cheap', implements: ['R-A'], run: 'x', cwd: '.', runnable: true, missing: [] }] });
+  const runner = () => ({ ok: true, detail: '' });
+  const must = await runGate(root, 'GateLane', node, { pack: mk('must'), runner, registry: [] });
+  assert.equal(must.result, 'blocked');
+  assert.deepEqual(must.rules.map(r => [r.id, r.result]), [['R-A', 'pass'], ['R-P', 'pending']]);
+  assert.match(routeFor(nodes, nodes.find(n => n.id === 'N5-tune'), must, 0).reason, /資料待補.*R-P/);
+  const should = await runGate(root, 'GateLane', node, { pack: mk('should'), runner, registry: [] });
+  assert.equal(should.result, 'pass');
+  assert.equal(should.rules.find(r => r.id === 'R-P').result, 'pending');
+
+  // Context errors (here: floor cards over the token budget) make the gate untrustworthy.
+  const n2 = nodes.find(n => n.id === 'N2-spec'), stubs = { runner, auditor: () => [] };
+  const ok = await runGate(root, 'TwinStrike', n2, stubs);
+  assert.deepEqual([ok.result, ok.errors], ['pass', []]);
+  const over = await runGate(root, 'TwinStrike', { ...n2, budget: { kbTokens: 1 } }, stubs);
+  assert.equal(over.result, 'blocked');
+  assert.match(over.errors.join('\n'), /超過預算/);
+  assert.match(routeFor(nodes, n2, over, 0).reason, /取用器回報錯誤/);
+});
+
+// The same three cases through the real buildContext -> runGate path (no injected pack).
+test('gate, real context: unanswered flag, malformed source and a misspelt scope key all block', async () => {
+  const profileOf = g => JSON.parse(readFileSync(join(root, g, 'game.profile.json'), 'utf8'));
+  const runner = () => ({ ok: true, detail: '' }), stubs = { runner, auditor: () => [] };
+  const n5 = nodes.find(n => n.id === 'N5-tune'), n2 = nodes.find(n => n.id === 'N2-spec');
+
+  const { scriptedProgression, ...unanswered } = profileOf('TwinStrike');
+  assert.equal(scriptedProgression, true);
+  const g1 = await runGate(root, 'TwinStrike', n5, { ...stubs, profile: unanswered });
+  assert.equal(g1.result, 'blocked');
+  const pend = g1.rules.filter(r => r.result === 'pending').map(r => r.id);
+  assert.deepEqual(pend, ['RULE-CURVE-TREND', 'RULE-CURVE-LINEARITY', 'RULE-CURVE-PEAKS', 'RULE-CURVE-CLIFF', 'RULE-CURVE-FLOW']);
+  assert.ok(g1.rules.some(r => r.id === 'RULE-CURVE-BEATGRID' && r.result !== 'pending'), 'rhythm rules still apply: only the flag is unanswered');
+  const route = routeFor(nodes, n5, g1, 0);
+  assert.equal(route.goto, 'N5-tune');
+  assert.match(route.reason, /資料待補.*RULE-CURVE-TREND/);
+
+  // RULE-AF-ADAPTATION (must, gate of N2) needs the profile's source: a malformed one is pending, not a crash.
+  const g2 = await runGate(root, 'GateLane', { ...n2, produces: [] }, { ...stubs, profile: { ...profileOf('GateLane'), source: [null] } });
+  assert.equal(g2.result, 'blocked');
+  assert.equal(g2.rules.find(r => r.id === 'RULE-AF-ADAPTATION').result, 'pending');
+
+  const base = loadRules({ from: root });
+  const resolver = { ...base, rules: base.rules.map(r => (r.id === 'RULE-CURVE-TREND' ? { ...r, scope: { selector: { kind: 'game-build', difficulty: 'scripted' } } } : r)) };
+  const g3 = await runGate(root, 'TwinStrike', n5, { ...stubs, resolver });
+  assert.equal(g3.result, 'blocked');
+  assert.match(routeFor(nodes, n5, g3, 0).reason, /取用器回報錯誤.*difficulty/);
+});
+
+test('gate: an audit card that cannot run (missing files) leaves its rules not-run and the gate blocked, without crashing', async () => {
+  const pack = { rules: [{ id: 'R-A', level: 'must', gate: true }], pending: [],
+    tests: [{ id: 'T-AUDIT', kind: 'audit', cost: 'cheap', implements: ['R-A'], run: null, cwd: '.', runnable: false, missing: ['game/src/sim/sim.js'] }] };
+  const g = await runGate(root, 'GateLane', { id: 'N2-spec', produces: [], gate: { must: ['R-A'] }, checkpoint: null }, { pack, auditor: () => { throw new Error('must not be called'); }, registry: [] });
+  assert.deepEqual(g.rules.map(r => [r.id, r.result]), [['R-A', 'not-run']]);
+  assert.equal(g.result, 'blocked');
+});

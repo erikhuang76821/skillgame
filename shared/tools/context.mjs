@@ -25,7 +25,13 @@ import { findRoot, loadRules } from './rules.mjs';
 const readJson = p => JSON.parse(readFileSync(p, 'utf8'));
 const list = v => (v === undefined || v === null ? [] : Array.isArray(v) ? v : [v]);
 const COST_ORDER = ['cheap', 'medium', 'heavy', 'human'];
-const PROFILE_KEYS = new Set(['schemaVersion', 'game', ...FACET_KEYS]);
+// Structure flags: booleans about how the game is built. They decide which rules apply; they are not retrieval facets.
+//   scriptedProgression  one match has measurable, pre-scripted sections (waves, song sections) — the difficulty-curve rules need them
+export const PROFILE_FLAGS = ['scriptedProgression'];
+const PROFILE_KEYS = new Set(['schemaVersion', 'game', ...FACET_KEYS, ...PROFILE_FLAGS]);
+// Keys a rule's scope.selector may use: what the rule checks (target) and which games it is for (answered by the profile).
+export const SCOPE_TARGET_KEYS = ['kind', 'path'];
+export const SCOPE_PROFILE_KEYS = ['genre', 'renderer', 'source', ...PROFILE_FLAGS];
 // Facets that say what a game *is*: a card tagged with a concrete value here is about such games only, so it is left out
 // for a game whose profile has none of those values even when the selector does not ask about the key (an
 // af-gate-lane-shooter card is not general fairness advice for a rhythm game).
@@ -46,6 +52,7 @@ export function loadProfile(root, game, vocab = loadVocabulary(root)) {
   if (profile.game !== game) errors.push(`${game}/game.profile.json: game 應為 ${game}`);
   for (const [k, v] of Object.entries(profile)) {
     if (!PROFILE_KEYS.has(k)) { errors.push(`${game}/game.profile.json: 不認得的欄位 ${k}`); continue; }
+    if (PROFILE_FLAGS.includes(k) && typeof v !== 'boolean') errors.push(`${game}/game.profile.json: ${k} 必須是 true 或 false`);
     if (!FACET_KEYS.includes(k)) continue;
     for (const x of list(v)) if (!vocab.facets[k].has(x)) errors.push(`${game}/game.profile.json: ${k}「${x}」不在 shared/index/facets.json`);
   }
@@ -78,17 +85,54 @@ export function facetMatch(facets, sel) {
   return { ok: !keys || exact + wild > 0, exact, unknown };
 }
 
-/** Does a rule's scope selector apply to this game? Only keys the profile can answer are checked. */
-export function ruleApplies(rule, profile) {
-  const sel = rule.scope?.selector ?? {}, any = k => list(profile[k]).includes('*');   // a "*" profile (generic, e.g. the bootstrap table) fits every scope
-  for (const k of ['genre', 'renderer']) if (sel[k] && profile[k] && !any(k) && !list(profile[k]).includes(sel[k])) return false;
-  if (sel.source === 'ad-funnel' && !any('source') && !list(profile.source).some(s => s.startsWith('af-'))) return false;
-  return true;
+/**
+ * Does a rule's scope selector apply to this game? -> { state: 'applies' | 'not-applicable' | 'pending', missing: [keys] }.
+ * A key the scope names but the profile does not answer is 'pending' (the profile must be completed), never a silent
+ * 'applies' or 'not-applicable'. A key that clearly does not fit wins over a missing one. A "*" profile value (the generic
+ * profile behind the bootstrap table) fits every scope.
+ */
+export function ruleScope(rule, profile) {
+  const sel = rule.scope?.selector ?? {}, missing = [];
+  let mismatch = false;
+  for (const k of SCOPE_PROFILE_KEYS) {
+    if (sel[k] === undefined) continue;
+    if (PROFILE_FLAGS.includes(k)) {
+      if (profile[k] === undefined) missing.push(k);
+      else if (profile[k] !== '*' && profile[k] !== sel[k]) mismatch = true;
+      continue;
+    }
+    const mine = list(profile[k]).filter(x => typeof x === 'string');   // a malformed value (reported by loadProfile) counts as unanswered
+    if (!mine.length) missing.push(k);
+    else if (mine.includes('*')) continue;
+    else if (k === 'source' && sel[k] === 'ad-funnel' ? !mine.some(s => s.startsWith('af-')) : !mine.includes(sel[k])) mismatch = true;
+  }
+  return { state: mismatch ? 'not-applicable' : missing.length ? 'pending' : 'applies', missing: mismatch ? [] : missing };
+}
+export const ruleApplies = (rule, profile) => ruleScope(rule, profile).state === 'applies';
+
+/**
+ * Every key in a rule's scope.selector must be one the tools understand: a scope key nobody checks makes the rule apply
+ * to every game (the `difficulty: "scripted"` bug). Flags must be booleans; genre / renderer must be vocabulary values.
+ */
+export function checkRuleScopes(rules, vocab) {
+  const errors = [];
+  for (const r of rules) for (const [k, v] of Object.entries(r.scope?.selector ?? {})) {
+    const at = `rules.json ${r.id}: scope.selector.${k}`;
+    if (SCOPE_TARGET_KEYS.includes(k)) { if (typeof v !== 'string') errors.push(`${at} 要是字串`); continue; }
+    if (!SCOPE_PROFILE_KEYS.includes(k)) { errors.push(`${at} 不是認得的適用範圍欄位（可用：${[...SCOPE_TARGET_KEYS, ...SCOPE_PROFILE_KEYS].join('、')}）`); continue; }
+    if (PROFILE_FLAGS.includes(k)) { if (typeof v !== 'boolean') errors.push(`${at} 必須是 true 或 false`); }
+    else if (k === 'source') { if (v !== 'ad-funnel' && !vocab.facets.source.has(v)) errors.push(`${at}「${v}」不在 shared/index/facets.json（或用 ad-funnel）`); }
+    else if (!vocab.facets[k].has(v)) errors.push(`${at}「${v}」不在 shared/index/facets.json`);
+  }
+  return errors;
 }
 
 const idMatch = (id, pats) => pats.some(p => (p.endsWith('*') ? id.startsWith(p.slice(0, -1)) : id === p));
 
-/** Build one step's context pack. Returns { errors, warnings, pack }. opts.profile replaces <Game>/game.profile.json. */
+/**
+ * Build one step's context pack. Returns { errors, warnings, pack }. opts.profile replaces <Game>/game.profile.json;
+ * opts.resolver replaces the rules resolver (tests).
+ */
 export function buildContext(root, game, step, opts = {}) {
   const errors = [], warnings = [];
   const vocab = loadVocabulary(root);
@@ -97,7 +141,8 @@ export function buildContext(root, game, step, opts = {}) {
   if (!profile) return { errors, warnings, pack: null };
   const idx = name => readJson(join(root, 'knowledge-base', 'index', name));
   const kb = idx('kb.json'), tests = idx('tests.json'), assets = idx('assets.json');
-  const resolver = loadRules({ from: join(root, game), game });
+  const resolver = opts.resolver ?? loadRules({ from: join(root, game), game });
+  errors.push(...checkRuleScopes(resolver.rules, vocab));   // a scope key nobody checks would make the rule apply to every game
   const pull = step.pull ?? {};
 
   // Rules: applicable to this game, picked by the pull selector or named by the gate.
@@ -105,12 +150,17 @@ export function buildContext(root, game, step, opts = {}) {
   const rsel = pull.rules ?? null;
   const picked = r => rsel && (!rsel.category || list(rsel.category).includes(r.category))
     && (!rsel.level || list(rsel.level).includes(r.level)) && (!rsel.id || idMatch(r.id, list(rsel.id)));
-  const gateIds = new Set(), notApplicable = [];
+  // Only applicable rules enter the pack. Rules the profile cannot answer yet go to `pending` (the gate blocks on the
+  // must-level ones); they are never treated as applicable or as not applicable.
+  const gateIds = new Set(), notApplicable = [], pending = [];
   const rules = resolver.rules.filter(r => {
-    const inGate = idMatch(r.id, gatePats), want = inGate || picked(r);
-    if (want && !ruleApplies(r, profile)) { notApplicable.push(r.id); return false; }
-    if (want && inGate) gateIds.add(r.id);
-    return want;
+    const inGate = idMatch(r.id, gatePats);
+    if (!inGate && !picked(r)) return false;
+    const s = ruleScope(r, profile);
+    if (s.state === 'not-applicable') { notApplicable.push(r.id); return false; }
+    if (s.state === 'pending') { pending.push({ id: r.id, level: r.level, gate: inGate, missing: s.missing }); return false; }
+    if (inGate) gateIds.add(r.id);
+    return true;
   }).map(r => ({
     id: r.id, level: r.level, category: r.category, gate: gateIds.has(r.id),
     constraints: r.constraints.map(c => ({ name: c.name, ...(c.check ? { check: c.check } : { op: c.op, value: resolver.value(r.id, c.name), unit: c.unit }),
@@ -118,6 +168,7 @@ export function buildContext(root, game, step, opts = {}) {
     measurement: r.measurement, whyRef: r.whyRef, howRef: r.howRef,
   }));
   for (const p of gatePats) if (!resolver.rules.some(r => idMatch(r.id, [p]))) errors.push(`gate 引用不存在的規則 ${p}`);
+  if (pending.length) warnings.push(`profile 資料待補，無法判斷這些規則是否適用：${pending.map(p => `${p.id}（缺 ${p.missing.join('、')}）`).join('；')}`);
 
   // Knowledge cards: floor (linked to gate rules) + ranked selection within the budget.
   // pull.kb may be one selector or a list (union): a card takes its best match over the selectors it satisfies.
@@ -206,7 +257,7 @@ export function buildContext(root, game, step, opts = {}) {
     game, step: step.id ?? null, name: step.name ?? null,
     profile: Object.fromEntries(FACET_KEYS.filter(k => profile[k]).map(k => [k, list(profile[k])])),
     budget: { kbTokens: budget, used, floor: floorTokens },
-    rules, notApplicable, cards, excluded, gaps, tests: testCards, assets: assetHits,
+    rules, notApplicable, pending, cards, excluded, gaps, tests: testCards, assets: assetHits,
   };
   return { errors, warnings, pack };
 }
@@ -225,6 +276,7 @@ export function renderPack(pack, errors = [], warnings = []) {
     out.push(`- \`${r.id}\`（${r.level}${r.gate ? '，本步關卡' : ''}）${cs}　量測：${r.measurement}　why：${r.whyRef}`);
   }
   if (p.notApplicable.length) out.push('', `不適用本作（selector 不符）：${p.notApplicable.join('、')}`);
+  if (p.pending?.length) out.push('', '資料待補（先補 game.profile.json，否則關卡無法驗證）：', ...p.pending.map(x => `- ${x.id}（${x.level}${x.gate ? '，本步關卡' : ''}）缺 ${x.missing.join('、')}`));
   out.push('', `## 測試（${p.tests.filter(t => t.runnable).length} 可跑，${p.tests.filter(t => !t.runnable).length} 不能跑）`, '');
   for (const t of p.tests) out.push(`- \`${t.id}\` ${t.cost} ${t.run ? `\`${t.run}\`（cwd ${t.cwd}）` : '人工審查'} → ${t.implements.join(', ') || '—'}${t.runnable ? '' : `　缺：${t.missing.join('、')}`}`
     + (t.checklists ? `　檢核：${t.checklists.map(x => x.checklist).join('；')}` : ''));

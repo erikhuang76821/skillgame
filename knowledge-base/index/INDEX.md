@@ -35,7 +35,7 @@
 | `RULE-KB-CARDS` | must | 程式 | `TEST-INDEX` | [2026-11-10-libraries-and-loop.md](../../knowledge-base/decisions/2026-11-10-libraries-and-loop.md) | [2026-11-10-libraries-and-loop.md](../../knowledge-base/decisions/2026-11-10-libraries-and-loop.md) |
 | `RULE-KB-CARD-SIZE` | should | 程式 | `TEST-INDEX` | [2026-11-10-libraries-and-loop.md](../../knowledge-base/decisions/2026-11-10-libraries-and-loop.md) | [2026-11-10-libraries-and-loop.md](../../knowledge-base/decisions/2026-11-10-libraries-and-loop.md) |
 
-## 知識卡（103 張，17 頁；未分卡 25 頁）
+## 知識卡（103 張，17 頁；未分卡 27 頁）
 
 | 頁 | id | kind | topic | 卡片 | 略過 |
 |---|---|---|---|---|---|

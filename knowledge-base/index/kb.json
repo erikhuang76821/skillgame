@@ -5,7 +5,7 @@
  "counts": {
   "pages": 17,
   "cards": 103,
-  "unindexed": 25,
+  "unindexed": 27,
   "byKind": {
    "gap": 4,
    "lesson": 6,
@@ -2955,6 +2955,8 @@
   "knowledge-base/ad-funnel/af-survivor-skill-pick.md",
   "knowledge-base/decisions/2026-10-21-kb-asset-architecture.md",
   "knowledge-base/decisions/2026-11-10-libraries-and-loop.md",
+  "knowledge-base/decisions/2026-11-11-generality-backlog.md",
+  "knowledge-base/decisions/2026-11-11-paper-pilot-pool-word.md",
   "knowledge-base/decisions/2026-11-11-paper-pilot-solitaire.md",
   "knowledge-base/decisions/2026-11-11-skill-evidence.md"
  ]

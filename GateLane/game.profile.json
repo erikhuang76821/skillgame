@@ -4,6 +4,7 @@
   "genre": ["lane-shooter"],
   "skillAxis": ["aim", "planning"],
   "renderer": ["2d"],
+  "scriptedProgression": true,
   "source": ["af-gate-lane-shooter"],
   "jurisdiction": ["TW", "US-*"],
   "artStyle": ["procedural"]

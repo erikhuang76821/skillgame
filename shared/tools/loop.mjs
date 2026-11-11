@@ -22,7 +22,7 @@ import { createHash } from 'node:crypto';
 import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { buildContext, renderPack } from './context.mjs';
+import { PROFILE_FLAGS, buildContext, renderPack } from './context.mjs';
 import { FACET_KEYS, loadVocabulary } from './kb-index.mjs';
 import { findRoot, loadRules } from './rules.mjs';
 
@@ -202,12 +202,15 @@ async function defaultAuditor(root, game) { return (await import('./game-audit.m
 
 /**
  * Run one node's gate. Returns { result: pass|fail|blocked, needsApproval, rules, tests, missing }.
- * opts.runner(test, root) -> { ok, detail } and opts.auditor(root, game) -> audit results are injectable for tests.
+ * opts.runner(test, root) -> { ok, detail } and opts.auditor(root, game) -> audit results are injectable for tests;
+ * opts.profile / opts.resolver go to buildContext, opts.pack replaces it altogether.
  */
 export async function runGate(root, game, node, opts = {}) {
   const runner = opts.runner ?? defaultRunner, auditor = opts.auditor ?? defaultAuditor;
-  const { errors, pack } = opts.pack ? { errors: [], pack: opts.pack } : buildContext(root, game, node);
+  const { errors, pack } = opts.pack ? { errors: [], pack: opts.pack } : buildContext(root, game, node, { profile: opts.profile, resolver: opts.resolver });
   if (!pack) throw new Error(errors.join('\n'));
+  // Gate rules the profile cannot answer yet: must-level ones block the gate, should-level ones only show up as rows.
+  const pendingGate = (pack.pending ?? []).filter(p => p.gate);
   const missing = list(node.produces).filter(p => !existsSync(join(root, game, p)));
   const gateRules = pack.rules.filter(r => r.gate);
   const registry = opts.registry ?? readJson(join(root, 'knowledge-base', 'index', 'tests.json')).tests;
@@ -244,7 +247,7 @@ export async function runGate(root, game, node, opts = {}) {
       result = 'review';
       detail = by.flatMap(t => (t.checklists ?? []).filter(c => c.rule === r.id).map(c => c.checklist)).join('；') || '人工審查';
     }
-    else if (by.some(t => t.kind === 'audit')) {
+    else if (audit && by.some(t => t.kind === 'audit')) {   // audit is null when the audit card could not run (missing files): fall through to not-run
       const items = audit.filter(x => x.rule === r.id), bad = items.filter(x => !x.ok);
       result = bad.length ? 'fail' : 'pass';
       detail = bad.length ? bad.map(x => `${x.item}：${x.detail}`).join('；').slice(0, 300) : items.length ? `${items.length} 項通過` : '本作沒有適用的檢查項';
@@ -253,12 +256,14 @@ export async function runGate(root, game, node, opts = {}) {
     else result = 'pass';
     if (result === 'fail' && r.level !== 'must') result = 'warn';
     return { id: r.id, level: r.level, result, detail };
-  });
+  }).concat(pendingGate.map(p => ({ id: p.id, level: p.level, result: 'pending', detail: `game.profile.json 缺 ${p.missing.join('、')}，無法判斷是否適用` })));
 
   const mustRules = rules.filter(r => r.level === 'must');
   const extraFail = tests.some(t => extra.some(e => e.id === t.id) && t.status === 'fail');
   const extraBlocked = tests.some(t => list(node.gate?.tests).includes(t.id) && ['blocked', 'not-run'].includes(t.status));
-  const result = missing.length ? 'blocked'
+  // Context errors (invalid profile, floor cards over the budget, stale index) and pending must rules mean the gate
+  // cannot be trusted: blocked, whatever the tests said.
+  const result = missing.length || errors.length || mustRules.some(r => r.result === 'pending') ? 'blocked'
     : mustRules.some(r => r.result === 'fail') || extraFail ? 'fail'
       : mustRules.some(r => r.result === 'not-run') || extraBlocked ? 'blocked' : 'pass';
   const needsApproval = Boolean(node.checkpoint) || rules.some(r => r.result === 'review');
@@ -273,7 +278,13 @@ export function routeFor(nodes, node, gate, fails) {
     return { goto: next.length ? next : null, reason: gate.needsApproval ? '關卡通過，等人工核准（log --approve）' : '關卡通過' };
   }
   if (fails >= node.maxIterations) return { goto: 'human', reason: `同一輸入已失敗 ${fails} 次（上限 ${node.maxIterations}）：停下來交給人，附最後三輪紀錄；不得改門檻` };
-  if (gate.result === 'blocked') return { goto: node.id, reason: gate.missing.length ? `缺產出：${gate.missing.join('、')}` : '有測試無法執行（缺檔或未跑），補齊後重跑' };
+  if (gate.result === 'blocked') {
+    const pend = list(gate.rules).filter(r => r.result === 'pending' && r.level === 'must').map(r => r.id);
+    const reason = list(gate.errors).length ? `取用器回報錯誤，先修正：${gate.errors.join('；')}`
+      : pend.length ? `game.profile.json 資料待補，無法判斷 ${pend.join('、')} 是否適用；補齊後重跑`
+        : gate.missing.length ? `缺產出：${gate.missing.join('、')}` : '有測試無法執行（缺檔或未跑），補齊後重跑';
+    return { goto: node.id, reason };
+  }
   const failed = gate.rules.filter(r => r.result === 'fail').map(r => r.id);
   const owner = id => {                                     // a rule with no onFail goes to the most upstream node gating it
     const hit = list(node.onFail).find(f => f.rule && idMatch(id, [f.rule]));
@@ -297,7 +308,7 @@ const END = '<!-- /generated:loop-mustread -->';
 export function mustReadTable(root, doc = loadNodes(root)) {
   // "*" on every facet except source: a generic new game is original; adaptations get the af-* cards through N2's
   // { source: "$profile.source" } selector, which the note under the table points to.
-  const profile = { ...Object.fromEntries(FACET_KEYS.map(k => [k, ['*']])), source: ['original'] };
+  const profile = { ...Object.fromEntries(FACET_KEYS.map(k => [k, ['*']])), ...Object.fromEntries(PROFILE_FLAGS.map(k => [k, '*'])), source: ['original'] };
   const rows = ['| 節點 | 必讀（知識卡所在頁；`*` profile、節點預算內） | 產出 | 關卡 |', '|---|---|---|---|'];
   for (const n of doc.nodes) {
     const { pack } = buildContext(root, '<NewGame>', n, { profile });
@@ -314,7 +325,10 @@ export function applyMustRead(root, doc) {
   const p = join(root, MUSTREAD_FILE), text = readFileSync(p, 'utf8');
   const i = text.indexOf(BEGIN), j = text.indexOf(END);
   if (i < 0 || j < i) return { error: `${MUSTREAD_FILE} 缺 generated:loop-mustread 標記` };
-  const next = text.slice(0, i) + mustReadTable(root, doc) + text.slice(j + END.length);
+  // Keep the file's own line endings: a Windows checkout with autocrlf has CRLF, and an LF table inside it would always look stale.
+  const CRLF = String.fromCharCode(13, 10);
+  const table = text.includes(CRLF) ? mustReadTable(root, doc).split(String.fromCharCode(10)).join(CRLF) : mustReadTable(root, doc);
+  const next = text.slice(0, i) + table + text.slice(j + END.length);
   return { path: p, text: next, changed: next !== text };
 }
 
@@ -374,6 +388,7 @@ async function main() {
     for (const r of gate.rules) console.log(`| ${r.id} | ${r.level} | ${r.result} | ${r.detail} |`);
     console.log('\n| 測試卡 | cost | 狀態 | 說明 |\n|---|---|---|---|');
     for (const t of gate.tests) console.log(`| ${t.id} | ${t.cost} | ${t.status} | ${t.detail} |`);
+    if (gate.errors.length) console.log(`\n✘ 取用器錯誤：\n${gate.errors.map(e => `- ${e}`).join('\n')}`);
     if (gate.missing.length) console.log(`\n缺產出：${gate.missing.join('、')}`);
     if (notReady.length) console.log(`\n⚠ 上游尚未通過：${notReady.join('、')}`);
     console.log(`\n路由 → ${Array.isArray(route.goto) ? route.goto.join('、') : route.goto ?? '（終點）'}：${route.reason}`);

@@ -17,6 +17,7 @@ import { findRoot } from './rules.mjs';
 import { buildKb, loadVocabulary } from './kb-index.mjs';
 import { buildTests } from './tests-index.mjs';
 import { applyMustRead, checkNodes, loadNodes } from './loop.mjs';
+import { checkRuleScopes } from './context.mjs';
 
 export const KINDS = ['sprite-sheet', 'background', 'fx-sheet', 'key-art', 'ui', 'reference', 'procedural', 'audio-recipe'];
 export const STATUSES = ['shipped', 'raw-only', 'rejected-take', 'placeholder', 'procedural', 'template'];
@@ -122,12 +123,14 @@ export function buildIndex(root) {
     about: '產生物，禁止手改。來源：shared/tests/registry.json（測試卡）對照 knowledge-base/index/rules.json（規則的 enforcement 為準，不回寫）；重建：node shared/tools/index-build.mjs。',
     ...tests.data,
   };
+  const ruleList = readJson(join(root, 'knowledge-base', 'index', 'rules.json')).rules;
+  const scopeErrors = checkRuleScopes(ruleList, loadVocabulary(root));
   const nodes = checkNodes(loadNodes(root), {
-    ruleIds: readJson(join(root, 'knowledge-base', 'index', 'rules.json')).rules.map(r => r.id),
+    ruleIds: ruleList.map(r => r.id),
     testIds: readJson(join(root, 'shared', 'tests', 'registry.json')).tests.map(t => t.id), vocab: loadVocabulary(root),
   });
   return {
-    errors: [...errors, ...kb.errors, ...tests.errors, ...nodes.errors], warnings: [...kb.warnings, ...tests.warnings, ...nodes.warnings], json: JSON.stringify(json, null, 1) + '\n',
+    errors: [...errors, ...kb.errors, ...tests.errors, ...scopeErrors, ...nodes.errors], warnings: [...kb.warnings, ...tests.warnings, ...nodes.warnings], json: JSON.stringify(json, null, 1) + '\n',
     kb: JSON.stringify(kbJson, null, 1) + '\n', tests: JSON.stringify(testsJson, null, 1) + '\n',
     md: indexMd(root, assets, json.counts, kb.data, tests.data),
   };
