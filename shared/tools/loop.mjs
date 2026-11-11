@@ -231,7 +231,9 @@ export async function runGate(root, game, node, opts = {}) {
     }
     const r = runner({ ...t, run: t.run.replace(/<Game>/g, game) }, root);
     tests.push({ ...row, status: r.ok ? 'pass' : 'fail', detail: r.detail });
-    if (!r.ok && t.cost !== 'cheap') stopped = true;
+    // Only a failure that can fail the gate stops the rest: a test for a must rule or a node gate test (not a should-only one).
+    const blocking = list(node.gate?.tests).includes(t.id) || t.implements.some(id => gateRules.some(g => g.id === id && g.level === 'must'));
+    if (!r.ok && t.cost !== 'cheap' && blocking) stopped = true;
   }
 
   const rules = gateRules.map(r => {
@@ -328,7 +330,11 @@ function printStatus(doc, st, game) {
 }
 
 const isMain = process.argv[1] && fileURLToPath(import.meta.url).replace(/\\/g, '/').endsWith(process.argv[1].replace(/\\/g, '/').split('/').pop());
-if (isMain) {
+// The CLI runs in main(), not at top level: a top-level await here would leave this module mid-evaluation while
+// runGate dynamically imports game-audit → index-build → loop.mjs, and that cycle never settles.
+if (isMain) main().catch(e => { console.error(e); process.exit(1); });
+
+async function main() {
   const [cmd, game, ...rest] = process.argv.slice(2);
   const opt = n => { const i = rest.indexOf(n); return i >= 0 ? rest[i + 1] : null; };
   const usage = () => { console.error('用法：node shared/tools/loop.mjs status|next|gate|log <Game> [--node <id>] …（見檔頭）'); process.exit(2); };

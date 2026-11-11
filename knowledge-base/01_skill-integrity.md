@@ -47,7 +47,7 @@ reviewedAt: 2026-10-21
 RNG 必須是**無狀態雜湊**，以「事件序號」而非「呼叫順序」取值（玩家行為不同不會讓序列錯位）。實作見 [04_tech-stack.md §4](04_tech-stack.md)。
 
 ## 4. 證據：Skill Dominance 測試（上線門檻）
-<!-- card: KB-skill-integrity.dominance-test; kind=method; rules=RULE-SKILL-DOMINANCE -->
+<!-- card: KB-skill-integrity.dominance-test; kind=method; rules=RULE-SKILL-DOMINANCE,RULE-SKILL-BASELINE -->
 
 方法（`SwarmDuel/game/tools/skill-dominance.mjs`，可移植）：
 
@@ -62,6 +62,10 @@ RNG 必須是**無狀態雜湊**，以「事件序號」而非「呼叫順序」
 | 中手 vs 新手勝率 | ≈ 100% |
 
 **學到的教訓（SwarmDuel R9）**：「存活時間」型分數會讓逃跑型玩法與高手打平 → 技巧天花板偏平。解法是**只改計分**：大幅降低存活獎勵、移除秒數分、加重高風險技巧（Perfect Dodge 5→40 分）。原則：計分要獎勵「漂亮地打」而不只是「活著」，但不能加重到單一最優解。
+
+**基準策略（`RULE-SKILL-BASELINE`）**：技巧佔比只比較「各等級 bot 之間」的差距，若新手 bot 只是亂走，佔比會很高，卻看不出遊戲其實只要一條規則就能玩好。所以 `bots.mjs` 另外匯出 `BASELINES`：幾個一句話講得完、不需要精準時機或瞄準就能照做的固定策略（「選數字大的門」「站中間不動」「只追最近的怪」；「時機完美地按」不算，那正是要量的技巧），和技巧等級 bot 跑同一批種子，比較最好的基準策略與最強等級的平均分。比值過高代表技巧天花板太低：機制缺少讓「只看眼前」選錯的取捨（風險換報酬、時機、需要讀取或推估的資訊、會影響後面幾波的路線）。這時要回玩法規格改機制，不是調數字或改門檻。
+
+**學到的教訓（GateLane N2）**：技巧佔比 91.4% 通過，但「只選數字大的門」一條規則就幾乎每局擊倒頭目、拿到高手六成的分數；原因是新手 bot 不看門，被拉開的差距其實是「看不看門」，不是技巧。
 
 跨種子排行（Daily Seed）用**當日百分位**比較，不用原始分。
 

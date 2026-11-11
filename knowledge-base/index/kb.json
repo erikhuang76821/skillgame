@@ -5,7 +5,7 @@
  "counts": {
   "pages": 17,
   "cards": 103,
-  "unindexed": 23,
+  "unindexed": 25,
   "byKind": {
    "gap": 4,
    "lesson": 6,
@@ -435,7 +435,7 @@
    "page": "KB-skill-integrity",
    "path": "knowledge-base/01_skill-integrity.md",
    "line": 49,
-   "end": 66,
+   "end": 70,
    "heading": [
     "4. 證據：Skill Dominance 測試（上線門檻）"
    ],
@@ -449,18 +449,19 @@
     ]
    },
    "rules": [
-    "RULE-SKILL-DOMINANCE"
+    "RULE-SKILL-DOMINANCE",
+    "RULE-SKILL-BASELINE"
    ],
    "reviewedAt": "2026-10-21",
-   "tokens": 302,
-   "hash": "sha256:bda828dc6fde68f9"
+   "tokens": 660,
+   "hash": "sha256:7d0f8c7d9eff76ad"
   },
   {
    "id": "KB-skill-integrity.match-verify",
    "page": "KB-skill-integrity",
    "path": "knowledge-base/01_skill-integrity.md",
-   "line": 68,
-   "end": 77,
+   "line": 72,
+   "end": 81,
    "heading": [
     "5. 每局驗證流程"
    ],
@@ -483,8 +484,8 @@
    "id": "KB-skill-integrity.scoring",
    "page": "KB-skill-integrity",
    "path": "knowledge-base/01_skill-integrity.md",
-   "line": 79,
-   "end": 86,
+   "line": 83,
+   "end": 90,
    "heading": [
     "6. 計分設計通則（來自規則卡交叉比對）"
    ],
@@ -2953,6 +2954,8 @@
   "knowledge-base/ad-funnel/af-screw-jam.md",
   "knowledge-base/ad-funnel/af-survivor-skill-pick.md",
   "knowledge-base/decisions/2026-10-21-kb-asset-architecture.md",
-  "knowledge-base/decisions/2026-11-10-libraries-and-loop.md"
+  "knowledge-base/decisions/2026-11-10-libraries-and-loop.md",
+  "knowledge-base/decisions/2026-11-11-paper-pilot-solitaire.md",
+  "knowledge-base/decisions/2026-11-11-skill-evidence.md"
  ]
 }

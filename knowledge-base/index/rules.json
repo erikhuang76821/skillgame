@@ -87,6 +87,21 @@
       "reviewedAt": "2026-10-21"
     },
     {
+      "id": "RULE-SKILL-BASELINE",
+      "category": "fairness",
+      "level": "should",
+      "scope": { "selector": { "kind": "game-build" } },
+      "constraints": [
+        { "name": "baselineRatio", "op": "<=", "value": 0.5, "unit": "ratio", "overridePolicy": "with-reason" }
+      ],
+      "measurement": "node tools/skill-dominance.mjs 30 --baseline：bots.mjs 匯出 BASELINES（每個都是一句話講得完、不需要精準時機或瞄準就能照做的固定規則，例如「選數字大的門」「站中間不動」），與技巧等級 bot 跑同一批種子；baselineRatio = 最好的基準策略平均分 ÷ 最強技巧等級平均分。沒有匯出 BASELINES 視為未驗證",
+      "enforcement": { "type": "script", "ref": "<Game>/game/tools/lib/dominance.mjs（範本 templates/tools/lib/dominance.mjs）" },
+      "whyRef": "knowledge-base/01_skill-integrity.md §4",
+      "howRef": "knowledge-base/01_skill-integrity.md §4",
+      "source": "GateLane N2 審查（2026-11-10）：一條「選數字大的門」規則 30 局贏 28 局、拿到 expert 60% 的分數，技巧佔比 91.4% 卻沒抓到。門檻是起始假設，有真人資料後再校",
+      "reviewedAt": "2026-11-10"
+    },
+    {
       "id": "RULE-CURVE-TREND",
       "category": "balance",
       "level": "must",

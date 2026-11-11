@@ -21,6 +21,7 @@ const RULES = await (async () => {
 export const THRESHOLDS = Object.freeze({
   skillShare: RULES.value('RULE-SKILL-DOMINANCE', 'skillShare'),
   topWinRate: RULES.value('RULE-SKILL-DOMINANCE', 'topWinRate'),
+  baselineRatio: RULES.value('RULE-SKILL-BASELINE', 'baselineRatio'),
 });
 
 const mean = a => a.reduce((s, v) => s + v, 0) / a.length;
@@ -30,8 +31,10 @@ const sd = a => { const m = mean(a); return Math.sqrt(mean(a.map(v => (v - m) **
  * @param game  GameDef (src/sim/sim.js GAME); optional game.scoreBreakdown(sim) adds columns
  * @param bots  { tierName: policy } ordered weakest -> strongest
  * @param n     number of seeds
+ * @param baselines  optional { name: policy }: one-sentence fixed strategies (RULE-SKILL-BASELINE). The best one's
+ *                   mean score ÷ the strongest tier's mean score must stay low, or a trivial rule plays as well as skill.
  */
-export function runDominance(game, bots, n = 30, seedBase = 2026) {
+export function runDominance(game, bots, n = 30, seedBase = 2026, baselines = null) {
   const tiers = Object.keys(bots);
   const seeds = Array.from({ length: n }, (_, i) => hash32(seedBase, 7, i));
   const t0 = performance.now();
@@ -65,7 +68,19 @@ export function runDominance(game, bots, n = 30, seedBase = 2026) {
 
   const top = h2h[`${tiers.at(-1)} vs ${tiers.at(-2)}`];
   const pass = shares.skillTier >= THRESHOLDS.skillShare && top >= THRESHOLDS.topWinRate;
-  return { game: game.id, version: game.version, n, tiers, ms, stats, h2h, shares, top, pass };
+  const baseline = baselines && Object.keys(baselines).length ? runBaselines(game, baselines, seeds, stats[tiers.at(-1)].mean, rows.map(r => r[tiers.at(-1)].score)) : null;
+  return { game: game.id, version: game.version, n, tiers, ms, stats, h2h, shares, top, pass, baseline };
+}
+
+function runBaselines(game, baselines, seeds, topMean, topScores) {
+  const stats = Object.fromEntries(Object.entries(baselines).map(([name, policy]) => {
+    const sc = seeds.map(seed => game.score(playMatch(game, seed, policy).sim));
+    const beatsTop = sc.filter((v, i) => v >= topScores[i]).length / sc.length;
+    return [name, { mean: Math.round(mean(sc)), ratio: topMean > 0 ? mean(sc) / topMean : 0, beatsTop }];
+  }));
+  const best = Object.keys(stats).reduce((a, b) => (stats[b].mean > stats[a].mean ? b : a));
+  const ratio = stats[best].ratio;
+  return { stats, best, ratio, pass: ratio <= THRESHOLDS.baselineRatio };
 }
 
 export function toMarkdown(r, command) {
@@ -100,5 +115,21 @@ export function toMarkdown(r, command) {
     '',
     '> 同種子對戰時「種子」一欄被完全抵銷；它只影響跨種子排行（Daily Seed），跨日排行請用當日百分位。',
     '',
+    ...baselineMarkdown(r, pct),
   ].join('\n');
+}
+
+function baselineMarkdown(r, pct) {
+  const head = ['## 基準策略（一句話規則）', ''];
+  if (!r.baseline) return [...head, '未提供 `BASELINES`（`tools/bots.mjs`）→ RULE-SKILL-BASELINE **未驗證**。', ''];
+  const b = r.baseline, top = r.tiers.at(-1);
+  return [...head,
+    `- 門檻：最好的基準策略平均分 ÷ ${top} 平均分 ≤ ${pct(THRESHOLDS.baselineRatio)} → **${b.pass ? '通過' : '⚠️ 警告：超過門檻（should）'}**（最好：${b.best}，${pct(b.ratio)}）`,
+    '- 基準策略是一句話講得完的固定規則；比值高代表不用技巧也能玩到接近高手',
+    '',
+    `| 基準策略 | mean | ÷ ${top} | 同種子不輸 ${top} |`,
+    '|---|---|---|---|',
+    ...Object.entries(b.stats).map(([k, s]) => `| ${k} | ${s.mean} | ${pct(s.ratio)} | ${pct(s.beatsTop)} |`),
+    '',
+  ];
 }

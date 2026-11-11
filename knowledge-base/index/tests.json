@@ -3,22 +3,22 @@
  "schemaVersion": 1,
  "about": "產生物，禁止手改。來源：shared/tests/registry.json（測試卡）對照 knowledge-base/index/rules.json（規則的 enforcement 為準，不回寫）；重建：node shared/tools/index-build.mjs。",
  "counts": {
-  "tests": 12,
+  "tests": 13,
   "byKind": {
    "audit": 1,
    "human-playtest": 1,
    "review": 4,
-   "script": 3,
+   "script": 4,
    "sim-playtest": 2,
    "unit": 1
   },
   "byCost": {
    "cheap": 3,
    "human": 5,
-   "medium": 4
+   "medium": 5
   },
-  "rules": 27,
-  "covered": 27
+  "rules": 28,
+  "covered": 28
  },
  "tests": [
   {
@@ -84,6 +84,30 @@
    "produces": "docs/skill_dominance_report.md",
    "cost": "medium",
    "fresh": "GAME.version"
+  },
+  {
+   "id": "TEST-SKILL-BASELINE",
+   "kind": "script",
+   "implements": [
+    "RULE-SKILL-BASELINE"
+   ],
+   "facets": {
+    "topic": [
+     "fairness",
+     "difficulty"
+    ]
+   },
+   "run": "node tools/skill-dominance.mjs 30 --baseline",
+   "cwd": "<Game>/game",
+   "source": ".claude/skills/lite-skillgame-stack/templates/tools/skill-dominance.mjs",
+   "needs": [
+    "game/tools/bots.mjs",
+    "game/tools/skill-dominance.mjs",
+    "game/tools/lib/dominance.mjs"
+   ],
+   "cost": "medium",
+   "fresh": "GAME.version",
+   "note": "bots.mjs 要匯出 BASELINES（一句話規則的固定策略）；沒有就失敗＝未驗證。同一份報告寫在 skill_dominance_report.md 的「基準策略」一節"
   },
   {
    "id": "TEST-CURVE",
@@ -370,6 +394,15 @@
    "enforcement": "script",
    "tests": [
     "TEST-SKILL-DOMINANCE"
+   ],
+   "covered": true
+  },
+  {
+   "rule": "RULE-SKILL-BASELINE",
+   "level": "should",
+   "enforcement": "script",
+   "tests": [
+    "TEST-SKILL-BASELINE"
    ],
    "covered": true
   },

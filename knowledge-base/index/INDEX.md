@@ -2,7 +2,7 @@
 
 > 產生物，禁止手改：`node shared/tools/index-build.mjs`。規則來源 [rules.json](rules.json)，資產來源各款 `art/manifest.json` 與 `shared/recipes/`，知識卡來源各頁 front-matter，測試卡來源 `shared/tests/registry.json`；機器可讀版 [assets.json](assets.json)、[kb.json](kb.json)、[tests.json](tests.json)。
 
-## 規則（27 條）
+## 規則（28 條）
 
 | 規則 | 等級 | 把關 | 測試卡 | 為什麼 | 怎麼做 |
 |---|---|---|---|---|---|
@@ -12,6 +12,7 @@
 | `RULE-DRAWCALL-3D` | must | 人工審查 | `TEST-DRAWCALL-REVIEW` | [04_tech-stack.md](../../knowledge-base/04_tech-stack.md) | [drawcalls-assets.md](../../.claude/skills/lite-skillgame-stack/references/drawcalls-assets.md) |
 | `RULE-SIM-PURITY` | must | 程式 | `TEST-AUDIT` | [01_skill-integrity.md](../../knowledge-base/01_skill-integrity.md) | [SKILL.md](../../.claude/skills/lite-skillgame-stack/SKILL.md) |
 | `RULE-SKILL-DOMINANCE` | must | 程式 | `TEST-SKILL-DOMINANCE` | [01_skill-integrity.md](../../knowledge-base/01_skill-integrity.md) | [12_genre-recipes.md](../../knowledge-base/12_genre-recipes.md) |
+| `RULE-SKILL-BASELINE` | should | 程式 | `TEST-SKILL-BASELINE` | [01_skill-integrity.md](../../knowledge-base/01_skill-integrity.md) | [01_skill-integrity.md](../../knowledge-base/01_skill-integrity.md) |
 | `RULE-CURVE-TREND` | must | 程式 | `TEST-CURVE` | [16_difficulty-curve.md](../../knowledge-base/16_difficulty-curve.md) | [16_difficulty-curve.md](../../knowledge-base/16_difficulty-curve.md) |
 | `RULE-CURVE-LINEARITY` | must | 程式 | `TEST-CURVE` | [16_difficulty-curve.md](../../knowledge-base/16_difficulty-curve.md) | [16_difficulty-curve.md](../../knowledge-base/16_difficulty-curve.md) |
 | `RULE-CURVE-PEAKS` | must | 程式 | `TEST-CURVE` | [16_difficulty-curve.md](../../knowledge-base/16_difficulty-curve.md) | [16_difficulty-curve.md](../../knowledge-base/16_difficulty-curve.md) |
@@ -34,7 +35,7 @@
 | `RULE-KB-CARDS` | must | 程式 | `TEST-INDEX` | [2026-11-10-libraries-and-loop.md](../../knowledge-base/decisions/2026-11-10-libraries-and-loop.md) | [2026-11-10-libraries-and-loop.md](../../knowledge-base/decisions/2026-11-10-libraries-and-loop.md) |
 | `RULE-KB-CARD-SIZE` | should | 程式 | `TEST-INDEX` | [2026-11-10-libraries-and-loop.md](../../knowledge-base/decisions/2026-11-10-libraries-and-loop.md) | [2026-11-10-libraries-and-loop.md](../../knowledge-base/decisions/2026-11-10-libraries-and-loop.md) |
 
-## 知識卡（103 張，17 頁；未分卡 23 頁）
+## 知識卡（103 張，17 頁；未分卡 25 頁）
 
 | 頁 | id | kind | topic | 卡片 | 略過 |
 |---|---|---|---|---|---|

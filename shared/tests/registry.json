@@ -42,6 +42,19 @@
       "fresh": "GAME.version"
     },
     {
+      "id": "TEST-SKILL-BASELINE",
+      "kind": "script",
+      "implements": ["RULE-SKILL-BASELINE"],
+      "facets": { "topic": ["fairness", "difficulty"] },
+      "run": "node tools/skill-dominance.mjs 30 --baseline",
+      "cwd": "<Game>/game",
+      "source": ".claude/skills/lite-skillgame-stack/templates/tools/skill-dominance.mjs",
+      "needs": ["game/tools/bots.mjs", "game/tools/skill-dominance.mjs", "game/tools/lib/dominance.mjs"],
+      "cost": "medium",
+      "fresh": "GAME.version",
+      "note": "bots.mjs 要匯出 BASELINES（一句話規則的固定策略）；沒有就失敗＝未驗證。同一份報告寫在 skill_dominance_report.md 的「基準策略」一節"
+    },
+    {
       "id": "TEST-CURVE",
       "kind": "sim-playtest",
       "implements": ["RULE-CURVE-TREND", "RULE-CURVE-LINEARITY", "RULE-CURVE-PEAKS", "RULE-CURVE-CLIFF", "RULE-CURVE-FLOW", "RULE-CURVE-BEATGRID", "RULE-CURVE-PHRASE"],

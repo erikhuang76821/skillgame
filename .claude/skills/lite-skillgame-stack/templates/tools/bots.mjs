@@ -22,3 +22,11 @@ export const BOTS = {
   intermediate: timingBot(202, 16, 0),  // ±8 ticks
   expert: timingBot(303, 10, 0),        // ±5 ticks
 };
+
+// One-sentence fixed strategies (RULE-SKILL-BASELINE): a beginner told just this rule plays it perfectly.
+// If any of them scores close to the top tier, the game rewards the rule, not the skill. Replace with your game's.
+// A baseline must be executable without skill: no frame-perfect timing or aim (that IS the skill being measured).
+export const BASELINES = {
+  'mash every 6 ticks': { input: sim => (sim.tick % 6 === 0 ? IN_TAP : 0) },
+  'tap a steady beat (every 30 ticks)': { input: sim => (sim.tick % 30 === 0 ? IN_TAP : 0) },
+};

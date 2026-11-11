@@ -2,6 +2,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { spawnSync } from 'node:child_process';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildContext, fitsProfile } from './context.mjs';
@@ -98,6 +99,14 @@ test('gate: cheap tests all run, medium stops at the first failure, review needs
   assert.deepEqual(r, { 'R-A': 'fail', 'R-B': 'fail', 'R-C': 'not-run', 'R-D': 'review', 'R-E': 'not-run' });
   assert.equal(g.result, 'fail');
   assert.equal(g.needsApproval, true);
+
+  // A failing test for a should-only rule warns and does not stop the medium tests after it.
+  const pack2 = { rules: [{ id: 'R-S', level: 'should', gate: true }, { id: 'R-M', level: 'must', gate: true }], tests: [t('A1', 'medium', ['R-S']), t('Z1', 'medium', ['R-M'])] };
+  const ran2 = [];
+  const g2 = await runGate(root, 'GateLane', node, { pack: pack2, runner: x => { ran2.push(x.id); return { ok: x.id !== 'A1', detail: '' }; }, registry: [] });
+  assert.deepEqual(ran2, ['A1', 'Z1']);
+  assert.deepEqual(Object.fromEntries(g2.rules.map(x => [x.id, x.result])), { 'R-S': 'warn', 'R-M': 'pass' });
+  assert.equal(g2.result, 'pass');
 });
 
 test('route: most upstream onFail target, owner node for unrouted rules, escalation at maxIterations', () => {
@@ -117,4 +126,10 @@ test('bootstrap §0 must-read table is generated and current', () => {
   assert.equal(r.changed, false, '跑 node shared/tools/index-build.mjs');
   for (const n of nodes) assert.ok(r.text.includes(`**${n.id}**`), n.id);
   assert.ok(!/af-gate-lane-shooter/.test(r.text.split('generated:loop-mustread')[1]), 'a generic (original) game does not get one adaptation\'s cards');
+});
+
+test('CLI gate --dry runs TEST-AUDIT to completion (no import-cycle deadlock under top-level await)', () => {
+  const r = spawnSync(process.execPath, [join(root, 'shared', 'tools', 'loop.mjs'), 'gate', 'TwinStrike', '--node', 'N2-spec', '--dry'], { cwd: root, encoding: 'utf8', timeout: 60000 });
+  assert.doesNotMatch(r.stderr, /unsettled top-level await/);
+  assert.match(r.stdout, /TEST-AUDIT | cheap | ran/);
 });
