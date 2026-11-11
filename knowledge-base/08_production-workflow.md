@@ -20,7 +20,7 @@ reviewedAt: 2026-10-22
 | 4 | 專案起手 | [04](04_tech-stack.md) | `lite-skillgame-stack` templates | 可跑骨架 | `npm run dev` 基礎 DC 1 |
 | 5 | 確定性 sim + 測試 | [04](04_tech-stack.md) §4、規格 | 範本 `sim/core/`（不改）；依規格改寫 `sim/sim.js`、`test/determinism.test.mjs`（可用規格裡的 AI 提示詞） | `sim/`、`test/` | `npm test` 全過、golden match 更新 |
 | 6 | 技巧主導驗證 | [01](01_skill-integrity.md) §4 | 依規格 §9 改寫 `tools/bots.mjs`；`node tools/skill-dominance.mjs 30 --out ../docs/skill_dominance_report.md` | 報告 | 技巧佔比 ≥ 70%、最強 vs 次強 ≥ 70%（未過 exit 1） |
-| 6b | 難度曲線 | [16](16_difficulty-curve.md) | 腳本（難度級 + 段落表）寫進 sim；範本的 `tools/humanBots.mjs` + `tools/playtest.mjs`（依品類改寫單位與 DI）→ `npm run playtest` | `gdd/07_difficulty_curve.md`、`docs/playtest_report.md/.html` | D1–D8 全過（失敗 exit 1）；調校紀錄寫進 gdd/07 |
+| 6b | 難度曲線 | [16](16_difficulty-curve.md) | 腳本（難度級 + 段落表）寫進 sim；範本的 `tools/humanBots.mjs` + `tools/playtest.mjs`（依品類改寫單位與 DI）→ `npm run playtest` | `gdd/07_difficulty_curve.md`、`docs/playtest_report.md/.html` | D1–D8 全過（失敗 exit 1）；調校紀錄寫進 gdd/07。只適用有腳本進程的遊戲（`game.profile.json` 的 `scriptedProgression` 為 false 的遊戲不適用） |
 | 7 | 美術 | [06](06_art-pipeline.md)、[07](07_themes-and-liveops.md) | `codex-image`、`pokesurvivor-asset-dev`（`~/.codex/skills/`） | atlas + metadata、`art/manifest.json`（每張圖的 prompt、job、參考圖、採用與否） | 身分一致、真 alpha、validate 通過；`node shared/tools/index-build.mjs` 無錯誤 |
 | 8 | 打擊感 / UI | [05](05_juice-and-feel.md) | `FEEL`、GSAP | juice、DOM HUD、結算 | LOW 模式資訊不丟 |
 | 9 | 包體 / 效能 | [04](04_tech-stack.md) §5–6 | `npm run size`、drawCalls.js、Spector.js | size budget 實測 | ≤ 8 MB、DC ≤ 5 |

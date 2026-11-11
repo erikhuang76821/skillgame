@@ -7,7 +7,7 @@ import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildContext, fitsProfile } from './context.mjs';
 import { loadVocabulary } from './kb-index.mjs';
-import { applyMustRead, checkNodes, deriveStatus, formatEvent, loadNodes, parseEvent, planGate, routeFor, runGate, topoOrder } from './loop.mjs';
+import { applyMustRead, checkNodes, deriveStatus, formatEvent, hashPaths, loadNodes, mustReadTable, nodeHashes, nodeProduces, parseEvent, planGate, routeFor, runGate, topoOrder } from './loop.mjs';
 import { findRoot, loadRules } from './rules.mjs';
 
 const root = findRoot(fileURLToPath(import.meta.url));
@@ -168,8 +168,12 @@ test('gate, real context: unanswered flag, malformed source and a misspelt scope
   const g1 = await runGate(root, 'TwinStrike', n5, { ...stubs, profile: unanswered });
   assert.equal(g1.result, 'blocked');
   const pend = g1.rules.filter(r => r.result === 'pending').map(r => r.id);
-  assert.deepEqual(pend, ['RULE-CURVE-TREND', 'RULE-CURVE-LINEARITY', 'RULE-CURVE-PEAKS', 'RULE-CURVE-CLIFF', 'RULE-CURVE-FLOW']);
-  assert.ok(g1.rules.some(r => r.id === 'RULE-CURVE-BEATGRID' && r.result !== 'pending'), 'rhythm rules still apply: only the flag is unanswered');
+  assert.deepEqual(pend, ['RULE-CURVE-TREND', 'RULE-CURVE-LINEARITY', 'RULE-CURVE-PEAKS', 'RULE-CURVE-CLIFF', 'RULE-CURVE-FLOW', 'RULE-CURVE-BEATGRID', 'RULE-CURVE-PHRASE']);
+  // A rhythm game that answers "no scripted progression" owes none of the curve rules, nor the playtest card that measures them.
+  const g0 = await runGate(root, 'TwinStrike', { ...n5, produces: [], producesWhen: {} }, { ...stubs, profile: { ...unanswered, scriptedProgression: false } });
+  assert.ok(!g0.rules.some(r => r.id.startsWith('RULE-CURVE-')), 'no curve rule in the gate');
+  assert.ok(!g0.tests.some(t => t.id === 'TEST-CURVE'), 'TEST-CURVE is not asked for');
+  assert.equal(g0.result, 'pass');
   const route = routeFor(nodes, n5, g1, 0);
   assert.equal(route.goto, 'N5-tune');
   assert.match(route.reason, /資料待補.*RULE-CURVE-TREND/);
@@ -192,4 +196,56 @@ test('gate: an audit card that cannot run (missing files) leaves its rules not-r
   const g = await runGate(root, 'GateLane', { id: 'N2-spec', produces: [], gate: { must: ['R-A'] }, checkpoint: null }, { pack, auditor: () => { throw new Error('must not be called'); }, registry: [] });
   assert.deepEqual(g.rules.map(r => [r.id, r.result]), [['R-A', 'not-run']]);
   assert.equal(g.result, 'blocked');
+});
+
+// Step 2 (generality backlog): the difficulty document and the playtest report are N5 outputs only for games with scripted progression.
+test('producesWhen: a group is dropped only when the profile flag is false; unanswered keeps it', () => {
+  const n5 = nodes.find(n => n.id === 'N5-tune');
+  const all = ['docs/skill_dominance_report.md', 'docs/playtest_report.md', 'gdd/07_difficulty_curve.md'];
+  assert.deepEqual(nodeProduces(n5, { scriptedProgression: true }), all);
+  assert.deepEqual(nodeProduces(n5, {}), all);
+  assert.deepEqual(nodeProduces(n5, { scriptedProgression: false }), ['docs/skill_dominance_report.md']);
+  // Scripted games hash exactly the paths N5 listed before the split, so existing gate and approval events stay valid.
+  assert.equal(nodeHashes(root, 'TwinStrike', nodes, n5).outputHash, hashPaths(join(root, 'TwinStrike'), all));
+  assert.notEqual(nodeHashes(root, 'TwinStrike', nodes, n5, { scriptedProgression: false }).outputHash, hashPaths(join(root, 'TwinStrike'), all));
+  assert.match(mustReadTable(root, doc), /`docs\/playtest_report\.md`（`scriptedProgression` 時）/);
+
+  const bad = { schemaVersion: 1, nodes: [{ id: 'N0-a', name: 'a', after: [], budget: { kbTokens: 0 }, maxIterations: 1, gate: { must: [] }, producesWhen: { hasLevels: ['x.md'], scriptedProgression: ['../y.md'] } }] };
+  const e = checkNodes(bad, ctx()).errors.join('\n');
+  assert.match(e, /producesWhen 的「hasLevels」不是 profile 旗標/);
+  assert.match(e, /\.\.\/y\.md/);
+});
+
+test('gate: a game without scripted progression is not blocked by the missing curve outputs', async () => {
+  const profileOf = g => JSON.parse(readFileSync(join(root, g, 'game.profile.json'), 'utf8'));
+  const stubs = { runner: () => ({ ok: true, detail: '' }), auditor: () => [] };
+  const n5 = { ...nodes.find(n => n.id === 'N5-tune'), produces: ['docs/skill_dominance_report.md'], producesWhen: { scriptedProgression: ['docs/not-written.md'] } };
+  const scripted = await runGate(root, 'TwinStrike', n5, stubs);
+  assert.deepEqual([scripted.result, scripted.missing], ['blocked', ['docs/not-written.md']]);
+  const free = await runGate(root, 'TwinStrike', n5, { ...stubs, profile: { ...profileOf('TwinStrike'), scriptedProgression: false } });
+  assert.deepEqual([free.result, free.missing], ['pass', []]);
+  assert.ok(!free.rules.some(r => ['RULE-CURVE-TREND', 'RULE-CURVE-CLIFF'].includes(r.id)), 'the curve rules are not part of this gate');
+});
+
+test('flipping scriptedProgression makes N5 and everything downstream stale, in both directions', () => {
+  const n5 = nodes.find(n => n.id === 'N5-tune'), down = nodes.filter(n => n.after.includes('N5-tune')).map(n => n.id);
+  assert.ok(down.length > 0);
+  const hashesFor = profile => Object.fromEntries(nodes.map(n => [n.id, nodeHashes(root, 'TwinStrike', nodes, n, profile)]));
+  const passedUnder = profile => { const h = hashesFor(profile); return [n5.id, ...down].map((id, i) => ({ eventId: `e${i}`, type: 'gate', node: id, result: 'pass', needsApproval: false, at: `2026-01-0${i + 1}`, ...h[id] })); };
+  for (const [from, to] of [[true, false], [false, true]]) {
+    const events = passedUnder({ scriptedProgression: from });
+    const same = deriveStatus(nodes, events, hashesFor({ scriptedProgression: from })), flipped = deriveStatus(nodes, events, hashesFor({ scriptedProgression: to }));
+    for (const id of [n5.id, ...down]) {
+      assert.equal(same.nodes[id].status, 'passed', `${id} ${from}`);
+      assert.equal(flipped.nodes[id].status, 'stale', `${id} ${from} -> ${to}`);
+    }
+  }
+});
+
+test('gate: an injected profile reaches the audit too, so context, produces and audit judge the same game', async () => {
+  const seen = [];
+  const auditor = (r, g, o) => { seen.push(o?.profile?.scriptedProgression); return []; };
+  const n2 = nodes.find(n => n.id === 'N2-spec'), profile = { ...JSON.parse(readFileSync(join(root, 'TwinStrike', 'game.profile.json'), 'utf8')), scriptedProgression: false };
+  await runGate(root, 'TwinStrike', n2, { runner: () => ({ ok: true, detail: '' }), auditor, profile });
+  assert.deepEqual(seen, [false]);
 });

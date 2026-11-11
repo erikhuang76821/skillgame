@@ -104,8 +104,8 @@ description: 輕量化 HTML5 單機 Skill Game 技術規範（包體 5～10 MB�
 - [ ] `sim/` 內 grep 不到 `gsap|pixi|document|Math.random|Date`
 - [ ] `npm test` 全過（core + determinism，含 golden match）；`node tools/skill-dominance.mjs 30` 過門檻
 - [ ] 改了會影響結果的規則 → `GAME.version` +1、golden match 已更新
-- [ ] 難度曲線自動試玩（`npm run playtest`）D1–D8 全過，調校紀錄寫進 `gdd/07`（knowledge-base/16）
-- [ ] `npm run audit` 必要項目全過（gdd 03 / 05 / 07 / 10 / 11、報告無未通過項；改編題 gdd/05 §13 逐條回應改造）；警告項（沿用範本的 `feel.js` / `sfx.js`）有處理或寫明理由
+- [ ] 有腳本進程的遊戲：難度曲線自動試玩（`npm run playtest`）D1–D8 全過，調校紀錄寫進 `gdd/07`（knowledge-base/16）（`game.profile.json` 的 `scriptedProgression` 為 false 的遊戲不適用）
+- [ ] `npm run audit` 必要項目全過（gdd 03 / 05 / 10 / 11，有腳本進程的遊戲另加 07 與試玩報告；報告無未通過項；改編題 gdd/05 §13 逐條回應改造）；警告項（沿用範本的 `feel.js` / `sfx.js`）有處理或寫明理由
 - [ ] 沒有執行期 CDN 依賴（transcoder、字型、wasm 全部本地）
 - [ ] reduced-motion / LOW 特效下所有 juice 有降級
 - [ ] 手感數值沒有寫死在效果函式裡（都在 `FEEL`）

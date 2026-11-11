@@ -1417,8 +1417,8 @@
    },
    "rules": [],
    "reviewedAt": "2026-10-22",
-   "tokens": 763,
-   "hash": "sha256:cdec504ff238d99f"
+   "tokens": 798,
+   "hash": "sha256:04dcfbdcd94519a4"
   },
   {
    "id": "KB-production-workflow.commands",

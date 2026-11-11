@@ -59,3 +59,29 @@ test('shipped media missing from every art/manifest.json is a RULE-ASSET-REGISTE
   const c = find('RULE-ASSET-REGISTER')[0];
   assert.equal(c.level, 'should'); assert.match(c.detail, /unregistered\.png/);
 });
+
+// Step 2 (generality backlog): gdd/07 and the playtest report are required only for games with scripted progression.
+const CURVE_DOCS = ['gdd/07_difficulty_curve.md', 'docs/playtest_report.md'];
+const docsRows = async profile => (await auditGame(root, 'shared/tools/fixtures/audit-bad', { profile })).filter(x => x.rule === 'RULE-GAME-DOCS');
+
+test('RULE-GAME-DOCS: an unanswered scriptedProgression fails the audit instead of assuming either way', async () => {
+  for (const rows of [r.filter(x => x.rule === 'RULE-GAME-DOCS'), await docsRows({ schemaVersion: 1 })]) {   // no profile file / flag not set
+    const flag = rows.find(x => x.item.includes('scriptedProgression'));
+    assert.equal(flag.ok, false); assert.match(flag.detail, /資料待補/);
+    for (const f of CURVE_DOCS) assert.ok(!rows.some(x => x.item === f), `${f} is neither required nor waived yet`);
+  }
+});
+
+test('RULE-GAME-DOCS: scripted games must have the curve document and the playtest report; other games are not asked', async () => {
+  const yes = await docsRows({ scriptedProgression: true }), no = await docsRows({ scriptedProgression: false });
+  assert.equal(yes.find(x => x.item === 'gdd/07_difficulty_curve.md').ok, false);   // the fixture has no gdd/07
+  assert.equal(yes.find(x => x.item === 'docs/playtest_report.md').ok, true);
+  for (const rows of [yes, no]) assert.ok(!rows.some(x => x.item.includes('scriptedProgression')));
+  for (const f of CURVE_DOCS) assert.ok(!no.some(x => x.item === f));
+  assert.equal(no.find(x => x.item === 'gdd/03_skill_integrity.md').ok, false, 'the unconditional documents are still required');
+});
+
+test('a report that exists is still checked even when the game is not asked to have it', async () => {
+  const all = await auditGame(root, 'shared/tools/fixtures/audit-bad', { profile: { scriptedProgression: false } });
+  assert.equal(all.find(x => x.rule === 'RULE-GAME-REPORTS' && x.item.includes('playtest')).ok, false);
+});

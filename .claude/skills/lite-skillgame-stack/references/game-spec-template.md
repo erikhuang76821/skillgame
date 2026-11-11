@@ -146,7 +146,7 @@ GDD 說「為什麼」，本規格說「sim 怎麼算」。每一節都對應到
 | 挑戰內容只依種子（換玩家行為，§3 序列不變） | 相同 |
 | `node tools/skill-dominance.mjs 30` | 技巧佔比 ≥ 70%、最強 vs 次強 ≥ 70% |
 | 滿局重播耗時 | < 500 ms（伺服器預算） |
-| `npm run playtest` | 難度曲線 D1–D8 全過（RULE-CURVE-*） |
+| `npm run playtest`（`game.profile.json` 的 `scriptedProgression` 為 false 的遊戲不適用） | 難度曲線 D1–D8 全過（RULE-CURVE-*） |
 
 ## §13 改造對照（題目來自廣告玩法或既有遊戲時必填）
 

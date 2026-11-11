@@ -114,7 +114,7 @@
 | 步 | 內容 | 依賴 |
 |---|---|---|
 | 1 | **已完成（2026-11-11，見 §10）**　**適用範圍與關卡漏洞**：加 `scriptedProgression`，難度曲線規則改依它判斷；規則比對改成「適用／不適用／資料待補」，缺值不預設適用；取用器的錯誤與「資料待補」的必過規則要擋關；三款既有遊戲的 profile 補上欄位；合成 profile 的回歸測試（C1、C4、P16、P17） | — |
-| 2 | **文件與報告的依賴**：`RULE-GAME-DOCS`、audit、規格範本對難度文件與試玩報告的要求，跟著 `scriptedProgression`（P18）；範本的 `npm test` 也無條件跑難度曲線檢查（`test/determinism.test.mjs` 呼叫 `playtest.mjs`），要一起依 profile 判斷。做完這步，非腳本遊戲才不會被固定的文件要求擋住 | 步驟 1 |
+| 2 | **已完成（2026-11-11，見 §10）**　**文件與報告的依賴**：`RULE-GAME-DOCS`、audit、規格範本對難度文件與試玩報告的要求，跟著 `scriptedProgression`（P18）；範本的 `npm test` 也無條件跑難度曲線檢查（`test/determinism.test.mjs` 呼叫 `playtest.mjs`），要一起依 profile 判斷。做完這步，非腳本遊戲才不會被固定的文件要求擋住 | 步驟 1 |
 | 3 | C3 節點與測試卡改成證據類型；確認純步驟的重播（P21） | 步驟 1 |
 | 4 | 技巧證據決策的落地五步 | 步驟 1、3 |
 | 5 | 依 D3 改精髓七條；C6 把教訓改成案例卡 | — |
@@ -174,3 +174,39 @@
 - 關卡需要的 audit 測試因為缺檔而跑不了時，關卡會直接當掉。新遊戲在還沒有 sim 檔的節點就會碰到。現在這種情況是「未跑」，關卡結果是無法驗證。
 
 驗證方式：用只含已進 git 檔案的副本加上這批改動跑 shared 測試，全部通過；改動前的 HEAD 在同樣的副本上有 2 個測試失敗。
+
+### 步驟 2：文件與報告的依賴（2026-11-11）
+
+| 項目 | 做了什麼 |
+|---|---|
+| 規則 | `RULE-GAME-DOCS` 的必備清單拆成兩組：一律必備，以及只在 `scriptedProgression` 為 true 時必備（`gdd/07_difficulty_curve.md`、`docs/playtest_report.md`）。`RULE-GAME-REPORTS`、`RULE-REPORT-FRESH` 只改措辭：有產生的報告才檢查。門檻不動 |
+| audit | 讀遊戲的 profile 決定要不要第二組檔案。true：必備；false：不要求；沒填或沒有 profile：audit 不通過（資料待補），不預設成任何一邊 |
+| 節點 | N5 的產出拆成 `produces`（技巧主導報告）與 `producesWhen.scriptedProgression`（試玩報告、難度文件）。旗標為 false 的遊戲在算缺檔與雜湊時不含第二組；沒填時照樣含，關卡另由「資料待補」擋下 |
+| 範本 | `test/determinism.test.mjs` 的難度曲線測試讀 `<Game>/game.profile.json`，旗標為 false 就跳過；範本自己沒有 profile，照跑 |
+| 說明文件 | 規格範本 §12、bootstrap 的完成條件與 §0 必讀表、skill 檢查表、知識庫 08 步驟 6b，都註明只適用有腳本進程的遊戲 |
+
+驗證：
+
+- 三款既有遊戲的 audit 結果逐列相同，只有 `gdd/07` 那一列的順序往後移。
+- 有腳本進程的遊戲，N5 的雜湊和拆分前相同（測試直接比對），既有的關卡與核准紀錄不受影響。
+- 三款遊戲在 N0–N11 的規則與測試清單和快照相同。
+- 範本的曲線測試兩種情況都跑過：沒有 profile 時執行並通過；旗標為 false 時標示跳過。
+
+**還沒做到的**：N5 的關卡仍只認現有的技巧佔比測試（步驟 3、4）；非腳本遊戲複製範本後，`tools/playtest.mjs`、`humanBots.mjs` 仍在資料夾裡，`RULE-TEMPLATE-LEFTOVER` 也仍把它們列為「要改寫」（should 層級，只是警告）；已經從範本複製出去的遊戲，測試檔是各自的副本，不會自動拿到這次的跳過判斷。
+
+**Codex 審查後的修正（2026-11-11）**
+
+| 問題 | 修正 |
+|---|---|
+| 關卡測試注入的 profile 只傳給取用器和缺檔檢查，audit 仍讀磁碟上的 profile，三處可能在判斷不同的遊戲 | 關卡把同一份 profile 傳給 audit；補測試 |
+| skill 檢查表與 bootstrap 還有三處不帶條件的「必備 07」「完成前跑 playtest」 | 改成和規格範本 §12 一致的措辭 |
+| 沒有測試涵蓋旗標切換後的重驗 | 補測試：旗標 true→false 與 false→true，N5 與下游都變成需重驗 |
+
+**Codex 指出、使用者同意後處理的兩項（2026-11-11）**
+
+| 問題 | 修正 |
+|---|---|
+| `RULE-CURVE-BEATGRID`、`RULE-CURVE-PHRASE` 只依品類（節奏）判斷，不看 `scriptedProgression`；節奏類若旗標為 false，N5 仍會要這兩條與曲線測試卡 | 兩條規則的適用範圍加上 `scriptedProgression: true`。`PHRASE` 量的是段落，沒有腳本就沒有段落；`BEATGRID` 目前只能靠 `playtest.mjs` 量，先一起加，等步驟 3 測試卡改成證據類型後再讓它獨立於腳本。TwinStrike 旗標為 true，行為不變 |
+| 只改 `game.profile.json` 的 commit，pre-commit 不跑該遊戲的測試與 audit | 拿掉這個排除：profile 有改就跑該遊戲的 `npm test` 與 audit。挑選遊戲的邏輯抽成 `stagedGames` 並加測試 |
+
+副作用：SwarmDuel 的 audit 有 4 項既有的失敗，之後只改它的 profile 也會被 pre-commit 擋下，要先補齊那 4 項。

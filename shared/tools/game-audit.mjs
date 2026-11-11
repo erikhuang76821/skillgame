@@ -65,16 +65,25 @@ function resolve(mod, name) {
   return undefined;
 }
 
-export async function auditGame(root, game) {
+/** opts.profile replaces <Game>/game.profile.json (tests). */
+export async function auditGame(root, game, opts = {}) {
   const rules = loadRules({ from: join(root, game, 'game'), game });
   const dir = join(root, game), results = [];
+  let profile = opts.profile ?? null;
+  if (!profile) try { profile = JSON.parse(read(join(dir, 'game.profile.json'))); } catch { profile = null; }
   const add = (rule, level, ok, item, detail = '') => results.push({ rule, level, ok, item, detail });
   const spec = read(join(dir, 'gdd', '05_game_spec.md'));
   let mod = null, modErr = '';
   try { mod = await import(pathToFileURL(join(dir, 'game', 'src', 'sim', 'sim.js')).href); } catch (e) { modErr = e.message.split('\n')[0]; }
 
   // RULE-GAME-DOCS
-  for (const f of rules.value('RULE-GAME-DOCS', 'required')) add('RULE-GAME-DOCS', 'must', nonEmpty(join(dir, f)), f, nonEmpty(join(dir, f)) ? '' : '缺檔或空檔');
+  // The difficulty document and the playtest report exist only for games with scripted progression (profile flag).
+  // true: required; false: not asked for; unanswered: the audit cannot tell, which is a failure, never a silent default.
+  const scripted = profile?.scriptedProgression, scriptedDocs = rules.value('RULE-GAME-DOCS', 'requiredIfScriptedProgression');
+  const required = [...rules.value('RULE-GAME-DOCS', 'required'), ...(scripted === true ? scriptedDocs : [])];
+  for (const f of required) add('RULE-GAME-DOCS', 'must', nonEmpty(join(dir, f)), f, nonEmpty(join(dir, f)) ? '' : '缺檔或空檔');
+  if (typeof scripted !== 'boolean') add('RULE-GAME-DOCS', 'must', false, 'game.profile.json 的 scriptedProgression',
+    `資料待補：${profile ? '沒填 true / false' : '缺 game.profile.json 或讀不了'}，無法判斷是否要 ${scriptedDocs.join('、')}`);
   if (spec) {
     const heads = new Map(spec.split('\n').map(l => l.match(/^##\s*(§\d+)\s*(.*)$/)).filter(Boolean).map(m => [m[1], m[2]]));
     const missing = rules.value('RULE-GAME-DOCS', 'specSections').filter(s => !heads.has(s));

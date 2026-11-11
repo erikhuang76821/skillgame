@@ -1,6 +1,7 @@
 // Game-rule determinism and fairness. Rewrite the bodies for your game, keep the test names (spec §12).
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import { Recorder, playMatch, verify, replay } from '../src/sim/core/index.js';
 import { GAME, IN_TAP, createSim, step } from '../src/sim/sim.js';
 import { BOTS } from '../tools/bots.mjs';
@@ -50,7 +51,13 @@ test('skill dominates on the same seeds (gdd/03 thresholds)', () => {
   assert.ok(r.pass, `skill share ${r.shares.skillTier.toFixed(2)}, top win rate ${r.top.toFixed(2)}`);
 });
 
-test('scripted difficulty curve passes the D-gates (knowledge-base/16; full report: npm run playtest)', async () => {
+// Only games with scripted progression have a difficulty curve to check (RULE-CURVE-*, RULE-GAME-DOCS). A game whose
+// <Game>/game.profile.json says scriptedProgression: false skips this test; the template itself (no profile) runs it.
+const noCurve = (() => {
+  try { return JSON.parse(readFileSync(new URL('../../game.profile.json', import.meta.url), 'utf8')).scriptedProgression === false; } catch { return false; }
+})();
+
+test('scripted difficulty curve passes the D-gates (knowledge-base/16; full report: npm run playtest)', { skip: noCurve && 'game.profile.json: scriptedProgression is false' }, async () => {
   const { execFileSync } = await import('node:child_process');
   // tools/playtest.mjs exits 1 when any check fails; 8 seeds keep the test fast
   assert.doesNotThrow(() => execFileSync(process.execPath, ['tools/playtest.mjs', '8'], { cwd: new URL('..', import.meta.url), stdio: 'pipe' }));

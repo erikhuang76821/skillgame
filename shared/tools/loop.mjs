@@ -36,6 +36,18 @@ const idMatch = (id, pats) => pats.some(p => (p.endsWith('*') ? id.startsWith(p.
 
 export const loadNodes = root => readJson(join(root, NODES_FILE));
 
+/** <Game>/game.profile.json as written, or {} when it is missing or unreadable (validation is context.mjs's job). */
+export function readProfile(root, game) {
+  try { return readJson(join(root, game, 'game.profile.json')) ?? {}; } catch { return {}; }
+}
+/**
+ * The paths a node produces for this game: `produces` plus each `producesWhen` group whose profile flag is not false.
+ * An unanswered flag keeps the group (the gate is blocked by the pending rules anyway); only an explicit false drops it.
+ */
+export function nodeProduces(node, profile = {}) {
+  return [...list(node.produces), ...Object.entries(node.producesWhen ?? {}).flatMap(([flag, paths]) => (profile?.[flag] === false ? [] : list(paths)))];
+}
+
 /** Topological order (ties keep file order). Throws on a cycle. */
 export function topoOrder(nodes) {
   const out = [], seen = new Set(), busy = new Set(), byId = new Map(nodes.map(n => [n.id, n]));
@@ -70,7 +82,8 @@ export function checkNodes(doc, { ruleIds, testIds, vocab }) {
     if (!n.name) errors.push(`${at}: 缺 name`);
     if (!(Number.isInteger(n.maxIterations) && n.maxIterations >= 1)) errors.push(`${at}: maxIterations 要是 ≥ 1 的整數`);
     if (typeof n.budget?.kbTokens !== 'number') errors.push(`${at}: 缺 budget.kbTokens`);
-    for (const p of [...list(n.produces), ...list(n.requires)]) if (p.includes('..') || p.startsWith('/')) errors.push(`${at}: 路徑「${p}」要相對於 <Game>/`);
+    for (const k of Object.keys(n.producesWhen ?? {})) if (!PROFILE_FLAGS.includes(k)) errors.push(`${at}: producesWhen 的「${k}」不是 profile 旗標（${PROFILE_FLAGS.join('、')}）`);
+    for (const p of [...nodeProduces(n), ...list(n.requires)]) if (typeof p !== 'string' || p.includes('..') || p.startsWith('/')) errors.push(`${at}: 路徑「${p}」要相對於 <Game>/`);
     for (const p of list(n.gate?.must)) if (!ruleIds.some(r => idMatch(r, [p]))) errors.push(`${at}: gate 引用不存在的規則 ${p}`);
     for (const t of list(n.gate?.tests)) if (!testIds.includes(t)) errors.push(`${at}: gate.tests 引用不存在的測試卡 ${t}`);
     for (const sel of list(n.pull?.kb)) for (const [k, vs] of Object.entries(sel)) {
@@ -111,10 +124,10 @@ export function hashPaths(base, paths) {
   }
   return h.digest('hex').slice(0, 16);
 }
-export function nodeHashes(root, game, nodes, node) {
+export function nodeHashes(root, game, nodes, node, profile = readProfile(root, game)) {
   const byId = new Map(nodes.map(n => [n.id, n])), base = join(root, game);
-  const inputs = [...upstream(nodes, node.id)].flatMap(id => list(byId.get(id).produces)).concat(list(node.requires));
-  return { inputHash: hashPaths(base, inputs), outputHash: hashPaths(base, list(node.produces)) };
+  const inputs = [...upstream(nodes, node.id)].flatMap(id => nodeProduces(byId.get(id), profile)).concat(list(node.requires));
+  return { inputHash: hashPaths(base, inputs), outputHash: hashPaths(base, nodeProduces(node, profile)) };
 }
 
 // ---------- events ----------
@@ -179,7 +192,8 @@ export function deriveStatus(nodes, events, hashes) {
 
 export function gameStatus(root, game, doc = loadNodes(root)) {
   const nodes = doc.nodes;
-  const hashes = Object.fromEntries(nodes.map(n => [n.id, nodeHashes(root, game, nodes, n)]));
+  const profile = readProfile(root, game);
+  const hashes = Object.fromEntries(nodes.map(n => [n.id, nodeHashes(root, game, nodes, n, profile)]));
   const st = deriveStatus(nodes, readEvents(root, game), hashes);
   const cache = join(root, game, 'loop');
   mkdirSync(cache, { recursive: true });
@@ -198,11 +212,11 @@ function defaultRunner(t, root) {
   const tail = `${r.stdout ?? ''}${r.stderr ?? ''}`.trim().split('\n').slice(-3).join(' ⏎ ').slice(0, 300);
   return { ok: r.status === 0, detail: r.status === 0 ? '' : `exit ${r.status}：${tail}` };
 }
-async function defaultAuditor(root, game) { return (await import('./game-audit.mjs')).auditGame(root, game); }
+async function defaultAuditor(root, game, opts) { return (await import('./game-audit.mjs')).auditGame(root, game, opts); }
 
 /**
  * Run one node's gate. Returns { result: pass|fail|blocked, needsApproval, rules, tests, missing }.
- * opts.runner(test, root) -> { ok, detail } and opts.auditor(root, game) -> audit results are injectable for tests;
+ * opts.runner(test, root) -> { ok, detail } and opts.auditor(root, game, { profile }) -> audit results are injectable for tests;
  * opts.profile / opts.resolver go to buildContext, opts.pack replaces it altogether.
  */
 export async function runGate(root, game, node, opts = {}) {
@@ -211,7 +225,7 @@ export async function runGate(root, game, node, opts = {}) {
   if (!pack) throw new Error(errors.join('\n'));
   // Gate rules the profile cannot answer yet: must-level ones block the gate, should-level ones only show up as rows.
   const pendingGate = (pack.pending ?? []).filter(p => p.gate);
-  const missing = list(node.produces).filter(p => !existsSync(join(root, game, p)));
+  const missing = nodeProduces(node, opts.profile ?? readProfile(root, game)).filter(p => !existsSync(join(root, game, p)));
   const gateRules = pack.rules.filter(r => r.gate);
   const registry = opts.registry ?? readJson(join(root, 'knowledge-base', 'index', 'tests.json')).tests;
   const extra = list(node.gate?.tests).filter(id => !pack.tests.some(t => t.id === id)).map(id => {
@@ -228,7 +242,7 @@ export async function runGate(root, game, node, opts = {}) {
     if (!t.runnable) { tests.push({ ...row, status: 'blocked', detail: `缺 ${t.missing.join('、')}` }); continue; }
     if (stopped && t.cost !== 'cheap') { tests.push({ ...row, status: 'not-run', detail: '前一個 medium / heavy 測試失敗，未跑（不算通過）' }); continue; }
     if (t.kind === 'audit') {
-      audit = await auditor(root, game);
+      audit = await auditor(root, game, { profile: opts.profile });   // the audit judges the same profile as the context and the produces check
       tests.push({ ...row, status: 'ran', detail: `${audit.length} 項檢查` });
       continue;
     }
@@ -316,7 +330,8 @@ export function mustReadTable(root, doc = loadNodes(root)) {
     for (const c of pack.cards) pages.set(c.path, (pages.get(c.path) ?? 0) + 1);
     const read = [...pages].map(([p, k]) => `[${p.replace(/^knowledge-base\//, '').replace(/\.md$/, '')}](../../../../${p})（${k}）`).join('、') || '—';
     const gate = [...list(n.gate?.must).map(x => (x === '*' ? '全部有效規則' : `\`${x}\``)), ...list(n.gate?.tests).map(x => `\`${x}\``)];
-    rows.push(`| **${n.id}** ${n.name}${n.checkpoint ? ' ✋' : ''} | ${read} | ${list(n.produces).map(p => `\`${p}\``).join('、') || '—'} | ${gate.join('、') || '—'} |`);
+    const produced = [...list(n.produces).map(p => `\`${p}\``), ...Object.entries(n.producesWhen ?? {}).flatMap(([flag, paths]) => list(paths).map(p => `\`${p}\`（\`${flag}\` 時）`))];
+    rows.push(`| **${n.id}** ${n.name}${n.checkpoint ? ' ✋' : ''} | ${read} | ${produced.join('、') || '—'} | ${gate.join('、') || '—'} |`);
   }
   return `${BEGIN}\n${rows.join('\n')}\n\n✋ = 人工檢查點。括號內是取到的段落數。本作實際要讀的段落（依 profile、含全文）：\`node shared/tools/loop.mjs next <Game>\`。\n${END}`;
 }
@@ -375,7 +390,7 @@ async function main() {
       for (const e of readEvents(root, game).filter(e => e.node === node.id).slice(-3)) console.log(`- ${game}/${LOOP_DIR}/${e.file}：${e.result}，${e.route?.reason ?? ''}`);
       process.exit(3);
     }
-    console.log(`只改：${list(node.produces).map(p => `\`${p}\``).join('、') || '（不改檔，只驗證）'}${node.checkpoint ? `；人工檢查點：${node.checkpoint}` : ''}\n`);
+    console.log(`只改：${nodeProduces(node, readProfile(root, game)).map(p => `\`${p}\``).join('、') || '（不改檔，只驗證）'}${node.checkpoint ? `；人工檢查點：${node.checkpoint}` : ''}\n`);
     const { errors, warnings, pack } = buildContext(root, game, node);
     process.stdout.write(renderPack(pack, errors, warnings));
   } else if (cmd === 'gate') {
