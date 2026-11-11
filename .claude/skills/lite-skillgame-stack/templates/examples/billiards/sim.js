@@ -95,4 +95,4 @@ export const score = sim => sim.score;
 export const scoreBreakdown = sim => ({ potted: sim.potted, fouls: sim.fouls, shots: sim.shots });
 export const stateHash = sim => createHasher(sim.tick).mixAll([sim.score, sim.shots, sim.potted, sim.fouls, ...worldState(sim.world)]).value();
 
-export const GAME = Object.freeze({ id: 'example-billiards', version: 2, maxTicks: MATCH_TICKS, createSim, step, phase, choose, score, stateHash, scoreBreakdown });
+export const GAME = Object.freeze({ id: 'example-billiards', version: 2, maxTicks: MATCH_TICKS, maxChoices: SHOTS, createSim, step, phase, choose, score, stateHash, scoreBreakdown });
