@@ -94,6 +94,7 @@ description: 輕量化 HTML5 單機 Skill Game 技術規範（包體 5～10 MB�
 - **品類配方**（`knowledge-base/12`）：`core/timing.js`（子 tick 判定、種子譜面、capped combo）、`core/physics.js`（確定性圓形物理、球袋、防穿透），範例 `examples/rhythm`、`examples/billiards`（各含三級 bot）。
 - **輸入公平**（`knowledge-base/13`）：`core/input.js` 的 `InputClock` / `TapQueue` 以事件時間戳決定 tick 與子 tick 相位（幀率無關），`calibrate()` 延遲校正寫進 `rec.meta`；範本 `main.js` 已接上。
 - **音效**（`knowledge-base/14`）：`src/audio/sfx.js` Web Audio 合成配方，首次手勢 `unlock()`。
+- **技巧證據（結果表）**：`tools/strategies.mjs`（強、隨機、簡單三種角色的策略，各寫明能看到什麼與能力限制）+ `node tools/skill-evidence.mjs`，同題配對的勝平敗、精確符號檢定、簡單策略的接近程度；適用於由種子抽題、每題一局、分數越高越好的遊戲（回合制與即時制皆可），回合制範例 `examples/ends`。量法見 repo `knowledge-base/decisions/2026-11-11-skill-evidence.md` §9。規則尚未接上關卡（泛用化步驟 4b–4d）。
 - **技巧主導驗證**：`tools/bots.mjs`（≥ 3 級）+ `node tools/skill-dominance.mjs 30`，門檻技巧佔比 ≥ 70%、最強 vs 次強 ≥ 70%，未過 exit 1。
 - **難度曲線**（repo `knowledge-base/16_difficulty-curve.md`）：曲線用固定腳本設計（難度級每級只加一件事、上升鋸齒、調息、段末頭目），種子只換同級內容；以人性化試玩 bot 逐單位驗收 D1–D8（門檻見 rules.json `RULE-CURVE-*`）。範本已附 `tools/humanBots.mjs`、`tools/playtest.mjs`（示範遊戲的單位與 DI，每款改寫）與通用的 `tools/lib/curve.mjs`；`npm run playtest` 產生 `docs/playtest_report.md`。節奏類完整範例（含圖表）：`TwinStrike/game/tools/playtest.mjs`。
 

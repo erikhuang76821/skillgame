@@ -9,6 +9,7 @@
     "preview": "vite preview",
     "size": "node scripts/size-check.mjs",
     "test": "node --test test/*.test.mjs",
+    "evidence": "node tools/skill-evidence.mjs 30 --out ../docs/skill_evidence_report.md",
     "playtest": "node tools/playtest.mjs 30 --out ../docs/playtest_report.md",
     "audit": "node ../../shared/tools/game-audit.mjs"
   },
