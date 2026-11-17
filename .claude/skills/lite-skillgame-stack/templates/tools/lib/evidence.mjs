@@ -15,8 +15,9 @@
 // What it does NOT decide: how close a simple strategy may come before the game is too shallow. That is reported
 // (score ratio, share of questions the simple strategy did not lose) and judged by a person.
 //
-// No thresholds live here. The caller passes { alpha, minQuestions } (from knowledge-base/index/rules.json);
-// without them the report carries measurements only and no verdict.
+// No thresholds live here. The caller passes { alpha, minQuestions }; the command line (tools/skill-evidence.mjs)
+// takes them from RULE-SKILL-EVIDENCE in knowledge-base/index/rules.json. Without them the report carries
+// measurements only and no verdict.
 import { createHash } from 'node:crypto';
 import { hash32, playMatch } from '../../src/sim/core/index.js';
 
@@ -132,13 +133,13 @@ function pairStats(rows, a, b) {
  * @param game        GameDef; optional game.completed(sim) -> boolean adds a completion column
  * @param strategies  { name: { role, sees, limits, policy } } (see checkStrategies)
  * @param opts        { n, seedBase, mode: 'tuning'|'confirm', generation, thresholds: { alpha, minQuestions } | null,
- *                      strategyHash, hashedFiles, command }
+ *                      thresholdSource (rule id shown in the report), strategyHash, hashedFiles, command }
  * Everything is validated before the first match is played. Every match is played twice: throws on invalid input,
  * on a strategy that fails or gives a different result the second time, and on scores that are not finite numbers
  * or too large to average.
  */
 export function runEvidence(game, strategies, opts = {}) {
-  const { n = 30, seedBase = 2026, mode = 'tuning', generation = 1, thresholds = null, strategyHash = null, hashedFiles = null, command = null } = opts;
+  const { n = 30, seedBase = 2026, mode = 'tuning', generation = 1, thresholds = null, thresholdSource = null, strategyHash = null, hashedFiles = null, command = null } = opts;
   const errors = checkStrategies(strategies, game);
   if (errors.length) throw new Error(`evidence: 策略定義不完整\n- ${errors.join('\n- ')}`);
   const bad = checkThresholds(thresholds);
@@ -185,7 +186,7 @@ export function runEvidence(game, strategies, opts = {}) {
     verdict.pass = verdict.beatsRandom && verdict.beatsEverySimple;
   }
   return { game: game.id, version: game.version, n, seedBase, mode, generation: mode === 'confirm' ? generation : null, sampling: 'seeded',
-    strong, strategyHash, hashedFiles, command, thresholds: thresholds ? { alpha: thresholds.alpha, minQuestions: thresholds.minQuestions } : null,
+    strong, strategyHash, hashedFiles, command, thresholdSource: thresholds ? thresholdSource : null, thresholds: thresholds ? { alpha: thresholds.alpha, minQuestions: thresholds.minQuestions } : null,
     summary, pairs, verdict, resultHash, rows };
 }
 
@@ -255,7 +256,7 @@ export function toMarkdown(r) {
   const batch = r.mode === 'confirm' ? `確認用第 ${r.generation} 批` : '調校用（不能當確認證據）';
   const mark = ok => (ok ? '通過' : '未通過');
   const verdictLine = !r.verdict ? '- 自動統計判定：**未判定**（沒有提供門檻；本報告只有量測值）'
-    : `- 自動統計判定（呼叫端傳入的門檻：顯著水準 ${r.thresholds.alpha}、至少 ${r.thresholds.minQuestions} 題）：排除純運氣 → **${mark(r.verdict.beatsRandom)}**；勝過每一條簡單策略 → **${mark(r.verdict.beatsEverySimple)}**${r.verdict.enoughQuestions ? '' : '（題數不足）'}。不含「簡單策略的接近程度」，那一項由人判定`;
+    : `- 自動統計判定（${r.thresholdSource ? `門檻取自 ${r.thresholdSource}` : '呼叫端傳入的門檻'}：顯著水準 ${r.thresholds.alpha}、至少 ${r.thresholds.minQuestions} 題）：排除純運氣 → **${mark(r.verdict.beatsRandom)}**；勝過每一條簡單策略 → **${mark(r.verdict.beatsEverySimple)}**${r.verdict.enoughQuestions ? '' : '（題數不足）'}。不含「簡單策略的接近程度」，那一項由人判定`;
   return [
     `# Skill Evidence Report — ${r.game} v${r.version}（自動產生）`,
     '',

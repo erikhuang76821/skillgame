@@ -3,7 +3,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -14,7 +14,7 @@ import { GAME as DEMO } from '../src/sim/sim.js';
 import { STRATEGIES as DEMO_STRATEGIES } from '../tools/strategies.mjs';
 import { checkLedger, checkStrategies, questions, recordConfirmation, runEvidence, signTest, toMarkdown } from '../tools/lib/evidence.mjs';
 
-// Test fixture only: the real values come from knowledge-base/index/rules.json through the caller.
+// Test fixture for the library: the command line takes the real values from RULE-SKILL-EVIDENCE (see the CLI tests).
 const T = { alpha: 0.05, minQuestions: 30 };
 const close = (a, b, eps = 1e-12) => assert.ok(Math.abs(a - b) <= eps, `${a} vs ${b}`);
 
@@ -291,25 +291,39 @@ test('report wording: thresholds are the caller\'s, the verdict is the automatic
 const CLI = fileURLToPath(new URL('../tools/skill-evidence.mjs', import.meta.url));
 const cli = (args, cwd) => spawnSync(process.execPath, [CLI, ...args], { encoding: 'utf8', cwd });
 
-test('CLI: misuse exits 2 without running; a tuning run exits 0', () => {
-  for (const args of [['0'], ['1.5'], ['30', '40'], ['--bogus'], ['--alpha', '0.05'], ['--alpha', '0', '--min-questions', '1'],
-    ['--alpha', 'abc', '--min-questions', '1'], ['--min-questions', '0', '--alpha', '0.05'], ['--out'], ['--ledger', '--confirm'],
+test('CLI: misuse exits 2 without running; thresholds come from the rules; a tuning run exits 0', async () => {
+  for (const args of [['0'], ['1.5'], ['30', '40'], ['--bogus'], ['--alpha', '0.5'], ['--min-questions', '1'], ['--out'], ['--ledger', '--confirm'],
     ['--generation', '2'], ['--confirm', '30'], ['5', '--out', join(tmpdir(), 'no-such-dir-evidence', 'x', 'report.md')]]) {
     const r = cli(args);
     assert.equal(r.status, 2, `${args.join(' ')} -> ${r.status}\n${r.stderr}`);
     assert.match(r.stderr, /✘/); assert.equal(r.stdout, '', args.join(' '));
   }
-  const ok = cli(['5']);
+  // Thresholds come from the rules (never the command line); with no count, the rule's minimum is the batch size.
+  const { loadRules } = await import(new URL('../../../../../shared/tools/rules.mjs', import.meta.url).href);
+  const rules = loadRules({ from: fileURLToPath(import.meta.url) });
+  const alpha = rules.value('RULE-SKILL-EVIDENCE', 'alpha'), min = rules.value('RULE-SKILL-EVIDENCE', 'minQuestions');
+  const ok = cli([]);
   assert.equal(ok.status, 0, ok.stderr);
-  assert.match(ok.stdout, /題目：5 題[\s\S]*調校用（不能當確認證據）[\s\S]*自動統計判定：\*\*未判定\*\*/);
-  const tooFew = cli(['5', '--alpha', '0.05', '--min-questions', '30']);
+  assert.ok(ok.stdout.includes(`題目：${min} 題`) && ok.stdout.includes(`門檻取自 RULE-SKILL-EVIDENCE：顯著水準 ${alpha}、至少 ${min} 題`), ok.stdout.slice(0, 600));
+  assert.match(ok.stdout, /調校用（不能當確認證據）[\s\S]*排除純運氣 → \*\*通過\*\*/);
+  const tooFew = cli([String(min - 1)]);
   assert.equal(tooFew.status, 1, 'a failed verdict is exit 1, not misuse');
+  assert.match(tooFew.stdout, /題數不足/);
 });
 
 test('CLI: the confirmation ledger is frozen, found by its path from any working directory, and never overwritten when damaged', () => {
   const dir = mkdtempSync(join(tmpdir(), 'evidence-'));
   try {
     const ledger = join(dir, 'ledger.json'), json = join(dir, 'table.json');
+    // The gate's command never opens a batch: no ledger, an empty one, or JSON null are all refused, and nothing is written.
+    for (const content of [null, '[]', 'null']) {
+      if (content !== null) writeFileSync(ledger, content, 'utf8'); else rmSync(ledger, { force: true });
+      const gate = cli(['--confirm', '--require-recorded', '--ledger', ledger]);
+      assert.equal(gate.status, 2, `${content}: ${gate.stderr}`); assert.match(gate.stderr, /第一次確認要在策略凍結後由人下/);
+      assert.equal(existsSync(ledger) ? readFileSync(ledger, 'utf8') : null, content);
+    }
+    assert.equal(cli(['--require-recorded']).status, 2, 'only with --confirm');
+    rmSync(ledger, { force: true });
     const first = cli(['30', '--confirm', '--ledger', ledger, '--json', json]);
     assert.equal(first.status, 0, first.stderr);
     const entries = JSON.parse(readFileSync(ledger, 'utf8'));
@@ -326,14 +340,26 @@ test('CLI: the confirmation ledger is frozen, found by its path from any working
     assert.equal(again.status, 0, again.stderr);
     assert.deepEqual(JSON.parse(readFileSync(ledger, 'utf8')), entries);
 
-    const redraw = cli(['40', '--confirm', '--ledger', ledger]);
+    // A refused run writes nothing at all: not the ledger, and not the report it was asked to write.
+    const out = join(dir, 'report.md');
+    writeFileSync(out, 'kept', 'utf8');
+    const redraw = cli(['40', '--confirm', '--ledger', ledger, '--out', out, '--json', join(dir, 'refused.json')]);
     assert.equal(redraw.status, 2); assert.match(redraw.stderr, /n 與紀錄不同[\s\S]*第 2 批/);
+    assert.equal(readFileSync(out, 'utf8'), 'kept');
+    assert.equal(existsSync(join(dir, 'refused.json')), false);
     const skip = cli(['30', '--confirm', '--generation', '3', '--ledger', ledger]);
     assert.equal(skip.status, 2); assert.match(skip.stderr, /下一批是第 2 批/);
     assert.deepEqual(JSON.parse(readFileSync(ledger, 'utf8')), entries, 'refused runs write nothing');
     const next = cli(['40', '--confirm', '--generation', '2', '--ledger', ledger]);
     assert.equal(next.status, 0, next.stderr);
     assert.deepEqual(JSON.parse(readFileSync(ledger, 'utf8')).map(e => [e.generation, e.n]), [[1, 30], [2, 40]]);
+    // With no count, a re-run keeps the recorded batch's count (40 here, not the rule's minimum): this is what the gate runs.
+    const notYet = cli(['--confirm', '--require-recorded', '--generation', '3', '--ledger', ledger]);
+    assert.equal(notYet.status, 2); assert.match(notYet.stderr, /第 3 批還沒有紀錄/);
+    const rerun = cli(['--confirm', '--require-recorded', '--ledger', ledger, '--out', out]);
+    assert.equal(rerun.status, 0, rerun.stderr);
+    assert.match(readFileSync(out, 'utf8'), /題目：40 題[\s\S]*確認用第 2 批/);
+    assert.equal(JSON.parse(readFileSync(ledger, 'utf8')).length, 2);
 
     for (const damaged of ['{ not json', JSON.stringify({ entries })]) {
       writeFileSync(ledger, damaged, 'utf8');

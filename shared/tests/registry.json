@@ -55,6 +55,31 @@
       "note": "bots.mjs 要匯出 BASELINES（一句話規則的固定策略）；沒有就失敗＝未驗證。同一份報告寫在 skill_dominance_report.md 的「基準策略」一節"
     },
     {
+      "id": "TEST-SKILL-EVIDENCE",
+      "kind": "script",
+      "implements": ["RULE-SKILL-EVIDENCE", "RULE-SKILL-NOT-LUCK", "RULE-SKILL-BEATS-SIMPLE"],
+      "facets": { "topic": ["fairness"] },
+      "run": "node tools/skill-evidence.mjs --confirm --require-recorded --out ../docs/skill_evidence_report.md",
+      "cwd": "<Game>/game",
+      "source": ".claude/skills/lite-skillgame-stack/templates/tools/skill-evidence.mjs",
+      "needs": ["game/tools/strategies.mjs", "game/tools/skill-evidence.mjs", "game/tools/lib/evidence.mjs", "docs/skill_evidence_ledger.json"],
+      "produces": "docs/skill_evidence_report.md",
+      "cost": "medium",
+      "fresh": "GAME.version",
+      "note": "只重跑已記錄的最新一批確認題目（題數沿用紀錄）。紀錄檔是前提，而且至少要有一批（--require-recorded：沒有紀錄或紀錄是空的就以結束碼 2 拒絕）；第一次確認要人在策略凍結後自己下 npm run evidence:confirm，關卡不會自動開批。策略、sim、量法程式或門檻改過後，這個指令以結束碼 2 拒絕並指出下一批（關卡顯示無法執行，不算未過）；換批同樣要人自己加 --generation <n>。一張卡對應三條規則，判定未過時三條一起記未過，細目看報告。調校時不要加 --confirm"
+    },
+    {
+      "id": "TEST-SKILL-CLOSENESS-REVIEW",
+      "kind": "review",
+      "implements": ["RULE-SKILL-CLOSENESS"],
+      "facets": { "topic": ["fairness"] },
+      "cwd": "<Game>",
+      "source": null,
+      "needs": ["docs/skill_evidence_report.md"],
+      "cost": "human",
+      "fresh": null
+    },
+    {
       "id": "TEST-CURVE",
       "kind": "sim-playtest",
       "implements": ["RULE-CURVE-TREND", "RULE-CURVE-LINEARITY", "RULE-CURVE-PEAKS", "RULE-CURVE-CLIFF", "RULE-CURVE-FLOW", "RULE-CURVE-BEATGRID", "RULE-CURVE-PHRASE"],

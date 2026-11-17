@@ -153,6 +153,7 @@ GDD 說「為什麼」，本規格說「sim 怎麼算」。每一節都對應到
 | 上傳後 `verify` 通過；竄改分數 / 版本不通過 | — |
 | 挑戰內容只依種子（換玩家行為，§3 序列不變） | 相同 |
 | `node tools/skill-dominance.mjs 30` | 技巧佔比與最強 vs 次強過門檻（`RULE-SKILL-DOMINANCE`，數值見 rules.json） |
+| `npm run evidence:confirm` | 強策略在確認用題目上勝過隨機策略與每一條簡單策略（`RULE-SKILL-EVIDENCE`、`RULE-SKILL-NOT-LUCK`、`RULE-SKILL-BEATS-SIMPLE`，數值見 rules.json）；策略寫在 `tools/strategies.mjs`，各寫明能看到什麼與能力限制。接近程度由人判定（`RULE-SKILL-CLOSENESS`） |
 | 滿局重播耗時 | < 500 ms（伺服器預算） |
 | `npm run playtest`（`game.profile.json` 的 `scriptedProgression` 為 false 的遊戲不適用） | 難度曲線 D1–D8 全過（RULE-CURVE-*） |
 

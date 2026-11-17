@@ -102,6 +102,69 @@
       "reviewedAt": "2026-11-10"
     },
     {
+      "id": "RULE-SKILL-EVIDENCE",
+      "category": "fairness",
+      "level": "must",
+      "scope": { "selector": { "kind": "game-build" } },
+      "constraints": [
+        { "name": "alpha", "op": "<=", "value": 0.05, "unit": "probability", "overridePolicy": "forbid" },
+        { "name": "minQuestions", "op": ">=", "value": 30, "unit": "questions", "overridePolicy": "forbid" },
+        { "name": "complete", "check": "tools/strategies.mjs 恰好一個強策略、一個隨機策略、至少一條簡單策略，各寫明能看到什麼與能力限制；確認批次的結果已寫入 docs/skill_evidence_ledger.json，且對應目前的策略、sim、量法程式與門檻", "overridePolicy": "forbid" }
+      ],
+      "measurement": "node tools/skill-evidence.mjs --confirm：同一批由種子抽出的題目上，每個策略每題一個確定的結果；確認批次與調校批次分開，用過的批次只能原樣重跑。alpha 是符號檢定的顯著水準，minQuestions 是一批最少題數（要跑更多題在指令列給題數，不需要覆寫）；RULE-SKILL-NOT-LUCK 與 RULE-SKILL-BEATS-SIMPLE 用同一組數字。前提：每題一局、分數越高越好（名次制、低分制、多人賽尚未支援）",
+      "enforcement": { "type": "script", "ref": "<Game>/game/tools/lib/evidence.mjs（範本 templates/tools/lib/evidence.mjs）" },
+      "whyRef": "knowledge-base/01_skill-integrity.md §4",
+      "howRef": "knowledge-base/decisions/2026-11-11-skill-evidence.md §9",
+      "source": "knowledge-base/decisions/2026-11-11-skill-evidence.md（2026-11-11 定案）。alpha 與 minQuestions 是統計慣例，尚未跨玩法校準；有多款不同玩法的實測後再檢討",
+      "reviewedAt": "2026-11-11"
+    },
+    {
+      "id": "RULE-SKILL-NOT-LUCK",
+      "category": "fairness",
+      "level": "must",
+      "scope": { "selector": { "kind": "game-build" } },
+      "constraints": [
+        { "name": "beatsRandom", "check": "強策略對隨機策略：分出勝負的題目上，精確單側符號檢定的 p 不大於 RULE-SKILL-EVIDENCE 的 alpha，題數不少於其 minQuestions。程式只認策略檔標為 random 的那一個；它是否真的在合法而且會推進遊戲的動作裡均勻抽，由 RULE-SKILL-CLOSENESS 的人工審查核對", "overridePolicy": "forbid" }
+      ],
+      "measurement": "node tools/skill-evidence.mjs --confirm 的同題配對結果；平手不進檢定，但平手率一律報告",
+      "enforcement": { "type": "script", "ref": "<Game>/game/tools/lib/evidence.mjs（範本 templates/tools/lib/evidence.mjs）" },
+      "whyRef": "knowledge-base/01_skill-integrity.md §4",
+      "howRef": "knowledge-base/decisions/2026-11-11-skill-evidence.md §9",
+      "source": "knowledge-base/decisions/2026-11-11-skill-evidence.md（2026-11-11 定案）",
+      "reviewedAt": "2026-11-11"
+    },
+    {
+      "id": "RULE-SKILL-BEATS-SIMPLE",
+      "category": "fairness",
+      "level": "must",
+      "scope": { "selector": { "kind": "game-build" } },
+      "constraints": [
+        { "name": "beatsEverySimple", "check": "強策略對每一條事先凍結的簡單策略：分出勝負的題目上，精確單側符號檢定的 p 不大於 RULE-SKILL-EVIDENCE 的 alpha，題數不少於其 minQuestions。每一條都要成立。程式只認策略檔標為 simple 的那幾條；它們是否事先選定、是否真的不需要技巧，由 RULE-SKILL-CLOSENESS 的人工審查核對", "overridePolicy": "forbid" }
+      ],
+      "measurement": "node tools/skill-evidence.mjs --confirm 的同題配對結果；簡單策略是新手聽一句話就能照做、不需要精準時機或瞄準的規則",
+      "enforcement": { "type": "script", "ref": "<Game>/game/tools/lib/evidence.mjs（範本 templates/tools/lib/evidence.mjs）" },
+      "whyRef": "knowledge-base/01_skill-integrity.md §4",
+      "howRef": "knowledge-base/decisions/2026-11-11-skill-evidence.md §9",
+      "source": "knowledge-base/decisions/2026-11-11-skill-evidence.md（2026-11-11 定案）",
+      "reviewedAt": "2026-11-11"
+    },
+    {
+      "id": "RULE-SKILL-CLOSENESS",
+      "category": "fairness",
+      "level": "must",
+      "scope": { "selector": { "kind": "game-build" } },
+      "constraints": [
+        { "name": "judged", "check": "報告列出每條簡單策略拿到強策略多少分數、多少題沒輸、平手率；由人判定「不靠判斷也能玩到接近強策略」是否可接受，核准或退回都要寫理由。沒有通過線", "overridePolicy": "forbid" },
+        { "name": "strategiesReviewed", "check": "程式查不到的三件事由人核對：強策略沒有看到玩家看不到的資訊；隨機策略在合法而且會推進遊戲的動作裡均勻抽（動作集合與排除理由有寫明）；簡單策略是新手聽一句話就能照做、不需要精準時機或瞄準的規則，而且是看結果之前就選定的", "overridePolicy": "forbid" }
+      ],
+      "measurement": "docs/skill_evidence_report.md 的「簡單策略的接近程度」一節",
+      "enforcement": { "type": "review", "checklist": "核准人看過確認批次的報告、docs/skill_evidence_ledger.json（用了幾批、各批結果）與 tools/strategies.mjs 的策略定義，寫下接受或退回的理由" },
+      "whyRef": "knowledge-base/01_skill-integrity.md §4",
+      "howRef": "knowledge-base/decisions/2026-11-11-skill-evidence.md §4",
+      "source": "knowledge-base/decisions/2026-11-11-skill-evidence.md（2026-11-11 定案）。檢定通過不代表遊戲夠深：大量平手、或簡單策略分數很接近時檢定仍會過，所以另由人判定",
+      "reviewedAt": "2026-11-11"
+    },
+    {
       "id": "RULE-CURVE-TREND",
       "category": "balance",
       "level": "must",

@@ -207,16 +207,37 @@ export function planGate(tests) {
   return [...tests].sort((a, b) => COST_ORDER.indexOf(a.cost) - COST_ORDER.indexOf(b.cost) || a.id.localeCompare(b.id));
 }
 
-function defaultRunner(t, root) {
-  const r = spawnSync(t.run, { cwd: join(root, t.cwd === '.' ? '' : t.cwd), shell: true, encoding: 'utf8', maxBuffer: 64 << 20 });
+/**
+ * How the gate reads a finished test process (r = spawnSync result). Convention for test cards:
+ *   0 = pass; 2 = the test could not run (misuse, a refused run, a file it cannot read); anything else = the check
+ *   ran and failed. "Could not run" blocks the gate but is not a failed attempt.
+ * A process that never started (spawn error), was killed by a signal, or that the shell could not find (127 POSIX,
+ * 9009 Windows cmd) also could not run. Limit: some shells report a missing command as 1, which reads as a failure.
+ * A card that returns 1 when its input data is missing (instead of 2) is read as a failure too: the convention holds
+ * only for cards that follow it (see knowledge-base/decisions/2026-11-11-generality-backlog.md §10, step 4b).
+ */
+export function classifyRun(r) {
   const tail = `${r.stdout ?? ''}${r.stderr ?? ''}`.trim().split('\n').slice(-3).join(' ⏎ ').slice(0, 300);
-  return { ok: r.status === 0, detail: r.status === 0 ? '' : `exit ${r.status}：${tail}` };
+  if (r.error || r.status === null || r.status === undefined) {
+    const why = r.error ? r.error.message : r.signal ? `被訊號 ${r.signal} 終止` : '沒有結束碼';
+    return { ok: false, blocked: true, detail: `無法啟動（不算未過）：${why}${tail ? ` ⏎ ${tail}` : ''}` };
+  }
+  if (r.status === 0) return { ok: true, detail: '' };
+  if (r.status === 2 || r.status === 127 || r.status === 9009) {
+    const what = r.status === 2 ? '無法執行' : '找不到指令';
+    return { ok: false, blocked: true, detail: `exit ${r.status}（${what}，不算未過）：${tail}` };
+  }
+  return { ok: false, detail: `exit ${r.status}：${tail}` };
+}
+
+function defaultRunner(t, root) {
+  return classifyRun(spawnSync(t.run, { cwd: join(root, t.cwd === '.' ? '' : t.cwd), shell: true, encoding: 'utf8', maxBuffer: 64 << 20 }));
 }
 async function defaultAuditor(root, game, opts) { return (await import('./game-audit.mjs')).auditGame(root, game, opts); }
 
 /**
  * Run one node's gate. Returns { result: pass|fail|blocked, needsApproval, rules, tests, missing }.
- * opts.runner(test, root) -> { ok, detail } and opts.auditor(root, game, { profile }) -> audit results are injectable for tests;
+ * opts.runner(test, root) -> { ok, detail, blocked? } and opts.auditor(root, game, { profile }) -> audit results are injectable for tests;
  * opts.profile / opts.resolver go to buildContext, opts.pack replaces it altogether.
  */
 export async function runGate(root, game, node, opts = {}) {
@@ -247,6 +268,7 @@ export async function runGate(root, game, node, opts = {}) {
       continue;
     }
     const r = runner({ ...t, run: t.run.replace(/<Game>/g, game) }, root);
+    if (r.blocked) { tests.push({ ...row, status: 'blocked', detail: r.detail }); continue; }   // could not run: not a failure, nothing to stop for
     tests.push({ ...row, status: r.ok ? 'pass' : 'fail', detail: r.detail });
     // Only a failure that can fail the gate stops the rest: a test for a must rule or a node gate test (not a should-only one).
     const blocking = list(node.gate?.tests).includes(t.id) || t.implements.some(id => gateRules.some(g => g.id === id && g.level === 'must'));

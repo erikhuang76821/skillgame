@@ -435,7 +435,7 @@
    "page": "KB-skill-integrity",
    "path": "knowledge-base/01_skill-integrity.md",
    "line": 49,
-   "end": 70,
+   "end": 72,
    "heading": [
     "4. 證據：Skill Dominance 測試（上線門檻）"
    ],
@@ -450,18 +450,22 @@
    },
    "rules": [
     "RULE-SKILL-DOMINANCE",
-    "RULE-SKILL-BASELINE"
+    "RULE-SKILL-BASELINE",
+    "RULE-SKILL-EVIDENCE",
+    "RULE-SKILL-NOT-LUCK",
+    "RULE-SKILL-BEATS-SIMPLE",
+    "RULE-SKILL-CLOSENESS"
    ],
    "reviewedAt": "2026-10-21",
-   "tokens": 660,
-   "hash": "sha256:7d0f8c7d9eff76ad"
+   "tokens": 773,
+   "hash": "sha256:4481d33534102e16"
   },
   {
    "id": "KB-skill-integrity.match-verify",
    "page": "KB-skill-integrity",
    "path": "knowledge-base/01_skill-integrity.md",
-   "line": 72,
-   "end": 81,
+   "line": 74,
+   "end": 83,
    "heading": [
     "5. 每局驗證流程"
    ],
@@ -484,8 +488,8 @@
    "id": "KB-skill-integrity.scoring",
    "page": "KB-skill-integrity",
    "path": "knowledge-base/01_skill-integrity.md",
-   "line": 83,
-   "end": 90,
+   "line": 85,
+   "end": 92,
    "heading": [
     "6. 計分設計通則（來自規則卡交叉比對）"
    ],

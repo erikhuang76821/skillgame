@@ -7,7 +7,7 @@ import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildContext, fitsProfile } from './context.mjs';
 import { loadVocabulary } from './kb-index.mjs';
-import { applyMustRead, checkNodes, deriveStatus, formatEvent, hashPaths, loadNodes, mustReadTable, nodeHashes, nodeProduces, parseEvent, planGate, routeFor, runGate, topoOrder } from './loop.mjs';
+import { applyMustRead, checkNodes, classifyRun, deriveStatus, formatEvent, hashPaths, loadNodes, mustReadTable, nodeHashes, nodeProduces, parseEvent, planGate, routeFor, runGate, topoOrder } from './loop.mjs';
 import { findRoot, loadRules } from './rules.mjs';
 
 const root = findRoot(fileURLToPath(import.meta.url));
@@ -81,6 +81,37 @@ test('status: todo, pass, awaiting approval, approval binds to the output hash, 
   assert.equal(re.current, 'N0-kickoff');
   const waive = { type: 'approval', node: 'N9-human', inputHash: 'i', outputHash: 'o', approval: { by: 'pm', waive: true }, eventId: 'w', at: 't9' };
   assert.equal(deriveStatus(nodes, [waive], H()).nodes['N9-human'].status, 'waived');
+});
+
+test('gate: a test that could not run (exit 2) blocks the gate without failing its rules or using up an attempt', async () => {
+  const t = (id, impl) => ({ id, kind: 'script', cost: 'medium', implements: impl, run: id, cwd: '.', runnable: true, missing: [] });
+  const pack = { rules: ['R-A', 'R-B', 'R-C'].map(id => ({ id, level: 'must', gate: true })), tests: [t('M1', ['R-A', 'R-B']), t('M2', ['R-C'])] };
+  const node = { id: 'N10-release', produces: [], gate: { must: ['R-*'] }, checkpoint: null, maxIterations: 3 };
+  const ran = [];
+  const run = by => runGate(root, 'GateLane', node, { pack, registry: [], runner: x => { ran.push(x.id); return by(x); } });
+  const refused = await run(x => (x.id === 'M1' ? { ok: false, blocked: true, detail: 'exit 2：換下一批' } : { ok: true, detail: '' }));
+  assert.deepEqual(ran, ['M1', 'M2'], 'a test that could not run does not stop the ones after it');
+  assert.deepEqual(Object.fromEntries(refused.rules.map(x => [x.id, x.result])), { 'R-A': 'not-run', 'R-B': 'not-run', 'R-C': 'pass' });
+  assert.equal(refused.result, 'blocked');
+  assert.deepEqual(routeFor([node], node, refused, 0), { goto: 'N10-release', reason: '有測試無法執行（缺檔或未跑），補齊後重跑' });
+  // The same card failing its check (any other non-zero exit) is a failure of every rule it implements.
+  const failed = await run(x => ({ ok: x.id !== 'M1', detail: 'exit 1' }));
+  assert.deepEqual(Object.fromEntries(failed.rules.map(x => [x.id, x.result])), { 'R-A': 'fail', 'R-B': 'fail', 'R-C': 'not-run' });
+  assert.equal(failed.result, 'fail');
+});
+
+test('the gate reads exit codes by the test-card convention; a process that never ran is not a failed check', () => {
+  const at = (status, extra = {}) => classifyRun({ status, stdout: 'out', stderr: '', ...extra });
+  assert.deepEqual(at(0), { ok: true, detail: '' });
+  for (const s of [1, 3, 255]) assert.deepEqual([at(s).ok, at(s).blocked], [false, undefined], `exit ${s} is a failed check`);
+  for (const s of [2, 127, 9009]) assert.deepEqual([at(s).ok, at(s).blocked], [false, true], `exit ${s} could not run`);
+  assert.equal(at(null, { error: new Error('spawn EPERM') }).blocked, true);
+  assert.match(at(null, { error: new Error('spawn EPERM') }).detail, /無法啟動[\s\S]*EPERM/);
+  assert.match(at(null, { signal: 'SIGKILL' }).detail, /SIGKILL/);
+  assert.equal(at(undefined).blocked, true);
+  // The real process path: node exiting 2 and 1.
+  const run = code => classifyRun(spawnSync(process.execPath, ['-e', `process.exit(${code})`], { encoding: 'utf8' }));
+  assert.deepEqual([run(2).blocked, run(1).blocked, run(0).ok], [true, undefined, true]);
 });
 
 test('gate: cheap tests all run, medium stops at the first failure, review needs approval, missing needs block', async () => {

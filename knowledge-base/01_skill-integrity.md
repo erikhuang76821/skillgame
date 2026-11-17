@@ -47,7 +47,9 @@ reviewedAt: 2026-10-21
 RNG 必須是**無狀態雜湊**，以「事件序號」而非「呼叫順序」取值（玩家行為不同不會讓序列錯位）。實作見 [04_tech-stack.md §4](04_tech-stack.md)。
 
 ## 4. 證據：Skill Dominance 測試（上線門檻）
-<!-- card: KB-skill-integrity.dominance-test; kind=method; rules=RULE-SKILL-DOMINANCE,RULE-SKILL-BASELINE -->
+<!-- card: KB-skill-integrity.dominance-test; kind=method; rules=RULE-SKILL-DOMINANCE,RULE-SKILL-BASELINE,RULE-SKILL-EVIDENCE,RULE-SKILL-NOT-LUCK,RULE-SKILL-BEATS-SIMPLE,RULE-SKILL-CLOSENESS -->
+
+> 新的量法（不限動作遊戲）：強策略、隨機策略、簡單策略在同一批題目上兩兩比較，規則是 `RULE-SKILL-EVIDENCE`、`RULE-SKILL-NOT-LUCK`、`RULE-SKILL-BEATS-SIMPLE`、`RULE-SKILL-CLOSENESS`，做法見 [技巧證據決策](decisions/2026-11-11-skill-evidence.md) §4、§9。本節以下是原本的技巧佔比做法，之後會改寫。
 
 方法（`SwarmDuel/game/tools/skill-dominance.mjs`，可移植）：
 

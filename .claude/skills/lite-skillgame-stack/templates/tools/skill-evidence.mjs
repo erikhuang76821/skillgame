@@ -1,40 +1,54 @@
 // Skill evidence: the result table for this game's frozen strategies (tools/strategies.mjs).
-//   node tools/skill-evidence.mjs [questions=30] [--out report.md] [--json table.json]
-//        [--confirm [--generation <n>]] [--ledger <path>] [--alpha <0..1> --min-questions <n>]
+//   node tools/skill-evidence.mjs [questions] [--out report.md] [--json table.json]
+//        [--confirm [--generation <n>] [--require-recorded]] [--ledger <path>]
 // Without --confirm the questions are the tuning batch: use them freely, but they are not confirmation evidence.
 // --confirm uses a confirmation batch and records it in the ledger (default: docs/skill_evidence_ledger.json next to
 // the game folder, wherever the command is started from). Without --generation it re-runs the latest recorded batch
 // (or starts batch 1). A recorded batch can only be re-run unchanged; after the strategies, the rules, this tool, the
 // question count or the thresholds change, the next generation must be used.
-// Thresholds are never hard-coded: pass --alpha and --min-questions (the values live in knowledge-base/index/rules.json).
-// Without them the report holds measurements only.
+// --require-recorded (what the loop gate runs): only re-run a batch that is already in the ledger. A missing or empty
+// ledger, or a batch that is not recorded yet, is refused with exit 2, so the gate never opens a batch by itself.
+// Thresholds are never hard-coded and cannot be passed on the command line: the significance level and the minimum
+// number of questions come from RULE-SKILL-EVIDENCE in knowledge-base/index/rules.json through shared/tools/rules.mjs
+// (this game's config/rules.overrides.json applies). Without a question count: a re-run of a recorded confirmation
+// batch keeps that batch's count; anything else uses the rule's minimum.
 // Exit codes: 0 = done (and passed, when a verdict was asked for); 1 = the verdict failed; 2 = anything else
 // (misuse, a refused run, a file that cannot be loaded or written).
 import { createHash } from 'node:crypto';
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
-import { dirname, relative, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { dirname, join, relative, resolve } from 'node:path';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { checkLedger, recordConfirmation, runEvidence, toMarkdown } from './lib/evidence.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url)), GAME_DIR = resolve(HERE, '..');
 const fail = msg => { console.error(`✘ ${msg}`); process.exit(2); };
 
 // --- arguments: --confirm is a flag; every other option takes exactly one value ---
-const VALUE_OPTS = ['--out', '--json', '--ledger', '--alpha', '--min-questions', '--generation'];
+const VALUE_OPTS = ['--out', '--json', '--ledger', '--generation'];
 const argv = process.argv.slice(2), o = {}, positional = [];
 for (let i = 0; i < argv.length; i++) {
   const a = argv[i];
   if (a === '--confirm') o.confirm = true;
+  else if (a === '--require-recorded') o.requireRecorded = true;
   else if (VALUE_OPTS.includes(a)) { if (argv[i + 1] === undefined || argv[i + 1].startsWith('--')) fail(`${a} 需要一個值`); o[a] = argv[++i]; }
   else if (a.startsWith('--')) fail(`不認識的選項 ${a}`);
   else positional.push(a);
 }
 if (positional.length > 1) fail(`只接受一個位置參數（題數），收到：${positional.join(' ')}`);
 const int = (text, what) => { if (!/^\d+$/.test(text) || Number(text) < 1) fail(`${what} 要是 1 以上的整數，收到 ${text}`); return Number(text); };
-const n = positional.length ? int(positional[0], '題數') : 30;
-if ((o['--alpha'] === undefined) !== (o['--min-questions'] === undefined)) fail('--alpha 與 --min-questions 要一起給（數值見 knowledge-base/index/rules.json）');
 if (o['--generation'] !== undefined && !o.confirm) fail('--generation 只能和 --confirm 一起用');
-const thresholds = o['--alpha'] === undefined ? null : { alpha: Number(o['--alpha']), minQuestions: int(o['--min-questions'], '--min-questions') };
+if (o.requireRecorded && !o.confirm) fail('--require-recorded 只能和 --confirm 一起用');
+
+// --- thresholds: from the rules, never from here ---
+const RULE = 'RULE-SKILL-EVIDENCE';
+let thresholds;
+try {
+  let d = HERE;
+  while (!existsSync(join(d, 'shared', 'tools', 'rules.mjs'))) { const up = dirname(d); if (up === d) throw new Error(`在 ${HERE} 以上找不到 shared/tools/rules.mjs`); d = up; }
+  const { loadRules } = await import(pathToFileURL(join(d, 'shared', 'tools', 'rules.mjs')).href);
+  const rules = loadRules({ from: fileURLToPath(import.meta.url) });
+  thresholds = { alpha: rules.value(RULE, 'alpha'), minQuestions: rules.value(RULE, 'minQuestions') };
+} catch (e) { fail(`讀不到 ${RULE} 的門檻：${e.message}`); }
 
 // --- ledger: its location does not depend on where the command is started from ---
 const ledgerPath = o['--ledger'] ? resolve(o['--ledger']) : resolve(GAME_DIR, '..', 'docs', 'skill_evidence_ledger.json');
@@ -47,6 +61,9 @@ if (o.confirm) {
 const used = ledger?.length ?? 0;
 const generation = !o.confirm ? 1 : o['--generation'] === undefined ? Math.max(1, used) : int(o['--generation'], '--generation');
 if (generation > used + 1) fail(`確認批次要依序使用：下一批是第 ${used + 1} 批`);
+const recorded = o.confirm ? ledger?.[generation - 1] : null;
+if (o.requireRecorded && !recorded) fail(used ? `第 ${generation} 批還沒有紀錄；換批要人自己下 npm run evidence:confirm -- --generation ${generation}` : `紀錄檔 ${ledgerPath} 不存在或沒有任何批次；第一次確認要在策略凍結後由人下 npm run evidence:confirm`);
+const n = positional.length ? int(positional[0], '題數') : recorded?.n ?? thresholds.minQuestions;
 
 // --- hash: the strategy file, the sim, this tool and its measuring code, and every local file they import ---
 // Found by scanning the text for relative specifiers written as string literals after `from` or `import` (comments
@@ -73,18 +90,19 @@ let report;
 try {
   const { GAME } = await import('../src/sim/sim.js');
   const { STRATEGIES } = await import('./strategies.mjs');
-  report = runEvidence(GAME, STRATEGIES, { n, mode: o.confirm ? 'confirm' : 'tuning', generation, thresholds, strategyHash, hashedFiles,
+  report = runEvidence(GAME, STRATEGIES, { n, mode: o.confirm ? 'confirm' : 'tuning', generation, thresholds, thresholdSource: RULE, strategyHash, hashedFiles,
     ...(ledger?.length ? { seedBase: ledger[0].seedBase } : {}), command: `node tools/skill-evidence.mjs ${argv.join(' ')}`.trim() });
 } catch (e) { fail(e.message); }
 
+// A refused confirmation writes nothing: the ledger check comes before any file is touched. Then the reports, then
+// the ledger — if a report cannot be written, the batch is not recorded as used.
+const rec = o.confirm ? recordConfirmation(ledger, report) : null;
+if (rec && !rec.ok) fail(rec.reason);
 const md = toMarkdown(report);
 try {
-  // Reports first: if one cannot be written, the batch is not recorded as used.
   if (o['--out']) writeFileSync(o['--out'], md, 'utf8');
   if (o['--json']) writeFileSync(o['--json'], JSON.stringify(report, null, 1) + '\n', 'utf8');
-  if (o.confirm) {
-    const rec = recordConfirmation(ledger, report);
-    if (!rec.ok) fail(rec.reason);
+  if (rec) {
     writeFileSync(ledgerPath, JSON.stringify(rec.ledger, null, 1) + '\n', 'utf8');
     console.error(`紀錄檔：${ledgerPath}`);
   }
