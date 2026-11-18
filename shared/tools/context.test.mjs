@@ -128,8 +128,22 @@ test('games without scripted progression do not get the difficulty-curve rules o
     for (const c of CURVE) assert.ok(pack.notApplicable.includes(c), `${name} ${id}: ${c} listed as not applicable`);
     assert.deepEqual(pack.pending, []);
     assert.ok(!pack.tests.some(t => t.id === 'TEST-CURVE'), `${name} ${id}: TEST-CURVE is not asked for`);
-    assert.ok(pack.rules.some(r => r.id === 'RULE-SKILL-DOMINANCE'), 'the skill rules are untouched by this flag');
+    // Skill evidence does not depend on this flag: every new game owes it; the legacy measures are for the three named games only.
+    for (const id of ['RULE-SKILL-EVIDENCE', 'RULE-SKILL-NOT-LUCK', 'RULE-SKILL-BEATS-SIMPLE']) assert.ok(pack.rules.some(r => r.id === id), `${name} ${id}: ${id} applies`);
+    for (const id of ['RULE-SKILL-DOMINANCE', 'RULE-SKILL-BASELINE']) assert.ok(pack.notApplicable.includes(id), `${name} ${id}: ${id} is not for new games`);
+    if (id === 'N5-tune') assert.deepEqual(pack.tests.filter(t => t.id.startsWith('TEST-SKILL-')).map(t => t.id).sort(), ['TEST-SKILL-BEATS-SIMPLE', 'TEST-SKILL-EVIDENCE', 'TEST-SKILL-NOT-LUCK']);
   }
+});
+
+test('a rule scoped to named games applies to those games only, and the scope is validated', () => {
+  const rule = { id: 'R', scope: { selector: { kind: 'game-build', game: ['TwinStrike'] } } };
+  assert.equal(ruleScope(rule, { game: 'TwinStrike' }).state, 'applies');
+  assert.equal(ruleScope(rule, { game: 'NewGame' }).state, 'not-applicable');
+  assert.equal(ruleScope(rule, { genre: ['*'], renderer: ['*'] }).state, 'not-applicable', 'the generic bootstrap profile is not a named game');
+  assert.equal(ruleScope({ id: 'R', scope: { selector: { game: ['NewGame'], scriptedProgression: true } } }, { game: 'NewGame' }).state, 'pending', 'other keys still ask the profile');
+  const vocab = loadVocabulary(root);
+  for (const bad of ['TwinStrike', [], ['*'], [''], [3]]) assert.match(checkRuleScopes([{ id: 'R', scope: { selector: { game: bad } } }], vocab).join('\n'), /遊戲資料夾名稱的清單/, JSON.stringify(bad));
+  assert.deepEqual(checkRuleScopes([rule], vocab), []);
 });
 
 test('a profile that does not answer scriptedProgression leaves the curve rules pending, never silently applied or dropped', () => {

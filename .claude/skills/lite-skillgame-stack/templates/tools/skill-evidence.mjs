@@ -1,6 +1,6 @@
 // Skill evidence: the result table for this game's frozen strategies (tools/strategies.mjs).
 //   node tools/skill-evidence.mjs [questions] [--out report.md] [--json table.json]
-//        [--confirm [--generation <n>] [--require-recorded]] [--ledger <path>]
+//        [--confirm [--generation <n>] [--require-recorded]] [--ledger <path>] [--rule <rule id>]
 // Without --confirm the questions are the tuning batch: use them freely, but they are not confirmation evidence.
 // --confirm uses a confirmation batch and records it in the ledger (default: docs/skill_evidence_ledger.json next to
 // the game folder, wherever the command is started from). Without --generation it re-runs the latest recorded batch
@@ -12,19 +12,26 @@
 // number of questions come from RULE-SKILL-EVIDENCE in knowledge-base/index/rules.json through shared/tools/rules.mjs
 // (this game's config/rules.overrides.json applies). Without a question count: a re-run of a recorded confirmation
 // batch keeps that batch's count; anything else uses the rule's minimum.
+// --rule <id> (what the loop's test cards run, one card per rule, without --out: a gate writes no file): the exit code
+// follows that rule only.
+//   RULE-SKILL-EVIDENCE      the strategy set is complete and the batch has enough questions
+//   RULE-SKILL-NOT-LUCK      ...and the strong strategy beats the random one
+//   RULE-SKILL-BEATS-SIMPLE  ...and it beats every simple one
+// Without --rule the exit code follows all three.
 // Exit codes: 0 = done (and passed, when a verdict was asked for); 1 = the verdict failed; 2 = anything else
-// (misuse, a refused run, a file that cannot be loaded or written).
+// (misuse, a refused run, a file that cannot be loaded or written). An incomplete strategy set is 1 under
+// --rule RULE-SKILL-EVIDENCE (that is what the rule checks) and 2 otherwise (nothing can be measured).
 import { createHash } from 'node:crypto';
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join, relative, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { checkLedger, recordConfirmation, runEvidence, toMarkdown } from './lib/evidence.mjs';
+import { checkLedger, checkStrategies, recordConfirmation, runEvidence, toMarkdown } from './lib/evidence.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url)), GAME_DIR = resolve(HERE, '..');
 const fail = msg => { console.error(`✘ ${msg}`); process.exit(2); };
 
 // --- arguments: --confirm is a flag; every other option takes exactly one value ---
-const VALUE_OPTS = ['--out', '--json', '--ledger', '--generation'];
+const VALUE_OPTS = ['--out', '--json', '--ledger', '--generation', '--rule'];
 const argv = process.argv.slice(2), o = {}, positional = [];
 for (let i = 0; i < argv.length; i++) {
   const a = argv[i];
@@ -38,6 +45,12 @@ if (positional.length > 1) fail(`只接受一個位置參數（題數），收�
 const int = (text, what) => { if (!/^\d+$/.test(text) || Number(text) < 1) fail(`${what} 要是 1 以上的整數，收到 ${text}`); return Number(text); };
 if (o['--generation'] !== undefined && !o.confirm) fail('--generation 只能和 --confirm 一起用');
 if (o.requireRecorded && !o.confirm) fail('--require-recorded 只能和 --confirm 一起用');
+const RULE_VERDICT = {
+  'RULE-SKILL-EVIDENCE': v => v.enoughQuestions,
+  'RULE-SKILL-NOT-LUCK': v => v.enoughQuestions && v.beatsRandom,
+  'RULE-SKILL-BEATS-SIMPLE': v => v.enoughQuestions && v.beatsEverySimple,
+};
+if (o['--rule'] !== undefined && !RULE_VERDICT[o['--rule']]) fail(`--rule 只能是 ${Object.keys(RULE_VERDICT).join('、')}`);
 
 // --- thresholds: from the rules, never from here ---
 const RULE = 'RULE-SKILL-EVIDENCE';
@@ -90,6 +103,11 @@ let report;
 try {
   const { GAME } = await import('../src/sim/sim.js');
   const { STRATEGIES } = await import('./strategies.mjs');
+  const incomplete = checkStrategies(STRATEGIES, GAME);
+  if (incomplete.length) {
+    console.error(`✘ tools/strategies.mjs 不完整\n- ${incomplete.join('\n- ')}`);
+    process.exit(o['--rule'] === 'RULE-SKILL-EVIDENCE' ? 1 : 2);
+  }
   report = runEvidence(GAME, STRATEGIES, { n, mode: o.confirm ? 'confirm' : 'tuning', generation, thresholds, thresholdSource: RULE, strategyHash, hashedFiles,
     ...(ledger?.length ? { seedBase: ledger[0].seedBase } : {}), command: `node tools/skill-evidence.mjs ${argv.join(' ')}`.trim() });
 } catch (e) { fail(e.message); }
@@ -108,4 +126,6 @@ try {
   }
 } catch (e) { fail(e.message); }
 console.log(md);
-process.exitCode = report.verdict && !report.verdict.pass ? 1 : 0;
+const passed = o['--rule'] ? RULE_VERDICT[o['--rule']](report.verdict) : report.verdict.pass;
+if (o['--rule']) console.error(`${o['--rule']}：${passed ? '通過' : '未通過'}`);
+process.exitCode = passed ? 0 : 1;

@@ -1,6 +1,8 @@
 // Human playtest analysis (docs/human_playtest_plan.md): reads the JSON files testers export from the game
 // (?playtest=1&tester=<name>), re-verifies and REPLAYS every match with the same sim the server would use, and
 // compares real players with the human-factor bots (tools/humanBots.mjs) section by section.
+// Exit 2 when there is nothing to analyse (no input, or a folder without records): the loop gate reads that as
+// "could not run", not as a failed check.
 // Usage: node tools/human-report.mjs <file-or-folder>... [--out ../docs/human_playtest_report.md]
 import { existsSync, readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -15,12 +17,12 @@ const missing = inputs.filter(p => !existsSync(p));
 if (!inputs.length || missing.length) {
   console.error(missing.length ? `找不到：${missing.join('、')}` : '請指定試玩紀錄的檔案或資料夾');
   console.error('把試玩者匯出的 twinstrike-playtest-*.json 放進 TwinStrike/playtest-data/ 後再執行（流程見 docs/human_playtest_plan.md）。');
-  process.exit(1);
+  process.exit(2);   // no data to analyse: could not run (loop test-card convention), not a failed check
 }
 const files = inputs.flatMap(p => (statSync(p).isDirectory() ? readdirSync(p).filter(f => f.endsWith('.json')).map(f => join(p, f)) : [p]));
 if (!files.length) {
   console.error(`${inputs.join('、')} 裡還沒有試玩紀錄（twinstrike-playtest-*.json）。收到試玩者的檔案後放進來再執行。`);
-  process.exit(1);
+  process.exit(2);   // no data to analyse: could not run (loop test-card convention), not a failed check
 }
 const mean = a => (a.length ? a.reduce((s, v) => s + v, 0) / a.length : NaN);
 const median = a => { const s = [...a].sort((x, y) => x - y); return s.length ? s[s.length >> 1] : NaN; };

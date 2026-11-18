@@ -93,10 +93,13 @@ export async function auditGame(root, game, opts = {}) {
 
   // RULE-GAME-REPORTS + RULE-REPORT-FRESH
   const game_ = mod?.GAME;
-  for (const f of ['docs/skill_dominance_report.md', 'docs/playtest_report.md']) {
+  // Every tool-made report, checked when it exists. Which ones a game must have: RULE-GAME-DOCS and the loop's produces.
+  // The legacy dominance report belongs to a should-level rule kept for three games: its failures only warn.
+  for (const f of ['docs/skill_evidence_report.md', 'docs/skill_dominance_report.md', 'docs/playtest_report.md']) {
     const t = read(join(dir, f));
     if (!t) continue;
-    add('RULE-GAME-REPORTS', 'must', !FAIL_MARK.test(t), `${f} 全部通過`, FAIL_MARK.test(t) ? '報告內有未通過項目' : '');
+    const level = f === 'docs/skill_dominance_report.md' ? 'should' : 'must';
+    add('RULE-GAME-REPORTS', level, !FAIL_MARK.test(t), `${f} 全部通過`, FAIL_MARK.test(t) ? '報告內有未通過項目' : '');
     const head = t.split('\n').slice(0, 6).join('\n');
     const stamp = head.match(/—\s*([\w-]+)\s+v(\d+)（自動產生）/) ?? head.match(/\bsim v(\d+)/);
     const ver = stamp ? Number(stamp[2] ?? stamp[1]) : null, id = stamp?.[2] ? stamp[1] : null;
@@ -106,7 +109,7 @@ export async function auditGame(root, game, opts = {}) {
     else if (ver !== game_.version) detail = `報告是 v${ver}，sim 是 v${game_.version}：規則改過但報告沒重跑`;
     else if (id && id !== game_.id) detail = `報告的遊戲 id 是 ${id}，sim 是 ${game_.id}`;
     else { ok = true; detail = `v${ver}`; }
-    add('RULE-REPORT-FRESH', 'must', ok, `${f} 與 sim 版本一致`, detail);
+    add('RULE-REPORT-FRESH', level, ok, `${f} 與 sim 版本一致`, detail);
   }
 
   // RULE-SPEC-CONSTANTS: numbers in gdd/05 that name a sim constant must equal it
@@ -190,7 +193,7 @@ export async function auditGame(root, game, opts = {}) {
 
 /** Print one game's results as a markdown table; returns true when every must-level check passed. */
 export function printResults(game, r) {
-  const bad = r.filter(x => x.level === 'must' && !x.ok), warn = r.filter(x => x.level === 'should');
+  const bad = r.filter(x => x.level === 'must' && !x.ok), warn = r.filter(x => x.level === 'should' && !x.ok);
   console.log(`\n## ${game} — ${bad.length ? `❌ ${bad.length} 項未通過` : '✅ 必要項目全部通過'}${warn.length ? `，⚠️ ${warn.length} 項警告` : ''}\n`);
   console.log('| 規則 | 項目 | 結果 | 說明 |\n|---|---|---|---|');
   for (const x of r) console.log(`| ${x.rule} | ${x.item} | ${x.ok ? '✅' : x.level === 'must' ? '❌' : '⚠️'} | ${x.detail} |`);

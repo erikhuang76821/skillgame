@@ -1421,8 +1421,8 @@
    },
    "rules": [],
    "reviewedAt": "2026-10-22",
-   "tokens": 798,
-   "hash": "sha256:04dcfbdcd94519a4"
+   "tokens": 875,
+   "hash": "sha256:4fd72b75df022c36"
   },
   {
    "id": "KB-production-workflow.commands",
@@ -1444,15 +1444,15 @@
    },
    "rules": [],
    "reviewedAt": "2026-10-22",
-   "tokens": 85,
-   "hash": "sha256:010068738951b048"
+   "tokens": 81,
+   "hash": "sha256:458c64cc59ef138e"
   },
   {
    "id": "KB-production-workflow.tool-locations",
    "page": "KB-production-workflow",
    "path": "knowledge-base/08_production-workflow.md",
    "line": 61,
-   "end": 75,
+   "end": 76,
    "heading": [
     "3. Skill / 工具所在位置"
    ],
@@ -1467,15 +1467,15 @@
    },
    "rules": [],
    "reviewedAt": "2026-10-22",
-   "tokens": 524,
-   "hash": "sha256:68439925e9ecd5cd"
+   "tokens": 610,
+   "hash": "sha256:491ac9eb1eba9be1"
   },
   {
    "id": "KB-production-workflow.bootstrap-prompt",
    "page": "KB-production-workflow",
    "path": "knowledge-base/08_production-workflow.md",
-   "line": 77,
-   "end": 80,
+   "line": 78,
+   "end": 81,
    "heading": [
     "4. 給其他 AI 的啟動提示詞"
    ],

@@ -143,11 +143,13 @@ test('gate: cheap tests all run, medium stops at the first failure, review needs
 test('route: most upstream onFail target, owner node for unrouted rules, escalation at maxIterations', () => {
   const n5 = nodes.find(n => n.id === 'N5-tune'), n10 = nodes.find(n => n.id === 'N10-release'), n8 = nodes.find(n => n.id === 'N8-budget');
   const fail = ids => ({ result: 'fail', missing: [], needsApproval: false, rules: ids.map(id => ({ id, result: 'fail' })) });
-  assert.equal(routeFor(nodes, n5, fail(['RULE-SKILL-DOMINANCE']), 1).goto, 'N4-sim');
+  assert.equal(routeFor(nodes, n5, fail(['RULE-SKILL-EVIDENCE']), 1).goto, 'N4-sim');
+  assert.equal(routeFor(nodes, n5, fail(['RULE-SKILL-NOT-LUCK']), 1).goto, 'N2-spec');
+  assert.equal(routeFor(nodes, n5, fail(['RULE-SKILL-EVIDENCE', 'RULE-SKILL-BEATS-SIMPLE']), 1).goto, 'N2-spec', 'the most upstream target wins');
   assert.equal(routeFor(nodes, n8, fail(['RULE-DRAWCALL-2D', 'RULE-BUNDLE-SIZE']), 1).goto, 'N6-art');
   assert.equal(routeFor(nodes, n10, fail(['RULE-ART-TW-TABOO', 'RULE-SPEC-FAIRNESS']), 1).goto, 'N2-spec');
   assert.equal(routeFor(nodes, n10, fail(['RULE-REPORT-FRESH']), 1).goto, 'N10-release');
-  assert.equal(routeFor(nodes, n5, fail(['RULE-SKILL-DOMINANCE']), 5).goto, 'human');
+  assert.equal(routeFor(nodes, n5, fail(['RULE-SKILL-NOT-LUCK']), 5).goto, 'human');
   assert.deepEqual(routeFor(nodes, n5, { result: 'pass', rules: [], missing: [] }, 0).goto, ['N9-human']);
 });
 
@@ -204,7 +206,8 @@ test('gate, real context: unanswered flag, malformed source and a misspelt scope
   const g0 = await runGate(root, 'TwinStrike', { ...n5, produces: [], producesWhen: {} }, { ...stubs, profile: { ...unanswered, scriptedProgression: false } });
   assert.ok(!g0.rules.some(r => r.id.startsWith('RULE-CURVE-')), 'no curve rule in the gate');
   assert.ok(!g0.tests.some(t => t.id === 'TEST-CURVE'), 'TEST-CURVE is not asked for');
-  assert.equal(g0.result, 'pass');
+  // What still blocks it is the skill evidence TwinStrike does not have (no strategy file, no ledger): not the curve.
+  assert.deepEqual([g0.result, g0.rules.filter(r => r.result === 'not-run').map(r => r.id)], ['blocked', ['RULE-SKILL-EVIDENCE', 'RULE-SKILL-NOT-LUCK', 'RULE-SKILL-BEATS-SIMPLE']]);
   const route = routeFor(nodes, n5, g1, 0);
   assert.equal(route.goto, 'N5-tune');
   assert.match(route.reason, /資料待補.*RULE-CURVE-TREND/);
@@ -232,11 +235,11 @@ test('gate: an audit card that cannot run (missing files) leaves its rules not-r
 // Step 2 (generality backlog): the difficulty document and the playtest report are N5 outputs only for games with scripted progression.
 test('producesWhen: a group is dropped only when the profile flag is false; unanswered keeps it', () => {
   const n5 = nodes.find(n => n.id === 'N5-tune');
-  const all = ['docs/skill_dominance_report.md', 'docs/playtest_report.md', 'gdd/07_difficulty_curve.md'];
+  const own = ['docs/skill_evidence_report.md', 'docs/skill_evidence_ledger.json'], all = [...own, 'docs/playtest_report.md', 'gdd/07_difficulty_curve.md'];
   assert.deepEqual(nodeProduces(n5, { scriptedProgression: true }), all);
   assert.deepEqual(nodeProduces(n5, {}), all);
-  assert.deepEqual(nodeProduces(n5, { scriptedProgression: false }), ['docs/skill_dominance_report.md']);
-  // Scripted games hash exactly the paths N5 listed before the split, so existing gate and approval events stay valid.
+  assert.deepEqual(nodeProduces(n5, { scriptedProgression: false }), own);
+  // Scripted games hash the plain list in that order.
   assert.equal(nodeHashes(root, 'TwinStrike', nodes, n5).outputHash, hashPaths(join(root, 'TwinStrike'), all));
   assert.notEqual(nodeHashes(root, 'TwinStrike', nodes, n5, { scriptedProgression: false }).outputHash, hashPaths(join(root, 'TwinStrike'), all));
   assert.match(mustReadTable(root, doc), /`docs\/playtest_report\.md`（`scriptedProgression` 時）/);
@@ -254,7 +257,8 @@ test('gate: a game without scripted progression is not blocked by the missing cu
   const scripted = await runGate(root, 'TwinStrike', n5, stubs);
   assert.deepEqual([scripted.result, scripted.missing], ['blocked', ['docs/not-written.md']]);
   const free = await runGate(root, 'TwinStrike', n5, { ...stubs, profile: { ...profileOf('TwinStrike'), scriptedProgression: false } });
-  assert.deepEqual([free.result, free.missing], ['pass', []]);
+  assert.deepEqual(free.missing, []);
+  assert.deepEqual([free.result, free.rules.filter(r => r.result === 'not-run').map(r => r.id)], ['blocked', ['RULE-SKILL-EVIDENCE', 'RULE-SKILL-NOT-LUCK', 'RULE-SKILL-BEATS-SIMPLE']], 'only the skill evidence TwinStrike lacks still blocks');
   assert.ok(!free.rules.some(r => ['RULE-CURVE-TREND', 'RULE-CURVE-CLIFF'].includes(r.id)), 'the curve rules are not part of this gate');
 });
 

@@ -94,8 +94,8 @@ description: 輕量化 HTML5 單機 Skill Game 技術規範（包體 5～10 MB�
 - **品類配方**（`knowledge-base/12`）：`core/timing.js`（子 tick 判定、種子譜面、capped combo）、`core/physics.js`（確定性圓形物理、球袋、防穿透），範例 `examples/rhythm`、`examples/billiards`（各含三級 bot）。
 - **輸入公平**（`knowledge-base/13`）：`core/input.js` 的 `InputClock` / `TapQueue` 以事件時間戳決定 tick 與子 tick 相位（幀率無關），`calibrate()` 延遲校正寫進 `rec.meta`；範本 `main.js` 已接上。
 - **音效**（`knowledge-base/14`）：`src/audio/sfx.js` Web Audio 合成配方，首次手勢 `unlock()`。
-- **技巧證據（結果表）**：`tools/strategies.mjs`（強、隨機、簡單三種角色的策略，各寫明能看到什麼與能力限制）+ `npm run evidence`（調校用題目）／`npm run evidence:confirm`（確認用題目，寫入 `docs/skill_evidence_ledger.json`），同題配對的勝平敗、精確符號檢定、簡單策略的接近程度；適用於由種子抽題、每題一局、分數越高越好的遊戲（回合制與即時制皆可），回合制範例 `examples/ends`。量法見 repo `knowledge-base/decisions/2026-11-11-skill-evidence.md` §9。規則：`RULE-SKILL-EVIDENCE`、`RULE-SKILL-NOT-LUCK`、`RULE-SKILL-BEATS-SIMPLE`（必過）與 `RULE-SKILL-CLOSENESS`（人工判定）；門檻只在 rules.json，指令列不能自訂。第一次確認要在策略凍結後由人下指令（關卡跑的是 `--require-recorded`：只重跑已記錄的批次，沒有紀錄就拒絕，不會自動開批）；確認用題目用過就只能原樣重跑，改過策略或規則要換下一批（`--generation`）。目前在發佈關卡（N10）生效；N4／N5 的產出與關卡待泛用化步驟 4c–4d。
-- **技巧主導驗證**：`tools/bots.mjs`（≥ 3 級）+ `node tools/skill-dominance.mjs 30`，門檻技巧佔比 ≥ 70%、最強 vs 次強 ≥ 70%，未過 exit 1。
+- **技巧證據（結果表）**：`tools/strategies.mjs`（強、隨機、簡單三種角色的策略，各寫明能看到什麼與能力限制）+ `npm run evidence`（調校用題目）／`npm run evidence:confirm`（確認用題目，寫入 `docs/skill_evidence_ledger.json`），同題配對的勝平敗、精確符號檢定、簡單策略的接近程度；適用於由種子抽題、每題一局、分數越高越好的遊戲（回合制與即時制皆可），回合制範例 `examples/ends`。量法見 repo `knowledge-base/decisions/2026-11-11-skill-evidence.md` §9。規則：`RULE-SKILL-EVIDENCE`、`RULE-SKILL-NOT-LUCK`、`RULE-SKILL-BEATS-SIMPLE`（必過）與 `RULE-SKILL-CLOSENESS`（人工判定）；門檻只在 rules.json，指令列不能自訂。第一次確認要在策略凍結後由人下指令（關卡跑的是 `--require-recorded`：只重跑已記錄的批次，沒有紀錄就拒絕，不會自動開批）；確認用題目用過就只能原樣重跑，改過策略或規則要換下一批（`--generation`）。N4 產出策略檔，N5 由這三條必過規則擋關（三張測試卡各對應一條）；接近程度的人工核准在 N5 接上前（泛用化步驟 4d）先在 N10 生效。
+- **技巧佔比（舊配方，只用於現有三款）**：`tools/bots.mjs`（≥ 3 級）+ `node tools/skill-dominance.mjs 30`。`RULE-SKILL-DOMINANCE`、`RULE-SKILL-BASELINE` 只套用到 SwarmDuel、TwinStrike、GateLane，而且只是警告；新遊戲不需要分級 bot。新遊戲刪掉 `bots.mjs` 與 `skill-dominance.mjs` 即可：範本的測試、試玩與技巧證據都改用 `tools/strategies.mjs`，只有舊指標的示範測試會自動略過。
 - **難度曲線**（repo `knowledge-base/16_difficulty-curve.md`）：曲線用固定腳本設計（難度級每級只加一件事、上升鋸齒、調息、段末頭目），種子只換同級內容；以人性化試玩 bot 逐單位驗收 D1–D8（門檻見 rules.json `RULE-CURVE-*`）。範本已附 `tools/humanBots.mjs`、`tools/playtest.mjs`（示範遊戲的單位與 DI，每款改寫）與通用的 `tools/lib/curve.mjs`；`npm run playtest` 產生 `docs/playtest_report.md`。節奏類完整範例（含圖表）：`TwinStrike/game/tools/playtest.mjs`。
 
 ## 7. 交付前自檢
@@ -103,7 +103,7 @@ description: 輕量化 HTML5 單機 Skill Game 技術規範（包體 5～10 MB�
 - [ ] `npm run build && npm run size` 通過預算
 - [ ] 開發計數器顯示基礎畫面 DC ≤ 5（2D）/ ≤ 9（3D），特效全開時寫明峰值
 - [ ] `sim/` 內 grep 不到 `gsap|pixi|document|Math.random|Date`
-- [ ] `npm test` 全過（core + determinism，含 golden match）；`node tools/skill-dominance.mjs 30` 過門檻
+- [ ] `npm test` 全過（core + determinism，含 golden match 與調校題目上的技巧證據）
 - [ ] `npm run evidence:confirm` 通過（`RULE-SKILL-EVIDENCE`、`RULE-SKILL-NOT-LUCK`、`RULE-SKILL-BEATS-SIMPLE`），報告的「簡單策略的接近程度」有人看過並寫下理由（`RULE-SKILL-CLOSENESS`）
 - [ ] 改了會影響結果的規則 → `GAME.version` +1、golden match 已更新
 - [ ] 有腳本進程的遊戲：難度曲線自動試玩（`npm run playtest`）D1–D8 全過，調校紀錄寫進 `gdd/07`（knowledge-base/16）（`game.profile.json` 的 `scriptedProgression` 為 false 的遊戲不適用）

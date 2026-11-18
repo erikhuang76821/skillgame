@@ -52,7 +52,10 @@ test('wall clock and unseeded randomness in sim/ code fail RULE-SIM-PURITY; comm
 
 test('should-level findings are warnings, not failures', () => {
   assert.ok(find('RULE-KB-CITED').length > 0);
-  assert.ok(r.filter(x => x.level === 'should').every(x => x.ok === false));
+  // A should-level row may pass (the legacy dominance report is checked at should level and shows ✅ when fine);
+  // the ones that fail are warnings: they never count among the must failures.
+  assert.ok(r.some(x => x.level === 'should' && !x.ok));
+  assert.ok(r.filter(x => !x.ok && x.level === 'must').every(x => x.rule !== 'RULE-KB-CITED'));
 });
 
 test('shipped media missing from every art/manifest.json is a RULE-ASSET-REGISTER warning', () => {

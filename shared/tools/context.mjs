@@ -32,6 +32,10 @@ const PROFILE_KEYS = new Set(['schemaVersion', 'game', ...FACET_KEYS, ...PROFILE
 // Keys a rule's scope.selector may use: what the rule checks (target) and which games it is for (answered by the profile).
 export const SCOPE_TARGET_KEYS = ['kind', 'path'];
 export const SCOPE_PROFILE_KEYS = ['genre', 'renderer', 'source', ...PROFILE_FLAGS];
+// A rule kept for named games only (a legacy measure that new games do not get): scope.selector.game is a list of game
+// folder names, matched against the profile's `game` (which must equal its folder). It is never "pending": a game that
+// is not on the list — including the generic profile behind the bootstrap table — is simply not one of them.
+export const SCOPE_GAME_KEY = 'game';
 // Facets that say what a game *is*: a card tagged with a concrete value here is about such games only, so it is left out
 // for a game whose profile has none of those values even when the selector does not ask about the key (an
 // af-gate-lane-shooter card is not general fairness advice for a rhythm game).
@@ -93,7 +97,7 @@ export function facetMatch(facets, sel) {
  */
 export function ruleScope(rule, profile) {
   const sel = rule.scope?.selector ?? {}, missing = [];
-  let mismatch = false;
+  let mismatch = sel[SCOPE_GAME_KEY] !== undefined && !list(sel[SCOPE_GAME_KEY]).includes(profile.game);
   for (const k of SCOPE_PROFILE_KEYS) {
     if (sel[k] === undefined) continue;
     if (PROFILE_FLAGS.includes(k)) {
@@ -119,7 +123,8 @@ export function checkRuleScopes(rules, vocab) {
   for (const r of rules) for (const [k, v] of Object.entries(r.scope?.selector ?? {})) {
     const at = `rules.json ${r.id}: scope.selector.${k}`;
     if (SCOPE_TARGET_KEYS.includes(k)) { if (typeof v !== 'string') errors.push(`${at} 要是字串`); continue; }
-    if (!SCOPE_PROFILE_KEYS.includes(k)) { errors.push(`${at} 不是認得的適用範圍欄位（可用：${[...SCOPE_TARGET_KEYS, ...SCOPE_PROFILE_KEYS].join('、')}）`); continue; }
+    if (k === SCOPE_GAME_KEY) { if (!Array.isArray(v) || !v.length || v.some(x => typeof x !== 'string' || !x || x === '*')) errors.push(`${at} 要是遊戲資料夾名稱的清單（不可為空、不可用 *）`); continue; }
+    if (!SCOPE_PROFILE_KEYS.includes(k)) { errors.push(`${at} 不是認得的適用範圍欄位（可用：${[...SCOPE_TARGET_KEYS, ...SCOPE_PROFILE_KEYS, SCOPE_GAME_KEY].join('、')}）`); continue; }
     if (PROFILE_FLAGS.includes(k)) { if (typeof v !== 'boolean') errors.push(`${at} 必須是 true 或 false`); }
     else if (k === 'source') { if (v !== 'ad-funnel' && !vocab.facets.source.has(v)) errors.push(`${at}「${v}」不在 shared/index/facets.json（或用 ad-funnel）`); }
     else if (!vocab.facets[k].has(v)) errors.push(`${at}「${v}」不在 shared/index/facets.json`);

@@ -1,6 +1,6 @@
 # 玩法規格範本（Game Spec）
 
-GDD 說「為什麼」，本規格說「sim 怎麼算」。每一節都對應到程式裡的一個位置，填完就能直接請 AI 產出 `src/sim/sim.js`、`tools/bots.mjs`、`test/determinism.test.mjs`。存成 `<NewGame>/gdd/05_game_spec.md`。
+GDD 說「為什麼」，本規格說「sim 怎麼算」。每一節都對應到程式裡的一個位置，填完就能直接請 AI 產出 `src/sim/sim.js`、`tools/strategies.mjs`、`test/determinism.test.mjs`。存成 `<NewGame>/gdd/05_game_spec.md`。
 
 **規則**：規格裡出現的每個數字都要能在 sim 裡找到同一個常數；改數值先改規格。結果會變的修改一律把 `version` +1（舊重播會被 `verify` 拒絕）。
 
@@ -15,7 +15,7 @@ GDD 說「為什麼」，本規格說「sim 怎麼算」。每一節都對應到
 | §6 計分 | `RULES`、`score()`、`scoreBreakdown()` |
 | §7 結束 | `phase()` |
 | §8 選擇 | `phase() === 'choice'`、`choose()` |
-| §9 Bot | `tools/bots.mjs` |
+| §9 比較策略 | `tools/strategies.mjs` |
 | §10 公平檢查 | GDD 03 精髓七條 |
 | §11 事件 → 演出 | `main.js` 的 `playJuice()`、`fx/feel.js` |
 | §12 驗收測試 | `test/determinism.test.mjs` |
@@ -116,15 +116,16 @@ GDD 說「為什麼」，本規格說「sim 怎麼算」。每一節都對應到
 - `choose()` 只能回傳 `true` 或 `false`；回傳 `false` 時不得改動 sim（被拒絕的選擇不進紀錄，改了重播就對不上）。
 - 悔棋／撤銷只要會改變 sim 的狀態，就是正式的一步、進紀錄；只是畫面預覽就不進紀錄。
 
-## §9 Bot（技巧分級）
+## §9 比較策略（技巧證據）
 
-| 等級 | 可見資訊（不得多於真人） | 策略 | 誤差模型 |
+| 名稱 | 角色 | 能看到什麼（不得多於真人） | 能力限制 / 怎麼選動作 |
 |---|---|---|---|
-| novice | | | |
-| intermediate | | | |
-| expert | | | |
+| | strong（恰好一個） | | |
+| | random（恰好一個） | | 在哪些合法而且會推進遊戲的動作裡均勻抽；排除了哪些、為什麼 |
+| | simple（至少一條，建議兩到三條） | | 新手聽一句話就能照做的規則，不需要精準時機或瞄準 |
 
-規則：只送出真人能送的輸入（即時制是 byte，回合制是合法的選擇）；誤差用 `hash32(seed, salt, 事件序號)`，不用 `Math.random`；至少 3 級、由弱到強排列。
+規則：只送出真人能送的輸入（即時制是 byte，回合制是合法的選擇）；亂數用 `hash32(seed, salt, 事件序號)`，不用 `Math.random`；同一題每次結果相同。確認用題目跑過之前凍結，之後改了要換下一批。量法見 repo `knowledge-base/decisions/2026-11-11-skill-evidence.md` §9。
+分級 bot（novice / intermediate / expert）不再必備；人性化試玩用的失誤模型寫在 `tools/humanBots.mjs`（有腳本進程的遊戲）。
 
 ## §10 公平檢查（GDD 03 精髓七條）
 
@@ -152,7 +153,6 @@ GDD 說「為什麼」，本規格說「sim 怎麼算」。每一節都對應到
 | golden match（固定種子 + expert bot 的 result） | 每個目標引擎相同 |
 | 上傳後 `verify` 通過；竄改分數 / 版本不通過 | — |
 | 挑戰內容只依種子（換玩家行為，§3 序列不變） | 相同 |
-| `node tools/skill-dominance.mjs 30` | 技巧佔比與最強 vs 次強過門檻（`RULE-SKILL-DOMINANCE`，數值見 rules.json） |
 | `npm run evidence:confirm` | 強策略在確認用題目上勝過隨機策略與每一條簡單策略（`RULE-SKILL-EVIDENCE`、`RULE-SKILL-NOT-LUCK`、`RULE-SKILL-BEATS-SIMPLE`，數值見 rules.json）；策略寫在 `tools/strategies.mjs`，各寫明能看到什麼與能力限制。接近程度由人判定（`RULE-SKILL-CLOSENESS`） |
 | 滿局重播耗時 | < 500 ms（伺服器預算） |
 | `npm run playtest`（`game.profile.json` 的 `scriptedProgression` 為 false 的遊戲不適用） | 難度曲線 D1–D8 全過（RULE-CURVE-*） |
@@ -169,7 +169,7 @@ GDD 說「為什麼」，本規格說「sim 怎麼算」。每一節都對應到
 
 ## 給 AI 的生成提示詞
 
-> 依 `gdd/05_game_spec.md` 與 `.claude/skills/lite-skillgame-stack/SKILL.md`，改寫 `game/src/sim/sim.js`（匯出 `GAME`，只 import `./core/index.js`）、`game/tools/bots.mjs`（§9 三級 bot）、`game/test/determinism.test.mjs`（§12，保留測試名稱）。不要修改 `src/sim/core/` 與 `test/core.test.mjs`。完成後跑 `npm test` 與 `node tools/skill-dominance.mjs 30`，未達門檻就回報哪一項、不要改門檻。最後更新 golden match 的值。
+> 依 `gdd/05_game_spec.md` 與 `.claude/skills/lite-skillgame-stack/SKILL.md`，改寫 `game/src/sim/sim.js`（匯出 `GAME`，只 import `./core/index.js`）、`game/tools/strategies.mjs`（§9 比較策略）、`game/test/determinism.test.mjs`（§12，保留測試名稱）。不要修改 `src/sim/core/` 與 `test/core.test.mjs`。完成後跑 `npm test` 與 `npm run evidence`，未達門檻就回報哪一項、不要改門檻（門檻只在 rules.json）。確認用題目（`npm run evidence:confirm`）留給人在策略凍結後跑。最後更新 golden match 的值。
 
 ---
 

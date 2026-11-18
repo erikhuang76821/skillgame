@@ -73,8 +73,8 @@
     {
       "id": "RULE-SKILL-DOMINANCE",
       "category": "fairness",
-      "level": "must",
-      "scope": { "selector": { "kind": "game-build" } },
+      "level": "should",
+      "scope": { "selector": { "kind": "game-build", "game": ["GateLane", "SwarmDuel", "TwinStrike"] } },
       "constraints": [
         { "name": "skillShare", "op": ">=", "value": 0.7, "unit": "ratio", "overridePolicy": "forbid" },
         { "name": "topWinRate", "op": ">=", "value": 0.7, "unit": "ratio", "overridePolicy": "forbid" }
@@ -83,14 +83,14 @@
       "enforcement": { "type": "script", "ref": "<Game>/game/tools/lib/dominance.mjs（範本 templates/tools/lib/dominance.mjs）" },
       "whyRef": "knowledge-base/01_skill-integrity.md",
       "howRef": "knowledge-base/12_genre-recipes.md",
-      "source": "knowledge-base/01_skill-integrity.md §4",
-      "reviewedAt": "2026-10-21"
+      "source": "knowledge-base/01_skill-integrity.md §4。2026-11-17 起只是現有三款的回歸警報（舊配方指標，不作跨品類或法律結論）；新遊戲改用 RULE-SKILL-EVIDENCE 等四條，見 knowledge-base/decisions/2026-11-11-skill-evidence.md §4",
+      "reviewedAt": "2026-11-17"
     },
     {
       "id": "RULE-SKILL-BASELINE",
       "category": "fairness",
       "level": "should",
-      "scope": { "selector": { "kind": "game-build" } },
+      "scope": { "selector": { "kind": "game-build", "game": ["GateLane", "SwarmDuel", "TwinStrike"] } },
       "constraints": [
         { "name": "baselineRatio", "op": "<=", "value": 0.5, "unit": "ratio", "overridePolicy": "with-reason" }
       ],
@@ -98,8 +98,8 @@
       "enforcement": { "type": "script", "ref": "<Game>/game/tools/lib/dominance.mjs（範本 templates/tools/lib/dominance.mjs）" },
       "whyRef": "knowledge-base/01_skill-integrity.md §4",
       "howRef": "knowledge-base/01_skill-integrity.md §4",
-      "source": "GateLane N2 審查（2026-11-10）：一條「選數字大的門」規則 30 局贏 28 局、拿到 expert 60% 的分數，技巧佔比 91.4% 卻沒抓到。門檻是起始假設，有真人資料後再校",
-      "reviewedAt": "2026-11-10"
+      "source": "GateLane N2 審查（2026-11-10）：一條「選數字大的門」規則 30 局贏 28 局、拿到 expert 60% 的分數，技巧佔比 91.4% 卻沒抓到。門檻是起始假設，有真人資料後再校。2026-11-17 起只是現有三款的回歸警報；新遊戲由 RULE-SKILL-CLOSENESS 的人工判定取代，沒有獨立門檻（knowledge-base/decisions/2026-11-11-skill-evidence.md §4）",
+      "reviewedAt": "2026-11-17"
     },
     {
       "id": "RULE-SKILL-EVIDENCE",
@@ -305,7 +305,7 @@
       "level": "must",
       "scope": { "selector": { "kind": "game-folder" } },
       "constraints": [
-        { "name": "required", "value": ["README.md", "gdd/03_skill_integrity.md", "gdd/05_game_spec.md", "gdd/10_tech_constraints.md", "gdd/11_risks_open.md", "docs/skill_dominance_report.md"], "unit": "path", "overridePolicy": "with-reason" },
+        { "name": "required", "value": ["README.md", "gdd/03_skill_integrity.md", "gdd/05_game_spec.md", "gdd/10_tech_constraints.md", "gdd/11_risks_open.md"], "unit": "path", "overridePolicy": "with-reason" },
         { "name": "requiredIfScriptedProgression", "value": ["gdd/07_difficulty_curve.md", "docs/playtest_report.md"], "unit": "path", "check": "只在 game.profile.json 的 scriptedProgression 為 true 時必備；為 false 時不要求；沒填則 audit 不通過（資料待補）", "overridePolicy": "with-reason" },
         { "name": "specSections", "value": ["§0", "§1", "§2", "§3", "§4", "§5", "§6", "§7", "§8", "§9", "§10", "§11", "§12"], "unit": "heading", "overridePolicy": "forbid" }
       ],
@@ -321,7 +321,7 @@
       "category": "process",
       "level": "must",
       "scope": { "selector": { "kind": "game-folder" } },
-      "constraints": [{ "name": "noFail", "check": "docs/skill_dominance_report.md 與 docs/playtest_report.md（有產生的才檢查；哪些必備見 RULE-GAME-DOCS）由工具產生，且不含未通過標記（❌ / ✘ / FAIL）", "overridePolicy": "forbid" }],
+      "constraints": [{ "name": "noFail", "check": "docs/skill_evidence_report.md、docs/skill_dominance_report.md 與 docs/playtest_report.md（有產生的才檢查；skill_dominance_report.md 只記警告；哪些必備見 RULE-GAME-DOCS）由工具產生，且不含未通過標記（❌ / ✘ / FAIL）", "overridePolicy": "forbid" }],
       "measurement": "game-audit 掃描報告文字",
       "enforcement": { "type": "script", "ref": "shared/tools/game-audit.mjs" },
       "whyRef": "knowledge-base/16_difficulty-curve.md",
@@ -360,7 +360,7 @@
       "category": "process",
       "level": "must",
       "scope": { "selector": { "kind": "game-folder" } },
-      "constraints": [{ "name": "matchVersion", "check": "docs/skill_dominance_report.md 與 docs/playtest_report.md（有產生的才檢查）標記的 sim 版本（「<id> vN」或「sim vN」）等於 sim.js 匯出的 GAME.version；dominance 報告的 id 等於 GAME.id", "overridePolicy": "forbid" }],
+      "constraints": [{ "name": "matchVersion", "check": "docs/skill_evidence_report.md、docs/skill_dominance_report.md 與 docs/playtest_report.md（有產生的才檢查）標記的 sim 版本（「<id> vN」或「sim vN」）等於 sim.js 匯出的 GAME.version；技巧證據與 dominance 報告的 id 等於 GAME.id。技巧證據報告是否必備由 N5 的產出把關：N5 對所有遊戲要求它與確認紀錄（現有三款還沒有，N5 會擋住）。docs/skill_dominance_report.md 屬於只用於現有三款的舊規則，它的未通過或過期只記警告", "overridePolicy": "forbid" }],
       "measurement": "game-audit 匯入 <Game>/game/src/sim/sim.js 讀 GAME，比對報告開頭的版本標記",
       "enforcement": { "type": "script", "ref": "shared/tools/game-audit.mjs" },
       "whyRef": "knowledge-base/16_difficulty-curve.md §6 調校流程第 3 步（影響結果的改動要重產報告）",

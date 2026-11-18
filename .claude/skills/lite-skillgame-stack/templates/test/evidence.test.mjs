@@ -1,22 +1,30 @@
-// The skill-evidence tool (tools/lib/evidence.mjs) and the turn-based example it is validated on.
-// Keep this file unchanged in every game; delete the example's tests if you delete examples/ends/.
+// The skill-evidence tool itself (tools/lib/evidence.mjs), checked on games defined here and on the turn-based example.
+// It does not import your game: keep this file unchanged in every game (delete the example's tests if you delete
+// examples/ends/). The tests that run the tool and the command line on YOUR game are in evidence-game.test.mjs.
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { spawnSync } from 'node:child_process';
-import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
-import { tmpdir } from 'node:os';
-import { join } from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { hash32, playMatch, verify } from '../src/sim/core/index.js';
 import { GAME as ENDS, MOVES } from '../examples/ends/sim.js';
 import { STRATEGIES as ENDS_STRATEGIES } from '../examples/ends/strategies.mjs';
-import { GAME as DEMO } from '../src/sim/sim.js';
-import { STRATEGIES as DEMO_STRATEGIES } from '../tools/strategies.mjs';
 import { checkLedger, checkStrategies, questions, recordConfirmation, runEvidence, signTest, toMarkdown } from '../tools/lib/evidence.mjs';
 
 // Test fixture for the library: the command line takes the real values from RULE-SKILL-EVIDENCE (see the CLI tests).
 const T = { alpha: 0.05, minQuestions: 30 };
 const close = (a, b, eps = 1e-12) => assert.ok(Math.abs(a - b) <= eps, `${a} vs ${b}`);
+
+// A tick-driven game defined here (no choices): 8 ticks, tapping on tick k scores 1 or 2 depending on the seed.
+const TICKS = Object.freeze({
+  id: 'test-ticks', version: 1, maxTicks: 8,
+  createSim: seed => ({ seed: seed >>> 0, tick: 0, score: 0 }),
+  step(sim, input) { if (sim.tick >= 8) return; if (input & 1) sim.score += 1 + ((sim.seed >>> sim.tick) & 1); sim.tick++; },
+  phase: sim => (sim.tick >= 8 ? 'over' : 'play'), score: sim => sim.score, stateHash: sim => sim.score * 31 + sim.tick,
+});
+const tickStrategy = (role, input) => ({ role, sees: 'x', limits: 'y', policy: { input } });
+const TICK_STRATEGIES = {
+  'tap every tick': tickStrategy('strong', () => 1),
+  'tap at random': tickStrategy('random', sim => hash32(sim.seed, 5, sim.tick) & 1),
+  'tap on even ticks': tickStrategy('simple', sim => (sim.tick % 2 === 0 ? 1 : 0)),
+};
 
 test('sign test matches hand-computed binomial tails', () => {
   close(signTest(5, 0), 1 / 32);
@@ -86,7 +94,7 @@ test('no verdict without thresholds; too few questions cannot pass; a strategy a
 
 test('strategy sets are validated: roles, policies, and what each strategy sees', () => {
   assert.deepEqual(checkStrategies(ENDS_STRATEGIES), []);
-  assert.deepEqual(checkStrategies(DEMO_STRATEGIES), []);
+  assert.deepEqual(checkStrategies(TICK_STRATEGIES), []);
   const { optimal, ...noStrong } = ENDS_STRATEGIES;
   assert.match(checkStrategies(noStrong).join('\n'), /恰好一個 strong/);
   assert.match(checkStrategies({ ...ENDS_STRATEGIES, extra: { role: 'strong', sees: 'x', limits: 'y', policy: { pick: () => 0 } } }).join('\n'), /恰好一個 strong/);
@@ -95,13 +103,14 @@ test('strategy sets are validated: roles, policies, and what each strategy sees'
   assert.throws(() => runEvidence(ENDS, noStrong), /策略定義不完整/);
 });
 
-test('the same tool runs a tick-driven game (the demo) without knowing about ticks', () => {
-  const r = runEvidence(DEMO, DEMO_STRATEGIES, { n: 30, thresholds: T });
-  assert.equal(r.game, DEMO.id);
-  assert.equal(r.pairs.length, Object.keys(DEMO_STRATEGIES).length - 1);
+test('the same tool runs a tick-driven game without knowing about ticks', () => {
+  const r = runEvidence(TICKS, TICK_STRATEGIES, { n: 40, thresholds: T });
+  assert.equal(r.game, TICKS.id);
+  assert.equal(r.pairs.length, 2);
+  for (const p of r.pairs) assert.equal(p.losses, 0, `${p.other}: tapping every tick never scores less`);
   assert.equal(r.verdict.pass, true);
   const md = toMarkdown(r);
-  assert.match(md, new RegExp(`^# Skill Evidence Report — ${DEMO.id} v${DEMO.version}（自動產生）`));
+  assert.match(md, new RegExp(`^# Skill Evidence Report — ${TICKS.id} v${TICKS.version}（自動產生）`));
   assert.match(md, /調校用（不能當確認證據）/);
   assert.match(md, /簡單策略的接近程度（人工判定，沒有通過線）/);
 });
@@ -204,12 +213,12 @@ test('large batches do not overflow the stack', () => {
 });
 
 test('a strategy must fit the game, play without failing, and give the same result twice', () => {
-  const pickOnly = { ...DEMO_STRATEGIES, expert: { ...DEMO_STRATEGIES.expert, policy: { pick: () => 0 } } };
-  assert.match(checkStrategies(pickOnly, DEMO).join('\n'), /expert: 這款遊戲會跑 tick/);
-  assert.throws(() => runEvidence(DEMO, pickOnly, { n: 5 }), /策略定義不完整/);
+  const pickOnly = { ...TICK_STRATEGIES, 'tap every tick': { ...TICK_STRATEGIES['tap every tick'], policy: { pick: () => 0 } } };
+  assert.match(checkStrategies(pickOnly, TICKS).join('\n'), /tap every tick: 這款遊戲會跑 tick/);
+  assert.throws(() => runEvidence(TICKS, pickOnly, { n: 5 }), /策略定義不完整/);
   const inputOnly = { ...ENDS_STRATEGIES, optimal: { ...ENDS_STRATEGIES.optimal, policy: { input: () => 0 } } };
   assert.match(checkStrategies(inputOnly, ENDS).join('\n'), /optimal: 這款遊戲有選擇/);
-  assert.deepEqual([checkStrategies(DEMO_STRATEGIES, DEMO), checkStrategies(ENDS_STRATEGIES, ENDS)], [[], []]);
+  assert.deepEqual([checkStrategies(TICK_STRATEGIES, TICKS), checkStrategies(ENDS_STRATEGIES, ENDS)], [[], []]);
 
   const illegal = { ...COIN_STRATEGIES, zero: strat('simple', () => 5) };
   assert.throws(() => runEvidence(coin(), illegal, { n: 5 }), /策略「zero」在題目 \d+ 失敗/);
@@ -222,14 +231,6 @@ test('a strategy must fit the game, play without failing, and give the same resu
   const third = questions(2026, 5)[2], seen = new Map();
   const late = { ...COIN_STRATEGIES, flip: strat('random', sim => { const c = seen.get(sim.seed) ?? 0; seen.set(sim.seed, c + 1); return sim.seed === third ? c & 1 : 1; }) };
   assert.throws(() => runEvidence(coin(), late, { n: 5 }), new RegExp(`策略「flip」在題目 ${third} 重跑的結果不同`));
-});
-
-test('the demo random strategy plays every beat: it scores, but far below the strong strategy', () => {
-  const r = runEvidence(DEMO, DEMO_STRATEGIES, { n: 30 });
-  const random = r.pairs.find(p => p.role === 'random');
-  const simple = Math.max(...r.pairs.filter(p => p.role === 'simple').map(p => p.scoreRatio));
-  assert.ok(random.scoreRatio > 0.02 && random.scoreRatio < 0.8, `ratio ${random.scoreRatio}`);
-  assert.ok(random.scoreRatio > simple, 'it plays the beats, unlike tapping blind');
 });
 
 test('a confirmation batch cannot be re-drawn: question count, seedBase, thresholds and result are frozen', () => {
@@ -287,85 +288,3 @@ test('report wording: thresholds are the caller\'s, the verdict is the automatic
   assert.match(md, /\| uniform random end \| random \|.*%.*\|/, 'the score ratio is reported for every pair, not only the simple ones');
 });
 
-// ---------- command line ----------
-const CLI = fileURLToPath(new URL('../tools/skill-evidence.mjs', import.meta.url));
-const cli = (args, cwd) => spawnSync(process.execPath, [CLI, ...args], { encoding: 'utf8', cwd });
-
-test('CLI: misuse exits 2 without running; thresholds come from the rules; a tuning run exits 0', async () => {
-  for (const args of [['0'], ['1.5'], ['30', '40'], ['--bogus'], ['--alpha', '0.5'], ['--min-questions', '1'], ['--out'], ['--ledger', '--confirm'],
-    ['--generation', '2'], ['--confirm', '30'], ['5', '--out', join(tmpdir(), 'no-such-dir-evidence', 'x', 'report.md')]]) {
-    const r = cli(args);
-    assert.equal(r.status, 2, `${args.join(' ')} -> ${r.status}\n${r.stderr}`);
-    assert.match(r.stderr, /✘/); assert.equal(r.stdout, '', args.join(' '));
-  }
-  // Thresholds come from the rules (never the command line); with no count, the rule's minimum is the batch size.
-  const { loadRules } = await import(new URL('../../../../../shared/tools/rules.mjs', import.meta.url).href);
-  const rules = loadRules({ from: fileURLToPath(import.meta.url) });
-  const alpha = rules.value('RULE-SKILL-EVIDENCE', 'alpha'), min = rules.value('RULE-SKILL-EVIDENCE', 'minQuestions');
-  const ok = cli([]);
-  assert.equal(ok.status, 0, ok.stderr);
-  assert.ok(ok.stdout.includes(`題目：${min} 題`) && ok.stdout.includes(`門檻取自 RULE-SKILL-EVIDENCE：顯著水準 ${alpha}、至少 ${min} 題`), ok.stdout.slice(0, 600));
-  assert.match(ok.stdout, /調校用（不能當確認證據）[\s\S]*排除純運氣 → \*\*通過\*\*/);
-  const tooFew = cli([String(min - 1)]);
-  assert.equal(tooFew.status, 1, 'a failed verdict is exit 1, not misuse');
-  assert.match(tooFew.stdout, /題數不足/);
-});
-
-test('CLI: the confirmation ledger is frozen, found by its path from any working directory, and never overwritten when damaged', () => {
-  const dir = mkdtempSync(join(tmpdir(), 'evidence-'));
-  try {
-    const ledger = join(dir, 'ledger.json'), json = join(dir, 'table.json');
-    // The gate's command never opens a batch: no ledger, an empty one, or JSON null are all refused, and nothing is written.
-    for (const content of [null, '[]', 'null']) {
-      if (content !== null) writeFileSync(ledger, content, 'utf8'); else rmSync(ledger, { force: true });
-      const gate = cli(['--confirm', '--require-recorded', '--ledger', ledger]);
-      assert.equal(gate.status, 2, `${content}: ${gate.stderr}`); assert.match(gate.stderr, /第一次確認要在策略凍結後由人下/);
-      assert.equal(existsSync(ledger) ? readFileSync(ledger, 'utf8') : null, content);
-    }
-    assert.equal(cli(['--require-recorded']).status, 2, 'only with --confirm');
-    rmSync(ledger, { force: true });
-    const first = cli(['30', '--confirm', '--ledger', ledger, '--json', json]);
-    assert.equal(first.status, 0, first.stderr);
-    const entries = JSON.parse(readFileSync(ledger, 'utf8'));
-    assert.deepEqual(entries.map(e => [e.generation, e.n, e.game]), [[1, 30, DEMO.id]]);
-    const table = JSON.parse(readFileSync(json, 'utf8'));
-    for (const f of ['tools/strategies.mjs', 'tools/bots.mjs', 'src/sim/sim.js', 'src/sim/core/index.js', 'src/sim/core/rng.js', 'src/sim/core/match.js',
-      'tools/skill-evidence.mjs', 'tools/lib/evidence.mjs']) {
-      assert.ok(table.hashedFiles.includes(f), `the hash covers ${f}`);
-    }
-    assert.equal(entries[0].strategyHash, table.strategyHash);
-
-    // Same batch from another working directory with a relative ledger path resolved there: same file, a plain re-run.
-    const again = cli(['30', '--confirm', '--ledger', 'ledger.json'], dir);
-    assert.equal(again.status, 0, again.stderr);
-    assert.deepEqual(JSON.parse(readFileSync(ledger, 'utf8')), entries);
-
-    // A refused run writes nothing at all: not the ledger, and not the report it was asked to write.
-    const out = join(dir, 'report.md');
-    writeFileSync(out, 'kept', 'utf8');
-    const redraw = cli(['40', '--confirm', '--ledger', ledger, '--out', out, '--json', join(dir, 'refused.json')]);
-    assert.equal(redraw.status, 2); assert.match(redraw.stderr, /n 與紀錄不同[\s\S]*第 2 批/);
-    assert.equal(readFileSync(out, 'utf8'), 'kept');
-    assert.equal(existsSync(join(dir, 'refused.json')), false);
-    const skip = cli(['30', '--confirm', '--generation', '3', '--ledger', ledger]);
-    assert.equal(skip.status, 2); assert.match(skip.stderr, /下一批是第 2 批/);
-    assert.deepEqual(JSON.parse(readFileSync(ledger, 'utf8')), entries, 'refused runs write nothing');
-    const next = cli(['40', '--confirm', '--generation', '2', '--ledger', ledger]);
-    assert.equal(next.status, 0, next.stderr);
-    assert.deepEqual(JSON.parse(readFileSync(ledger, 'utf8')).map(e => [e.generation, e.n]), [[1, 30], [2, 40]]);
-    // With no count, a re-run keeps the recorded batch's count (40 here, not the rule's minimum): this is what the gate runs.
-    const notYet = cli(['--confirm', '--require-recorded', '--generation', '3', '--ledger', ledger]);
-    assert.equal(notYet.status, 2); assert.match(notYet.stderr, /第 3 批還沒有紀錄/);
-    const rerun = cli(['--confirm', '--require-recorded', '--ledger', ledger, '--out', out]);
-    assert.equal(rerun.status, 0, rerun.stderr);
-    assert.match(readFileSync(out, 'utf8'), /題目：40 題[\s\S]*確認用第 2 批/);
-    assert.equal(JSON.parse(readFileSync(ledger, 'utf8')).length, 2);
-
-    for (const damaged of ['{ not json', JSON.stringify({ entries })]) {
-      writeFileSync(ledger, damaged, 'utf8');
-      const r = cli(['30', '--confirm', '--ledger', ledger]);
-      assert.equal(r.status, 2, r.stderr); assert.match(r.stderr, /紀錄檔/);
-      assert.equal(readFileSync(ledger, 'utf8'), damaged, 'a damaged ledger is left for a person to repair');
-    }
-  } finally { rmSync(dir, { recursive: true, force: true }); }
-});

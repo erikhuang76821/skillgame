@@ -13,8 +13,8 @@
 | **N1-derandomize** 去隨機化 | [01_skill-integrity](../../../../knowledge-base/01_skill-integrity.md)（5）、[03_design-patterns](../../../../knowledge-base/03_design-patterns.md)（1）、[16_difficulty-curve](../../../../knowledge-base/16_difficulty-curve.md)（1）、[13_input-fairness](../../../../knowledge-base/13_input-fairness.md)（3）、[04_tech-stack](../../../../knowledge-base/04_tech-stack.md)（1） | `gdd/03_skill_integrity.md` | — |
 | **N2-spec** 玩法規格（含改編題改造對照） ✋ | [01_skill-integrity](../../../../knowledge-base/01_skill-integrity.md)（6）、[16_ad-funnel-games](../../../../knowledge-base/16_ad-funnel-games.md)（5）、[12_genre-recipes](../../../../knowledge-base/12_genre-recipes.md)（4）、[13_input-fairness](../../../../knowledge-base/13_input-fairness.md)（4）、[03_design-patterns](../../../../knowledge-base/03_design-patterns.md)（5）、[16_difficulty-curve](../../../../knowledge-base/16_difficulty-curve.md)（1）、[02_market-and-legal](../../../../knowledge-base/02_market-and-legal.md)（3）、[15_reference-games](../../../../knowledge-base/15_reference-games.md)（1）、[04_tech-stack](../../../../knowledge-base/04_tech-stack.md)（1） | `gdd/05_game_spec.md`、`gdd/10_tech_constraints.md`、`gdd/11_risks_open.md` | `RULE-SPEC-FAIRNESS`、`RULE-AF-ADAPTATION` |
 | **N3-scaffold** 起手（複製範本） | [12_genre-recipes](../../../../knowledge-base/12_genre-recipes.md)（4）、[11_terrain-style-kit](../../../../knowledge-base/11_terrain-style-kit.md)（1） | `game/package.json` | `TEST-UNIT` |
-| **N4-sim** 確定性 sim、bots、golden | [04_tech-stack](../../../../knowledge-base/04_tech-stack.md)（4）、[03_design-patterns](../../../../knowledge-base/03_design-patterns.md)（1）、[16_difficulty-curve](../../../../knowledge-base/16_difficulty-curve.md)（1）、[12_genre-recipes](../../../../knowledge-base/12_genre-recipes.md)（4）、[13_input-fairness](../../../../knowledge-base/13_input-fairness.md)（4）、[01_skill-integrity](../../../../knowledge-base/01_skill-integrity.md)（2） | `game/src/sim/sim.js`、`game/test/determinism.test.mjs`、`game/tools/bots.mjs` | `RULE-SIM-PURITY`、`RULE-SPEC-CONSTANTS`、`TEST-UNIT` |
-| **N5-tune** 技巧主導與難度曲線 | [01_skill-integrity](../../../../knowledge-base/01_skill-integrity.md)（1）、[16_difficulty-curve](../../../../knowledge-base/16_difficulty-curve.md)（7） | `docs/skill_dominance_report.md`、`docs/playtest_report.md`（`scriptedProgression` 時）、`gdd/07_difficulty_curve.md`（`scriptedProgression` 時） | `RULE-SKILL-DOMINANCE`、`RULE-SKILL-BASELINE`、`RULE-CURVE-*` |
+| **N4-sim** 確定性 sim、比較策略、golden | [04_tech-stack](../../../../knowledge-base/04_tech-stack.md)（4）、[03_design-patterns](../../../../knowledge-base/03_design-patterns.md)（1）、[16_difficulty-curve](../../../../knowledge-base/16_difficulty-curve.md)（1）、[12_genre-recipes](../../../../knowledge-base/12_genre-recipes.md)（4）、[13_input-fairness](../../../../knowledge-base/13_input-fairness.md)（4）、[01_skill-integrity](../../../../knowledge-base/01_skill-integrity.md)（2） | `game/src/sim/sim.js`、`game/test/determinism.test.mjs`、`game/tools/strategies.mjs` | `RULE-SIM-PURITY`、`RULE-SPEC-CONSTANTS`、`TEST-UNIT` |
+| **N5-tune** 技巧證據與難度曲線 | [01_skill-integrity](../../../../knowledge-base/01_skill-integrity.md)（1）、[16_difficulty-curve](../../../../knowledge-base/16_difficulty-curve.md)（7） | `docs/skill_evidence_report.md`、`docs/skill_evidence_ledger.json`、`docs/playtest_report.md`（`scriptedProgression` 時）、`gdd/07_difficulty_curve.md`（`scriptedProgression` 時） | `RULE-SKILL-EVIDENCE`、`RULE-SKILL-NOT-LUCK`、`RULE-SKILL-BEATS-SIMPLE`、`RULE-SKILL-DOMINANCE`、`RULE-SKILL-BASELINE`、`RULE-CURVE-*` |
 | **N6-art** 美術：生成、審查、登錄 ✋ | [10_asset-library](../../../../knowledge-base/10_asset-library.md)（2）、[06_art-pipeline](../../../../knowledge-base/06_art-pipeline.md)（5）、[05_juice-and-feel](../../../../knowledge-base/05_juice-and-feel.md)（1）、[11_terrain-style-kit](../../../../knowledge-base/11_terrain-style-kit.md)（5）、[07_themes-and-liveops](../../../../knowledge-base/07_themes-and-liveops.md)（3） | `art/`、`game/src/assets/` | `RULE-ASSET-REGISTER`、`RULE-ART-TW-TABOO` |
 | **N7-feel** 手感、音效、UI | [05_juice-and-feel](../../../../knowledge-base/05_juice-and-feel.md)（5）、[14_audio](../../../../knowledge-base/14_audio.md)（4）、[04_tech-stack](../../../../knowledge-base/04_tech-stack.md)（1）、[15_reference-games](../../../../knowledge-base/15_reference-games.md)（3） | `game/src/fx/feel.js`、`game/src/audio/sfx.js`、`game/src/ui/` | `RULE-FX-FILTER`、`RULE-TEMPLATE-LEFTOVER` |
 | **N8-budget** 包體與 Draw Call | [04_tech-stack](../../../../knowledge-base/04_tech-stack.md)（6）、[13_input-fairness](../../../../knowledge-base/13_input-fairness.md)（1）、[01_skill-integrity](../../../../knowledge-base/01_skill-integrity.md)（1） | — | `RULE-BUNDLE-SIZE`、`RULE-NO-RUNTIME-CDN`、`RULE-DRAWCALL-*` |
@@ -28,7 +28,7 @@
 - **來源是廣告玩法或既有遊戲（「復刻」「改編」）**：N2 會取對應 `ad-funnel/af-*.md` 的全部段落，尤其「Skill Game 化改造（必做）」；`gdd/05_game_spec.md` §13 要逐條回應。
 - 玩法規格照 [game-spec-template.md](game-spec-template.md) 填 §0–§12。
 - **「復刻」只復刻玩法結構與操作**：規格書的改造清單照做，或在 gdd/05 §13 逐條寫不採用的理由；名稱、美術、音效全部原創。
-- **完成條件**：`npm test`、`npm run size`、`node tools/skill-dominance.mjs 30`、`npm run playtest`、`npm run audit` 全過。難度曲線的檢查、`gdd/07` 與試玩報告只對有腳本進程的遊戲要求（`game.profile.json` 的 `scriptedProgression` 為 false 的遊戲不適用）。`audit`（`shared/tools/game-audit.mjs`）不只看檔案在不在，也拿文件對照程式（規則全在 `knowledge-base/index/rules.json`）：
+- **完成條件**：`npm test`、`npm run size`、`npm run evidence:confirm`（策略凍結後由人跑一次）、`npm run playtest`、`npm run audit` 全過。難度曲線的檢查、`gdd/07` 與試玩報告只對有腳本進程的遊戲要求（`game.profile.json` 的 `scriptedProgression` 為 false 的遊戲不適用）。`audit`（`shared/tools/game-audit.mjs`）不只看檔案在不在，也拿文件對照程式（規則全在 `knowledge-base/index/rules.json`）：
   - 必要：`RULE-GAME-DOCS`（gdd 齊全、規格 §0–§12）、`RULE-GAME-REPORTS`（報告無未通過項）、`RULE-REPORT-FRESH`（報告的 sim 版本 = `GAME.version`）、`RULE-SPEC-CONSTANTS`（規格寫成 `` `NAME` = 數值 `` 的常數與 sim 同名匯出一致）、`RULE-SPEC-FAIRNESS`（§10 精髓七條都有答案）、`RULE-AF-ADAPTATION`、`RULE-SIM-PURITY`（sim/ 程式碼沒有 DOM / 時鐘 / 未播種亂數）
   - 警告：`RULE-TEMPLATE-LEFTOVER`、`RULE-KB-CITED`（README / gdd 每階段連到知識庫）、`RULE-ASSET-REGISTER`（遊戲內圖檔 / 音檔都登錄在本作 `art/manifest.json`，改完跑 `node shared/tools/index-build.mjs`；動手前先查[中央資產索引](../../../../knowledge-base/index/INDEX.md)與 [10 資產庫](../../../../knowledge-base/10_asset-library.md)，有沒有可重用、可照 prompt 重生、或標 `reusable` 的配方）
 - **pre-commit**：`git config core.hooksPath .githooks` 後，commit 時自動跑碰到的遊戲的 `npm test` 與 audit。
@@ -48,9 +48,9 @@ cd <NewGame>/game && npm install && npm run dev
 換成正式玩法：
 
 1. 讀完 §0，填 [game-spec-template.md](game-spec-template.md)（存成 `<NewGame>/gdd/05_game_spec.md`；改編題加 §13）。
-2. 依規格改寫 `src/sim/sim.js`（匯出 `GAME`，難度用固定腳本）、`tools/bots.mjs`（技巧分級）、`tools/humanBots.mjs`（人性化失誤模型）、`tools/playtest.mjs`（本作的單位與難度指數 DI）、`test/determinism.test.mjs`、`main.js` 的 `playJuice`、`fx/feel.js`、`audio/sfx.js`。
+2. 依規格改寫 `src/sim/sim.js`（匯出 `GAME`，難度用固定腳本）、`tools/strategies.mjs`（強、隨機、簡單三種比較策略）、`tools/humanBots.mjs`（人性化失誤模型）、`tools/playtest.mjs`（本作的單位與難度指數 DI）、`test/determinism.test.mjs`、`main.js` 的 `playJuice`、`fx/feel.js`、`audio/sfx.js`。
 3. **不要改** `src/sim/core/`、`test/core.test.mjs`、`tools/lib/`（遊戲無關，跨專案共用）。
-4. `npm test` + `node tools/skill-dominance.mjs 30` + `npm run playtest`（有腳本進程的遊戲）過門檻後，更新 golden match 的值；最後 `npm run audit`。
+4. `npm test` + `npm run evidence` + `npm run playtest`（有腳本進程的遊戲）過門檻後，更新 golden match 的值；策略凍結後由人跑一次 `npm run evidence:confirm`（N5 關卡只重跑已記錄的確認批次）；最後 `npm run audit`。
 
 ## 2. 目錄結構
 
@@ -58,16 +58,16 @@ cd <NewGame>/game && npm install && npm run dev
 <NewGame>/
 ├─ README.md            定位、指令、套用的 skill
 ├─ gdd/                 gdd-framework 產出；必備 03 / 05 / 10 / 11，有腳本進程的遊戲另加 07（RULE-GAME-DOCS）；10_tech_constraints.md 寫本專案對本 skill 的覆寫
-├─ docs/               size_budget.md、skill_dominance_report.md、playtest_report.md（工具產生）
+├─ docs/               size_budget.md、skill_evidence_report.md + skill_evidence_ledger.json、playtest_report.md（工具產生）
 ├─ art/                 生圖 prompt、原始輸出、最終 atlas 來源
 └─ game/
    ├─ index.html        #stage > #stage-shake > canvas；#fx、#hud 為兄弟節點
    ├─ vite.config.js
    ├─ scripts/size-check.mjs
    ├─ public/           transcoders/、音樂等不經打包的檔案
-   ├─ test/             core.test.mjs（核心保證，不改）、determinism.test.mjs（本作規則、golden match）、terrain.test.mjs（地形保證）
-   ├─ tools/            bots.mjs（技巧分級 bot）、skill-dominance.mjs、humanBots.mjs + playtest.mjs（難度曲線 D1–D8）、
-   │                    lib/dominance.mjs + lib/curve.mjs（通用統計，不改）、tile_check.py / tile_prep.py（材質 tile 驗收與後處理，需 Pillow）
+   ├─ test/             core.test.mjs（核心保證，不改）、determinism.test.mjs（本作規則、golden match、調校題目上的技巧證據）、evidence.test.mjs（技巧證據工具，不改）、evidence-game.test.mjs（本作策略與指令列，數值依本作改寫）、terrain.test.mjs（地形保證）
+   ├─ tools/            strategies.mjs（比較策略）+ skill-evidence.mjs、bots.mjs + skill-dominance.mjs（舊配方，新遊戲刪掉；`lib/dominance.mjs` 在保留 `examples/` 時留著）、humanBots.mjs + playtest.mjs（難度曲線 D1–D8）、
+   │                    lib/evidence.mjs + lib/dominance.mjs + lib/curve.mjs（通用統計，不改）、tile_check.py / tile_prep.py（材質 tile 驗收與後處理，需 Pillow）
    ├─ examples/         rhythm/、billiards/：配方範例 GameDef + bots（不需要就刪，連同 test/recipes.test.mjs）
    └─ src/
       ├─ main.js        開機、GSAP 全域設定、固定步長迴圈

@@ -75,7 +75,7 @@
       "checkpoint": null
     },
     {
-      "id": "N4-sim", "name": "確定性 sim、bots、golden",
+      "id": "N4-sim", "name": "確定性 sim、比較策略、golden",
       "after": ["N3-scaffold"],
       "pull": {
         "kb": [
@@ -84,23 +84,24 @@
         ]
       },
       "budget": { "kbTokens": 6000 },
-      "produces": ["game/src/sim/sim.js", "game/test/determinism.test.mjs", "game/tools/bots.mjs"],
+      "produces": ["game/src/sim/sim.js", "game/test/determinism.test.mjs", "game/tools/strategies.mjs"],
       "gate": { "must": ["RULE-SIM-PURITY", "RULE-SPEC-CONSTANTS"], "tests": ["TEST-UNIT"] },
       "onFail": [{ "when": "規格與 sim 對不上、要改規格", "goto": "N2-spec", "hint": "改規格要 GAME.version+1" }],
       "maxIterations": 5,
       "checkpoint": null
     },
     {
-      "id": "N5-tune", "name": "技巧主導與難度曲線",
+      "id": "N5-tune", "name": "技巧證據與難度曲線",
       "after": ["N4-sim"],
       "pull": { "kb": { "topic": ["difficulty"], "genre": ["$profile.genre"], "kind": ["method", "principle", "lesson"] } },
       "budget": { "kbTokens": 6000 },
-      "produces": ["docs/skill_dominance_report.md"],
+      "produces": ["docs/skill_evidence_report.md", "docs/skill_evidence_ledger.json"],
       "producesWhen": { "scriptedProgression": ["docs/playtest_report.md", "gdd/07_difficulty_curve.md"] },
-      "gate": { "must": ["RULE-SKILL-DOMINANCE", "RULE-SKILL-BASELINE", "RULE-CURVE-*"] },
+      "gate": { "must": ["RULE-SKILL-EVIDENCE", "RULE-SKILL-NOT-LUCK", "RULE-SKILL-BEATS-SIMPLE", "RULE-SKILL-DOMINANCE", "RULE-SKILL-BASELINE", "RULE-CURVE-*"] },
       "onFail": [
-        { "rule": "RULE-SKILL-DOMINANCE", "goto": "N4-sim", "hint": "先調 sim 參數與 bots，不動門檻" },
-        { "rule": "RULE-SKILL-BASELINE", "goto": "N2-spec", "hint": "一句話規則就能玩到接近高手＝機制太淺，回規格加需要判斷的取捨（改規格要 GAME.version+1）" },
+        { "rule": "RULE-SKILL-EVIDENCE", "goto": "N4-sim", "hint": "策略檔不完整或題數不足：補 tools/strategies.mjs（強、隨機、簡單，各寫明看得到什麼與能力限制），不動門檻" },
+        { "rule": "RULE-SKILL-NOT-LUCK", "goto": "N2-spec", "hint": "強策略贏不了隨機策略＝結果主要由運氣決定：回規格改機制（改規格要 GAME.version+1）。改完要用下一批確認題" },
+        { "rule": "RULE-SKILL-BEATS-SIMPLE", "goto": "N2-spec", "hint": "先確認強策略已經盡力（N4）；若一句話規則真的追得上，機制太淺，回規格加需要判斷的取捨（改規格要 GAME.version+1）。改完要用下一批確認題" },
         { "rule": "RULE-CURVE-*", "goto": "N4-sim", "hint": "調難度腳本與段落表；結構問題回 N2" },
         { "when": "結構性問題", "goto": "N2-spec", "hint": "改規格要 GAME.version+1" }
       ],

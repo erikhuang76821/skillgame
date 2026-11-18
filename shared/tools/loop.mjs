@@ -284,8 +284,9 @@ export async function runGate(root, game, node, opts = {}) {
       detail = by.flatMap(t => (t.checklists ?? []).filter(c => c.rule === r.id).map(c => c.checklist)).join('；') || '人工審查';
     }
     else if (audit && by.some(t => t.kind === 'audit')) {   // audit is null when the audit card could not run (missing files): fall through to not-run
-      const items = audit.filter(x => x.rule === r.id), bad = items.filter(x => !x.ok);
-      result = bad.length ? 'fail' : 'pass';
+      // An audit row carries its own level: a should-level row that fails warns, even under a must rule.
+      const items = audit.filter(x => x.rule === r.id), bad = items.filter(x => !x.ok), hard = bad.filter(x => x.level !== 'should');
+      result = hard.length ? 'fail' : bad.length ? 'warn' : 'pass';
       detail = bad.length ? bad.map(x => `${x.item}：${x.detail}`).join('；').slice(0, 300) : items.length ? `${items.length} 項通過` : '本作沒有適用的檢查項';
     } else if (rows.some(x => x.status === 'fail')) { result = 'fail'; detail = rows.find(x => x.status === 'fail').detail; }
     else if (rows.some(x => x.status === 'blocked' || x.status === 'not-run')) { result = 'not-run'; detail = rows.find(x => x.status !== 'pass').detail; }

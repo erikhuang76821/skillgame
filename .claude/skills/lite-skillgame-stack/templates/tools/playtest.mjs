@@ -1,14 +1,12 @@
-// Whole-game automated playtest (knowledge-base/16 D1–D8): skill dominance with the tier bots, then the
-// difficulty curve with the human-factor bots, unit by unit. Rewrite the "units" part for your game: what one
+// Whole-game automated playtest (knowledge-base/16 D1–D8): the difficulty curve with the human-factor bots, unit by
+// unit. Skill evidence is a separate report (tools/skill-evidence.mjs). Rewrite the "units" part for your game: what one
 // unit is (bar, wave, room, 2-second slice), its difficulty index DI, and which targets the player hit in it.
 // Usage: node tools/playtest.mjs [seeds=30] [--out ../docs/playtest_report.md]   (exit 1 if a check fails)
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname } from 'node:path';
 import { hash32, TPS } from '../src/sim/core/index.js';
 import { GAME, createSim, step, phase, SCRIPT, sectionAt } from '../src/sim/sim.js';
-import { BOTS } from './bots.mjs';
 import { HUMANS } from './humanBots.mjs';
-import { runDominance, THRESHOLDS } from './lib/dominance.mjs';
 import { curveChecks, checksTable, mean, pct } from './lib/curve.mjs';
 
 const args = process.argv.slice(2);
@@ -53,10 +51,8 @@ for (const [name, bot] of Object.entries(HUMANS)) {
 
 // ---------- checks ----------
 const sections = SCRIPT.map(s => ({ name: s.name, main: !s.safe }));
-const dom = runDominance(GAME, BOTS, Math.min(N, 30));
 const curve = curveChecks(units, sections);
 const checks = [
-  { name: `技巧主導（skill share ≥ ${pct(THRESHOLDS.skillShare)}、最強 vs 次強 ≥ ${pct(THRESHOLDS.topWinRate)}）`, ok: dom.pass, detail: `${pct(dom.shares.skillTier)} / ${pct(dom.top)}` },
   ...curve.checks,
   // Rhythm games add RULE-CURVE-BEATGRID / RULE-CURVE-PHRASE here (TwinStrike/game/tools/playtest.mjs). Beat Tap has no bars.
   { name: '拍格與樂句長度（RULE-CURVE-BEATGRID / PHRASE，節奏類才檢查）', ok: null, detail: '示範遊戲沒有小節' },
