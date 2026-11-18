@@ -1,8 +1,8 @@
 // Whole-game automated playtest for LanternHold (knowledge-base/16 D1–D8): the scripted difficulty curve checked unit
 // by unit with the human-factor bots (tools/humanBots.mjs). Skill evidence is a separate report (tools/skill-evidence.mjs).
-//   unit     = one event section: from one event to the next (the opening before the first event is the warm-up).
-//              This game's difficulty steps are its events, so each step is one unit; 10-second slices are listed
-//              for reference only.
+//   unit     = one event: from its start to the next event (at least 25 s, so a short gap does not fake a spike)
+//   section  = a chapter that ends with a boss (knowledge-base/16: 段末頭目); the opening before the first event is
+//              the warm-up. 10-second slices are listed for reference only.
 //   DI       = enemy toughness arriving per second: Σ HP × armour factor (heavy ×2, since arrows do half) ÷ 10 s ÷ 10
 //   hit rate = hold rate: share of the enemies spawned in the unit that were stopped outside the wall ring
 //              (never came within WALL_R − 20 of the castle). The wall ring is the line the player builds and defends.
@@ -11,24 +11,31 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname } from 'node:path';
 import { Recorder, hash32, TPS, ONE } from '../src/sim/core/index.js';
-import { GAME, createSim, step, phase, EVENTS, FOE, MATCH_TICKS, CX, CY, WALL_R } from '../src/sim/sim.js';
+import { GAMES, DEFAULT_STAGE, step, phase, FOE, CX, CY, WALL_R } from '../src/sim/sim.js';
 import { HUMANS } from './humanBots.mjs';
 import { curveChecks, checksTable, mean, pct } from './lib/curve.mjs';
 
 const args = process.argv.slice(2);
 const N = Number(args.find(a => /^\d+$/.test(a))) || 30;
-const outIdx = args.indexOf('--out');
+const outIdx = args.indexOf('--out'), si = args.indexOf('--stage');
+const GAME = GAMES[si >= 0 ? args[si + 1] : DEFAULT_STAGE], createSim = GAME.createSim;
+const EVENTS = createSim(1).script.events, MATCH_TICKS = GAME.maxTicks;
 const seeds = Array.from({ length: N }, (_, i) => hash32(2026, 9, i));
 
 // ---------- sections and units ----------
-const sections = [{ name: '開局', from: 0, main: false }, ...EVENTS.map(e => ({ name: e.name, from: e.at, main: true }))];
+// chapters: warm-up, then one per boss (from the event after the previous boss up to and including this boss)
+const bossEv = EVENTS.filter(e => e.boss);
+const sections = [{ name: '開局', from: 0, main: false }, ...bossEv.map((b, k) => ({ name: `第 ${k + 1} 章（${b.name}）`, from: k ? bossEv[k - 1].at + 1 : EVENTS[0].at, main: true }))];
 const sectionAt = t => { let k = 0; for (let j = 0; j < sections.length; j++) if (t >= sections[j].from) k = j; return k; };
 const SLICE = 10 * TPS;
 const slices = Array.from({ length: MATCH_TICKS / SLICE }, (_, k) => ({ name: `${k * 10}–${k * 10 + 10} s`, from: k * SLICE, t: k * 10, section: sectionAt(k * SLICE) }));
 const sliceOf = tick => Math.min(slices.length - 1, Math.floor(tick / SLICE));
-const ends = sections.map((sec, k) => (k + 1 < sections.length ? sections[k + 1].from : MATCH_TICKS));
-const units = sections.map((sec, k) => ({ name: sec.name, from: sec.from, t: sec.from / TPS, section: k, secs: (ends[k] - sec.from) / TPS }));
-const unitOf = tick => sectionAt(tick);
+const marks = [{ name: '開局', at: 0 }, ...EVENTS];
+const units = marks.map((e, k) => {
+  const to = k + 1 < marks.length ? marks[k + 1].at : MATCH_TICKS;
+  return { name: e.name, from: e.at, t: e.at / TPS, section: sectionAt(e.at), secs: Math.max(25, (to - e.at) / TPS) };
+});
+const unitOf = tick => { let k = 0; for (let j = 0; j < marks.length; j++) if (tick >= marks[j].at) k = j; return k; };
 
 // ---------- DI: spawns depend only on the seed, so read them from a run whose castle cannot fall ----------
 const di = units.map(() => []), sdi = slices.map(() => []);
@@ -38,7 +45,7 @@ for (const seed of seeds) {
   while (phase(sim) !== 'over') {
     if (phase(sim) === 'choice') { sim.offer = null; sim.pending = 0; continue; }   // measuring spawns only
     step(sim, 0);
-    for (const e of sim.events) if (e.type === 'spawn') { const w = FOE[e.kind].hp * (FOE[e.kind].armor ? 2 : 1); load[unitOf(sim.tick - 1)] += w; sload[sliceOf(sim.tick - 1)] += w; }
+    for (const e of sim.events) if (e.type === 'spawn') { const w = e.hp * (FOE[e.kind].armor ? 2 : 1); load[unitOf(sim.tick - 1)] += w; sload[sliceOf(sim.tick - 1)] += w; }
   }
   load.forEach((v, k) => di[k].push(v / units[k].secs / 10));
   sload.forEach((v, k) => sdi[k].push(v / 10 / 10));
@@ -74,7 +81,7 @@ for (const [name, bot] of Object.entries(HUMANS)) {
   }
   units.forEach((u, k) => { u.hit[name] = mean(hold[k]); u.reach[name] = reached[k] / N; });
   slices.forEach((u, k) => { u.hit[name] = mean(shold[k]); u.reach[name] = sreached[k] / N; });
-  summary[name] = { score: mean(scores), end: mean(ends), full: ends.filter(t => t >= 270).length + bosses.filter(Boolean).length, boss: bosses.filter(Boolean).length, evo: evos.filter(Boolean).length };
+  summary[name] = { score: mean(scores), end: mean(ends), full: ends.filter(t => t >= MATCH_TICKS / TPS).length + bosses.filter(Boolean).length, boss: bosses.filter(Boolean).length, evo: evos.filter(Boolean).length };
 }
 
 // ---------- checks ----------
@@ -87,8 +94,8 @@ const checks = [
 const md = [
   `# Playtest Report — ${GAME.id}（自動產生）`,
   '',
-  `- 產生：\`node tools/playtest.mjs ${N}\`；${N} 個種子；sim v${GAME.version}；單位 = 段落 = 一個事件到下一個事件（開局為暖身，不算主段落）；另列 10 秒切片供參考`,
-  '- DI = 該段生成的敵人耐久 × 護甲係數（重甲 ×2）÷ 段落秒數 ÷ 10',
+  `- 產生：\`node tools/playtest.mjs ${N}\`；${N} 個種子；sim v${GAME.version}；關卡 ${GAME.stage}（${MATCH_TICKS / TPS} 秒）；單位 = 一個事件（到下一個事件為止，最短算 25 秒）；段落 = 以首領收尾的一章（開局為暖身，不算主段落）；另列 10 秒切片供參考`,
+  '- DI = 該單位生成的敵人耐久（含隨時間成長）× 護甲係數（重甲 ×2）÷ 單位秒數 ÷ 10',
   '- 命中率 = 守線率：該段生成的敵人中，在城牆環（半徑 WALL_R − 20）外被擋下的比例（只算撐到該段的局；每 6 tick 取樣位置）',
   '- 人性化試玩：tools/humanBots.mjs（新手 / 一般 / 熟手：注意到預警的延遲、偶爾分心、不看卡就選的比例不同）',
   '',
@@ -107,6 +114,12 @@ const md = [
   '| 段落 | 主段落 | DI 平均 / 高峰 | 守線率 新手 · 一般 · 熟手 |',
   '|---|---|---|---|',
   ...curve.sec.map(s => `| ${s.name} | ${s.main ? '✓' : ''} | ${s.di.toFixed(2)} / ${s.peak.toFixed(2)} | ${pct(s.hit.casual)} · ${pct(s.hit.regular)} · ${pct(s.hit.skilled)} |`),
+  '',
+  '## 單位（事件）',
+  '',
+  '| 時間 | 事件 | 章 | DI | 守線率 新手 · 一般 · 熟手 |',
+  '|---|---|---|---|---|',
+  ...units.map(u => `| ${Math.round(u.t)} s | ${u.name} | ${sections[u.section].name} | ${u.di.toFixed(2)} | ${pct(u.hit.casual)} · ${pct(u.hit.regular)} · ${pct(u.hit.skilled)} |`),
   '',
   '## 10 秒切片（參考，不進檢查）',
   '',

@@ -1,19 +1,20 @@
 # 10 技術限制
 
 > 技術規範：`lite-skillgame-stack` skill；[04_tech-stack](../../knowledge-base/04_tech-stack.md)。門檻以 `knowledge-base/index/rules.json` 為準，本作**目前無覆寫**（不建 `config/rules.overrides.json`）。
+> 上架規範（2026-11-18 使用者提供）的對照見 [docs/store_listing.md](../docs/store_listing.md)。
 
 | 項目 | 做法 |
 |---|---|
-| 渲染 | PixiJS 8，2D；4 個 Draw Call（地表、世界 atlas、加色特效、BitmapText），見 [02 §4](02_art_spec.md)；`RULE-DRAWCALL-2D` |
-| UI | HTML/CSS 疊在 canvas 上：資源列、羅盤、建築選單、英雄四選一卡、選取時的放置範圍提示 |
-| 特效 | 衝擊用 sprite 擴散環；燈光半徑用預烘漸層 sprite；`RULE-FX-FILTER` 依預設 |
+| 渲染 | PixiJS 8，2D。**真像素**：整個畫面畫在固定的低解析 canvas（近 540×960／中 720×1280／遠 900×1600 美術像素），1 美術像素 = 1 canvas 像素，再以最近鄰放大到螢幕（螢幕許可時用整數倍）。不旋轉、不縮放單張圖；牆是沿圓環擺放的不旋轉方塊。實測基礎畫面 1 DC；`RULE-DRAWCALL-2D` |
+| 縮放 | 雙指捏合、滑鼠滾輪、畫面右下 ＋／－。三段縮放改變的是 canvas 能裝多少美術像素，不是縮放圖片，所以像素格永遠一致 |
+| 立體感 | 體素式堆疊：牆 4 層、主城 4 層、軍營 3 層、樹 2 層，每層往上 1 美術像素、下層較暗；站立物件腳下有像素橢圓陰影 |
+| 美術 | 像素 atlas 共 91 KB，見 [02](02_art_spec.md)、`art/manifest.json`（已登錄共用資產庫） |
+| UI | HTML/CSS 疊在 canvas 上：資源列、構築列、選單、三選一卡（像素圖示）、縮放鈕 |
 | sim | 固定 60 Hz、定點、無 `Math.random` / `Date` / DOM（`RULE-SIM-PURITY`） |
-| 輸入紀錄 | `Uint16Array`（每 tick 16 bit）；5 分鐘約 32 KB，上傳前壓縮 |
-| 實體上限 | 敵 400、小兵＋工人 64、投射物 500、英雄 2、燈靈 6；SoA + 物件池 |
-| 尋路 | 每個出怪方位一張 32 px 網格流場（23×40 格），用整數 BFS；只在牆／建築新增或毀壞時重算，同 tick 內依方位序 |
-| 輸入 | 只有點擊與拖曳；拖曳 = 「選取」「放下」兩個指令（05 §2） |
-| 碰撞 | 空間雜湊 cell 48 px，依 id 排序 |
-| 效能預算 | 滿局重播 < 500 ms 待 N4 實測；超標時先降 `MAX_FOES`、合併同 cell 小怪 |
-| 包體 | 預估 ≈ 4.9 MB（02 §4）；`RULE-BUNDLE-SIZE` |
-| 資源載入 | 全部打包，不從 CDN 載入（`RULE-NO-RUNTIME-CDN`） |
-| Spine | 只在 Boss 可選；原型不用 |
+| 輸入紀錄 | 每 tick 1 byte（core `Recorder`），選卡另記 `choices`；結束時在本機重播驗證 |
+| 實體上限 | 敵 400、我方 64 |
+| 路線 | 不用流場：怪物在牆外沿圓環一段一段走到最近缺口（`gapDir`），每 tick 最多查 24 段 |
+| 單機 | 不連線、不做線上排行榜、不做雲端存檔（上架規範） |
+| 包體 | 一般 build 約 811 KB（gzip 273 KB）；上架用單檔 zip 約 265 KB；`RULE-BUNDLE-SIZE` |
+| 上架打包 | `npm run build:zip` → `release/lanternhold.zip`：只有一個 `index.html`，程式、樣式、圖片都內嵌，雙擊即可執行（file://），執行時不連任何外部網址 |
+| 資源載入 | 全部打包，不從 CDN 載入（`RULE-NO-RUNTIME-CDN`）；Pixi 不用 worker 解碼 |

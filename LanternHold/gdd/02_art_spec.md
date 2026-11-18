@@ -1,173 +1,108 @@
-# 02 美術與資產設定
+# 02 美術與資產設定（像素版）
 
-> 管線：[06_art-pipeline](../../knowledge-base/06_art-pipeline.md)、[10_asset-library](../../knowledge-base/10_asset-library.md)、[11_terrain-style-kit](../../knowledge-base/11_terrain-style-kit.md)。台灣禁忌：`RULE-ART-TW-TABOO`（每張圖人工驗收）。生成前先查[中央資產索引](../../knowledge-base/index/INDEX.md)有無可重用。
-> 包體與 Draw Call 門檻見 `RULE-BUNDLE-SIZE`、`RULE-DRAWCALL-2D`，本頁只列預估。
+> 管線：[06_art-pipeline](../../knowledge-base/06_art-pipeline.md)、[10_asset-library](../../knowledge-base/10_asset-library.md)。台灣禁忌：`RULE-ART-TW-TABOO`（每張圖人工驗收）。登錄：`RULE-ASSET-REGISTER`。
+> 包體與 Draw Call 門檻見 `RULE-BUNDLE-SIZE`、`RULE-DRAWCALL-2D`，本頁只列實測與預估。
+> **v3（2026-11-18）**：由手繪平塗改為像素風。舊版的牧場、礦場、工人工作動作、英雄、3 向角色都已拿掉。
 
 ## 1. 風格
 
 | 項目 | 設定 |
 |---|---|
-| 名稱 | 暖燈夜林（原創） |
-| 視角 | 2D 斜俯視約 35°，建築與角色用正面略俯的單張圖 |
-| 筆觸 | 手繪平塗＋少量漸層，深色描邊 1–2 px；不寫實、不像素 |
-| 色彩 | 背景深靛藍夜林（**不用純黑大面積**）；焦點是暖橘燈光；敵人偏冷紫，與友軍暖色分得開 |
-| 可讀性 | 燈光半徑 = 防線，光內亮、光外暗；敵人永遠有冷色亮邊，暗處也看得到 |
-| 要避開 | 雪地、暖爐、寒冷末日（參考作品的識別元素）；錢幣、骰子、轉盤、紅金大面積、「倍」字；神明、招財貓；綠色頭飾 |
+| 名稱 | 暖燈夜林像素（原創） |
+| 視角 | 俯視 3/4；角色只畫朝右，朝左在程式水平鏡像 |
+| 筆觸 | 16-bit 像素，大方塊、無反鋸齒、無漸層；1 px 深靛外框（不用純黑） |
+| 色彩 | 深靛／青夜色為底；焦點是暖橘燈光；敵人冷紫＋亮紫邊；友軍暖色、輪廓清楚 |
+| 可讀性 | 燈光內亮、燈光外暗；敵人永遠有亮紫邊，暗處也看得到 |
+| 要避開 | 雪地、暖爐、寒冷末日（參考作品的識別元素）；錢幣（金幣一律畫金塊或皮袋）、骰子、轉盤、紅金大面積、「倍」字；神明、宗教符號、招財貓；大面積純黑／純白 |
 
-### 調色盤（token）
+### 1.1 調色盤（共用 32 色，`game/src/assets/pixel/palette.json`）
 
-| token | 用途 | 參考值 |
+固定 token（生成 prompt 與量化都鎖這 7 色），其餘 25 色由 `art/tools/build.py` 對全部幀做 median cut＋k-means 得出：
+
+| token | 值 | 用途 |
 |---|---|---|
-| `night-0` | 最深背景 | #141a33 |
-| `night-1` | 林地 | #1f2a4a |
-| `night-2` | 道路、空地 | #2f3b5e |
-| `lamp` | 燈光核心 | #ffb64a |
-| `lamp-soft` | 光暈外緣 | #ff8a3d（低透明度） |
-| `gold` | 金幣（圖示畫金塊） | #d9a85b |
-| `meat` | 肉 | #e07a5f |
-| `ore` | 礦 | #8fb3d9 |
-| `ally` | 友軍旗色、守備圈 | #6fd3c4 |
-| `foe` | 敵人主色 | #7a5cc9 |
-| `foe-rim` | 敵人亮邊 | #c6a8ff |
-| `danger` | 預警、耐久低 | #ff5a5a |
+| `outline` | #1b1530 | 外框（調色盤第 0 格） |
+| `lamp` | #ffb64a | 燈光核心、主城光束 |
+| `foe-rim` | #c6a8ff | 敵人亮邊 |
+| `ally` | #6fd3c4 | 友軍旗色、治療者長袍、冰系 |
+| `steel-hi` / `steel` / `steel-lo` | #c4c8d6 / #848aa0 / #54586e | 金屬、石材（沒有這三格時灰色會被吸到紫色） |
 
-## 2. 畫面與尺寸
+程式繪製的光暈、選取圈、血條等沿用：`night-0` #141a33、`night-1` #1f2a4a、`night-2` #2f3b5e、`lamp-soft` #ff8a3d（低透明度）、`danger` #ff5a5a。
 
-- 邏輯畫面 720×1280（直版），世界固定、不捲動（公平視野 E3）；長螢幕多出的空間只放 HUD。
-- 主城在畫面中心偏上（y ≈ 560），下方留給操作區。8 個出怪口在可見框外。
+## 2. 像素契約
 
-| 物件 | 畫布尺寸（px） | 腳底錨點 |
-|---|---|---|
-| 主城 | 192×224 | 底部中央 |
-| 建築 | 96×112 | 底部中央 |
-| 城牆段 | 72×56（3 個角度變體：水平、斜 45°、垂直） | 底部中央 |
-| 英雄 | 56×56 | 腳底 |
-| 士兵 | 40×40 | 腳底 |
-| 敵人（小／中／大） | 32 / 48 / 72 | 腳底 |
-| Boss | 192×192 | 腳底 |
-
-## 3. 資產清單
-
-方向：只生 3 向（下、側、上），側向水平鏡像得到另一側（比 06 的 5 向更省）。
-
-### 3.1 建築與城牆（世界 atlas）
-
-| ID | 名稱 | 狀態／等級 | 張數 | 來源 |
-|---|---|---|---|---|
-| `bld_castle` | 主城：前哨 → 城鎮 → 要塞 | Lv1–3 | 3 | AI 生成 |
-| `bld_barracks` | 軍營（出弓箭手、盾兵、牧師） | Lv1–3 | 3 | AI 生成 |
-| `bld_ranch` | 牧場（圍欄＋小屋＋牲畜） | Lv1–3 | 3 | AI 生成 |
-| `bld_mine` | 礦場（礦坑口＋礦車） | Lv1–3 | 3 | AI 生成 |
-| `vein` | 礦脈點（未開採的發光礦石堆） | 1 | 1 | AI 生成 |
-| `wall_wood` / `wall_stone` / `wall_iron` | 城牆三級 | 每級 × 3 角度（水平、斜、垂直） | 9 | AI 生成；龜裂／殘破用裂痕疊圖＋程式 |
-| `bld_site` | 施工鷹架 | 1 | 1 | AI 生成 |
-| `bld_rubble` | 瓦礫 | 2 尺寸 | 2 | AI 生成 |
-| `slot_empty` | 空建造點 | 1 | 1 | 程式繪製 |
-
-> 建築等級外觀：Lv1 木造 → Lv2 石基 → Lv3 加燈與旗。一次生成同一建築三級並排，確保一致。
-> 耐久顯示：建築上方細血條由程式畫；受擊閃白、龜裂疊圖由 render 控制，不另生圖。
-
-### 3.2 角色（世界 atlas，3 向 × 動作）
-
-| ID | 動作（幀數） | 張數小計 |
-|---|---|---|
-| `chr_worker` | walk 4、work 3（挖礦／餵牲畜共用）、fight 2 | 3 向 × 9 = 27 |
-| `chr_{archer,shield,priest}` | walk 4、attack 3（牧師 = 治療 3） | 3 種 × 3 向 × 7 = 63 |
-| 小兵等級 1–3 | **不另生圖**：頭上 1–3 條槓（程式）；Lv3 加披風疊圖 | 疊圖 1 張 / 種 |
-| `hero_{mage,warrior,summoner,assassin}` | walk 4、attack 4、skill 3 | 4 種 × 3 向 × 11 = 132 |
-| 英雄 2 階 | **不另生圖**：換配色＋光環（程式） | |
-| `wisp` | 召喚師的燈靈：飄 4、攻擊 2 | 1 向 × 6 |
-| `foe_{rat,beetle,moth,shroom,snail,wolf}` | walk 4、attack 2（菇 = 膨脹 3 幀） | 6 種 × 3 向 × 6 ≈ 108 |
-| `boss_throat` | 移動 6、噴潮 6、受擊 2 | 1 向（正面）× 14；可選 Spine |
-
-### 3.3 特效與投射物（fx atlas，加色混合）
-
-| ID | 說明 | 來源 |
-|---|---|---|
-| `fx_arrow`、`fx_beam`、`fx_wisp_bolt` | 箭、主城光束、燈靈飛彈 | AI 生成小圖 |
-| `fx_fireball` | 法師火球＋落地爆炸 4 幀 | AI 生成 |
-| `fx_slash` | 戰士、刺客的近戰刀光 3 幀 | 預生成 sprite |
-| `fx_heal` | 牧師治療光點 | 程式粒子 |
-| `fx_ring` | 爆炸／衝擊／英雄落地擴散環（取代 filter） | 程式產生 |
-| `fx_gold` | 金粒（飛向資源列；**金塊顆粒，不畫錢幣**） | AI 生成 |
-| `fx_meat`、`fx_ore` | 產出時從建築彈出的小圖示 | AI 生成 |
-| `fx_light` | 主城燈光半徑漸層（也是放置範圍） | 程式產生 |
-| `fx_path` | 調防時腳下虛線、架設進度圈、冷卻圈 | 程式繪製 |
-| `fx_crack` | 牆面裂痕疊圖 2 張 | AI 生成 |
-| `fx_spark`、`fx_dust` | 打擊火花、碎石 | 程式粒子 |
-| `fx_fog` | 霧潮 | 程式產生雜訊貼圖 |
-
-### 3.4 地表與場景
-
-| ID | 說明 | 來源 |
-|---|---|---|
-| `ground` | 夜林空地，中央石板廣場、放射小徑通往 8 口 | 依 11 地表設定集程式生成＋1 張手繪廣場 |
-| `prop_tree_{1..6}` | 邊緣樹叢（遮住出怪口） | AI 生成 |
-| `prop_gate_{1..2}` | 出怪口（樹洞、石拱） | AI 生成 |
-
-### 3.5 UI（DOM，不佔 Draw Call）
-
-| ID | 數量 | 規格 |
-|---|---|---|
-| 資源圖示 | 3（金塊、肉、礦石）＋人口 1 | 64×64 |
-| 建築／動作圖示 | 4 建築＋買工人、升級、修理、城牆 3 級 | 64×64 |
-| 兵種按鈕 | 3（弓、盾、牧）＋剋制小標（打輕／擋路／補血） | 96×96 |
-| 英雄卡 | 4（法師、戰士、召喚師、刺客），主城升級時彈出 | 160×220 卡面，CSS 外框 |
-| 敵人預警圖示 | 7 | 48×48 |
-| 羅盤 | 1 | CSS + SVG |
-| 主視覺 | 1 | 16:9，WebP q78 寬 960 |
-| 字型 | 1 中文標題字（子集化）＋系統字 | woff2 |
-
-### 3.6 音效與音樂
-
-| 類別 | 項目 | 做法 |
-|---|---|---|
-| SFX（約 24） | 箭、火球、刀光、命中（剋制／被剋兩種）、治療、金幣入帳、小兵升級、蓋造、升級建築、工人出生、挖礦、牲畜、兵練成、選取、放下、架設完成、牆受擊、牆龜裂、牆倒塌、修理、英雄登場、預警、事件開始、商隊抵達、Boss 吼、主城受擊、結算 | Web Audio 合成（[14_audio](../../knowledge-base/14_audio.md)） |
-| BGM | 1 首可分層的循環：底流層＋事件鼓層＋Boss 層，依壓力疊加 | Opus/OGG |
-
-BGM 跟著「底流 → 事件 → 餘燼」的節奏疊層，是節奏感的一半。
-
-## 4. Atlas、Draw Call 與包體預估
-
-| 圖層 | 內容 | DC |
-|---|---|---|
-| 地表 | 烘成一張 | 1 |
-| 世界 | 建築、牆、角色、敵人同一張 atlas（2048²，Y 排序） | 1 |
-| 特效 | 加色 atlas：刀光、投射物、金粒、燈光、擴散環 | 1 |
-| 數字 | BitmapText 傷害數字 | 1 |
-| UI | DOM | 0 |
-| **合計** | | **4** |
-
-> 角色約 350 格、建築約 25 張；48–64 px 一格塞得進一張 2048² atlas。超出時依序：英雄改 2 向 → 敵人 attack 幀減為 1 → 拆成兩張 atlas（世界 DC 變 2，總計 5，仍在 `RULE-DRAWCALL-2D` 內）。
-
-| 項目 | 預估 |
+| 項目 | 規格 |
 |---|---|
-| 程式（Pixi + GSAP + 遊戲） | 1.1 MB |
-| 世界 atlas（WebP） | 1.0 MB |
-| 特效 atlas | 0.2 MB |
-| 地表 + 主視覺 | 0.3 MB |
-| UI 圖示 atlas | 0.3 MB |
-| 字型 | 0.2 MB |
-| BGM（分層） | 1.8 MB |
-| **合計** | **≈ 4.9 MB** |
+| 比例 | **1 art px = 2 world px**；`scaleMode: 'nearest'`、`roundPixels` |
+| 世界 | 720×1280，鏡頭縮到約 0.62，所以 1 art px ≈ 1.24 螢幕 px |
+| 錨點 | 角色、建築、樹：腳底（底部中央，外框列之上）；城牆、瓦礫、特效、圖示：中心；寶箱：底部中央。每格的 anchor 寫在 atlas JSON（Pixi v8 讀 `frames[*].anchor`） |
+| 方向 | 角色只朝右；`scale.x = -1` 得到朝左 |
+| 同一角色 | 所有動畫共用同一畫布大小，腳底與上半身重心對齊，換動畫不會跳 |
+| Alpha | 二值（PNG-8 單一透明索引），沒有半透明像素 |
+| 不畫進圖 | 陰影、受擊閃白、燈光半徑、血條、選取圈：由程式處理 |
 
-## 5. 生成用風格鎖（英文，所有資產共用開頭）
+## 3. 尺寸（art px，含 1 px 外框）
+
+| 物件 | 尺寸 | 動畫 |
+|---|---|---|
+| 工人／弓箭手／盾兵／治療者 | 28×23、24×22、32×23、30×25（攻擊幀伸出武器，主體約 18×20） | idle 2、walk 4、attack 3 |
+| 影鼠／甲蟲／飛蛾 | 18×10、20×13、24×18 | walk 4（飛蛾 fly 4） |
+| 爆菇 | 16×14 | walk 4、swell 2 |
+| 攻城蝸牛／鐵甲狼／暗影弓手 | 32×21、34×17、20×17 | walk 4、attack 2 |
+| Boss 永夜之喉 | 主體約 56×52，畫布 134×53（attack 第 3 格吐霧） | walk 4、attack 3 |
+| 主城 | 52×74 | 靜態 |
+| 軍營 Lv1／2／3 | 36×32、40×32、40×35（帳篷 → 木屋 → 石屋） | 靜態 |
+| 城牆（木柵／石／鐵）× 完好／龜裂／殘破 | 約 32×10，水平繪製，程式繞環旋轉 | 靜態 |
+| 瓦礫、樹 3 種、石頭 2、燈柱 2 | 32×15、22–32×30、16–18×10–13、14×21 | 靜態 |
+| 地表 tile（林地、道路） | 64×64 無縫 | — |
+| 特效 | 爆炸／冰爆／火／蒸汽 16 左右 × 4 格；火花 3、升級閃光 4；箭 12×4；光束 24×8；閃電 24×7；金塊 8×7；寶箱 20×16 / 22×17 | — |
+| UI 圖示 | 24×24：卡片 18、進化 4、資源 3（金塊、人口、守望星） | DOM 以 CSS 放大（`image-rendering: pixelated`） |
+
+## 4. Atlas 與 Draw Call
+
+| 檔案 | 內容 | 實測 |
+|---|---|---|
+| `units.png/json` | 友軍 4 種 × 3 動畫 | 256×122 |
+| `foes.png/json` | 敵人 7 種＋Boss | 256×446 |
+| `buildings.png/json` | 主城、軍營 3 級、城牆 9、瓦礫、樹、石頭、燈柱 | 256×116 |
+| `fx.png/json` | 投射物、爆炸類、火花、金塊、寶箱 | 256×32 |
+| `icons.png/json` | 25 個圖示 | 256×74 |
+| `ground.png/json`、`ground_forest.png`、`ground_path.png` | 兩張 64×64 tile（單檔版給 TilingSprite） | 130×64 |
+
+所有 atlas 都在 `game/src/assets/pixel/`，加總遠小於 1 張 2048²，可視需要在 build 時合併成一張世界 atlas（units＋foes＋buildings＋fx）把世界層壓到 1 個 Draw Call。圖層預估：地表 1 ＋ 世界 1–4（未合併時每張 atlas 各 1）＋ 數字 1 ＋ UI 0，合併後總計 3，未合併時最多 6，接線時要合併或分層以守 `RULE-DRAWCALL-2D`。
+
+## 5. 包體
+
+| 項目 | 實測／預估 |
+|---|---|
+| 像素資產（6 組 atlas＋JSON＋調色盤） | **實測約 93 KB** |
+| 程式（Pixi + GSAP + 遊戲） | 預估 1.1 MB |
+| 字型 | 預估 0.2 MB |
+| BGM（分層） | 預估 1.8 MB |
+| **合計** | **預估約 3.2 MB** |
+
+## 6. 生成用風格鎖（英文，所有資產共用）
+
+原文唯一來源：`art/tools/prompts.py` 的 `STYLE_LOCK`；每份 prompt 原文在 `art/prompts/*.txt`。
 
 ```
-Original game asset for a cozy night-forest tower-defense game.
-Hand-painted flat style with soft gradients, clean 1-2px dark outline,
-3/4 top-down view at about 35 degrees, warm amber lantern light as the key light,
-deep indigo night palette (never pure black), enemies in cool violet with a bright rim light.
-Single object, centered, true transparent background, no text, no ground, no cast shadow.
-Do not imitate any existing game, brand or IP. No snow, no furnace, no coins, no dice.
+Style lock (LanternHold pixel set, shared by every asset): original 16-bit pixel art for a top-down 3/4 view
+night-forest tower-defense game. TRUE LOW-RESOLUTION pixel art: every art pixel is a large crisp square block of
+equal size, chunky clean clusters, no anti-aliasing, no gradients, no blur, no dithering noise. 1-pixel dark outline
+in deep indigo (#1b1530), never pure black. Small shared palette: deep indigo and teal night tones, warm lamp orange
+#ffb64a as the key light, light comes from the upper-left. Enemies are cool violet shadow creatures with a bright
+lilac rim highlight (#c6a8ff); allies are warm readable silhouettes in amber, brown and teal (#6fd3c4). No large
+areas of pure black or pure white. No coins, no religious symbols, no deities. Original design only, no existing
+franchise or game. Background: perfectly flat solid pure green #00FF00 chroma-key filling the whole canvas, no
+checkerboard, no ground plane, no cast shadow, no text, no letters, no numbers, no grid lines, no frames.
 ```
 
-每種資產再接：物件描述 → 尺寸／方向 → 「與附圖 1 同一角色／同一建築系列」。
+每種資產再接：物件描述 → 版面（列 = 動畫、格 = 影格，朝右、同一基線、格間留寬綠色空隙）→ 目標 art px 尺寸。
 
-## 6. 生成順序與驗收
+## 7. 管線與驗收
 
-1. 主城 Lv1 + 軍營 Lv1 + 弓箭手下向 idle → 定風格（人工 ✋）。
-2. 其餘建築 Lv1 → 城牆三級 → 工人、盾兵、牧師 → 敵人 6 種 → 英雄 4 種 → 等級與動作補齊。
-3. 每張驗收：同系列一致、真透明、無文字、方向正確、台灣禁忌清單、暗背景上看得清楚（放到 `night-1` 底色上檢查）。
-4. 縮圖打包照 06 §2 第 6 步；登錄到 `art/manifest.json` 後跑 `node shared/tools/index-build.mjs`（`RULE-ASSET-REGISTER`）。
-5. **原型階段先用程式繪製的色塊與幾何圖形**（同 GateLane），玩法過了技巧主導測試再進 AI 生圖。
+1. `python LanternHold/art/tools/prompts.py` 寫出 prompt；picanywhere 一次批次生成（一張 = 一個角色的全部動畫列，或一組物件）。
+2. 原圖放 `art/raw/<name>_t<n>.png`，紀錄寫 `art/raw/LOG.md`。
+3. `python LanternHold/art/tools/build.py`：綠幕去背 → 依空隙切格 → 預乘 BOX 縮到目標尺寸 → 每個角色先局部量化（去雜點）→ 硬映射共用 32 色（不抖色）→ 二值 alpha → 1 px 外框（暗邊直接改外框色，亮邊外補一圈）→ 排版打包 → `art/preview/*_x6.png`。
+4. 每張驗收：同系列一致、去背乾淨、無文字、朝右、台灣禁忌、放在 `night-1` 底色上看得清楚（看 6 倍預覽）。
+5. `python LanternHold/art/tools/manifest.py` → `node shared/tools/index-build.mjs --update-hashes` → `--check`（`RULE-ASSET-REGISTER`）。整組標 `reusable`，其他夜間／奇幻題材可直接取用。

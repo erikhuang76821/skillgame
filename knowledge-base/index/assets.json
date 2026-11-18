@@ -8,6 +8,10 @@
    "sha256": "sha256:980b761771d7ee8219b568986aafd7e7f3912d0015d89d821728bef9934fe916"
   },
   {
+   "path": "LanternHold/art/manifest.json",
+   "sha256": "sha256:f6705fd76066b8edacb5c596f0f5b8ab10884859b4351f3235f1ba248edc26b6"
+  },
+  {
    "path": "SwarmDuel/art/manifest.json",
    "sha256": "sha256:29e1d204df9deaa56432762d42d6dbf88e3edca2a5c89e67a8e755624f11203b"
   },
@@ -17,28 +21,29 @@
   }
  ],
  "counts": {
-  "total": 85,
+  "total": 108,
   "byGame": {
+   "LanternHold": 23,
    "SwarmDuel": 63,
    "TwinStrike": 17,
    "shared": 5
   },
   "byKind": {
    "audio-recipe": 3,
-   "background": 3,
-   "fx-sheet": 5,
+   "background": 4,
+   "fx-sheet": 7,
    "key-art": 4,
    "procedural": 35,
-   "reference": 2,
-   "sprite-sheet": 19,
-   "ui": 14
+   "reference": 5,
+   "sprite-sheet": 35,
+   "ui": 15
   },
   "byStatus": {
    "placeholder": 6,
    "procedural": 35,
    "raw-only": 5,
-   "rejected-take": 5,
-   "shipped": 28,
+   "rejected-take": 7,
+   "shipped": 49,
    "template": 6
   }
  },
@@ -201,6 +206,1649 @@
    "reusePolicy": "template",
    "contentHash": "sha256:ec69f3961bc1f1260b5a28540cad0209847ea59cf72ee31b5761798c12783dd1",
    "game": "shared"
+  },
+  {
+   "id": "lanternhold.chr.worker",
+   "kind": "sprite-sheet",
+   "status": "shipped",
+   "name": "工人（槌子）：idle 2、walk 4、attack 3（朝右，左向鏡像）",
+   "files": {
+    "raw": [
+     "LanternHold/art/raw/unit_worker_t1.png"
+    ],
+    "prompt": [
+     "LanternHold/art/prompts/unit_worker.txt"
+    ],
+    "shipped": [
+     "LanternHold/game/src/assets/pixel/units.png",
+     "LanternHold/game/src/assets/pixel/units.json"
+    ]
+   },
+   "technical": {
+    "atlas": "units",
+    "format": "png8",
+    "artPxToWorldPx": 2,
+    "scaleMode": "nearest",
+    "frames": [
+     "worker_idle_0",
+     "worker_idle_1",
+     "worker_walk_0",
+     "worker_walk_1",
+     "worker_walk_2",
+     "worker_walk_3",
+     "worker_attack_0",
+     "worker_attack_1",
+     "worker_attack_2"
+    ],
+    "cell": [
+     28,
+     23
+    ],
+    "anchor": [
+     0.5,
+     0.9565
+    ]
+   },
+   "styleTags": [
+    "pixel",
+    "night",
+    "top-down-3/4",
+    "1px-outline",
+    "palette-32",
+    "side-view-right"
+   ],
+   "provenance": {
+    "tool": "picanywhere",
+    "job": "job_20261118-120547_307#0",
+    "postprocess": "art/tools/build.py（chroma key → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 打包）",
+    "promptBlock": "art/tools/prompts.py STYLE_LOCK"
+   },
+   "keywords": [
+    "worker",
+    "builder",
+    "villager",
+    "hammer",
+    "工人",
+    "村民",
+    "槌子",
+    "ally",
+    "友軍",
+    "pixel",
+    "像素",
+    "night",
+    "夜"
+   ],
+   "reusePolicy": "reusable",
+   "contentHash": "sha256:fdd947acf52c4cc0e526144b2e798de6c950ec2484ccc73a48541c989e44d01e",
+   "game": "LanternHold"
+  },
+  {
+   "id": "lanternhold.chr.archer",
+   "kind": "sprite-sheet",
+   "status": "shipped",
+   "name": "弓箭手：idle 2、walk 4、attack 3（朝右，左向鏡像）",
+   "files": {
+    "raw": [
+     "LanternHold/art/raw/unit_archer_t1.png"
+    ],
+    "prompt": [
+     "LanternHold/art/prompts/unit_archer.txt"
+    ],
+    "shipped": [
+     "LanternHold/game/src/assets/pixel/units.png",
+     "LanternHold/game/src/assets/pixel/units.json"
+    ]
+   },
+   "technical": {
+    "atlas": "units",
+    "format": "png8",
+    "artPxToWorldPx": 2,
+    "scaleMode": "nearest",
+    "frames": [
+     "archer_idle_0",
+     "archer_idle_1",
+     "archer_walk_0",
+     "archer_walk_1",
+     "archer_walk_2",
+     "archer_walk_3",
+     "archer_attack_0",
+     "archer_attack_1",
+     "archer_attack_2"
+    ],
+    "cell": [
+     24,
+     22
+    ],
+    "anchor": [
+     0.5,
+     0.9545
+    ]
+   },
+   "styleTags": [
+    "pixel",
+    "night",
+    "top-down-3/4",
+    "1px-outline",
+    "palette-32",
+    "side-view-right"
+   ],
+   "provenance": {
+    "tool": "picanywhere",
+    "job": "job_20261118-120547_307#1",
+    "postprocess": "art/tools/build.py（chroma key → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 打包）",
+    "promptBlock": "art/tools/prompts.py STYLE_LOCK"
+   },
+   "keywords": [
+    "archer",
+    "bow",
+    "ranger",
+    "hood",
+    "弓箭手",
+    "弓",
+    "ally",
+    "友軍",
+    "pixel",
+    "像素",
+    "night",
+    "夜"
+   ],
+   "reusePolicy": "reusable",
+   "contentHash": "sha256:fdd947acf52c4cc0e526144b2e798de6c950ec2484ccc73a48541c989e44d01e",
+   "game": "LanternHold"
+  },
+  {
+   "id": "lanternhold.chr.shield",
+   "kind": "sprite-sheet",
+   "status": "shipped",
+   "name": "盾兵：idle 2、walk 4、attack 3（朝右，左向鏡像）",
+   "files": {
+    "raw": [
+     "LanternHold/art/raw/unit_shield_t1.png"
+    ],
+    "prompt": [
+     "LanternHold/art/prompts/unit_shield.txt"
+    ],
+    "shipped": [
+     "LanternHold/game/src/assets/pixel/units.png",
+     "LanternHold/game/src/assets/pixel/units.json"
+    ]
+   },
+   "technical": {
+    "atlas": "units",
+    "format": "png8",
+    "artPxToWorldPx": 2,
+    "scaleMode": "nearest",
+    "frames": [
+     "shield_idle_0",
+     "shield_idle_1",
+     "shield_walk_0",
+     "shield_walk_1",
+     "shield_walk_2",
+     "shield_walk_3",
+     "shield_attack_0",
+     "shield_attack_1",
+     "shield_attack_2"
+    ],
+    "cell": [
+     32,
+     23
+    ],
+    "anchor": [
+     0.5,
+     0.9565
+    ]
+   },
+   "styleTags": [
+    "pixel",
+    "night",
+    "top-down-3/4",
+    "1px-outline",
+    "palette-32",
+    "side-view-right"
+   ],
+   "provenance": {
+    "tool": "picanywhere",
+    "job": "job_20261118-120547_307#2",
+    "postprocess": "art/tools/build.py（chroma key → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 打包）",
+    "promptBlock": "art/tools/prompts.py STYLE_LOCK"
+   },
+   "keywords": [
+    "shield",
+    "soldier",
+    "knight",
+    "tank",
+    "盾兵",
+    "士兵",
+    "坦克",
+    "ally",
+    "友軍",
+    "pixel",
+    "像素",
+    "night",
+    "夜"
+   ],
+   "reusePolicy": "reusable",
+   "contentHash": "sha256:fdd947acf52c4cc0e526144b2e798de6c950ec2484ccc73a48541c989e44d01e",
+   "game": "LanternHold"
+  },
+  {
+   "id": "lanternhold.chr.priest",
+   "kind": "sprite-sheet",
+   "status": "shipped",
+   "name": "治療者（提燈法杖，無宗教符號）：idle 2、walk 4、attack 3（朝右，左向鏡像）",
+   "files": {
+    "raw": [
+     "LanternHold/art/raw/unit_priest_v2_t2a.png"
+    ],
+    "prompt": [
+     "LanternHold/art/prompts/unit_priest_v2.txt"
+    ],
+    "shipped": [
+     "LanternHold/game/src/assets/pixel/units.png",
+     "LanternHold/game/src/assets/pixel/units.json"
+    ]
+   },
+   "technical": {
+    "atlas": "units",
+    "format": "png8",
+    "artPxToWorldPx": 2,
+    "scaleMode": "nearest",
+    "frames": [
+     "priest_idle_0",
+     "priest_idle_1",
+     "priest_walk_0",
+     "priest_walk_1",
+     "priest_walk_2",
+     "priest_walk_3",
+     "priest_attack_0",
+     "priest_attack_1",
+     "priest_attack_2"
+    ],
+    "cell": [
+     30,
+     25
+    ],
+    "anchor": [
+     0.5,
+     0.96
+    ]
+   },
+   "styleTags": [
+    "pixel",
+    "night",
+    "top-down-3/4",
+    "1px-outline",
+    "palette-32",
+    "side-view-right"
+   ],
+   "provenance": {
+    "tool": "picanywhere",
+    "job": "job_20261118-121508_309#0",
+    "postprocess": "art/tools/build.py（chroma key → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 打包）",
+    "promptBlock": "art/tools/prompts.py STYLE_LOCK"
+   },
+   "keywords": [
+    "healer",
+    "priest",
+    "support",
+    "lantern",
+    "staff",
+    "治療",
+    "牧師",
+    "提燈",
+    "ally",
+    "友軍",
+    "pixel",
+    "像素",
+    "night",
+    "夜"
+   ],
+   "reusePolicy": "reusable",
+   "contentHash": "sha256:fdd947acf52c4cc0e526144b2e798de6c950ec2484ccc73a48541c989e44d01e",
+   "game": "LanternHold"
+  },
+  {
+   "id": "lanternhold.ref.priest.t1",
+   "kind": "reference",
+   "status": "rejected-take",
+   "name": "治療者 t1（米色長袍，縮到 18 px 變雜訊，未採用）",
+   "files": {
+    "raw": [
+     "LanternHold/art/raw/unit_priest_t1.png"
+    ],
+    "prompt": [
+     "LanternHold/art/prompts/unit_priest.txt"
+    ],
+    "shipped": []
+   },
+   "technical": {
+    "atlas": "units",
+    "format": "png8",
+    "artPxToWorldPx": 2,
+    "scaleMode": "nearest",
+    "frames": []
+   },
+   "styleTags": [
+    "pixel",
+    "night",
+    "top-down-3/4",
+    "1px-outline",
+    "palette-32",
+    "side-view-right"
+   ],
+   "provenance": {
+    "tool": "picanywhere",
+    "job": "job_20261118-120547_307#3",
+    "postprocess": "art/tools/build.py（chroma key → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 打包）",
+    "promptBlock": "art/tools/prompts.py STYLE_LOCK"
+   },
+   "keywords": [
+    "healer",
+    "priest",
+    "rejected"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:29a93f93892bd2a03e416bd69ba4ff6c5631148881790c399fc9074c9d053a74",
+   "game": "LanternHold"
+  },
+  {
+   "id": "lanternhold.ref.priest.t2b",
+   "kind": "reference",
+   "status": "rejected-take",
+   "name": "治療者 t2b（與 t2a 同 prompt，輪廓較糊，未採用）",
+   "files": {
+    "raw": [
+     "LanternHold/art/raw/unit_priest_v2_t2b.png"
+    ],
+    "prompt": [
+     "LanternHold/art/prompts/unit_priest_v2.txt"
+    ],
+    "shipped": []
+   },
+   "technical": {
+    "atlas": "units",
+    "format": "png8",
+    "artPxToWorldPx": 2,
+    "scaleMode": "nearest",
+    "frames": []
+   },
+   "styleTags": [
+    "pixel",
+    "night",
+    "top-down-3/4",
+    "1px-outline",
+    "palette-32",
+    "side-view-right"
+   ],
+   "provenance": {
+    "tool": "picanywhere",
+    "job": "job_20261118-121508_309#1",
+    "postprocess": "art/tools/build.py（chroma key → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 打包）",
+    "promptBlock": "art/tools/prompts.py STYLE_LOCK"
+   },
+   "keywords": [
+    "healer",
+    "priest",
+    "rejected"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:278c2ba279e81d8947bdaaa6665f0b17f5b0e5d34799e27bff34f3a31baaf901",
+   "game": "LanternHold"
+  },
+  {
+   "id": "lanternhold.foe.rat",
+   "kind": "sprite-sheet",
+   "status": "shipped",
+   "name": "影鼠：walk 4",
+   "files": {
+    "raw": [
+     "LanternHold/art/raw/foe_rat_t1.png"
+    ],
+    "prompt": [
+     "LanternHold/art/prompts/foe_rat.txt"
+    ],
+    "shipped": [
+     "LanternHold/game/src/assets/pixel/foes.png",
+     "LanternHold/game/src/assets/pixel/foes.json"
+    ]
+   },
+   "technical": {
+    "atlas": "foes",
+    "format": "png8",
+    "artPxToWorldPx": 2,
+    "scaleMode": "nearest",
+    "frames": [
+     "rat_walk_0",
+     "rat_walk_1",
+     "rat_walk_2",
+     "rat_walk_3"
+    ],
+    "cell": [
+     18,
+     10
+    ],
+    "anchor": [
+     0.5,
+     0.9
+    ]
+   },
+   "styleTags": [
+    "pixel",
+    "night",
+    "top-down-3/4",
+    "1px-outline",
+    "palette-32",
+    "side-view-right"
+   ],
+   "provenance": {
+    "tool": "picanywhere",
+    "job": "job_20261118-120547_307#4",
+    "postprocess": "art/tools/build.py（chroma key → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 打包）",
+    "promptBlock": "art/tools/prompts.py STYLE_LOCK"
+   },
+   "keywords": [
+    "rat",
+    "mouse",
+    "swarm",
+    "鼠",
+    "小怪",
+    "enemy",
+    "敵人",
+    "shadow",
+    "暗影",
+    "violet",
+    "紫",
+    "pixel",
+    "像素"
+   ],
+   "reusePolicy": "reusable",
+   "contentHash": "sha256:495977413ac03e2f9b0218c35a026de30f6355fe6d5b972e705b88513e66fc21",
+   "game": "LanternHold"
+  },
+  {
+   "id": "lanternhold.foe.beetle",
+   "kind": "sprite-sheet",
+   "status": "shipped",
+   "name": "甲蟲：walk 4",
+   "files": {
+    "raw": [
+     "LanternHold/art/raw/foe_beetle_t1.png"
+    ],
+    "prompt": [
+     "LanternHold/art/prompts/foe_beetle.txt"
+    ],
+    "shipped": [
+     "LanternHold/game/src/assets/pixel/foes.png",
+     "LanternHold/game/src/assets/pixel/foes.json"
+    ]
+   },
+   "technical": {
+    "atlas": "foes",
+    "format": "png8",
+    "artPxToWorldPx": 2,
+    "scaleMode": "nearest",
+    "frames": [
+     "beetle_walk_0",
+     "beetle_walk_1",
+     "beetle_walk_2",
+     "beetle_walk_3"
+    ],
+    "cell": [
+     20,
+     13
+    ],
+    "anchor": [
+     0.5,
+     0.9231
+    ]
+   },
+   "styleTags": [
+    "pixel",
+    "night",
+    "top-down-3/4",
+    "1px-outline",
+    "palette-32",
+    "side-view-right"
+   ],
+   "provenance": {
+    "tool": "picanywhere",
+    "job": "job_20261118-120547_307#5",
+    "postprocess": "art/tools/build.py（chroma key → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 打包）",
+    "promptBlock": "art/tools/prompts.py STYLE_LOCK"
+   },
+   "keywords": [
+    "beetle",
+    "bug",
+    "armored",
+    "甲蟲",
+    "蟲",
+    "enemy",
+    "敵人",
+    "shadow",
+    "暗影",
+    "violet",
+    "紫",
+    "pixel",
+    "像素"
+   ],
+   "reusePolicy": "reusable",
+   "contentHash": "sha256:495977413ac03e2f9b0218c35a026de30f6355fe6d5b972e705b88513e66fc21",
+   "game": "LanternHold"
+  },
+  {
+   "id": "lanternhold.foe.moth",
+   "kind": "sprite-sheet",
+   "status": "shipped",
+   "name": "飛蛾（飛行）：fly 4",
+   "files": {
+    "raw": [
+     "LanternHold/art/raw/foe_moth_t1.png"
+    ],
+    "prompt": [
+     "LanternHold/art/prompts/foe_moth.txt"
+    ],
+    "shipped": [
+     "LanternHold/game/src/assets/pixel/foes.png",
+     "LanternHold/game/src/assets/pixel/foes.json"
+    ]
+   },
+   "technical": {
+    "atlas": "foes",
+    "format": "png8",
+    "artPxToWorldPx": 2,
+    "scaleMode": "nearest",
+    "frames": [
+     "moth_fly_0",
+     "moth_fly_1",
+     "moth_fly_2",
+     "moth_fly_3"
+    ],
+    "cell": [
+     24,
+     18
+    ],
+    "anchor": [
+     0.5,
+     0.9444
+    ]
+   },
+   "styleTags": [
+    "pixel",
+    "night",
+    "top-down-3/4",
+    "1px-outline",
+    "palette-32",
+    "side-view-right"
+   ],
+   "provenance": {
+    "tool": "picanywhere",
+    "job": "job_20261118-120547_307#6",
+    "postprocess": "art/tools/build.py（chroma key → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 打包）",
+    "promptBlock": "art/tools/prompts.py STYLE_LOCK"
+   },
+   "keywords": [
+    "moth",
+    "flying",
+    "insect",
+    "飛蛾",
+    "飛行",
+    "enemy",
+    "敵人",
+    "shadow",
+    "暗影",
+    "violet",
+    "紫",
+    "pixel",
+    "像素"
+   ],
+   "reusePolicy": "reusable",
+   "contentHash": "sha256:495977413ac03e2f9b0218c35a026de30f6355fe6d5b972e705b88513e66fc21",
+   "game": "LanternHold"
+  },
+  {
+   "id": "lanternhold.foe.shroom",
+   "kind": "sprite-sheet",
+   "status": "shipped",
+   "name": "爆菇：walk 4、swell 2（膨脹待爆）",
+   "files": {
+    "raw": [
+     "LanternHold/art/raw/foe_shroom_t1.png"
+    ],
+    "prompt": [
+     "LanternHold/art/prompts/foe_shroom.txt"
+    ],
+    "shipped": [
+     "LanternHold/game/src/assets/pixel/foes.png",
+     "LanternHold/game/src/assets/pixel/foes.json"
+    ]
+   },
+   "technical": {
+    "atlas": "foes",
+    "format": "png8",
+    "artPxToWorldPx": 2,
+    "scaleMode": "nearest",
+    "frames": [
+     "shroom_walk_0",
+     "shroom_walk_1",
+     "shroom_walk_2",
+     "shroom_walk_3",
+     "shroom_swell_0",
+     "shroom_swell_1"
+    ],
+    "cell": [
+     16,
+     14
+    ],
+    "anchor": [
+     0.5,
+     0.9286
+    ]
+   },
+   "styleTags": [
+    "pixel",
+    "night",
+    "top-down-3/4",
+    "1px-outline",
+    "palette-32",
+    "side-view-right"
+   ],
+   "provenance": {
+    "tool": "picanywhere",
+    "job": "job_20261118-120547_307#7",
+    "postprocess": "art/tools/build.py（chroma key → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 打包）",
+    "promptBlock": "art/tools/prompts.py STYLE_LOCK"
+   },
+   "keywords": [
+    "mushroom",
+    "shroom",
+    "exploder",
+    "bomb",
+    "蘑菇",
+    "自爆",
+    "enemy",
+    "敵人",
+    "shadow",
+    "暗影",
+    "violet",
+    "紫",
+    "pixel",
+    "像素"
+   ],
+   "reusePolicy": "reusable",
+   "contentHash": "sha256:495977413ac03e2f9b0218c35a026de30f6355fe6d5b972e705b88513e66fc21",
+   "game": "LanternHold"
+  },
+  {
+   "id": "lanternhold.foe.snail",
+   "kind": "sprite-sheet",
+   "status": "shipped",
+   "name": "攻城蝸牛：walk 4、attack 2",
+   "files": {
+    "raw": [
+     "LanternHold/art/raw/foe_snail_t1.png"
+    ],
+    "prompt": [
+     "LanternHold/art/prompts/foe_snail.txt"
+    ],
+    "shipped": [
+     "LanternHold/game/src/assets/pixel/foes.png",
+     "LanternHold/game/src/assets/pixel/foes.json"
+    ]
+   },
+   "technical": {
+    "atlas": "foes",
+    "format": "png8",
+    "artPxToWorldPx": 2,
+    "scaleMode": "nearest",
+    "frames": [
+     "snail_walk_0",
+     "snail_walk_1",
+     "snail_walk_2",
+     "snail_walk_3",
+     "snail_attack_0",
+     "snail_attack_1"
+    ],
+    "cell": [
+     32,
+     21
+    ],
+    "anchor": [
+     0.5,
+     0.9524
+    ]
+   },
+   "styleTags": [
+    "pixel",
+    "night",
+    "top-down-3/4",
+    "1px-outline",
+    "palette-32",
+    "side-view-right"
+   ],
+   "provenance": {
+    "tool": "picanywhere",
+    "job": "job_20261118-120547_307#8",
+    "postprocess": "art/tools/build.py（chroma key → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 打包）",
+    "promptBlock": "art/tools/prompts.py STYLE_LOCK"
+   },
+   "keywords": [
+    "snail",
+    "siege",
+    "slow",
+    "tank",
+    "蝸牛",
+    "攻城",
+    "enemy",
+    "敵人",
+    "shadow",
+    "暗影",
+    "violet",
+    "紫",
+    "pixel",
+    "像素"
+   ],
+   "reusePolicy": "reusable",
+   "contentHash": "sha256:495977413ac03e2f9b0218c35a026de30f6355fe6d5b972e705b88513e66fc21",
+   "game": "LanternHold"
+  },
+  {
+   "id": "lanternhold.foe.wolf",
+   "kind": "sprite-sheet",
+   "status": "shipped",
+   "name": "鐵甲狼（精英）：walk 4、attack 2",
+   "files": {
+    "raw": [
+     "LanternHold/art/raw/foe_wolf_t1.png"
+    ],
+    "prompt": [
+     "LanternHold/art/prompts/foe_wolf.txt"
+    ],
+    "shipped": [
+     "LanternHold/game/src/assets/pixel/foes.png",
+     "LanternHold/game/src/assets/pixel/foes.json"
+    ]
+   },
+   "technical": {
+    "atlas": "foes",
+    "format": "png8",
+    "artPxToWorldPx": 2,
+    "scaleMode": "nearest",
+    "frames": [
+     "wolf_walk_0",
+     "wolf_walk_1",
+     "wolf_walk_2",
+     "wolf_walk_3",
+     "wolf_attack_0",
+     "wolf_attack_1"
+    ],
+    "cell": [
+     34,
+     17
+    ],
+    "anchor": [
+     0.5,
+     0.9412
+    ]
+   },
+   "styleTags": [
+    "pixel",
+    "night",
+    "top-down-3/4",
+    "1px-outline",
+    "palette-32",
+    "side-view-right"
+   ],
+   "provenance": {
+    "tool": "picanywhere",
+    "job": "job_20261118-120547_307#9",
+    "postprocess": "art/tools/build.py（chroma key → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 打包）",
+    "promptBlock": "art/tools/prompts.py STYLE_LOCK"
+   },
+   "keywords": [
+    "wolf",
+    "elite",
+    "armored",
+    "fast",
+    "狼",
+    "精英",
+    "enemy",
+    "敵人",
+    "shadow",
+    "暗影",
+    "violet",
+    "紫",
+    "pixel",
+    "像素"
+   ],
+   "reusePolicy": "reusable",
+   "contentHash": "sha256:495977413ac03e2f9b0218c35a026de30f6355fe6d5b972e705b88513e66fc21",
+   "game": "LanternHold"
+  },
+  {
+   "id": "lanternhold.foe.shadowArcher",
+   "kind": "sprite-sheet",
+   "status": "shipped",
+   "name": "暗影弓手（遠程、射牆）：walk 4、attack 2",
+   "files": {
+    "raw": [
+     "LanternHold/art/raw/foe_shadow_archer_t1.png"
+    ],
+    "prompt": [
+     "LanternHold/art/prompts/foe_shadow_archer.txt"
+    ],
+    "shipped": [
+     "LanternHold/game/src/assets/pixel/foes.png",
+     "LanternHold/game/src/assets/pixel/foes.json"
+    ]
+   },
+   "technical": {
+    "atlas": "foes",
+    "format": "png8",
+    "artPxToWorldPx": 2,
+    "scaleMode": "nearest",
+    "frames": [
+     "shadowArcher_walk_0",
+     "shadowArcher_walk_1",
+     "shadowArcher_walk_2",
+     "shadowArcher_walk_3",
+     "shadowArcher_attack_0",
+     "shadowArcher_attack_1"
+    ],
+    "cell": [
+     20,
+     17
+    ],
+    "anchor": [
+     0.5,
+     0.9412
+    ]
+   },
+   "styleTags": [
+    "pixel",
+    "night",
+    "top-down-3/4",
+    "1px-outline",
+    "palette-32",
+    "side-view-right"
+   ],
+   "provenance": {
+    "tool": "picanywhere",
+    "job": "job_20261118-120547_307#10",
+    "postprocess": "art/tools/build.py（chroma key → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 打包）",
+    "promptBlock": "art/tools/prompts.py STYLE_LOCK"
+   },
+   "keywords": [
+    "goblin",
+    "archer",
+    "ranged",
+    "shooter",
+    "哥布林",
+    "弓手",
+    "遠程",
+    "enemy",
+    "敵人",
+    "shadow",
+    "暗影",
+    "violet",
+    "紫",
+    "pixel",
+    "像素"
+   ],
+   "reusePolicy": "reusable",
+   "contentHash": "sha256:495977413ac03e2f9b0218c35a026de30f6355fe6d5b972e705b88513e66fc21",
+   "game": "LanternHold"
+  },
+  {
+   "id": "lanternhold.foe.boss",
+   "kind": "sprite-sheet",
+   "status": "shipped",
+   "name": "Boss 永夜之喉：walk 4、attack 3（第 3 格含吐霧）",
+   "files": {
+    "raw": [
+     "LanternHold/art/raw/foe_boss_maw_t1.png"
+    ],
+    "prompt": [
+     "LanternHold/art/prompts/foe_boss_maw.txt"
+    ],
+    "shipped": [
+     "LanternHold/game/src/assets/pixel/foes.png",
+     "LanternHold/game/src/assets/pixel/foes.json"
+    ]
+   },
+   "technical": {
+    "atlas": "foes",
+    "format": "png8",
+    "artPxToWorldPx": 2,
+    "scaleMode": "nearest",
+    "frames": [
+     "boss_walk_0",
+     "boss_walk_1",
+     "boss_walk_2",
+     "boss_walk_3",
+     "boss_attack_0",
+     "boss_attack_1",
+     "boss_attack_2"
+    ],
+    "cell": [
+     134,
+     53
+    ],
+    "anchor": [
+     0.5,
+     0.9811
+    ]
+   },
+   "styleTags": [
+    "pixel",
+    "night",
+    "top-down-3/4",
+    "1px-outline",
+    "palette-32",
+    "side-view-right"
+   ],
+   "provenance": {
+    "tool": "picanywhere",
+    "job": "job_20261118-120547_307#11",
+    "postprocess": "art/tools/build.py（chroma key → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 打包）",
+    "promptBlock": "art/tools/prompts.py STYLE_LOCK"
+   },
+   "keywords": [
+    "boss",
+    "maw",
+    "mouth",
+    "giant",
+    "beast",
+    "頭目",
+    "巨口",
+    "永夜之喉",
+    "enemy",
+    "敵人",
+    "shadow",
+    "暗影",
+    "violet",
+    "紫",
+    "pixel",
+    "像素"
+   ],
+   "reusePolicy": "reusable",
+   "contentHash": "sha256:495977413ac03e2f9b0218c35a026de30f6355fe6d5b972e705b88513e66fc21",
+   "game": "LanternHold"
+  },
+  {
+   "id": "lanternhold.bld.castle",
+   "kind": "sprite-sheet",
+   "status": "shipped",
+   "name": "主城（石塔＋頂燈）",
+   "files": {
+    "raw": [
+     "LanternHold/art/raw/bld_castle_t1.png"
+    ],
+    "prompt": [
+     "LanternHold/art/prompts/bld_castle.txt"
+    ],
+    "shipped": [
+     "LanternHold/game/src/assets/pixel/buildings.png",
+     "LanternHold/game/src/assets/pixel/buildings.json"
+    ]
+   },
+   "technical": {
+    "atlas": "buildings",
+    "format": "png8",
+    "artPxToWorldPx": 2,
+    "scaleMode": "nearest",
+    "frames": [
+     "castle"
+    ],
+    "cell": [
+     52,
+     74
+    ],
+    "anchor": [
+     0.5,
+     0.9865
+    ]
+   },
+   "styleTags": [
+    "pixel",
+    "night",
+    "top-down-3/4",
+    "1px-outline",
+    "palette-32",
+    "side-view-right"
+   ],
+   "provenance": {
+    "tool": "picanywhere",
+    "job": "job_20261118-120547_307#12",
+    "postprocess": "art/tools/build.py（chroma key → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 打包）",
+    "promptBlock": "art/tools/prompts.py STYLE_LOCK"
+   },
+   "keywords": [
+    "castle",
+    "keep",
+    "tower",
+    "lantern",
+    "base",
+    "主城",
+    "城堡",
+    "塔",
+    "燈"
+   ],
+   "reusePolicy": "reusable",
+   "contentHash": "sha256:34d4731dfa62d50f51ed306d8c75c6a85b4e029db767d2150360b74f62be0948",
+   "game": "LanternHold"
+  },
+  {
+   "id": "lanternhold.bld.barracks",
+   "kind": "sprite-sheet",
+   "status": "shipped",
+   "name": "軍營 Lv1–3（帳篷 → 木屋 → 石屋）",
+   "files": {
+    "raw": [
+     "LanternHold/art/raw/bld_barracks_t1.png"
+    ],
+    "prompt": [
+     "LanternHold/art/prompts/bld_barracks.txt"
+    ],
+    "shipped": [
+     "LanternHold/game/src/assets/pixel/buildings.png",
+     "LanternHold/game/src/assets/pixel/buildings.json"
+    ]
+   },
+   "technical": {
+    "atlas": "buildings",
+    "format": "png8",
+    "artPxToWorldPx": 2,
+    "scaleMode": "nearest",
+    "frames": [
+     "barracks_1",
+     "barracks_2",
+     "barracks_3"
+    ],
+    "cell": [
+     36,
+     32
+    ],
+    "anchor": [
+     0.5,
+     0.9688
+    ]
+   },
+   "styleTags": [
+    "pixel",
+    "night",
+    "top-down-3/4",
+    "1px-outline",
+    "palette-32",
+    "side-view-right"
+   ],
+   "provenance": {
+    "tool": "picanywhere",
+    "job": "job_20261118-120547_307#13",
+    "postprocess": "art/tools/build.py（chroma key → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 打包）",
+    "promptBlock": "art/tools/prompts.py STYLE_LOCK"
+   },
+   "keywords": [
+    "barracks",
+    "tent",
+    "hall",
+    "upgrade",
+    "level",
+    "軍營",
+    "帳篷",
+    "升級"
+   ],
+   "reusePolicy": "reusable",
+   "contentHash": "sha256:34d4731dfa62d50f51ed306d8c75c6a85b4e029db767d2150360b74f62be0948",
+   "game": "LanternHold"
+  },
+  {
+   "id": "lanternhold.bld.walls",
+   "kind": "sprite-sheet",
+   "status": "shipped",
+   "name": "城牆三級 × 完好／龜裂／殘破（水平繪製，程式旋轉）",
+   "files": {
+    "raw": [
+     "LanternHold/art/raw/wall_tiers_t1.png"
+    ],
+    "prompt": [
+     "LanternHold/art/prompts/wall_tiers.txt"
+    ],
+    "shipped": [
+     "LanternHold/game/src/assets/pixel/buildings.png",
+     "LanternHold/game/src/assets/pixel/buildings.json"
+    ]
+   },
+   "technical": {
+    "atlas": "buildings",
+    "format": "png8",
+    "artPxToWorldPx": 2,
+    "scaleMode": "nearest",
+    "frames": [
+     "wall_wood_intact",
+     "wall_wood_cracked",
+     "wall_wood_broken",
+     "wall_stone_intact",
+     "wall_stone_cracked",
+     "wall_stone_broken",
+     "wall_iron_intact",
+     "wall_iron_cracked",
+     "wall_iron_broken"
+    ],
+    "cell": [
+     31,
+     11
+    ],
+    "anchor": [
+     0.5,
+     0.5
+    ],
+    "anchorNote": "center (0.5,0.5): rotate around the ring"
+   },
+   "styleTags": [
+    "pixel",
+    "night",
+    "top-down-3/4",
+    "1px-outline",
+    "palette-32",
+    "side-view-right"
+   ],
+   "provenance": {
+    "tool": "picanywhere",
+    "job": "job_20261118-120547_307#14",
+    "postprocess": "art/tools/build.py（chroma key → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 打包）",
+    "promptBlock": "art/tools/prompts.py STYLE_LOCK"
+   },
+   "keywords": [
+    "wall",
+    "palisade",
+    "stone wall",
+    "iron",
+    "damage",
+    "cracked",
+    "broken",
+    "城牆",
+    "木柵",
+    "石牆",
+    "鐵牆",
+    "破損"
+   ],
+   "reusePolicy": "reusable",
+   "contentHash": "sha256:34d4731dfa62d50f51ed306d8c75c6a85b4e029db767d2150360b74f62be0948",
+   "game": "LanternHold"
+  },
+  {
+   "id": "lanternhold.prop.forest",
+   "kind": "sprite-sheet",
+   "status": "shipped",
+   "name": "夜林道具：3 種樹、2 顆石頭、瓦礫、2 支燈柱",
+   "files": {
+    "raw": [
+     "LanternHold/art/raw/props_forest_t1.png"
+    ],
+    "prompt": [
+     "LanternHold/art/prompts/props_forest.txt"
+    ],
+    "shipped": [
+     "LanternHold/game/src/assets/pixel/buildings.png",
+     "LanternHold/game/src/assets/pixel/buildings.json"
+    ]
+   },
+   "technical": {
+    "atlas": "buildings",
+    "format": "png8",
+    "artPxToWorldPx": 2,
+    "scaleMode": "nearest",
+    "frames": [
+     "tree_pine",
+     "tree_oak",
+     "tree_dead",
+     "rock_0",
+     "rock_1",
+     "rubble",
+     "lamppost_0",
+     "lamppost_1"
+    ],
+    "cell": [
+     22,
+     30
+    ],
+    "anchor": [
+     0.5,
+     0.9667
+    ],
+    "anchorNote": "feet bottom-centre; rubble centre"
+   },
+   "styleTags": [
+    "pixel",
+    "night",
+    "top-down-3/4",
+    "1px-outline",
+    "palette-32",
+    "side-view-right"
+   ],
+   "provenance": {
+    "tool": "picanywhere",
+    "job": "job_20261118-120547_307#15",
+    "postprocess": "art/tools/build.py（chroma key → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 打包）",
+    "promptBlock": "art/tools/prompts.py STYLE_LOCK"
+   },
+   "keywords": [
+    "tree",
+    "pine",
+    "oak",
+    "dead tree",
+    "rock",
+    "rubble",
+    "lamppost",
+    "lantern",
+    "prop",
+    "樹",
+    "石頭",
+    "瓦礫",
+    "燈柱",
+    "道具",
+    "forest",
+    "森林"
+   ],
+   "reusePolicy": "reusable",
+   "contentHash": "sha256:34d4731dfa62d50f51ed306d8c75c6a85b4e029db767d2150360b74f62be0948",
+   "game": "LanternHold"
+  },
+  {
+   "id": "lanternhold.fx.bursts",
+   "kind": "fx-sheet",
+   "status": "shipped",
+   "name": "爆炸／冰爆／火焰／蒸汽 各 4 格",
+   "files": {
+    "raw": [
+     "LanternHold/art/raw/fx_bursts_t1.png"
+    ],
+    "prompt": [
+     "LanternHold/art/prompts/fx_bursts.txt"
+    ],
+    "shipped": [
+     "LanternHold/game/src/assets/pixel/fx.png",
+     "LanternHold/game/src/assets/pixel/fx.json"
+    ]
+   },
+   "technical": {
+    "atlas": "fx",
+    "format": "png8",
+    "artPxToWorldPx": 2,
+    "scaleMode": "nearest",
+    "frames": [
+     "explosion_0",
+     "explosion_1",
+     "explosion_2",
+     "explosion_3",
+     "frost_0",
+     "frost_1",
+     "frost_2",
+     "frost_3",
+     "fire_0",
+     "fire_1",
+     "fire_2",
+     "fire_3",
+     "steam_0",
+     "steam_1",
+     "steam_2",
+     "steam_3"
+    ],
+    "cell": [
+     16,
+     15
+    ],
+    "anchor": [
+     0.5,
+     0.5
+    ]
+   },
+   "styleTags": [
+    "pixel",
+    "night",
+    "top-down-3/4",
+    "1px-outline",
+    "palette-32",
+    "side-view-right"
+   ],
+   "provenance": {
+    "tool": "picanywhere",
+    "job": "job_20261118-120547_307#16",
+    "postprocess": "art/tools/build.py（chroma key → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 打包）",
+    "promptBlock": "art/tools/prompts.py STYLE_LOCK"
+   },
+   "keywords": [
+    "explosion",
+    "frost",
+    "ice",
+    "fire",
+    "flame",
+    "steam",
+    "smoke",
+    "爆炸",
+    "冰",
+    "火",
+    "蒸汽",
+    "特效"
+   ],
+   "reusePolicy": "reusable",
+   "contentHash": "sha256:33eea3fad64376bcdfa1f7d65e50412a9c2f758872bb7d4a1aeb068dfba37455",
+   "game": "LanternHold"
+  },
+  {
+   "id": "lanternhold.fx.misc",
+   "kind": "fx-sheet",
+   "status": "shipped",
+   "name": "箭、主城光束、閃電段、打擊火花 3、升級閃光 4、金塊、寶箱開／關（螢火）",
+   "files": {
+    "raw": [
+     "LanternHold/art/raw/fx_misc_t1.png"
+    ],
+    "prompt": [
+     "LanternHold/art/prompts/fx_misc.txt"
+    ],
+    "shipped": [
+     "LanternHold/game/src/assets/pixel/fx.png",
+     "LanternHold/game/src/assets/pixel/fx.json"
+    ]
+   },
+   "technical": {
+    "atlas": "fx",
+    "format": "png8",
+    "artPxToWorldPx": 2,
+    "scaleMode": "nearest",
+    "frames": [
+     "arrow",
+     "beam",
+     "bolt",
+     "spark_0",
+     "spark_1",
+     "spark_2",
+     "sparkle_0",
+     "sparkle_1",
+     "sparkle_2",
+     "sparkle_3",
+     "nugget",
+     "chest_closed",
+     "chest_open"
+    ],
+    "cell": [
+     12,
+     4
+    ],
+    "anchor": [
+     0.5,
+     0.5
+    ]
+   },
+   "styleTags": [
+    "pixel",
+    "night",
+    "top-down-3/4",
+    "1px-outline",
+    "palette-32",
+    "side-view-right"
+   ],
+   "provenance": {
+    "tool": "picanywhere",
+    "job": "job_20261118-120547_307#17",
+    "postprocess": "art/tools/build.py（chroma key → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 打包）",
+    "promptBlock": "art/tools/prompts.py STYLE_LOCK"
+   },
+   "keywords": [
+    "arrow",
+    "beam",
+    "laser",
+    "lightning",
+    "bolt",
+    "spark",
+    "hit",
+    "sparkle",
+    "level up",
+    "gold nugget",
+    "chest",
+    "firefly",
+    "箭",
+    "光束",
+    "閃電",
+    "火花",
+    "升級",
+    "金塊",
+    "寶箱",
+    "螢火蟲"
+   ],
+   "reusePolicy": "reusable",
+   "contentHash": "sha256:33eea3fad64376bcdfa1f7d65e50412a9c2f758872bb7d4a1aeb068dfba37455",
+   "game": "LanternHold"
+  },
+  {
+   "id": "lanternhold.ui.icons",
+   "kind": "ui",
+   "status": "shipped",
+   "name": "卡片圖示 18、進化 4、資源 3（24×24）",
+   "files": {
+    "raw": [
+     "LanternHold/art/raw/icons_cards_a_t1.png",
+     "LanternHold/art/raw/icons_cards_b_t1.png",
+     "LanternHold/art/raw/icons_evo_res_t1.png"
+    ],
+    "prompt": [
+     "LanternHold/art/prompts/icons_cards_a.txt",
+     "LanternHold/art/prompts/icons_cards_b.txt",
+     "LanternHold/art/prompts/icons_evo_res.txt"
+    ],
+    "shipped": [
+     "LanternHold/game/src/assets/pixel/icons.png",
+     "LanternHold/game/src/assets/pixel/icons.json"
+    ]
+   },
+   "technical": {
+    "atlas": "icons",
+    "format": "png8",
+    "artPxToWorldPx": 2,
+    "scaleMode": "nearest",
+    "frames": [
+     "icon_rapid",
+     "icon_split",
+     "icon_reinforce",
+     "icon_fireArrow",
+     "icon_burst",
+     "icon_fireWall",
+     "icon_frostArrow",
+     "icon_frostAura",
+     "icon_frostShield",
+     "icon_thunder",
+     "icon_chain",
+     "icon_rod",
+     "icon_shieldWall",
+     "icon_prayer",
+     "icon_stoneWall",
+     "icon_beacon",
+     "icon_bounty",
+     "icon_ranch",
+     "icon_arrowStorm",
+     "icon_inferno",
+     "icon_tempest",
+     "icon_winter",
+     "icon_gold",
+     "icon_population",
+     "icon_star"
+    ],
+    "cell": [
+     24,
+     24
+    ],
+    "anchor": [
+     0.5,
+     0.5
+    ]
+   },
+   "styleTags": [
+    "pixel",
+    "night",
+    "top-down-3/4",
+    "1px-outline",
+    "palette-32",
+    "side-view-right"
+   ],
+   "provenance": {
+    "tool": "picanywhere",
+    "job": "job_20261118-120851_308#0",
+    "postprocess": "art/tools/build.py（chroma key → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 打包）",
+    "promptBlock": "art/tools/prompts.py STYLE_LOCK"
+   },
+   "keywords": [
+    "icon",
+    "card",
+    "skill",
+    "upgrade",
+    "evolution",
+    "arrow",
+    "fire",
+    "frost",
+    "thunder",
+    "shield",
+    "lantern",
+    "pouch",
+    "gold nugget",
+    "population",
+    "star",
+    "圖示",
+    "卡片",
+    "技能",
+    "進化",
+    "金塊",
+    "人口",
+    "星"
+   ],
+   "reusePolicy": "reusable",
+   "contentHash": "sha256:d3f5b1d0a83fb3176e5e79ee50241b0449b1e1b6935980b59368f95554b14029",
+   "game": "LanternHold"
+  },
+  {
+   "id": "lanternhold.bg.ground",
+   "kind": "background",
+   "status": "shipped",
+   "name": "夜林地表 tile 與道路 tile（64×64 無縫）",
+   "files": {
+    "raw": [
+     "LanternHold/art/raw/ground_forest_t1.png",
+     "LanternHold/art/raw/ground_path_t1.png"
+    ],
+    "prompt": [
+     "LanternHold/art/prompts/ground_forest.txt",
+     "LanternHold/art/prompts/ground_path.txt"
+    ],
+    "shipped": [
+     "LanternHold/game/src/assets/pixel/ground.png",
+     "LanternHold/game/src/assets/pixel/ground.json",
+     "LanternHold/game/src/assets/pixel/ground_forest.png",
+     "LanternHold/game/src/assets/pixel/ground_path.png"
+    ]
+   },
+   "technical": {
+    "atlas": "ground",
+    "format": "png8",
+    "artPxToWorldPx": 2,
+    "scaleMode": "nearest",
+    "frames": [
+     "ground_forest",
+     "ground_path"
+    ],
+    "cell": [
+     64,
+     64
+    ],
+    "anchor": [
+     0,
+     0
+    ],
+    "tile": [
+     64,
+     64
+    ],
+    "note": "standalone PNGs for TilingSprite; ground.png is the same two tiles as an atlas"
+   },
+   "styleTags": [
+    "pixel",
+    "night",
+    "top-down-3/4",
+    "1px-outline",
+    "palette-32",
+    "side-view-right"
+   ],
+   "provenance": {
+    "tool": "picanywhere",
+    "job": "job_20261118-120547_307#18",
+    "postprocess": "art/tools/build.py（chroma key → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 打包）",
+    "promptBlock": "art/tools/prompts.py STYLE_LOCK"
+   },
+   "keywords": [
+    "ground",
+    "tile",
+    "seamless",
+    "grass",
+    "forest floor",
+    "path",
+    "dirt",
+    "road",
+    "地表",
+    "草地",
+    "道路",
+    "泥土",
+    "無縫"
+   ],
+   "reusePolicy": "reusable",
+   "contentHash": "sha256:79b6263a02fa227e4b73cc1dc0cb95a79804a8e0da76e57a49b2d19e62f1b05d",
+   "game": "LanternHold"
+  },
+  {
+   "id": "lanternhold.ref.palette",
+   "kind": "reference",
+   "status": "shipped",
+   "name": "像素組共用 32 色調色盤",
+   "files": {
+    "raw": [],
+    "prompt": [],
+    "shipped": [
+     "LanternHold/game/src/assets/pixel/palette.json"
+    ]
+   },
+   "technical": {
+    "colors": 32,
+    "outlineIndex": 0,
+    "fixed": [
+     "#1b1530",
+     "#ffb64a",
+     "#c6a8ff",
+     "#6fd3c4",
+     "#c4c8d6",
+     "#848aa0",
+     "#54586e"
+    ]
+   },
+   "styleTags": [
+    "pixel",
+    "night",
+    "top-down-3/4",
+    "1px-outline",
+    "palette-32",
+    "side-view-right"
+   ],
+   "provenance": {
+    "tool": "art/tools/build.py",
+    "postprocess": "median cut + k-means over every frame, 7 fixed tokens, near-white entries capped at 236, near-black neutrals pulled to the outline indigo (no pure black/white)"
+   },
+   "keywords": [
+    "palette",
+    "調色盤",
+    "colors",
+    "night",
+    "pixel"
+   ],
+   "reusePolicy": "reusable",
+   "contentHash": "sha256:5caa0899c1830aa780bac30716f09aa24f3f147e9595545f8e6edb1719234582",
+   "game": "LanternHold"
   },
   {
    "id": "swarmduel.chr.sasq.identity_v01",

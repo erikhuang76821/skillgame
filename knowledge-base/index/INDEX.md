@@ -61,9 +61,37 @@
 | [16_difficulty-curve.md](../../knowledge-base/16_difficulty-curve.md) | `KB-difficulty-curve` | method | difficulty | 7 | 0 |
 | [af-gate-lane-shooter.md](../../knowledge-base/ad-funnel/af-gate-lane-shooter.md) | `KB-af-gate-lane-shooter` | research | design, market | 11 | 0 |
 
-## 資產（85 筆）
+## 資產（108 筆）
 
-依遊戲：SwarmDuel 63、TwinStrike 17、shared 5　依狀態：placeholder 6、procedural 35、raw-only 5、rejected-take 5、shipped 28、template 6
+依遊戲：LanternHold 23、SwarmDuel 63、TwinStrike 17、shared 5　依狀態：placeholder 6、procedural 35、raw-only 5、rejected-take 7、shipped 49、template 6
+
+### LanternHold
+
+| id | 類型 | 狀態 | 名稱 | 檔案 | 重用 |
+|---|---|---|---|---|---|
+| `lanternhold.chr.worker` | sprite-sheet | shipped | 工人（槌子）：idle 2、walk 4、attack 3（朝右，左向鏡像） | [units.png](../../LanternHold/game/src/assets/pixel/units.png) | reusable |
+| `lanternhold.chr.archer` | sprite-sheet | shipped | 弓箭手：idle 2、walk 4、attack 3（朝右，左向鏡像） | [units.png](../../LanternHold/game/src/assets/pixel/units.png) | reusable |
+| `lanternhold.chr.shield` | sprite-sheet | shipped | 盾兵：idle 2、walk 4、attack 3（朝右，左向鏡像） | [units.png](../../LanternHold/game/src/assets/pixel/units.png) | reusable |
+| `lanternhold.chr.priest` | sprite-sheet | shipped | 治療者（提燈法杖，無宗教符號）：idle 2、walk 4、attack 3（朝右，左向鏡像） | [units.png](../../LanternHold/game/src/assets/pixel/units.png) | reusable |
+| `lanternhold.ref.priest.t1` | reference | rejected-take | 治療者 t1（米色長袍，縮到 18 px 變雜訊，未採用） | [unit_priest_t1.png](../../LanternHold/art/raw/unit_priest_t1.png) | game-only |
+| `lanternhold.ref.priest.t2b` | reference | rejected-take | 治療者 t2b（與 t2a 同 prompt，輪廓較糊，未採用） | [unit_priest_v2_t2b.png](../../LanternHold/art/raw/unit_priest_v2_t2b.png) | game-only |
+| `lanternhold.foe.rat` | sprite-sheet | shipped | 影鼠：walk 4 | [foes.png](../../LanternHold/game/src/assets/pixel/foes.png) | reusable |
+| `lanternhold.foe.beetle` | sprite-sheet | shipped | 甲蟲：walk 4 | [foes.png](../../LanternHold/game/src/assets/pixel/foes.png) | reusable |
+| `lanternhold.foe.moth` | sprite-sheet | shipped | 飛蛾（飛行）：fly 4 | [foes.png](../../LanternHold/game/src/assets/pixel/foes.png) | reusable |
+| `lanternhold.foe.shroom` | sprite-sheet | shipped | 爆菇：walk 4、swell 2（膨脹待爆） | [foes.png](../../LanternHold/game/src/assets/pixel/foes.png) | reusable |
+| `lanternhold.foe.snail` | sprite-sheet | shipped | 攻城蝸牛：walk 4、attack 2 | [foes.png](../../LanternHold/game/src/assets/pixel/foes.png) | reusable |
+| `lanternhold.foe.wolf` | sprite-sheet | shipped | 鐵甲狼（精英）：walk 4、attack 2 | [foes.png](../../LanternHold/game/src/assets/pixel/foes.png) | reusable |
+| `lanternhold.foe.shadowArcher` | sprite-sheet | shipped | 暗影弓手（遠程、射牆）：walk 4、attack 2 | [foes.png](../../LanternHold/game/src/assets/pixel/foes.png) | reusable |
+| `lanternhold.foe.boss` | sprite-sheet | shipped | Boss 永夜之喉：walk 4、attack 3（第 3 格含吐霧） | [foes.png](../../LanternHold/game/src/assets/pixel/foes.png) | reusable |
+| `lanternhold.bld.castle` | sprite-sheet | shipped | 主城（石塔＋頂燈） | [buildings.png](../../LanternHold/game/src/assets/pixel/buildings.png) | reusable |
+| `lanternhold.bld.barracks` | sprite-sheet | shipped | 軍營 Lv1–3（帳篷 → 木屋 → 石屋） | [buildings.png](../../LanternHold/game/src/assets/pixel/buildings.png) | reusable |
+| `lanternhold.bld.walls` | sprite-sheet | shipped | 城牆三級 × 完好／龜裂／殘破（水平繪製，程式旋轉） | [buildings.png](../../LanternHold/game/src/assets/pixel/buildings.png) | reusable |
+| `lanternhold.prop.forest` | sprite-sheet | shipped | 夜林道具：3 種樹、2 顆石頭、瓦礫、2 支燈柱 | [buildings.png](../../LanternHold/game/src/assets/pixel/buildings.png) | reusable |
+| `lanternhold.fx.bursts` | fx-sheet | shipped | 爆炸／冰爆／火焰／蒸汽 各 4 格 | [fx.png](../../LanternHold/game/src/assets/pixel/fx.png) | reusable |
+| `lanternhold.fx.misc` | fx-sheet | shipped | 箭、主城光束、閃電段、打擊火花 3、升級閃光 4、金塊、寶箱開／關（螢火） | [fx.png](../../LanternHold/game/src/assets/pixel/fx.png) | reusable |
+| `lanternhold.ui.icons` | ui | shipped | 卡片圖示 18、進化 4、資源 3（24×24） | [icons.png](../../LanternHold/game/src/assets/pixel/icons.png) | reusable |
+| `lanternhold.bg.ground` | background | shipped | 夜林地表 tile 與道路 tile（64×64 無縫） | [ground.png](../../LanternHold/game/src/assets/pixel/ground.png) | reusable |
+| `lanternhold.ref.palette` | reference | shipped | 像素組共用 32 色調色盤 | [palette.json](../../LanternHold/game/src/assets/pixel/palette.json) | reusable |
 
 ### SwarmDuel
 

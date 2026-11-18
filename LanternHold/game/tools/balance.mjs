@@ -1,10 +1,13 @@
 // Balance probe: run every bot and baseline on N seeds and print survival, score, boss kills, evolutions and
-// where the castle took its damage. Usage: node tools/balance.mjs [seeds=12] [botName]
+// where the castle took its damage. Usage: node tools/balance.mjs [seeds=12] [botName] [--stage s5]
 import { Recorder, TPS } from '../src/sim/core/index.js';
-import { GAME, EVENTS, EVOS } from '../src/sim/sim.js';
+import { GAMES, DEFAULT_STAGE, EVOS } from '../src/sim/sim.js';
 import { BOTS, BASELINES } from './bots.mjs';
 
-const N = Number(process.argv[2] ?? 12), only = process.argv[3];
+const argv = process.argv.slice(2), si = argv.indexOf('--stage'), STAGE = si >= 0 ? argv.splice(si, 2)[1] : DEFAULT_STAGE;
+const GAME = GAMES[STAGE];
+const N = Number(argv[0] ?? 12), only = argv[1];
+const EVENTS = GAME.createSim(1).script.events, END = GAME.maxTicks / TPS;
 const all = { ...BOTS, ...BASELINES };
 const evName = t => { let n = '開局'; for (const e of EVENTS) if (t >= e.at) n = e.name; return n; };
 
@@ -26,7 +29,7 @@ for (const [name, p] of Object.entries(all)) {
     rows.push({ seed, score: GAME.score(s), t: Math.round(s.tick / TPS), boss: s.bossDead, lv: s.level, evo: Object.keys(EVOS).filter(e => s.evo[e]).length, firstEvo: Math.round(firstEvo / TPS), hurtAt, units: s.units.filter(u => u.alive).length, kills: s.kills, events: s.eventState.filter(e => e.cleared).length });
   }
   const avg = k => Math.round(rows.reduce((a, r) => a + r[k], 0) / rows.length);
-  const full = rows.filter(r => r.t >= 270 || r.boss).length;
+  const full = rows.filter(r => r.t >= END || r.boss).length;
   const hurt = {};
   for (const r of rows) for (const [k, v] of Object.entries(r.hurtAt)) hurt[k] = (hurt[k] ?? 0) + v;
   const top = Object.entries(hurt).sort((a, b) => b[1] - a[1]).slice(0, 3).map(([k, v]) => `${k} ${Math.round(v / rows.length)}`).join('、');

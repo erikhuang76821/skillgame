@@ -2,8 +2,8 @@
 // They see what is on screen: gold, units, walls, the open offer, and an event's gates only from its prewarn tick on.
 import { hash32 } from '../src/sim/core/index.js';
 import {
-  OP, encode, cellOf, CX, CY, COS, SIN, EVENTS, PREWARN_TICKS, SLOTS, WALL_SEGS, UNIT, UNIT_KINDS, barracksCost, WALL, REPAIR,
-  popCap, pop, canPlace, segOf, ONE, wallMaxHp, CARDS, EVOS, SYNERGY, CHOICE, tagCount, CARD_MAX,
+  OP, encode, cellOf, CX, CY, COS, SIN, PREWARN_TICKS, SLOTS, WALL_SEGS, UNIT, UNIT_KINDS, barracksCost, WALL, BARRACKS, WORKER_MAX, workerCount,
+  popCap, pop, canPlace, segOf, ONE, wallMaxHp, CARDS, EVOS, SYNERGY, CHOICE, tagCount, CARD_MAX, EVENT_CLEAR_TICKS,
 } from './botApi.mjs';
 
 const state = new WeakMap();
@@ -13,6 +13,7 @@ const pointAt = (a, r) => [CX + Math.trunc((COS[a] * r) / ONE), CY + Math.trunc(
 
 function visibleEvent(sim, notice = 0) {             // notice = ticks the player needs to notice the warning
   let cur = -1;
+  const EVENTS = sim.script.events;
   for (let e = 0; e < EVENTS.length; e++) if (sim.tick >= EVENTS[e].at - PREWARN_TICKS + notice) cur = e;
   return cur;
 }
@@ -20,7 +21,7 @@ function visibleEvent(sim, notice = 0) {             // notice = ticks the playe
 /** The gates an event really uses, as the warning arrows show them ('b' = opposite of 'a', 'all' = every gate). */
 function eventGates(sim, e) {
   const [a, n] = sim.eventState[e].gates, out = new Set();
-  for (const g of EVENTS[e].groups) {
+  for (const g of sim.script.events[e].groups) {
     if (g.gate === 'all') return [0, 1, 2, 3, 4, 5, 6, 7];
     out.add(g.gate === 'a' ? a : g.gate === 'b' ? (a + 4) % 8 : n);
   }
@@ -29,7 +30,7 @@ function eventGates(sim, e) {
 
 function plan(sim, o) {
   const cmds = [], soldiers = [];
-  sim.units.forEach((u, i) => { if (u.alive) soldiers.push(i); });
+  sim.units.forEach((u, i) => { if (u.alive && u.kind !== 'worker') soldiers.push(i); });
   const bars = sim.slots.map((sl, i) => i).filter(i => sim.slots[i].kind === 'barracks');
   const free = SLOTS.findIndex((_, i) => !sim.slots[i].kind);
   const room = pop(sim) < popCap(sim);
@@ -40,11 +41,22 @@ function plan(sim, o) {
   if (bars.length < o.barracks && free >= 0 && !room && sim.gold >= barracksCost(sim) + o.reserve) cmds.push(encode(OP.BUILD, free, 0));
   // 2) soldiers on the barracks with the shortest queue
   const ready = bars.filter(i => sim.slots[i].build === 0).sort((x, y) => sim.slots[x].queue.length - sim.slots[y].queue.length);
+  const topLv = Math.max(...bars.map(i => sim.slots[i].lv));
   if (ready.length && room && sim.slots[ready[0]].queue.length < 2) {
     const n = soldiers.length;
-    const want = o.mix ? (n % 4 === 1 ? 1 : n % 6 === 3 ? 2 : 0) : 0;
-    if (sim.gold >= UNIT[UNIT_KINDS[want]].cost + o.reserve) cmds.push(encode(OP.MENU, ready[0], want));
+    let want = o.mix ? (n % 4 === 1 ? 1 : n % 6 === 3 ? 2 : 0) : 0;
+    const b = ready.find(i => sim.slots[i].lv >= UNIT[UNIT_KINDS[want]].barracksLv && sim.slots[i].queue.length < 2);
+    if (b === undefined) want = 0;
+    const at = b ?? ready[0];
+    if (sim.gold >= UNIT[UNIT_KINDS[want]].cost + o.reserve) cmds.push(encode(OP.MENU, at, want));
   }
+  // barracks upgrades unlock shields (Lv2) and priests (Lv3)
+  if (o.mix && topLv < 3 && soldiers.length >= 4 + 3 * topLv && ready.length) {
+    const b = ready.find(i => sim.slots[i].lv === topLv);
+    if (b !== undefined && sim.gold >= BARRACKS.up[topLv - 1] + o.reserve) cmds.push(encode(OP.MENU, b, 3));
+  }
+  // workers repair walls and barracks
+  if (o.workers && workerCount(sim) < Math.min(o.workers, WORKER_MAX) && room && sim.walls.some(w => w.lv) && sim.gold >= UNIT.worker.cost + o.reserve) cmds.push(encode(OP.MENU, 255, 0));
   // 3) walls: the warned side first; with spare gold, close the whole ring
   if (o.walls && (!room || sim.gold >= 20 || soldiers.length >= 8)) {           // soldiers first while the army is small
     const segs = [];
@@ -53,8 +65,8 @@ function plan(sim, o) {
     if (o.wallAll && sim.gold >= 60) for (let w = 0; w < WALL_SEGS; w++) segs.push(w);
     for (const w of segs) {
       const wl = sim.walls[w];
-      if (wl.lv === 0 && sim.gold >= WALL.cost + o.reserve) { cmds.push(encode(OP.WALL, w, 0)); break; }
-      if (wl.lv > 0 && wl.hp < wallMaxHp(sim) / 2 && wl.repair === 0 && sim.gold >= REPAIR.cost) { cmds.push(encode(OP.WALL, w, 1)); break; }
+      if (wl.lv === 0 && sim.gold >= WALL[1].cost + o.reserve) { cmds.push(encode(OP.WALL, w, 0)); break; }
+      if (o.wallUp && wl.lv > 0 && wl.lv < 3 && sim.gold >= WALL[wl.lv + 1].cost + 30 * wl.lv) { cmds.push(encode(OP.WALL, w, 0)); break; }
     }
   }
   // 4) soldiers: every unit has a stable home on the ring (from its id); a squad answers each warning, then goes home
@@ -87,7 +99,7 @@ function plan(sim, o) {
       const u = sim.units[i];
       if (u.redeploy > 0 || u.state !== 'guard') continue;
       const tag = s.squad.get(i);
-      if (tag !== undefined && !(sim.eventState[tag].cleared || sim.tick > EVENTS[tag].at + 30 * 60)) continue;
+      if (tag !== undefined && !(sim.eventState[tag].cleared || sim.tick > sim.script.events[tag].at + 30 * 60)) continue;
       const [x, y] = gates && o.react === true && soldiers.indexOf(i) % 3 !== 2
         ? pointAt((gateAngle(gates[soldiers.indexOf(i) % 2]) + ((soldiers.indexOf(i) >> 1) % 3 - 1) * 8) & 255, 190)
         : home(u);
@@ -113,10 +125,11 @@ function cardValue(sim, id) {
   v += bestEvo;
   // cards that need a unit kind you do not field are worth little; damage matters most early
   const kinds = k => sim.units.filter(u => u.alive && u.kind === k).length;
-  if ((id === 'shieldWall' || id === 'frostShield') && kinds('shield') < 3) v -= 4;
-  if (id === 'prayer' && kinds('priest') < 2) v -= 4;
+  if (CARDS[id].type === 'shield' && kinds('shield') < 3) v -= 4;
+  if (CARDS[id].type === 'priest' && kinds('priest') < 2) v -= 4;
+  if (id === 'artisan' && kinds('worker') < 2) v -= 4;
   if ((id === 'stoneWall' || id === 'fireWall') && sim.walls.filter(w => w.lv).length < 8) v -= 3;
-  if (sim.picks < 4 && ['rapid', 'split', 'fireArrow', 'burst', 'thunder', 'chain'].includes(id)) v += 2;
+  if (sim.picks < 4 && ['rapid', 'split', 'fireArrow', 'burst', 'thunder', 'chain', 'longbow'].includes(id)) v += 2;
   if (lvNow === 0) for (const t of CARDS[id].tags) if (tagCount(sim, t) === SYNERGY[t].n - 1) v += 2;
   if (id === 'reinforce' && sim.picks < 4) v += 3;
   if (id === 'bounty' && sim.picks < 3) v += 2;
@@ -126,6 +139,9 @@ const PICKERS = {
   first: () => 0,
   owned: sim => { const ids = sim.offer.ids; const k = ids.findIndex(id => EVOS[id] || sim.cards[id] > 0); return k >= 0 ? k : 0; },
   planned: sim => {
+    // lock the archer cards once: the army is mostly archers, so their cards should come up more often
+    const archerAt = sim.offer.ids.findIndex(id => CARDS[id]?.type === 'archer');
+    if (sim.locks > 0 && !sim.lockType && archerAt >= 0) return CHOICE.LOCK + archerAt;
     const vals = sim.offer.ids.map(id => cardValue(sim, id));
     const best = Math.max(...vals);
     if (best < 4 && sim.rerolls > 0) return CHOICE.REROLL;
@@ -150,16 +166,16 @@ export function makePlanner(name, o) {
   };
 }
 
-export const BASE = { notice: 0, lapsePm: 0, pickSlipPm: 0, mix: false, walls: false, wallAll: false, deploy: false, react: false, squad: 2, barracks: 1, reserve: 0, think: 30, jitter: 0, perThink: 3, picker: 'first' };
+export const BASE = { notice: 0, lapsePm: 0, pickSlipPm: 0, workers: 0, wallUp: false, mix: false, walls: false, wallAll: false, deploy: false, react: false, squad: 2, barracks: 1, reserve: 0, think: 30, jitter: 0, perThink: 3, picker: 'first' };
 export const BOTS = {
   novice: makePlanner('novice', { ...BASE, think: 90, jitter: 60, perThink: 1 }),
-  intermediate: makePlanner('intermediate', { ...BASE, deploy: true, walls: true, barracks: 2, think: 45, jitter: 30, perThink: 2, picker: 'owned' }),
-  expert: makePlanner('expert', { ...BASE, mix: true, walls: true, wallAll: true, deploy: true, react: 'squad', squad: 5, barracks: 4, think: 20, jitter: 10, perThink: 3, picker: 'planned' }),
+  intermediate: makePlanner('intermediate', { ...BASE, deploy: true, walls: true, workers: 2, barracks: 2, think: 45, jitter: 30, perThink: 2, picker: 'owned' }),
+  expert: makePlanner('expert', { ...BASE, mix: true, walls: true, wallAll: true, wallUp: true, workers: 4, deploy: true, react: 'squad', squad: 5, barracks: 4, think: 20, jitter: 10, perThink: 3, picker: 'planned' }),
 };
 
 /** One-sentence plans a beginner could follow (simple strategies for skill evidence). */
 export const BASELINES = {
   'one barracks, archers only, take the first card': makePlanner('only-archers', { ...BASE, think: 30 }),
   'max barracks, archers only, level what you own': makePlanner('mass', { ...BASE, barracks: 6, think: 30, picker: 'owned' }),
-  'spread evenly, plan cards, never react': makePlanner('spread', { ...BASE, mix: true, walls: true, wallAll: true, deploy: true, barracks: 4, think: 30, picker: 'planned' }),
+  'spread evenly, plan cards, never react': makePlanner('spread', { ...BASE, mix: true, walls: true, wallAll: true, wallUp: true, workers: 4, deploy: true, barracks: 4, think: 30, picker: 'planned' }),
 };

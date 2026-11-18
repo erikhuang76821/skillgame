@@ -2,7 +2,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { Recorder, playMatch, verify, replay } from '../src/sim/core/index.js';
-import { GAME, createSim, step, choose, phase, OP, encode, REDEPLOY_CD, EVENTS, CHOICE, CARDS, EVOS } from '../src/sim/sim.js';
+import { GAME, GAMES, createSim, step, choose, phase, OP, encode, REDEPLOY_CD, CHOICE, CARDS, EVOS, STAGE_IDS, WALL } from '../src/sim/sim.js';
 import { BOTS } from '../tools/bots.mjs';
 
 test('same seed + same inputs => identical result', () => {
@@ -13,7 +13,7 @@ test('golden match (cross-engine determinism; update only when GAME.version is b
   const r = playMatch(GAME, 1234, BOTS.expert).result();
   assert.deepEqual(r, GOLDEN, JSON.stringify(r));
 });
-const GOLDEN = { game: 'lantern-hold', version: 5, seed: 1234, ticks: 16200, score: 2538, hash: 3817885536 };
+const GOLDEN = { game: 'lantern-hold-s5', version: 7, seed: 1234, ticks: 19369, score: 4152, hash: 3254229519 };
 
 test('uploaded match verifies; tampered score does not', () => {
   const up = playMatch(GAME, 98765, BOTS.intermediate).upload();
@@ -28,7 +28,7 @@ test('different seeds diverge', () => {
 test('the challenge depends only on the seed, not on player behaviour (fairness E2)', () => {
   const spawns = policy => {
     const sim = createSim(77), seen = [];
-    for (let t = 0; t < EVENTS[3].at; t++) { step(sim, policy(sim, t)); for (const e of sim.events) if (e.type === 'spawn') seen.push(`${e.kind}@${e.gate}`); }
+    for (let t = 0; t < sim.script.events[3].at; t++) { step(sim, policy(sim, t)); for (const e of sim.events) if (e.type === 'spawn') seen.push(`${e.kind}@${e.gate}`); }
     return { seen, gates: sim.eventState.map(e => e.gates.join()) };
   };
   const idle = spawns(() => 0);
@@ -83,18 +83,22 @@ test('the k-th offer is the same for every player who reaches it with the same c
   assert.deepEqual(toOffer(b), oa);
 });
 
-test('reroll and ban: limited, and a refused choice changes nothing', () => {
+test('reroll, ignore a type, lock a type: limited, and a refused choice changes nothing', () => {
   const sim = createSim(99);
   const first = toOffer(sim);
   assert.equal(choose(sim, CHOICE.REROLL), true);
   assert.notDeepEqual(sim.offer.ids, first);
   assert.equal(choose(sim, CHOICE.REROLL), true);
   assert.equal(choose(sim, CHOICE.REROLL), false);           // out of rerolls
-  const banned = sim.offer.ids[1];
-  assert.equal(choose(sim, CHOICE.BAN + 1), true);
-  assert.equal(sim.banned[banned], true);
-  assert.ok(!sim.offer.ids.includes(banned));
-  assert.equal(choose(sim, CHOICE.BAN), false);              // out of bans
+  const type = CARDS[sim.offer.ids[1]].type;
+  assert.equal(choose(sim, CHOICE.IGNORE + 1), true);        // ignore that card's type for the match
+  assert.equal(sim.ignored[type], true);
+  assert.ok(!sim.offer.ids.some(id => CARDS[id]?.type === type));
+  assert.equal(choose(sim, CHOICE.IGNORE), false);           // out of ignores
+  const lockType = CARDS[sim.offer.ids[0]].type;
+  assert.equal(choose(sim, CHOICE.LOCK), true);
+  assert.equal(sim.lockType, lockType);
+  assert.equal(choose(sim, CHOICE.LOCK + 1), false);         // out of locks
   assert.equal(choose(sim, 7), false);
   assert.equal(choose(sim, 0), true);
   assert.equal(sim.picks, 1);
@@ -119,4 +123,75 @@ test('card picks replay: same seed, inputs and choices give the same hash', () =
   assert.equal(r.hash, rec.result().hash);
   const bad = rec.choices.map((c, k) => (k === 0 ? [c[0], c[1], (c[2] + 1) % 3] : c));
   assert.notEqual(replay(GAME, 2024, rec.log, bad, rec.ticks).hash, rec.result().hash);
+});
+
+// --- v6: walls, barracks, workers, stages ---
+const feed = (sim, cmd) => { for (const b of cmd) step(sim, b); };
+
+test('walls upgrade palisade -> stone -> iron with gold; there is no gold repair', () => {
+  const sim = createSim(11);
+  sim.gold = 100;
+  feed(sim, encode(OP.WALL, 4, 0)); feed(sim, encode(OP.WALL, 4, 0)); feed(sim, encode(OP.WALL, 4, 0));
+  assert.equal(sim.walls[4].lv, 3);
+  assert.equal(sim.gold, 100 - WALL[1].cost - WALL[2].cost - WALL[3].cost);
+  feed(sim, encode(OP.WALL, 4, 1));                          // the old repair command does nothing
+  assert.equal(sim.gold, 100 - WALL[1].cost - WALL[2].cost - WALL[3].cost);
+});
+
+test('a barracks trains shields only from Lv2 and priests only from Lv3', () => {
+  const sim = createSim(12);
+  sim.gold = 500;
+  feed(sim, encode(OP.BUILD, 0, 0));
+  for (let t = 0; t < 70; t++) step(sim, 0);
+  feed(sim, encode(OP.MENU, 0, 1));
+  assert.equal(sim.slots[0].queue.length, 0);
+  feed(sim, encode(OP.MENU, 0, 3));                          // upgrade to Lv2
+  feed(sim, encode(OP.MENU, 0, 1));
+  assert.deepEqual(sim.slots[0].queue, ['shield']);
+  feed(sim, encode(OP.MENU, 0, 2));
+  assert.deepEqual(sim.slots[0].queue, ['shield']);
+});
+
+test('workers repair a damaged wall for free', () => {
+  const sim = createSim(13);
+  sim.gold = 100;
+  feed(sim, encode(OP.WALL, 18, 0));
+  feed(sim, encode(OP.MENU, 255, 0));
+  sim.walls[18].hp = 10;
+  const gold = sim.gold;
+  for (let t = 0; t < 900 && sim.walls[18].hp < 80; t++) { if (phase(sim) === 'choice') choose(sim, 0); else step(sim, 0); }
+  assert.ok(sim.walls[18].hp > 10, `wall hp ${sim.walls[18].hp}`);
+  assert.ok(sim.gold >= gold);
+});
+
+test('every stage builds a rising script that ends with its final boss', () => {
+  for (const id of STAGE_IDS) {
+    const sim = GAMES[id].createSim(1), ev = sim.script.events;
+    assert.ok(ev.length > 5);
+    assert.ok(ev.every((e, k) => k === 0 || e.at > ev[k - 1].at));
+    assert.equal(ev.filter(e => e.final).length, 1);
+    assert.equal(ev[ev.length - 1].final, true);
+    assert.equal(GAMES[id].maxTicks, ev[ev.length - 1].at + 90 * 60);
+  }
+});
+
+// --- unit behaviours and fixed chests ---
+test('a chest gives a fixed number of cards for its source (no dice)', () => {
+  const a = createSim(1), b = createSim(999);
+  for (const sim of [a, b]) { sim.cards.rapid = 1; sim.owned.push('rapid'); sim.cards.split = 1; sim.owned.push('split'); }
+  // the same chest source upgrades the same number of cards whatever the seed
+  const before = s => s.cards.rapid + s.cards.split;
+  const open = sim => { sim.chestKillN = 0; sim.kills = 99; sim.foes.push({ id: 9e6, kind: 'rat', x: 0, y: 0, hp: 0, ev: -1, done: false, burn: 0, slow: 0, stun: 0 }); step(sim, 0); };
+  const ba = before(a), bb = before(b);
+  open(a); open(b);
+  assert.equal(before(a) - ba, before(b) - bb);
+});
+
+test('an archer pushed by melee hits never ends up further than pushMax from its post', () => {
+  const sim = createSim(21);
+  const i = sim.units.findIndex(u => u.alive && u.kind === 'archer'), u = sim.units[i];
+  sim.foes.push({ id: 8e6, kind: 'wolf', x: u.x + 10 * 256, y: u.y, hp: 9999, cd: 0, ev: -1, tKind: 'unit', target: i, gate: 0, burn: 0, burnDmg: 0, slow: 0, stun: 0, done: false, detour: false });
+  for (let t = 0; t < 600 && u.alive; t++) { if (phase(sim) === 'choice') choose(sim, 0); else step(sim, 0); }
+  const d = Math.hypot(u.x - u.hx, u.y - u.hy) / 256;
+  assert.ok(d <= 48 + 1, `pushed ${d.toFixed(1)} px`);
 });

@@ -1,8 +1,19 @@
 # 守望之戰 LanternHold
 
-360° 塔防 × 倖存者式三選一。敵人從八方不斷湧來；打怪得**金幣**（蓋軍營、買弓箭手／盾兵／牧師、蓋城牆）和**守望值**（升級時三選一張卡）。卡片有屬性標籤，湊齊觸發**羈絆**，不同元素互相**反應**，特定兩張湊滿會**進化**；限時清事件得**寶箱**，一次升 1 / 3 / 5 張。小兵拖曳布陣，可重拖但有冷卻與移動代價。開局只有主城＋一名小弓箭手。全程不分回合。
+360° 塔防 × 倖存者式三選一，真像素美術。
 
-狀態：**原型 v3**（卡片改版，2026-11-18）。`cd game && npm run dev`。
+- **資源**：怪從八方不斷湧來，打怪得**金幣**和**守望值**。
+  - 金幣：蓋、升級軍營（Lv2 解鎖盾兵、Lv3 解鎖牧師），買兵，蓋、升級城牆，主城出工人自動修牆。
+  - 守望值：升級時三選一張卡。卡片有兵種類型（可忽略、可鎖定）和屬性標籤；湊齊觸發**羈絆**，不同元素互相**反應**，特定兩張湊滿會**進化**。
+- **城牆路線**：城牆留**缺口**可以引導會繞路的怪。
+- **兵種**：弓箭手站樁、盾兵迎敵後回撤、牧師詠唱治療。
+- **關卡**：五個主題關（5／8／10／12／15 分），首領會掉寶箱。
+- **操作**：拖曳布陣、雙指或滾輪縮放。
+
+狀態：**原型 v7**（2026-11-18）。
+- 開發：`cd game && npm run dev`。
+- 上架用單檔 zip：`npm run build:zip` → `release/lanternhold.zip`。
+- 上架資料與規範對照：[docs/store_listing.md](docs/store_listing.md)。
 
 ## 文件
 
@@ -10,11 +21,13 @@
 |---|---|
 | [gdd/01_concept.md](gdd/01_concept.md) | 企劃總覽：節奏、系統、建築、城牆、資源、英雄、敵人、事件、操作 |
 | [gdd/04_combat.md](gdd/04_combat.md) | 攻防係數：傷害公式、3×3 剋制表、單位數值、守備距離 |
-| [gdd/06_cards.md](gdd/06_cards.md) | 卡片成長：三選一、羈絆、反應、進化、寶箱（v3） |
-| [gdd/02_art_spec.md](gdd/02_art_spec.md) | 美術風格、資產清單、atlas 與包體預估、生成風格鎖 |
+| [gdd/06_cards.md](gdd/06_cards.md) | 卡片成長：三選一、兵種類型（忽略／鎖定）、羈絆、反應、進化、寶箱 |
+| [docs/playtest_report.md](docs/playtest_report.md) | 自動試玩報告（難度曲線 D2–D6） |
+| [docs/store_listing.md](docs/store_listing.md) | 上架資料（名稱、理念、說明）與規範對照 |
+| [gdd/02_art_spec.md](gdd/02_art_spec.md) | 像素美術規格、資產清單、atlas、生成風格鎖；手感與音效見 [knowledge-base/05_juice-and-feel](../knowledge-base/05_juice-and-feel.md)、[14_audio](../knowledge-base/14_audio.md) |
 | [gdd/03_skill_integrity.md](gdd/03_skill_integrity.md) | 技巧完整性、去隨機化 |
 | [gdd/05_game_spec.md](gdd/05_game_spec.md) | 玩法規格 §0–§13（數值草案） |
-| [gdd/07_difficulty_curve.md](gdd/07_difficulty_curve.md) | 事件時間軸、底流強度 |
+| [gdd/07_difficulty_curve.md](gdd/07_difficulty_curve.md) | 關卡表、腳本產生器、時間軸、試玩紀錄 |
 | [gdd/10_tech_constraints.md](gdd/10_tech_constraints.md) | 技術限制 |
 | [gdd/11_risks_open.md](gdd/11_risks_open.md) | 風險、待決事項 |
 

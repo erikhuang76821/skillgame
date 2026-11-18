@@ -12,7 +12,8 @@
     "evidence": "node tools/skill-evidence.mjs",
     "evidence:confirm": "node tools/skill-evidence.mjs --confirm --out ../docs/skill_evidence_report.md",
     "playtest": "node tools/playtest.mjs 30 --out ../docs/playtest_report.md",
-    "audit": "node ../../shared/tools/game-audit.mjs"
+    "audit": "node ../../shared/tools/game-audit.mjs",
+    "build:zip": "vite build --mode zip && node scripts/singlefile.mjs"
   },
   "dependencies": {
     "gsap": "3.15.0",

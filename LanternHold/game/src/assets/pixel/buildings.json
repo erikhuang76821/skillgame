@@ -1,0 +1,521 @@
+{
+ "frames": {
+  "castle": {
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 52,
+    "h": 74
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 52,
+    "h": 74
+   },
+   "sourceSize": {
+    "w": 52,
+    "h": 74
+   },
+   "anchor": {
+    "x": 0.5,
+    "y": 0.9865
+   }
+  },
+  "barracks_1": {
+   "frame": {
+    "x": 135,
+    "y": 0,
+    "w": 36,
+    "h": 32
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 36,
+    "h": 32
+   },
+   "sourceSize": {
+    "w": 36,
+    "h": 32
+   },
+   "anchor": {
+    "x": 0.5,
+    "y": 0.9688
+   }
+  },
+  "barracks_2": {
+   "frame": {
+    "x": 94,
+    "y": 0,
+    "w": 40,
+    "h": 32
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 40,
+    "h": 32
+   },
+   "sourceSize": {
+    "w": 40,
+    "h": 32
+   },
+   "anchor": {
+    "x": 0.5,
+    "y": 0.9688
+   }
+  },
+  "barracks_3": {
+   "frame": {
+    "x": 53,
+    "y": 0,
+    "w": 40,
+    "h": 35
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 40,
+    "h": 35
+   },
+   "sourceSize": {
+    "w": 40,
+    "h": 35
+   },
+   "anchor": {
+    "x": 0.5,
+    "y": 0.9714
+   }
+  },
+  "wall_wood_intact": {
+   "frame": {
+    "x": 105,
+    "y": 75,
+    "w": 31,
+    "h": 11
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 31,
+    "h": 11
+   },
+   "sourceSize": {
+    "w": 31,
+    "h": 11
+   },
+   "anchor": {
+    "x": 0.5,
+    "y": 0.5
+   }
+  },
+  "wall_wood_cracked": {
+   "frame": {
+    "x": 137,
+    "y": 75,
+    "w": 31,
+    "h": 11
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 31,
+    "h": 11
+   },
+   "sourceSize": {
+    "w": 31,
+    "h": 11
+   },
+   "anchor": {
+    "x": 0.5,
+    "y": 0.5
+   }
+  },
+  "wall_wood_broken": {
+   "frame": {
+    "x": 169,
+    "y": 75,
+    "w": 31,
+    "h": 11
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 31,
+    "h": 11
+   },
+   "sourceSize": {
+    "w": 31,
+    "h": 11
+   },
+   "anchor": {
+    "x": 0.5,
+    "y": 0.5
+   }
+  },
+  "wall_stone_intact": {
+   "frame": {
+    "x": 201,
+    "y": 75,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "anchor": {
+    "x": 0.5,
+    "y": 0.5
+   }
+  },
+  "wall_stone_cracked": {
+   "frame": {
+    "x": 0,
+    "y": 106,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "anchor": {
+    "x": 0.5,
+    "y": 0.5
+   }
+  },
+  "wall_stone_broken": {
+   "frame": {
+    "x": 33,
+    "y": 106,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "anchor": {
+    "x": 0.5,
+    "y": 0.5
+   }
+  },
+  "wall_iron_intact": {
+   "frame": {
+    "x": 66,
+    "y": 106,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "anchor": {
+    "x": 0.5,
+    "y": 0.5
+   }
+  },
+  "wall_iron_cracked": {
+   "frame": {
+    "x": 99,
+    "y": 106,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "anchor": {
+    "x": 0.5,
+    "y": 0.5
+   }
+  },
+  "wall_iron_broken": {
+   "frame": {
+    "x": 132,
+    "y": 106,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "anchor": {
+    "x": 0.5,
+    "y": 0.5
+   }
+  },
+  "tree_pine": {
+   "frame": {
+    "x": 0,
+    "y": 75,
+    "w": 22,
+    "h": 30
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 22,
+    "h": 30
+   },
+   "sourceSize": {
+    "w": 22,
+    "h": 30
+   },
+   "anchor": {
+    "x": 0.5,
+    "y": 0.9667
+   }
+  },
+  "tree_oak": {
+   "frame": {
+    "x": 172,
+    "y": 0,
+    "w": 32,
+    "h": 30
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 30
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 30
+   },
+   "anchor": {
+    "x": 0.5,
+    "y": 0.9667
+   }
+  },
+  "tree_dead": {
+   "frame": {
+    "x": 205,
+    "y": 0,
+    "w": 30,
+    "h": 30
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 30,
+    "h": 30
+   },
+   "sourceSize": {
+    "w": 30,
+    "h": 30
+   },
+   "anchor": {
+    "x": 0.5,
+    "y": 0.9667
+   }
+  },
+  "rock_0": {
+   "frame": {
+    "x": 86,
+    "y": 75,
+    "w": 18,
+    "h": 13
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 18,
+    "h": 13
+   },
+   "sourceSize": {
+    "w": 18,
+    "h": 13
+   },
+   "anchor": {
+    "x": 0.5,
+    "y": 0.9231
+   }
+  },
+  "rock_1": {
+   "frame": {
+    "x": 165,
+    "y": 106,
+    "w": 16,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 16,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 16,
+    "h": 10
+   },
+   "anchor": {
+    "x": 0.5,
+    "y": 0.9
+   }
+  },
+  "lamppost_0": {
+   "frame": {
+    "x": 23,
+    "y": 75,
+    "w": 14,
+    "h": 21
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 14,
+    "h": 21
+   },
+   "sourceSize": {
+    "w": 14,
+    "h": 21
+   },
+   "anchor": {
+    "x": 0.5,
+    "y": 0.9524
+   }
+  },
+  "lamppost_1": {
+   "frame": {
+    "x": 38,
+    "y": 75,
+    "w": 14,
+    "h": 21
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 14,
+    "h": 21
+   },
+   "sourceSize": {
+    "w": 14,
+    "h": 21
+   },
+   "anchor": {
+    "x": 0.5,
+    "y": 0.9524
+   }
+  },
+  "rubble": {
+   "frame": {
+    "x": 53,
+    "y": 75,
+    "w": 32,
+    "h": 15
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 15
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 15
+   },
+   "anchor": {
+    "x": 0.5,
+    "y": 0.5
+   }
+  }
+ },
+ "animations": {},
+ "meta": {
+  "app": "LanternHold/art/tools/build.py",
+  "version": "1.0",
+  "image": "buildings.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 256,
+   "h": 116
+  },
+  "scale": "1",
+  "note": "pixel art: 1 art px = 2 world px, use scaleMode 'nearest'; anchor per frame (feet = bottom-centre)"
+ }
+}

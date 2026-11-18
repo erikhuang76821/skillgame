@@ -7,5 +7,5 @@
   "scriptedProgression": true,
   "source": ["af-horde-defense", "af-survivor-skill-pick"],
   "jurisdiction": ["TW", "US-*"],
-  "artStyle": ["painted"]
+  "artStyle": ["pixel"]
 }
