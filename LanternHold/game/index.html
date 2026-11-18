@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <title>守望之戰</title>
+  <style>
+    :root { --night: #141a33; --panel: rgba(16, 22, 44, .9); --line: rgba(255,255,255,.16); --lamp: #ffb64a;
+      --gold: #f0c35a; --meat: #e07a5f; --ore: #8fb3d9; --ally: #6fd3c4; --danger: #ff5a5a; }
+    html, body { margin: 0; height: 100%; background: var(--night); overflow: hidden; touch-action: none;
+      -webkit-user-select: none; user-select: none; overscroll-behavior: none; color: #eef3f8;
+      font: 700 15px/1.3 system-ui, "Noto Sans TC", sans-serif; }
+    #stage { position: fixed; inset: 0; overflow: hidden; background: var(--night); }
+    #stage-shake { position: absolute; inset: -12px; will-change: transform; }
+    #stage-shake canvas { position: absolute; inset: 12px; display: block; }
+    #fx { position: fixed; inset: 0; pointer-events: none; }
+    #fx-vignette, #fx-flash { position: absolute; inset: 0; opacity: 0; }
+    #fx-vignette { background: radial-gradient(ellipse at center, transparent 55%, rgba(200, 0, 0, .6) 100%); }
+    #fx-flash { background: #fff; mix-blend-mode: screen; }
+    #hud { position: fixed; inset: 0; pointer-events: none; display: flex; justify-content: center; }
+    #col { position: relative; height: 100%; width: min(100vw, 56.25vh); }
+    .top { position: absolute; top: calc(8px + env(safe-area-inset-top)); left: 8px; right: 8px; display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+    .chip { padding: 4px 8px; border-radius: 10px; background: rgba(0,0,0,.45); border: 1px solid var(--line); font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .chip b { font-weight: 800; }
+    .gold b { color: var(--gold); } .meat b { color: var(--meat); } .ore b { color: var(--ore); }
+    .time { margin-left: auto; }
+    .castlebar { position: absolute; top: calc(44px + env(safe-area-inset-top)); left: 8px; right: 8px; height: 8px; border-radius: 4px; background: rgba(0,0,0,.5); overflow: hidden; }
+    .castlebar > i { display: block; height: 100%; width: 100%; background: linear-gradient(90deg, #ff8a3d, var(--lamp)); transform-origin: left; }
+    .xprow { position: absolute; top: calc(56px + env(safe-area-inset-top)); left: 8px; right: 8px; display: flex; gap: 8px; align-items: center; font-size: 13px; }
+    .xpbar { flex: 1; height: 7px; border-radius: 4px; background: rgba(0,0,0,.5); overflow: hidden; }
+    .xpbar > i { display: block; height: 100%; width: 100%; background: linear-gradient(90deg, #6fd3c4, #bff7ee); transform-origin: left; transform: scaleX(0); }
+    .build { position: absolute; top: calc(76px + env(safe-area-inset-top)); left: 8px; right: 8px; display: flex; flex-wrap: wrap; gap: 4px; font-size: 11px; font-weight: 600; }
+    .build span { padding: 2px 6px; border-radius: 8px; background: rgba(0,0,0,.45); border: 1px solid var(--line); white-space: nowrap; }
+    .build .syn { opacity: .75; } .build .syn.on { opacity: 1; background: rgba(111,211,196,.25); border-color: #6fd3c4; }
+    .build .evo { background: rgba(143,240,255,.25) !important; border-color: #8ff0ff !important; color: #dffaff; }
+    .t-bow { --tc: #6fd3c4; } .t-fire { --tc: #ff8a3d; } .t-frost { --tc: #8fd3ff; } .t-storm { --tc: #c9a2ff; } .t-fort { --tc: #d8c39a; } .t-gold { --tc: #f0c35a; }
+    .build .own, .build .syn { color: var(--tc, #eef3f8); }
+    .combo { position: absolute; top: 34%; left: 0; right: 0; text-align: center; font-size: 30px; font-weight: 900; color: #ffcf7a; text-shadow: 0 3px 0 #3a1a00, 0 0 18px rgba(255,140,60,.6); opacity: 0; }
+    .banner { position: absolute; top: 24%; left: 16px; right: 16px; text-align: center; padding: 12px; border-radius: 14px; background: rgba(16,22,44,.88); border: 2px solid #6fd3c4; opacity: 0; }
+    .banner b { display: block; font-size: 24px; } .banner small { display: block; font-weight: 500; opacity: .85; margin-top: 4px; }
+    .banner.evo { border-color: #8ff0ff; box-shadow: 0 0 30px rgba(143,240,255,.45); } .banner.evo b { color: #bff7ff; }
+    .banner.react { border-color: #ff9ad5; } .banner.react b { color: #ffc2e6; }
+    .cards { position: absolute; inset: 0; padding: calc(110px + env(safe-area-inset-top)) 10px 20px; background: rgba(8,10,24,.72); pointer-events: auto; display: none; text-align: center; }
+    .cards h2 { margin: 0 0 12px; color: var(--lamp); font-size: 22px; } .cards h2 small { color: #eef3f8; opacity: .7; font-size: 14px; }
+    .cards .hand { display: flex; flex-direction: column; gap: 10px; }
+    .card { text-align: left; padding: 10px 12px; border-radius: 14px; border: 2px solid var(--line); background: #1f2950; color: inherit; font: inherit; cursor: pointer; }
+    .card h4 { margin: 4px 0 2px; font-size: 19px; } .card p { margin: 4px 0; font-weight: 500; font-size: 14px; }
+    .card .pips { font-size: 13px; opacity: .9; } .card .pips b { color: var(--lamp); }
+    .card .hint2 { font-size: 12px; color: #9ff3e4; font-weight: 600; margin-top: 2px; }
+    .card.evo { border-color: #8ff0ff; background: linear-gradient(160deg, #1d3a55, #1f2950); box-shadow: 0 0 24px rgba(143,240,255,.35); }
+    .card.banning { border-color: var(--danger); }
+    .tag { display: inline-block; padding: 1px 7px; margin-right: 4px; border-radius: 8px; font-size: 12px; background: rgba(0,0,0,.35); color: var(--tc); border: 1px solid var(--tc); }
+    .tag.evo { --tc: #8ff0ff; }
+    .cards .row { display: flex; gap: 8px; margin-top: 12px; }
+    .cards .row button { flex: 1; min-height: 50px; border-radius: 12px; border: 1px solid var(--line); background: #24305a; color: inherit; font: inherit; }
+    .cards .row button small { display: block; font-size: 11px; font-weight: 500; opacity: .8; }
+    .cards .row button.active { border-color: var(--danger); color: #ffb0b0; }
+    .cards .row button:disabled { opacity: .35; }
+    .chest h2 b { color: #fff2b0; font-size: 30px; }
+    .chest .hand { flex-direction: row; flex-wrap: wrap; justify-content: center; perspective: 600px; }
+    .mini { width: 30%; min-width: 96px; padding: 12px 6px; border-radius: 12px; background: #1f2950; border: 2px solid #d8c39a; }
+    .mini h4 { margin: 0 0 4px; } .mini.evo { border-color: #8ff0ff; box-shadow: 0 0 20px rgba(143,240,255,.4); }
+    .chest .tap { opacity: .6; font-size: 13px; margin-top: 14px; }
+    .warn { position: absolute; top: calc(100px + env(safe-area-inset-top)); left: 0; right: 0; text-align: center; color: var(--danger);
+      font-size: 18px; text-shadow: 0 2px 0 #000; opacity: 0; }
+    .menu { position: absolute; left: 8px; right: 8px; bottom: calc(10px + env(safe-area-inset-bottom)); padding: 10px; border-radius: 14px;
+      background: var(--panel); border: 1px solid var(--line); pointer-events: auto; display: none; }
+    .menu h3 { margin: 0 0 6px; font-size: 16px; display: flex; justify-content: space-between; }
+    .menu h3 small { opacity: .7; font-weight: 600; }
+    .menu .row { display: flex; gap: 6px; flex-wrap: wrap; }
+    .menu button { flex: 1 1 30%; min-height: 54px; border-radius: 10px; border: 1px solid var(--line); background: #24305a; color: inherit;
+      font: inherit; font-size: 14px; padding: 6px 4px; cursor: pointer; }
+    .menu button small { display: block; font-weight: 600; opacity: .85; font-size: 12px; }
+    .menu button:disabled { opacity: .38; }
+    .menu p { margin: 4px 0 8px; font-weight: 500; opacity: .85; font-size: 13px; }
+    .hint { position: absolute; left: 0; right: 0; bottom: calc(12px + env(safe-area-inset-bottom)); text-align: center; font-weight: 500; opacity: .75; font-size: 13px; text-shadow: 0 1px 0 #000; }
+    .dc { position: absolute; bottom: 4px; right: 6px; font: 11px/1 ui-monospace, monospace; opacity: .6; }
+    .panel { position: absolute; left: 20px; right: 20px; top: 50%; transform: translateY(-50%); text-align: center; pointer-events: auto;
+      padding: 20px 16px; border-radius: 18px; background: var(--panel); border: 1px solid var(--line); box-shadow: 0 10px 40px rgba(0,0,0,.5); }
+    .panel h1 { margin: 0 0 6px; font-size: 32px; color: var(--lamp); }
+    .panel p { margin: 6px 0; font-weight: 500; }
+    .panel table { width: 100%; margin: 10px 0; border-collapse: collapse; font-size: 15px; }
+    .panel td { padding: 3px 4px; text-align: left; } .panel td:last-child { text-align: right; font-variant-numeric: tabular-nums; }
+    .panel .total td { border-top: 1px solid var(--line); font-size: 20px; padding-top: 8px; }
+    .panel button { margin-top: 10px; min-width: 160px; min-height: 48px; border-radius: 12px; border: 0; background: var(--lamp); color: #2a1a00; font: inherit; font-size: 18px; }
+    .panel .rules { text-align: left; font-size: 13px; opacity: .85; font-weight: 500; }
+    .panel .rules li { margin: 3px 0; }
+  </style>
+</head>
+<body>
+  <div id="stage"><div id="stage-shake"></div></div>
+  <div id="fx" aria-hidden="true"><div id="fx-vignette"></div><div id="fx-flash"></div></div>
+  <div id="hud"><div id="col">
+    <div class="top">
+      <div class="chip gold">金 <b id="gold">0</b></div>
+      <div class="chip">人口 <b id="pop">0</b></div>
+      <div class="chip">分 <b id="score">0</b></div>
+      <div class="chip time" id="time">4:30</div>
+    </div>
+    <div class="castlebar"><i id="castlehp"></i></div>
+    <div class="xprow"><span id="lv">守望 Lv0</span><div class="xpbar"><i id="xpbar"></i></div></div>
+    <div class="build" id="build"></div>
+    <div class="combo" id="combo"></div>
+    <div class="banner" id="banner"></div>
+    <div class="warn" id="warn"></div>
+    <div class="hint" id="hint"></div>
+    <div class="menu" id="menu"></div>
+    <div class="dc" hidden></div>
+    <div class="panel" id="panel"></div>
+    <div class="cards" id="cards"></div>
+    <div class="cards chest" id="chest"></div>
+  </div></div>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
