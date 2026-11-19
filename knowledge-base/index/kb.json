@@ -3,35 +3,35 @@
  "schemaVersion": 1,
  "about": "產生物，禁止手改。來源：knowledge-base/ 各頁的 front-matter 與 <!-- card: … --> 標記，詞彙 shared/index/facets.json；重建：node shared/tools/index-build.mjs。",
  "counts": {
-  "pages": 17,
-  "cards": 103,
+  "pages": 18,
+  "cards": 112,
   "unindexed": 27,
   "byKind": {
    "gap": 4,
    "lesson": 6,
-   "method": 47,
-   "principle": 9,
+   "method": 51,
+   "principle": 14,
    "recipe": 9,
    "research": 28
   },
   "byTopic": {
    "art": 20,
-   "audio": 6,
+   "audio": 8,
    "budget": 5,
-   "design": 19,
-   "difficulty": 8,
+   "design": 24,
+   "difficulty": 9,
    "fairness": 16,
    "input": 5,
-   "juice": 6,
+   "juice": 9,
    "legal": 8,
    "liveops": 2,
    "market": 18,
    "monetization": 1,
    "process": 6,
-   "scoring": 3,
+   "scoring": 4,
    "tech": 15,
    "theme": 4,
-   "ux": 4
+   "ux": 7
   }
  },
  "pages": [
@@ -330,6 +330,24 @@
    "reviewedAt": "2026-10-21",
    "cards": 7,
    "skipped": 0
+  },
+  {
+   "id": "KB-design-principles",
+   "path": "knowledge-base/17_design-principles.md",
+   "title": "17 遊戲設計原則（手感、節奏、回饋）",
+   "kind": "principle",
+   "facets": {
+    "topic": [
+     "design"
+    ],
+    "genre": [
+     "*"
+    ]
+   },
+   "rules": [],
+   "reviewedAt": "2026-11-19",
+   "cards": 9,
+   "skipped": 1
   },
   {
    "id": "KB-af-gate-lane-shooter",
@@ -1074,8 +1092,8 @@
    "id": "KB-juice-feel.effects-cost",
    "page": "KB-juice-feel",
    "path": "knowledge-base/05_juice-and-feel.md",
-   "line": 13,
-   "end": 29,
+   "line": 14,
+   "end": 30,
    "heading": [
     "1. 效果做法與成本"
    ],
@@ -1099,8 +1117,8 @@
    "id": "KB-juice-feel.gsap",
    "page": "KB-juice-feel",
    "path": "knowledge-base/05_juice-and-feel.md",
-   "line": 31,
-   "end": 61,
+   "line": 32,
+   "end": 62,
    "heading": [
     "2. GSAP 必設參數"
    ],
@@ -1122,8 +1140,8 @@
    "id": "KB-juice-feel.fallback-a11y",
    "page": "KB-juice-feel",
    "path": "knowledge-base/05_juice-and-feel.md",
-   "line": 63,
-   "end": 72,
+   "line": 64,
+   "end": 73,
    "heading": [
     "3. 降級與無障礙"
    ],
@@ -1146,8 +1164,8 @@
    "id": "KB-juice-feel.spine",
    "page": "KB-juice-feel",
    "path": "knowledge-base/05_juice-and-feel.md",
-   "line": 74,
-   "end": 82,
+   "line": 75,
+   "end": 83,
    "heading": [
     "4. Spine 要點（4.3）"
    ],
@@ -1170,8 +1188,8 @@
    "id": "KB-juice-feel.tuning",
    "page": "KB-juice-feel",
    "path": "knowledge-base/05_juice-and-feel.md",
-   "line": 84,
-   "end": 89,
+   "line": 85,
+   "end": 90,
    "heading": [
     "5. 調手感流程"
    ],
@@ -1954,8 +1972,8 @@
    "id": "KB-audio.architecture",
    "page": "KB-audio",
    "path": "knowledge-base/14_audio.md",
-   "line": 13,
-   "end": 22,
+   "line": 14,
+   "end": 23,
    "heading": [
     "1. 架構"
    ],
@@ -1977,8 +1995,8 @@
    "id": "KB-audio.recipes",
    "page": "KB-audio",
    "path": "knowledge-base/14_audio.md",
-   "line": 24,
-   "end": 37,
+   "line": 25,
+   "end": 38,
    "heading": [
     "2. 配方表（起手值，跟 FEEL 一樣在檔案裡調）"
    ],
@@ -2000,8 +2018,8 @@
    "id": "KB-audio.mixing",
    "page": "KB-audio",
    "path": "knowledge-base/14_audio.md",
-   "line": 39,
-   "end": 48,
+   "line": 40,
+   "end": 49,
    "heading": [
     "3. 混音原則"
    ],
@@ -2023,8 +2041,8 @@
    "id": "KB-audio.rhythm-clock",
    "page": "KB-audio",
    "path": "knowledge-base/14_audio.md",
-   "line": 50,
-   "end": 58,
+   "line": 51,
+   "end": 59,
    "heading": [
     "4. 節奏遊戲的時鐘對齊"
    ],
@@ -2046,8 +2064,8 @@
    "id": "KB-audio.todo",
    "page": "KB-audio",
    "path": "knowledge-base/14_audio.md",
-   "line": 60,
-   "end": 65,
+   "line": 61,
+   "end": 66,
    "heading": [
     "5. 還沒做到的"
    ],
@@ -2593,6 +2611,224 @@
    "reviewedAt": "2026-10-21",
    "tokens": 174,
    "hash": "sha256:084f9a5b1c4a7142"
+  },
+  {
+   "id": "KB-design-principles.excluded",
+   "page": "KB-design-principles",
+   "path": "knowledge-base/17_design-principles.md",
+   "line": 20,
+   "end": 33,
+   "heading": [
+    "1. 不適用於 skill game 的原則（排除清單）"
+   ],
+   "kind": "principle",
+   "facets": {
+    "topic": [
+     "design"
+    ],
+    "genre": [
+     "*"
+    ]
+   },
+   "rules": [],
+   "reviewedAt": "2026-11-19",
+   "tokens": 515,
+   "hash": "sha256:2f5b1c3b58472ac5"
+  },
+  {
+   "id": "KB-design-principles.risk-reward",
+   "page": "KB-design-principles",
+   "path": "knowledge-base/17_design-principles.md",
+   "line": 35,
+   "end": 43,
+   "heading": [
+    "2. 核心：風險與報酬"
+   ],
+   "kind": "principle",
+   "facets": {
+    "topic": [
+     "design"
+    ],
+    "genre": [
+     "*"
+    ]
+   },
+   "rules": [],
+   "reviewedAt": "2026-11-19",
+   "tokens": 430,
+   "hash": "sha256:1323dbe1f1b32451"
+  },
+  {
+   "id": "KB-design-principles.retry-pacing",
+   "page": "KB-design-principles",
+   "path": "knowledge-base/17_design-principles.md",
+   "line": 45,
+   "end": 52,
+   "heading": [
+    "3. 難度、重試與節奏（技巧賽版）"
+   ],
+   "kind": "principle",
+   "facets": {
+    "topic": [
+     "difficulty",
+     "design"
+    ],
+    "genre": [
+     "*"
+    ]
+   },
+   "rules": [],
+   "reviewedAt": "2026-11-19",
+   "tokens": 403,
+   "hash": "sha256:36f3f2a2afe2ec79"
+  },
+  {
+   "id": "KB-design-principles.praise-score",
+   "page": "KB-design-principles",
+   "path": "knowledge-base/17_design-principles.md",
+   "line": 54,
+   "end": 59,
+   "heading": [
+    "4. 回饋、誇獎與計分呈現"
+   ],
+   "kind": "principle",
+   "facets": {
+    "topic": [
+     "design",
+     "scoring",
+     "ux"
+    ],
+    "genre": [
+     "*"
+    ]
+   },
+   "rules": [],
+   "reviewedAt": "2026-11-19",
+   "tokens": 227,
+   "hash": "sha256:4442847a51cb43fc"
+  },
+  {
+   "id": "KB-design-principles.onboarding-time",
+   "page": "KB-design-principles",
+   "path": "knowledge-base/17_design-principles.md",
+   "line": 61,
+   "end": 69,
+   "heading": [
+    "5. 導入與時間"
+   ],
+   "kind": "principle",
+   "facets": {
+    "topic": [
+     "ux",
+     "design"
+    ],
+    "genre": [
+     "*"
+    ]
+   },
+   "rules": [],
+   "reviewedAt": "2026-11-19",
+   "tokens": 284,
+   "hash": "sha256:f7f92aa1d466d7d1"
+  },
+  {
+   "id": "KB-design-principles.hitstop-motion",
+   "page": "KB-design-principles",
+   "path": "knowledge-base/17_design-principles.md",
+   "line": 71,
+   "end": 86,
+   "heading": [
+    "6. 手感：頓幀、受擊與動作"
+   ],
+   "kind": "method",
+   "facets": {
+    "topic": [
+     "juice"
+    ],
+    "genre": [
+     "survivor",
+     "arena",
+     "shmup",
+     "lane-shooter",
+     "tower-defense",
+     "runner"
+    ]
+   },
+   "rules": [],
+   "reviewedAt": "2026-11-19",
+   "tokens": 408,
+   "hash": "sha256:df70e50c13a32056"
+  },
+  {
+   "id": "KB-design-principles.effects",
+   "page": "KB-design-principles",
+   "path": "knowledge-base/17_design-principles.md",
+   "line": 88,
+   "end": 102,
+   "heading": [
+    "7. 特效：擊中標記、爆炸、震動、閃光"
+   ],
+   "kind": "method",
+   "facets": {
+    "topic": [
+     "juice"
+    ],
+    "genre": [
+     "*"
+    ]
+   },
+   "rules": [],
+   "reviewedAt": "2026-11-19",
+   "tokens": 377,
+   "hash": "sha256:370a7ac3285b8abf"
+  },
+  {
+   "id": "KB-design-principles.audio-priority",
+   "page": "KB-design-principles",
+   "path": "knowledge-base/17_design-principles.md",
+   "line": 104,
+   "end": 112,
+   "heading": [
+    "8. 音效：依影響度排優先序"
+   ],
+   "kind": "method",
+   "facets": {
+    "topic": [
+     "audio"
+    ],
+    "genre": [
+     "*"
+    ]
+   },
+   "rules": [],
+   "reviewedAt": "2026-11-19",
+   "tokens": 372,
+   "hash": "sha256:3af3a97c31fb44c9"
+  },
+  {
+   "id": "KB-design-principles.review-order",
+   "page": "KB-design-principles",
+   "path": "knowledge-base/17_design-principles.md",
+   "line": 114,
+   "end": 120,
+   "heading": [
+    "9. 審查順序：「手感弱」「拖沓」時先查什麼"
+   ],
+   "kind": "method",
+   "facets": {
+    "topic": [
+     "juice",
+     "audio",
+     "ux"
+    ],
+    "genre": [
+     "*"
+    ]
+   },
+   "rules": [],
+   "reviewedAt": "2026-11-19",
+   "tokens": 151,
+   "hash": "sha256:9af8621d1c2ecbe1"
   },
   {
    "id": "KB-af-gate-lane-shooter.pitch",

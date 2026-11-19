@@ -8,6 +8,7 @@ reviewedAt: 2026-10-21
 # 14 音效 — Web Audio 程式合成（0 bytes）
 
 > 補 [09](09_knowledge-gaps.md) G6。模組：[`src/audio/sfx.js`](../.claude/skills/lite-skillgame-stack/templates/src/audio/sfx.js)，範本示範已接上（perfect / whiff / miss / boom / click，M 鍵靜音）。
+> 優先序與起音原則：[17 §8](17_design-principles.md)。
 > 規則與打擊感相同：音效只在 render 層，由 sim 事件觸發，不回寫 sim（[05](05_juice-and-feel.md)）。
 
 ## 1. 架構

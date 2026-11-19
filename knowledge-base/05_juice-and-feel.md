@@ -8,6 +8,7 @@ reviewedAt: 2026-10-21
 # 05 打擊感與手感（以算代貼）
 
 > 權威來源：[references/juice.md](../.claude/skills/lite-skillgame-stack/references/juice.md)、[references/gsap.md](../.claude/skills/lite-skillgame-stack/references/gsap.md)、[references/spine.md](../.claude/skills/lite-skillgame-stack/references/spine.md)、範本 [templates/src/fx/](../.claude/skills/lite-skillgame-stack/templates/src/fx/)
+> 設計原則（為什麼這樣做、手感弱時先查什麼）：[17 §6–§9](17_design-principles.md)。
 > 鐵則：juice 只活在 render / UI 層，由 sim 事件驅動；高低特效的玩家同種子結果必須一致。
 
 ## 1. 效果做法與成本

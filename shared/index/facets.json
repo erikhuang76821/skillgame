@@ -30,6 +30,7 @@
         "rhythm": "節奏 / 時機判定",
         "physics": "確定性物理（撞球、彈珠、泡泡龍）",
         "lane-shooter": "跑道射擊＋加乘門",
+        "shmup": "捲軸飛行射擊（走位閃彈＋擊破計分）",
         "runner": "跑酷",
         "sort-puzzle": "排序 / 解鎖類解謎（jam、sort、pin）",
         "block-puzzle": "方塊擺放",

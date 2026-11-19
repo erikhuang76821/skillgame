@@ -17,7 +17,7 @@
 
 ## 開新遊戲：必讀路徑
 
-照 [bootstrap.md §0](../.claude/skills/lite-skillgame-stack/references/bootstrap.md) 的表依階段讀（立項 01 / 02 → 改編題的 `ad-funnel/af-*.md` 改造清單 → 規格 03 / 12 / 13 → 難度曲線 16 → 手感音效 05 / 14 / 15 → 美術 06 / 07 / 10 / 11 → 技術 04），流程與驗收見 [08](08_production-workflow.md)。交付前 `npm run audit`（[shared/tools/game-audit.mjs](../shared/tools/game-audit.mjs)）檢查產出是否齊全。
+照 [bootstrap.md §0](../.claude/skills/lite-skillgame-stack/references/bootstrap.md) 的表依階段讀（立項 01 / 02 → 改編題的 `ad-funnel/af-*.md` 改造清單 → 規格 03 / 12 / 13 → 難度曲線 16 → 手感音效 05 / 14 / 15 / 17 → 美術 06 / 07 / 10 / 11 → 技術 04），流程與驗收見 [08](08_production-workflow.md)。交付前 `npm run audit`（[shared/tools/game-audit.mjs](../shared/tools/game-audit.mjs)）檢查產出是否齊全。
 
 ## 目錄
 
@@ -39,6 +39,7 @@
 | [14 音效](14_audio.md) | Web Audio 程式合成配方、混音原則、節奏遊戲的音訊時鐘對齊 |
 | [15 參考遊戲拆解](15_reference-games.md) | 《無雙割草：三國奇兵》與《9527 星際遠征》的技術棧與包體、物件製作規範（2.5D 人武分離、寫實貼圖 + 程式特效）、音效（全合成 vs 檔案 + 合成雙層）、過場演出（Cut-In 刷幕、Boss 雙層血條）、UI/UX、可借用 / 要避開、公平性對照 |
 | [16 難度曲線設計與驗收](16_difficulty-curve.md) | 腳本化曲線（難度級、上升鋸齒、調息、頭目）、容錯參數、人性化自動試玩（失誤原因模型、逐單位量測）、**驗收門檻 D1–D8**、調校流程與實例、套用到其他品類 |
+| [17 遊戲設計原則](17_design-principles.md) | 風險與報酬、重試與節奏、誇獎與分數呈現、導入；頓幀、動作、特效、音效優先序的原則與「手感弱／拖沓」審查順序；**不適用於技巧賽的原則排除清單**（來源：sakurai-skill 改寫，附影片集數） |
 | [16 廣告導流玩法](16_ad-funnel-games.md) | 2025–2026 台灣 / 北美買量廣告最紅的 17 種玩法規格書（解謎排序、加乘門、割草、4X 導流小遊戲）、改成 skill game 的難易排序與做法、DC / 包體估算、假廣告法規；規格書在 [ad-funnel/](ad-funnel/) |
 
 ## 三條不可違反的原則

@@ -39,7 +39,7 @@
 | `RULE-KB-CARDS` | must | 程式 | `TEST-INDEX` | [2026-11-10-libraries-and-loop.md](../../knowledge-base/decisions/2026-11-10-libraries-and-loop.md) | [2026-11-10-libraries-and-loop.md](../../knowledge-base/decisions/2026-11-10-libraries-and-loop.md) |
 | `RULE-KB-CARD-SIZE` | should | 程式 | `TEST-INDEX` | [2026-11-10-libraries-and-loop.md](../../knowledge-base/decisions/2026-11-10-libraries-and-loop.md) | [2026-11-10-libraries-and-loop.md](../../knowledge-base/decisions/2026-11-10-libraries-and-loop.md) |
 
-## 知識卡（103 張，17 頁；未分卡 27 頁）
+## 知識卡（112 張，18 頁；未分卡 27 頁）
 
 | 頁 | id | kind | topic | 卡片 | 略過 |
 |---|---|---|---|---|---|
@@ -59,6 +59,7 @@
 | [15_reference-games.md](../../knowledge-base/15_reference-games.md) | `KB-reference-games` | research | market, tech, art | 9 | 0 |
 | [16_ad-funnel-games.md](../../knowledge-base/16_ad-funnel-games.md) | `KB-ad-funnel-games` | research | market, design | 6 | 0 |
 | [16_difficulty-curve.md](../../knowledge-base/16_difficulty-curve.md) | `KB-difficulty-curve` | method | difficulty | 7 | 0 |
+| [17_design-principles.md](../../knowledge-base/17_design-principles.md) | `KB-design-principles` | principle | design | 9 | 1 |
 | [af-gate-lane-shooter.md](../../knowledge-base/ad-funnel/af-gate-lane-shooter.md) | `KB-af-gate-lane-shooter` | research | design, market | 11 | 0 |
 
 ## 資產（108 筆）
