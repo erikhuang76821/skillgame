@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>VFX Lab · 冰矢</title>
+<style>
+  :root { color-scheme: dark; --bg:#0d1218; --panel:#151d26; --line:#263241; --text:#d9e4ee; --dim:#8296a8; --acc:#8adfff; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font:14px/1.5 system-ui, "Noto Sans TC", sans-serif; }
+  main { max-width: 1000px; margin: 0 auto; padding: 16px; display:grid; gap:12px; }
+  h1 { font-size: 18px; margin: 0; } h1 small { color: var(--dim); font-weight: 400; margin-left: 8px; }
+  #stage { width:100%; aspect-ratio: 16/9; background:#0a0f14; border:1px solid var(--line); border-radius:8px; overflow:hidden; cursor: crosshair; }
+  #stage canvas { width:100%; height:100%; display:block; }
+  .panel { background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:12px; display:flex; flex-wrap:wrap; gap:10px 18px; align-items:center; }
+  button { background:#1f2b38; color:var(--text); border:1px solid var(--line); border-radius:6px; padding:6px 12px; font:inherit; cursor:pointer; }
+  button:hover { border-color: var(--acc); }
+  label { display:inline-flex; gap:6px; align-items:center; color:var(--dim); }
+  input[type=range] { accent-color: var(--acc); }
+  #scrub { flex: 1 1 300px; }
+  output, .mono { font-family: ui-monospace, Consolas, monospace; color: var(--text); }
+  #check { color: var(--dim); }
+  #check.ok { color: #7be08f; } #check.bad { color: #ff7b7b; }
+  .hint { color: var(--dim); font-size: 12px; margin: 0; }
+</style>
+</head>
+<body>
+<main>
+  <h1>冰矢 ice-bolt <small>projectile + trail + impact · 規格 knowledge-base/assets/vfx-spec/examples/ice-bolt.json</small></h1>
+  <div id="stage"></div>
+  <div class="panel">
+    <button id="play">▶ 播放</button>
+    <button id="pause">⏸ 暫停</button>
+    <button id="hit">遊戲 hit 事件</button>
+    <input id="scrub" type="range" min="0" max="1000" value="0" aria-label="時間軸" />
+    <output id="time" class="mono">0.000 s</output>
+  </div>
+  <div class="panel">
+    <label><input type="checkbox" data-layer="trail" checked /> trail</label>
+    <label><input type="checkbox" data-layer="core" checked /> core</label>
+    <label><input type="checkbox" data-layer="hit-flash" checked /> hit-flash</label>
+    <label><input type="checkbox" data-layer="ice-shards" checked /> ice-shards</label>
+    <label><input type="checkbox" id="guides" /> 路徑／判定疊圖</label>
+    <label><input type="checkbox" id="low" /> 低畫質</label>
+  </div>
+  <div class="panel">
+    <label>flightPreview <input id="flight" type="range" min="0.12" max="0.8" step="0.01" value="0.32" /> <output id="flightOut">0.32 s</output></label>
+    <label>弧高 <input id="arc" type="range" min="-120" max="120" step="1" value="0" /> <output id="arcOut">0 px</output></label>
+    <label>種子 <input id="seed" type="number" value="1" min="1" style="width:6em" /></label>
+  </div>
+  <div class="panel">
+    <button id="selftest">正反向拖曳自檢</button>
+    <span id="check">—</span>
+    <span class="mono" id="stats"></span>
+  </div>
+  <p class="hint">點畫面設定目標點。「遊戲 hit 事件」模擬 sim 提早判定命中：特效直接跳到爆點。拖時間軸不觸發命中事件（看 impact 計數）。</p>
+</main>
+<script type="module" src="./src/main.js"></script>
+</body>
+</html>
