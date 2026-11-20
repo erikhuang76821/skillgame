@@ -63,3 +63,4 @@ reviewedAt: 2026-10-21
 
 - 不使用不可商用素材（如 PokéSurvivor 原素材為 CC BY-NC），只沿用技術契約。
 - AI 生成圖保留 prompt 與原圖可追溯；**商用前需法務確認 AI 生成內容權利與平台政策**。
+- MIT 外部素材（例：[18 Pixel VFX Codex](18_pixel-vfx-codex.md) 匯出的特效 sprite 或改寫程式）可商用，但要在遊戲 credits / 第三方授權檔保留原 MIT 聲明，並在 `art/manifest.json` 記下來源。
