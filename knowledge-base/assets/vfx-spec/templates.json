@@ -1,0 +1,202 @@
+{
+  "version": 1,
+  "templates": [
+    {
+      "id": "projectile",
+      "recognize": "有起點、目標與飛行段",
+      "parameters": [
+        "路徑",
+        "速度或飛行時間",
+        "弧高",
+        "轉向",
+        "拖尾",
+        "命中事件"
+      ],
+      "pixi": "Sprite＋路徑取樣；低畫質縮短拖尾"
+    },
+    {
+      "id": "beam",
+      "recognize": "線狀連接起點和目標，常有蓄力",
+      "parameters": [
+        "起訖點",
+        "束寬",
+        "蓄力",
+        "持續",
+        "掃射角",
+        "分岔與抖動"
+      ],
+      "pixi": "Graphics 或 Mesh；低畫質保留核心束"
+    },
+    {
+      "id": "telegraph",
+      "recognize": "圓、扇、矩形等危險預警",
+      "parameters": [
+        "判定形狀",
+        "尺寸",
+        "預警時間",
+        "填滿曲線",
+        "邊界與落點"
+      ],
+      "pixi": "地面 Graphics＋遮罩；低畫質保留完整邊界與讀秒"
+    },
+    {
+      "id": "impact",
+      "recognize": "命中後瞬間閃光、衝擊波、碎片",
+      "parameters": [
+        "爆點",
+        "半徑",
+        "碎片數",
+        "初速",
+        "衰減",
+        "煙塵壽命"
+      ],
+      "pixi": "精靈光環＋共用粒子池；低畫質減碎片"
+    },
+    {
+      "id": "slash",
+      "recognize": "定向刃光或連斬",
+      "parameters": [
+        "道數",
+        "角度",
+        "長寬",
+        "間隔",
+        "殘影",
+        "散布"
+      ],
+      "pixi": "Sprite 或預建 Graphics；低畫質保留刀光輪廓"
+    },
+    {
+      "id": "field",
+      "recognize": "地面或空中持續作用區",
+      "parameters": [
+        "形狀",
+        "半徑",
+        "循環速度",
+        "強度",
+        "脈衝",
+        "停止條件"
+      ],
+      "pixi": "容器＋循環動畫；低畫質用單層環"
+    },
+    {
+      "id": "flow",
+      "recognize": "風、煙、氣流或捲吸",
+      "parameters": [
+        "方向",
+        "流速",
+        "渦旋",
+        "發射率",
+        "生命",
+        "擴散"
+      ],
+      "pixi": "粒子或透明逐格圖；低畫質限量或改貼圖"
+    },
+    {
+      "id": "shield",
+      "recognize": "貼附角色，受擊時短亮",
+      "parameters": [
+        "錨點",
+        "半徑",
+        "開關時間",
+        "亮邊",
+        "受擊位置"
+      ],
+      "pixi": "跟隨容器＋遮罩；低畫質只畫輪廓"
+    },
+    {
+      "id": "portal",
+      "recognize": "開啟、維持、關閉的入口",
+      "parameters": [
+        "朝向",
+        "尺度",
+        "開關時間",
+        "旋轉",
+        "內外層",
+        "循環"
+      ],
+      "pixi": "遮罩＋旋轉內層；低畫質取消折射"
+    },
+    {
+      "id": "distortion",
+      "recognize": "背景本身彎曲或分裂",
+      "parameters": [
+        "取樣範圍",
+        "偏移方向與量",
+        "遮罩",
+        "還原時間"
+      ],
+      "pixi": "局部 Filter 或背景重取樣；低畫質關扭曲但保留輪廓"
+    },
+    {
+      "id": "screen",
+      "recognize": "閃光、衝擊幀或震屏",
+      "parameters": [
+        "影響範圍",
+        "強度",
+        "時長",
+        "是否影響 HUD",
+        "減少動態選項"
+      ],
+      "pixi": "資料域分開控制鏡頭與 HUD；允許關閉震屏與降閃光"
+    }
+  ],
+  "modules": [
+    {
+      "id": "trail",
+      "purpose": "跟隨移動物件，不獨立判定命中",
+      "parameters": [
+        "sample_count",
+        "length",
+        "lifetime_s",
+        "alpha_curve"
+      ],
+      "pixi": "以時間與路徑取樣，低畫質縮短拖尾"
+    },
+    {
+      "id": "hit_pacing",
+      "purpose": "命中節奏與打擊回饋",
+      "parameters": [
+        "anticipation_s",
+        "hit_stop_s",
+        "shake_px",
+        "flash_gain",
+        "decay_s"
+      ],
+      "pixi": "GSAP 編排演出；震屏只套指定鏡頭層，預設排除 HUD"
+    },
+    {
+      "id": "seamless_loop",
+      "purpose": "持續場、護盾或附魔可獨立循環",
+      "parameters": [
+        "loop_start_s",
+        "loop_end_s",
+        "exit_s"
+      ],
+      "pixi": "分開起手、循環、退出；驗收接縫"
+    },
+    {
+      "id": "pixel_profile",
+      "purpose": "只在指定像素風時啟用",
+      "parameters": [
+        "internal_width_px",
+        "internal_height_px",
+        "animation_fps",
+        "outline_px",
+        "palette",
+        "dither"
+      ],
+      "pixi": "固定低解析畫布、整數倍率與最近鄰取樣"
+    },
+    {
+      "id": "debug_guides",
+      "purpose": "顯示運動、遮擋、預警與命中形狀，不輸出到正式素材",
+      "parameters": [
+        "path_overlay",
+        "anchors",
+        "mask_outline",
+        "hit_shape_overlay"
+      ],
+      "pixi": "另建除錯層，能疊加、單獨顯示或完全關閉"
+    }
+  ]
+}

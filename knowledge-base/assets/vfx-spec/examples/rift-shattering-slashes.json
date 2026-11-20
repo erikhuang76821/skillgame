@@ -1,0 +1,128 @@
+{
+  "id": "rift-shattering-slashes",
+  "version": 1,
+  "template": "slash",
+  "modules": [
+    "distortion",
+    "impact"
+  ],
+  "tags": [
+    "星界",
+    "連斬",
+    "空間扭曲"
+  ],
+  "intent": "多道斬痕劃開背景，爆散後慢慢復原",
+  "space": "world",
+  "anchor": "cast-point",
+  "target": "area",
+  "trigger": {
+    "start": "cast",
+    "impact": null,
+    "end": "vfx-finished"
+  },
+  "timeline": {
+    "unit": "s",
+    "basis": "來源程式",
+    "preview": [
+      {
+        "at": 0,
+        "action": "start"
+      },
+      {
+        "at": 0.2,
+        "action": "first-slash"
+      },
+      {
+        "at": 0.56,
+        "action": "last-slash-start"
+      },
+      {
+        "at": 1,
+        "action": "release"
+      },
+      {
+        "at": 1.2,
+        "action": "main-panels-exit"
+      },
+      {
+        "at": 3.4,
+        "action": "clear"
+      }
+    ],
+    "runtimeImpact": null
+  },
+  "params": {
+    "duration": {
+      "value": 3.4,
+      "unit": "s",
+      "basis": "來源程式",
+      "range": null
+    },
+    "slashes": {
+      "value": 18,
+      "unit": "count",
+      "basis": "來源程式",
+      "range": {
+        "min": 1,
+        "max": 32,
+        "step": 1
+      }
+    },
+    "panels": {
+      "value": 9,
+      "unit": "count",
+      "basis": "來源程式",
+      "range": {
+        "min": 0,
+        "max": 32,
+        "step": 1
+      }
+    },
+    "color": {
+      "value": "#729DFF",
+      "unit": "hex",
+      "basis": "來源程式",
+      "range": {
+        "format": "#RRGGBB"
+      }
+    },
+    "ornaments": {
+      "value": 38,
+      "unit": "count",
+      "basis": "來源程式",
+      "range": null
+    },
+    "density": {
+      "value": 0.3,
+      "unit": "ratio",
+      "basis": "來源程式",
+      "range": {
+        "min": 0,
+        "max": 1
+      }
+    }
+  },
+  "layers": [
+    "slashes",
+    "glow",
+    "background-shards",
+    "ornaments"
+  ],
+  "quality": {
+    "low": {
+      "distortion": false,
+      "ornaments": 12,
+      "basis": "暫定"
+    }
+  },
+  "checks": [
+    "0.64 s 比對主輪廓與空間偏移方向",
+    "1.08 s 比對爆點與碎片擴散",
+    "2.50 s 比對餘波",
+    "3.40 s 確認退場"
+  ],
+  "sources": [
+    "https://00gamedevs.com/zh-TW/effects/dimensional-rend/"
+  ],
+  "verification": "原版參數及階段由匯出程式核對；PixiJS 視覺逐幀相似度未驗證。runtimeImpact 為 null，因原版沒有遊戲傷害事件。"
+}

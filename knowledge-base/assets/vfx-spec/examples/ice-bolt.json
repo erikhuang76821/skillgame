@@ -1,0 +1,90 @@
+{
+  "id": "ice-bolt",
+  "version": 1,
+  "template": "projectile",
+  "modules": [
+    "trail",
+    "impact"
+  ],
+  "tags": [
+    "冰",
+    "單體",
+    "俯視",
+    "遠程"
+  ],
+  "intent": "沿直線飛向指定目標，命中時爆出冰晶",
+  "space": "world",
+  "anchor": "caster",
+  "target": "entity",
+  "trigger": {
+    "start": "cast",
+    "impact": "hit",
+    "end": "impact-finished"
+  },
+  "params": {
+    "flightPreview": {
+      "value": 0.32,
+      "unit": "s",
+      "basis": "暫定",
+      "range": {
+        "min": 0.12,
+        "max": 0.8
+      }
+    },
+    "color": {
+      "value": "#8ADFFF",
+      "unit": "hex",
+      "basis": "暫定",
+      "range": {
+        "format": "#RRGGBB"
+      }
+    },
+    "shards": {
+      "value": 12,
+      "unit": "count",
+      "basis": "暫定",
+      "range": {
+        "min": 4,
+        "max": 24,
+        "step": 1
+      }
+    }
+  },
+  "layers": [
+    "trail",
+    "core",
+    "hit-flash",
+    "ice-shards"
+  ],
+  "quality": {
+    "low": {
+      "shards": 4,
+      "distortion": false
+    }
+  },
+  "checks": [
+    "特效命中跟隨遊戲 hit 事件",
+    "低畫質仍可辨識方向與命中",
+    "連續播放不殘留",
+    "同種子、同場景，從 0.10 s 與 0.55 s 跳到 0.40 s，圖層、座標和透明度一致；不觸發音效、傷害或遊戲事件"
+  ],
+  "timeline": {
+    "unit": "s",
+    "basis": "暫定",
+    "preview": [
+      {
+        "at": 0,
+        "action": "launch"
+      },
+      {
+        "at": 0.32,
+        "action": "impact"
+      },
+      {
+        "at": 0.6,
+        "action": "clear"
+      }
+    ],
+    "runtimeImpact": "hit"
+  }
+}

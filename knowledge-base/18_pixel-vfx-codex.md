@@ -8,7 +8,7 @@ reviewedAt: 2026-11-20
 # 18 外部特效庫：Pixel VFX Codex（像素特效圖鑑）
 
 > 來源：[888wing.github.io/pixel-vfx-codex](https://888wing.github.io/pixel-vfx-codex/)、repo [888wing/pixel-vfx-codex](https://github.com/888wing/pixel-vfx-codex)（讀 `README.md`、`docs/AUTHORING.md`、`data/meta.json`、`engine/pxfx.js`、`engine/prompt.js`、`app.js`，2026-11-20）。
-> 與其他頁的關係：本專案的打擊感做法與 `FEEL` 在 [05](05_juice-and-feel.md)、[juice.md](../.claude/skills/lite-skillgame-stack/references/juice.md)；原則與審查順序在 [17 §6–§9](17_design-principles.md)；生圖到 atlas 在 [06](06_art-pipeline.md)；資產登錄在 [10](10_asset-library.md)。本頁**不定門檻**：文中數字都是來源程式的預設值或經驗值（未證實），要用就寫進該遊戲的 `fx/feel.js`，不得寫進 `rules.json` 當驗收條件。
+> 與其他頁的關係：本專案的打擊感做法與 `FEEL` 在 [05](05_juice-and-feel.md)、[juice.md](../.claude/skills/lite-skillgame-stack/references/juice.md)；原則與審查順序在 [17 §6–§9](17_design-principles.md)；生圖到 atlas 在 [06](06_art-pipeline.md)；資產登錄在 [10](10_asset-library.md)；不限像素風的特效規格模板在 [19](19_vfx-spec-templates.md)。本頁**不定門檻**：文中數字都是來源程式的預設值或經驗值（未證實），要用就寫進該遊戲的 `fx/feel.js`，不得寫進 `rules.json` 當驗收條件。
 
 ## 1. 它是什麼、授權
 <!-- card: KB-pixel-vfx-codex.overview; topic=art,legal; artStyle=pixel -->
