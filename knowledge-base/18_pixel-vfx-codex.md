@@ -7,7 +7,7 @@ reviewedAt: 2026-11-20
 ---
 # 18 外部特效庫：Pixel VFX Codex（像素特效圖鑑）
 
-> 來源：[888wing.github.io/pixel-vfx-codex](https://888wing.github.io/pixel-vfx-codex/)、repo [888wing/pixel-vfx-codex](https://github.com/888wing/pixel-vfx-codex)（讀 `README.md`、`docs/AUTHORING.md`、`data/meta.json`、`engine/pxfx.js`，2026-11-20）。
+> 來源：[888wing.github.io/pixel-vfx-codex](https://888wing.github.io/pixel-vfx-codex/)、repo [888wing/pixel-vfx-codex](https://github.com/888wing/pixel-vfx-codex)（讀 `README.md`、`docs/AUTHORING.md`、`data/meta.json`、`engine/pxfx.js`、`engine/prompt.js`、`app.js`，2026-11-20）。
 > 與其他頁的關係：本專案的打擊感做法與 `FEEL` 在 [05](05_juice-and-feel.md)、[juice.md](../.claude/skills/lite-skillgame-stack/references/juice.md)；原則與審查順序在 [17 §6–§9](17_design-principles.md)；生圖到 atlas 在 [06](06_art-pipeline.md)；資產登錄在 [10](10_asset-library.md)。本頁**不定門檻**：文中數字都是來源程式的預設值或經驗值（未證實），要用就寫進該遊戲的 `fx/feel.js`，不得寫進 `rules.json` 當驗收條件。
 
 ## 1. 它是什麼、授權
@@ -53,20 +53,18 @@ reviewedAt: 2026-11-20
 ## 4. 節拍時間軸：頓幀、震動、閃光的參數化
 <!-- card: KB-pixel-vfx-codex.beats; topic=juice; kind=method -->
 
-每個特效標出 `beats: [{ t, kind, power }]`，引擎 `PXFX.timing()` 把特效時鐘映射成顯示時鐘：
+每個特效標出 `beats: [{ t, kind, power }]`；來源 prompt 明寫「時間分兩層」：特效畫面只由自己的 t 決定，頓幀、加減速、震屏、閃光放在外層時間映射，由遊戲的命中結果觸發。四種節拍的預設比例（approach / hold / shake / flash / release）：`hit` 擊中目標 1/1/1/1/1；`burst` 爆炸起點 0/0.8/0.8/1/1；`cast` 發射或法陣出現 0/0/0/0.5/0.55；`pulse` 持續效果的重音 0/0/0.3/0.6/0。
 
-| kind | 意義 | 預設比例（approach / hold / shake / flash / release） |
+搬到我們的架構：sim 事件帶 `kind` 與 `power`，render 查 `fx/feel.js` 的 `FEEL`。欄位與來源預設值（未證實）：
+
+| 欄位 | 內容（來源預設） | PixiJS＋GSAP 做法 |
 |---|---|---|
-| `hit` | 擊中目標：加速衝進 → 凍結（頓幀）→ 震鏡頭 → 閃光 → 快速爆出再減速 | 1 / 1 / 1 / 1 / 1 |
-| `burst` | 爆炸起點，無接近段 | 0 / 0.8 / 0.8 / 1 / 1 |
-| `cast` | 發射、蓄力釋放、法陣出現 | 0 / 0 / 0 / 0.5 / 0.55 |
-| `pulse` | 持續效果的重音（每一波、每道雷峰） | 0 / 0 / 0.3 / 0.6 / 0 |
-
-- 全域預設：頓幀 0.1 s、震動 2 px（以 240×150 計）、閃光 +0.7 亮度、snap（最高速倍率）2.2；`power` 0.3–1.5 線性放大頓幀、震動、閃光。
-- 震動 0.32 s 內以 `(1 - dt/0.32)²` 衰減、每 1/30 s 換一次雜湊方向、垂直幅度 ×0.7；閃光在頓幀期間全亮，之後以 70 ms 時間常數指數衰減。
-- 細節：凍結時特效時鐘停在 `beat + min(0.02, 到下一拍間隔的一半)`，所以 1–3 格的衝擊格要用 `t - HIT <= .021` 判斷，不是 `< .02`。
-
-**怎麼搬到我們的架構**：這套「事件種類 × 強度 → 頓幀 / 震動 / 閃光」正好是 sim 事件驅動 juice 的形狀。做法是讓 sim 事件帶 `kind` 與 `power`，render 層查 `FEEL` 的對照表；不要照搬它的時間映射（見 §6 第 2 條）。
+| `approach` | 命中前最多 0.4 s 加速到 snap 倍（2.2） | 只用在演出物的補間；判定時間由 sim 定，演出要在命中 tick 準時到達 |
+| `hitstop` | 0.1 s；**停哪些對象** | 只暫停該次命中相關的 timeline 或 container 動畫（`tl.pause()`＋`gsap.delayedCall` 恢復），**不停 sim、不停輸入、不動 `gsap.globalTimeline`**（§6-2） |
+| `shake` | 2 px（以 240×150 計），0.32 s 平方衰減，每 1/30 s 換方向，垂直 ×0.7 | 照 [05 §1](05_juice-and-feel.md) 抖 `#stage-shake`；連續命中取較大者 |
+| `flash` | 亮度 +0.7，頓幀中保持，70 ms 時間常數衰減 | CSS `#fx-flash` overlay（0 DC） |
+| `release` | 命中後最多 0.7 s 先快後慢 | `expo.out` / `power3.out` |
+| `power` | 0.3–1.5，同時縮放 hitstop / shake / flash | render 乘上去；同種子重播結果不受影響 |
 
 ## 5. 對 skill game 最有價值的三個設計
 <!-- card: KB-pixel-vfx-codex.skill-fit; topic=juice,fairness,tech; kind=method -->
@@ -90,8 +88,22 @@ reviewedAt: 2026-11-20
 5. **解析度與畫面比**：它的畫布是 240×150 / 160×100 橫幅小島場景；我們是直版 375×812 並以整數倍放大像素。匯出時按遊戲的像素倍率決定匯出尺寸，不要把 240 寬的格子再非整數縮放（會糊，見 [10 §6](10_asset-library.md)）。
 6. 2D 鏡頭下貼地的效果會變細，作者建議加垂直元素（上升光點、光柱）；頂視或斜視 2D 遊戲要注意同一問題。
 
-## 7. 色盤規則
+## 7. 像素風規格（只在像素風專案記錄）
 <!-- card: KB-pixel-vfx-codex.palette; topic=art; artStyle=pixel -->
+
+> 這一節只給 `artStyle` 含 `pixel` 的遊戲。非像素風的遊戲不要把解析度、步進幀率、抖色當成全案預設。
+
+像素風遊戲的 `gdd/02_art_spec.md` 要多寫這五項：
+
+| 項目 | 來源的做法（參考值） | 在 PixiJS 的落地 |
+|---|---|---|
+| 內部渲染解析度 | 2D 160×100、3D / 2.5D 240×150，另有 0.75–1.5 倍的像素密度調整 | 整數倍放大：canvas `image-rendering: pixelated`、紋理 `scaleMode: 'nearest'`、`roundPixels`；若改成先畫到低解析 RenderTexture 再放大，會多一次 pass，要計入 `RULE-DRAWCALL-2D` |
+| 動畫幀率 | 2D 12 fps、2.5D 20 fps、3D 30 fps（遊戲本身仍 60 fps） | 特效時間量化 `t = floor(t·fps)/fps`，或 GSAP `steps(n)`（[05 §2](05_juice-and-feel.md)）；sim 不受影響 |
+| 描邊 | 2D 實體 1 px 深色描邊；半透明實體不描 | 烘進 sprite；不要用 outline filter |
+| 色階 | 見下列規則 | 每遊戲一份特效色盤檔 |
+| 抖色 | 2.5D 完整 4×4 Bayer、3D 輕抖、2D 不抖 | 即時抖色需要 filter（受 `RULE-FX-FILTER` 約束），建議烘進序列幀或不用 |
+
+色階規則：
 
 - 每種材質 **4–7 階色階，由暗到亮**；無反鋸齒、無平滑漸層。
 - **發光色階不要從接近黑色起**（最低階會變成抖色光暈，看起來髒），從飽和的中暗色開始。
@@ -109,3 +121,34 @@ reviewedAt: 2026-11-20
    - **序列幀**：匯出 PNG sprite sheet（去背景、去道具）或「生圖 sprite sheet」prompt 交給 Codex 生圖，再走 [06](06_art-pipeline.md) 的切圖 → atlas → 量 DC。
 4. 在該遊戲 `art/manifest.json` 登錄來源（effect id、網址、MIT），由 `index-build` 彙整進資產索引（[10](10_asset-library.md)）。
 5. 照 §3 的動態規則與 [17 §9](17_design-principles.md) 的審查順序驗手感；判定範圍照 §5-1 由 sim 提供。
+
+## 9. 分鏡與路徑
+<!-- card: KB-pixel-vfx-codex.storyboard; topic=art; kind=method -->
+
+大招、頭目擊破、結算演出照 Ultimates 的六段寫分鏡，每段都要能說出「誰在動、沿哪條路、被什麼擋住」：
+
+| 段 | 要記錄 | 常見做法 |
+|---|---|---|
+| 起手 Pose | 施放者姿勢、錨點（手、武器尖、胸口） | 錨點由角色骨架或 sprite 的固定點提供，特效掛在錨點上 |
+| 集氣 Charge | 匯聚點、光點從哪裡流入 | 光點沿固定路徑流向錨點，越近越快 |
+| 成形 Shape | 主形狀（環、彎月、法陣）的大小與朝向 | 一個大而清楚的形狀；用回彈過衝彈出 |
+| 推進 Motion | 路徑（直線、弧線、螺旋）、速度變化 | 路徑由固定數字定義，不用閃爍亂數；快段拉長筆劃 |
+| 命中 Impact | 命中點、範圍、頓幀與閃光 | 範圍取 sim 的判定值（§5-1）；前 1–2 格最大最亮 |
+| 餘波 Aftermath | 地面留痕、殘影、碎裂方式 | 碎裂而非淡出；循環前清乾淨 |
+
+- **每層記錄路徑、錨點與遮擋**：路徑在武器或角色後方的那段要被遮住、從邊緣再出現（Armory 規則 1–2）。
+- **驗收時切到「只看路徑」**：來源網站的引導線開關會把路徑畫成 1 px 線（被遮處畫成虛線），模式 2 隱藏所有發光只留路徑。我們的做法：開發模式加一個 debug 開關，用一個 `Graphics` 畫出每層的路徑與錨點，不畫粒子；方向、起訖點、遮擋對不對，先在這個視圖確認，不靠粒子外觀猜。
+- 原創限制：分鏡描述視覺語言，不寫既有作品的角色、招式名稱（來源與我們的 IP 規範一致）。
+
+## 10. 交付與驗收素材
+<!-- card: KB-pixel-vfx-codex.deliverables; topic=art,process; kind=method -->
+
+來源 prompt 的「交付與驗收」段，加上我們的預算規則，整理成每個特效的交付清單：
+
+- **六張關鍵幀**：有六段分鏡的招式每段一張；其他特效在一輪循環內平均取 6 格（來源的「關鍵 6 格」匯出就是這樣取）。這是企劃與美術對齊的主要依據。
+- **特效模組介面**：可調參數全部是輸入（預設值即驗收值），另有速度；提供開始、停止（自然收尾）、命中三個入口，由 sim 事件呼叫。
+- **只有需要烘焙時**才匯出去背 PNG spritesheet：照特效幀率逐格輸出，**頓幀以重複格表現、震屏不烘入**（震屏由 `#stage-shake` 在遊戲內做）；打進 atlas 後計入 `RULE-BUNDLE-SIZE`。能用 Graphics / CSS 算出來的就不烘（§6-4）。
+- **整數倍率檢查**：在 2 種以上的整數放大倍率下看，沒有半像素、模糊或混色漸層帶（像素風專案才需要）。
+- **常駐效果驗收循環接點**：武器附魔、護盾、地面持續區這類會一直播放的效果，要另外驗收循環區間（來源的 `loopWindow`）：最後一格接回第一格不跳；只循環那一段，不重播起手。
+- **路徑視圖截圖**：§9 的「只看路徑」各一張，附在驗收紀錄。
+- 素材放在該遊戲 `art/` 底下並登錄 `art/manifest.json`（來源 id、網址、MIT），由 `index-build` 彙整（[10](10_asset-library.md)）。
