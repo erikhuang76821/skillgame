@@ -5,31 +5,47 @@
 // leg one ends: Atlas falls in orbit, the vanguard pulls back, and Earth turns to attack the moon, the gods' forward base.
 import { gsap } from 'gsap';
 import { FEEL } from '../fx/feel.js';
-import s1 from '../assets/intro/s1_gods_descend.webp';
-import s2 from '../assets/intro/s2_last_bastion.webp';
-import s3 from '../assets/intro/s3_hangar.webp';
-import s4 from '../assets/intro/s4_launch.webp';
-import t1 from '../assets/intro2/s1_atlas_falls.webp';
-import t2 from '../assets/intro2/s2_moon_base.webp';
-import t3 from '../assets/intro2/s3_fleet_gathers.webp';
-import t4 from '../assets/intro2/s4_to_the_moon.webp';
-import l3s1 from '../assets/intro3/s1_inner_retaken.webp';
-import l3s2 from '../assets/intro3/s2_mars_twins.webp';
-import l3s3 from '../assets/intro3/s3_jupiter_storm.webp';
-import l3s4 from '../assets/intro3/s4_outer_giants.webp';
-import l4s1 from '../assets/intro4/s1_rings_fall.webp';
-import l4s2 from '../assets/intro4/s2_flee_to_edge.webp';
-import l4s3 from '../assets/intro4/s3_styx.webp';
-import l4s4 from '../assets/intro4/s4_into_the_dark.webp';
-import l5s1 from '../assets/intro5/s1_styx_breaks.webp';
-import l5s2 from '../assets/intro5/s2_sun_fire.webp';
-import l5s3 from '../assets/intro5/s3_black_hole.webp';
-import l5s4 from '../assets/intro5/s4_into_the_glare.webp';
-import l6s1 from '../assets/intro6/s1_chaos_breaks.webp';
-import l6s2 from '../assets/intro6/s2_time_warp.webp';
-import l6s3 from '../assets/intro6/s3_mesozoic.webp';
-import l6s4 from '../assets/intro6/s4_prehistoric_sortie.webp';
+// every picture ships twice: AVIF (540x960, what nearly everyone sees) and a small WebP (270x480) for browsers without
+// AVIF (iOS before 16); art/tools/intro_images.py writes both from art/raw/intro*/
+const AVIF = import.meta.glob('../assets/intro*/*.avif', { eager: true, query: '?url', import: 'default' });
+const LO = import.meta.glob('../assets/intro*/*.lo.webp', { eager: true, query: '?url', import: 'default' });
+const pic = name => ({ avif: AVIF[`../assets/${name}.avif`], lo: LO[`../assets/${name}.lo.webp`] });
+const p1 = pic('intro0/p1_gate_wakes');
+const p2 = pic('intro0/p2_armada');
+const p3 = pic('intro0/p3_last_light');
+const p4 = pic('intro0/p4_title');
+const s1 = pic('intro/s1_gods_descend');
+const s2 = pic('intro/s2_last_bastion');
+const s3 = pic('intro/s3_hangar');
+const s4 = pic('intro/s4_launch');
+const t1 = pic('intro2/s1_atlas_falls');
+const t2 = pic('intro2/s2_moon_base');
+const t3 = pic('intro2/s3_fleet_gathers');
+const t4 = pic('intro2/s4_to_the_moon');
+const l3s1 = pic('intro3/s1_inner_retaken');
+const l3s2 = pic('intro3/s2_mars_twins');
+const l3s3 = pic('intro3/s3_jupiter_storm');
+const l3s4 = pic('intro3/s4_outer_giants');
+const l4s1 = pic('intro4/s1_rings_fall');
+const l4s2 = pic('intro4/s2_flee_to_edge');
+const l4s3 = pic('intro4/s3_styx');
+const l4s4 = pic('intro4/s4_into_the_dark');
+const l5s1 = pic('intro5/s1_styx_breaks');
+const l5s2 = pic('intro5/s2_sun_fire');
+const l5s3 = pic('intro5/s3_black_hole');
+const l5s4 = pic('intro5/s4_into_the_glare');
+const l6s1 = pic('intro6/s1_chaos_breaks');
+const l6s2 = pic('intro6/s2_time_warp');
+const l6s3 = pic('intro6/s3_mesozoic');
+const l6s4 = pic('intro6/s4_prehistoric_sortie');
 
+// the game's opening, before the stage map: the gods come back, the planets go dark, Earth is the last light; the title
+const PROLOGUE = [
+  { src: p1, text: '億萬年前，古代眾神離開了這個宇宙。', from: { scale: 1.2, yPercent: 3 }, to: { scale: 1.04, yPercent: 0 } },
+  { src: p2, text: '如今星門再度開啟，祂們回來收回群星。', from: { scale: 1.04, yPercent: -3 }, to: { scale: 1.16, yPercent: 2 }, shake: true, embers: true },
+  { src: p3, text: '行星一顆接一顆熄滅，只剩地球還亮著燈。', from: { scale: 1.16, yPercent: 4 }, to: { scale: 1.03, yPercent: -2 } },
+  { src: p4, text: '', title: true, from: { scale: 1.02, yPercent: 2 }, to: { scale: 1.14, yPercent: -4 }, launch: true },
+];
 const LEG1 = [
   { src: s1, text: '古代眾神甦醒，要把整個宇宙收進祂們手中。', from: { scale: 1.16, yPercent: 4 }, to: { scale: 1.02, yPercent: 0 }, embers: true },
   { src: s2, text: '先鋒艦隊壓境，海岸防線一盞接一盞熄滅。地球，是最後的壁壘。', from: { scale: 1.04, yPercent: -2 }, to: { scale: 1.14, yPercent: 2 }, shake: true, embers: true },
@@ -68,25 +84,29 @@ const LEG6 = [
   { src: l6s4, text: '航段六　失落的中生代　出擊！', from: { scale: 1.02, yPercent: 2 }, to: { scale: 1.2, yPercent: -6 }, launch: true, highlight: true },
 ];
 /** The cutscene that opens each leg (by the leg number on the map; leg one is LEGS[0], which has no `leg` field). */
-export const INTROS = { 1: LEG1, 2: LEG2, 3: LEG3, 4: LEG4, 5: LEG5, 6: LEG6 };
+export const INTROS = { 0: PROLOGUE, 1: LEG1, 2: LEG2, 3: LEG3, 4: LEG4, 5: LEG5, 6: LEG6 };
 
 /** Play the cutscene over the page; resolves when it ends or is skipped. Plays nothing (resolves at once) if a
  *  picture fails to load. `onReveal` runs the moment it starts to hand over (the match starts under the film), so the
- *  last thing seen is the camera diving into the sky and the battlefield coming through, never the stage map. */
-export function playIntro(leg, { onReveal } = {}) {
+ *  last thing seen is the camera diving into the sky and the battlefield coming through, never the stage map.
+ *  `gate`: a line shown over the first picture; the film waits for a tap or key there (so audio may start: `onStart`).
+ *  `fade`: hand over with a plain fade instead of the dive (the opening fades into the stage map). */
+export function playIntro(leg, { onReveal, gate, onStart, fade = false } = {}) {
   const SCENES = INTROS[leg];
   if (!SCENES) { onReveal?.(); return Promise.resolve(); }
   const C = FEEL.intro, reduce = !FEEL.enabled;
   return new Promise(resolve => {
     const root = document.createElement('div');
     root.className = 'intro';
-    root.innerHTML = '<div class="intro-film"></div><div class="intro-sub"></div><button type="button" class="intro-skip">跳過 ▸</button>';
-    const film = root.querySelector('.intro-film'), sub = root.querySelector('.intro-sub');
-    const layers = SCENES.map(s => { const img = document.createElement('img'); img.src = s.src; img.alt = ''; img.decoding = 'async'; film.append(img); return img; });
+    root.innerHTML = '<div class="intro-film"></div><div class="intro-sub"></div><div class="intro-title" hidden>諸神黃昏<small>Twilight of the Gods</small></div>'
+      + (gate ? `<div class="intro-gate">${gate}</div>` : '') + '<button type="button" class="intro-skip">跳過 ▸</button>';
+    const film = root.querySelector('.intro-film'), sub = root.querySelector('.intro-sub'), title = root.querySelector('.intro-title'), gateEl = root.querySelector('.intro-gate');
+    let waiting = !!gate;
+    const layers = SCENES.map(s => { const img = document.createElement('img'); img.src = s.src.avif; img.alt = ''; img.decoding = 'async'; film.append(img); return img; });
     const flash = document.createElement('div'); flash.className = 'intro-flash'; film.append(flash);
     document.body.append(root);
 
-    let done = false;
+    let done = false, ready = false;
     const tl = gsap.timeline({ paused: true, onComplete: () => finish() });
     const finish = () => {
       if (done) return; done = true;
@@ -95,13 +115,16 @@ export function playIntro(leg, { onReveal } = {}) {
       onReveal?.();
       // the hand-over: the camera dives forward into the sky, a warm flash, and the battlefield shows through
       gsap.timeline({ onComplete: () => { root.remove(); resolve(); } })
-        .to(film, { scale: reduce ? 1 : C.dive, duration: C.outro, ease: 'power2.in' }, 0)
+        .to(film, { scale: reduce || fade ? 1 : C.dive, duration: C.outro, ease: 'power2.in' }, 0)
+        .to(title, { opacity: 0, duration: C.outro * 0.6 }, 0)
         .to(sub, { opacity: 0, duration: 0.2 }, 0)
-        .to(flash, { opacity: reduce ? 0.4 : 0.9, duration: C.outro * 0.55, ease: 'power2.in' }, 0)
+        .to(flash, { opacity: fade ? 0 : reduce ? 0.4 : 0.9, duration: C.outro * 0.55, ease: 'power2.in' }, 0)
         .to(root, { opacity: 0, duration: C.outro * 0.55, ease: 'power1.out' }, C.outro * 0.45);
     };
-    const onKey = e => { if ([' ', 'Enter', 'Escape'].includes(e.key)) { e.preventDefault(); e.stopPropagation(); finish(); } };
-    root.addEventListener('pointerdown', e => { e.stopPropagation(); finish(); });
+    // behind a gate, the first tap or key only starts the film; after that a tap, Space, Enter or Esc skips it
+    const begin = () => { waiting = false; onStart?.(); gsap.to(gateEl, { opacity: 0, duration: 0.3, onComplete: () => gateEl.remove() }); if (ready) tl.play(0); };
+    const onKey = e => { if ([' ', 'Enter', 'Escape'].includes(e.key)) { e.preventDefault(); e.stopPropagation(); if (waiting) begin(); else finish(); } };
+    root.addEventListener('pointerdown', e => { e.stopPropagation(); if (waiting && !e.target.closest('.intro-skip')) begin(); else { onStart?.(); finish(); } });
     addEventListener('keydown', onKey, true);
 
     // embers drifting up (scenes that burn); speed lines for the launch
@@ -117,6 +140,8 @@ export function playIntro(leg, { onReveal } = {}) {
       tl.to(img, { ...(reduce ? {} : s.to), duration: len + C.fade, ease: 'none' }, t);
       if (i > 0) tl.to(layers[i - 1], { opacity: 0, duration: C.fade, ease: 'power1.in' }, t);
       tl.call(() => { sub.textContent = s.text; sub.classList.toggle('hl', !!s.highlight); }, null, t + C.fade * 0.5);
+      if (s.title) tl.set(title, { hidden: false }, t).fromTo(title, { opacity: 0, scale: reduce ? 1 : 1.12, letterSpacing: '0.5em' },
+        { opacity: 1, scale: 1, letterSpacing: '0.16em', duration: 1.4, ease: 'power3.out', immediateRender: false }, t + C.fade);
       tl.fromTo(sub, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.35, ease: 'power2.out', immediateRender: false }, t + C.fade * 0.5);
       tl.to(sub, { opacity: 0, duration: 0.25, ease: 'power1.in' }, t + len + C.fade * 0.4);
       if (!reduce && s.embers) for (let k = 0; k < C.embers; k++) {
@@ -142,8 +167,13 @@ export function playIntro(leg, { onReveal } = {}) {
     tl.to({}, { duration: C.hold }, t);
 
     // start once the pictures have loaded, so the film never shows a half-loaded frame
-    Promise.all(layers.map(img => (img.complete && img.naturalWidth ? Promise.resolve() : new Promise((res, rej) => { img.onload = res; img.onerror = () => rej(new Error('intro picture')); }))))   // load events: decode() can stall in a background tab
-      .then(() => { if (!done) tl.play(0); })
+    // an AVIF the browser cannot decode falls back to the small WebP once
+    Promise.all(layers.map((img, i) => (img.complete && img.naturalWidth ? Promise.resolve() : new Promise((res, rej) => {
+      img.onload = res;
+      let lo = false;
+      img.onerror = () => { if (!lo) { lo = true; img.src = SCENES[i].src.lo; } else rej(new Error('intro picture')); };
+    }))))   // load events: decode() can stall in a background tab
+      .then(() => { ready = true; if (gate) gsap.set(layers[0], { opacity: 1, ...SCENES[0].from }); if (!done && !waiting) tl.play(0); })
       .catch(() => { done = true; removeEventListener('keydown', onKey, true); root.remove(); resolve(); });
   });
 }

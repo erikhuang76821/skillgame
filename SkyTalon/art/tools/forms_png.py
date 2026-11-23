@@ -2,8 +2,8 @@
 
 The generators (boss_forms.py, creature_forms.py, ship_forms.py) write each sprite as rows of text, one character per
 art pixel ('.' = empty, chr(48 + n) = palette index n). As text that is ~2 MB of the game. This tool finds every sprite
-(a list of equal-length strings) in each module, packs them all into one 8-bit grayscale PNG (pixel value = the
-character's code), and rewrites the module so each sprite is a reference {"$png": [x, y, w, h]} into that sheet. At
+(a list of equal-length strings) in each module, packs them all into one grayscale sheet (lossless WebP; pixel value =
+the character's code), and rewrites the module so each sprite is a reference {"$png": [x, y, w, h]} into that sheet. At
 boot, render/formsSheets.js decodes the sheets and puts the rows back, so nothing else in the game changes. The PNG is
 imported like any other asset: a hashed file on the web, inlined into the single file for the store build.
 
@@ -84,12 +84,12 @@ def convert(name):
         for y, row in enumerate(rows):
             for x, ch in enumerate(row):
                 px[x0 + x, y0 + y] = ord(ch)
-    png = GAME / f'{name}.forms.png'
-    img.save(png, optimize=True)
+    png = GAME / f'{name}.forms.webp'
+    img.convert('RGB').save(png, 'WEBP', lossless=True, quality=100, method=6)   # lossless: every value comes back exact; ~8% under PNG
     for n, ident, obj in exports:
         place(obj, boxes)
         lines[n] = f'export const {ident} = {json.dumps(obj, separators=(",", ":"), ensure_ascii=False)};'
-    stem = f'{name}.forms.png'
+    stem = f'{name}.forms.webp'
     head = [f'// Sprite pixels live in ./{stem} (art/tools/forms_png.py); render/formsSheets.js puts the rows back at boot.',
             f"import sheet from './{stem}';",
             'export const SHEET = sheet;']

@@ -34,10 +34,13 @@ gsap.defaults({ duration: 0.25, ease: 'power2.out', overwrite: 'auto' });
 gsap.config({ force3D: true, nullTargetWarn: import.meta.env.DEV });
 gsap.ticker.lagSmoothing(500, 33);
 
-// --- low effects: the in-game switch, or the system's reduced-motion setting ---
-let lowChosen = store.get('sky-talon-low') === '1';
+// --- low effects: the system's reduced-motion setting picks the default, the in-game switch overrides it either way.
+// (Phones often report reduced motion, e.g. Android's battery saver or "remove animations"; that must not lock the
+// switch on low.) Stored as '1' low, '0' full, nothing = follow the system.
+const lowSaved = store.get('sky-talon-low');
+let lowChosen = lowSaved === '1' ? true : lowSaved === '0' ? false : null;
 const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-const applyLow = () => { FEEL.enabled = !(lowChosen || reduced.matches); };
+const applyLow = () => { FEEL.enabled = !(lowChosen ?? reduced.matches); };
 reduced.addEventListener('change', () => { applyLow(); hud.toggles({ muted: sfx.muted, low: !FEEL.enabled }); });
 
 // --- Pixi ---
@@ -63,7 +66,7 @@ const music = new Music(sfx);                               // synthesised theme
 applyLow();
 hud.toggles({ muted: sfx.muted, low: !FEEL.enabled });
 hud.onMute(() => { sfx.unlock(); sfx.setMuted(!sfx.muted); hud.toggles({ muted: sfx.muted, low: !FEEL.enabled }); });
-hud.onLow(() => { lowChosen = !lowChosen; store.set('sky-talon-low', lowChosen ? '1' : '0'); applyLow(); hud.toggles({ muted: sfx.muted, low: !FEEL.enabled }); });
+hud.onLow(() => { lowChosen = FEEL.enabled; store.set('sky-talon-low', lowChosen ? '1' : '0'); applyLow(); hud.toggles({ muted: sfx.muted, low: !FEEL.enabled }); });
 
 if (import.meta.env.DEV) {
   const { drawCallCounter } = await import('./debug/drawCalls.js');
@@ -119,15 +122,19 @@ addEventListener('keydown', e => {
   sfx.unlock();
   const k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
   if (k === 'm') { sfx.setMuted(!sfx.muted); hud.toggles({ muted: sfx.muted, low: !FEEL.enabled }); return; }
+  if (k === 'Escape' || k === 'p') { setPause(!paused); return; }
+  if (paused) return;
   if (pickOpen && (k === '1' || k === '2' || k === '3')) { takePick(Number(k) - 1); return; }
   if (KEY_DIR[k]) { keys.add(k); e.preventDefault(); }
   if (state === 'title' && !introOn && (KEY_DIR[k] || k === ' ' || k === 'Enter')) start();
 });
 addEventListener('keyup', e => keys.delete(e.key.length === 1 ? e.key.toLowerCase() : e.key));
 addEventListener('blur', () => { keys.clear(); pointer = null; });
+// the stage map's quiet theme: after the opening, on the way back from a match, or at the first tap when the opening was skipped
+addEventListener('pointerdown', () => { if (state === 'title' && !introOn && !music.theme) { sfx.unlock(); music.play('menu'); } });
 stage.addEventListener('pointerdown', e => {
   sfx.unlock();
-  if (state === 'play') {
+  if (state === 'play' && !paused) {
     pointer = { ox: e.clientX, oy: e.clientY, x: e.clientX, y: e.clientY };
     showStick();
     try { stage.setPointerCapture(e.pointerId); } catch { /* the pointer is already gone; steering still works */ }
@@ -159,7 +166,7 @@ for (const t of ['pointerup', 'pointercancel']) stage.addEventListener(t, () => 
 document.getElementById('btn-retry').addEventListener('click', () => { sfx.unlock(); sfx.play('click'); start(); });
 // another stage: back to the stage map (the next seed is ready there), not straight into a match
 document.getElementById('btn-next').addEventListener('click', () => {
-  sfx.unlock(); sfx.play('click'); seed = (seed + 1) >>> 0;
+  sfx.unlock(); sfx.play('click'); seed = (seed + 1) >>> 0; music.play('menu');
   rec = new Recorder(game, seed); view.clearFx(); pointer = null; pickOpen = false; resumeAt = 0;
   hud.result(null); hud.pick(null); hud.reset(SHIELDS); hud.title(true); state = 'title'; map.toStart();
 });
@@ -372,6 +379,23 @@ const names = () => game === GAME5 ? { boss: BOSS_NAMES_5, chapter: CHAPTER_NAME
 // A supply won from a boss does not cut the flight: the wreck burns for a moment, then the panel comes in while the
 // ground keeps rushing by as the boost. Only the opening supply (nothing was shot down) holds the picture still.
 let pickOpen = false, pickShown = false, pickBoost = false, showAt = 0, pausedAt = 0, resumeAt = 0;
+// Pause: the sim stops stepping (no input is recorded), the picture holds; going on counts down first, and the input
+// clock skips the paused time (like a supply), so the replay is the same as if there had been no pause.
+let paused = false;
+const pauseBtn = document.getElementById('btn-pause'), pausePanel = document.getElementById('panel-pause');
+function setPause(on) {
+  if (state !== 'play' || on === paused || (on && (pickOpen || resumeAt))) return;
+  const now = performance.now();
+  paused = on; pausePanel.hidden = !on;
+  if (on) pauseBtn.classList.add('down');
+  if (on) { pausedAt = now; pickBoost = false; pointer = null; keys.clear(); showStick(); sfx.play('click'); }
+  else resumeAt = now + FEEL.pause.count * 1000;
+}
+function leavePause() { paused = false; pausePanel.hidden = true; }
+pauseBtn.addEventListener('pointerdown', e => e.stopPropagation());
+pauseBtn.addEventListener('click', e => { e.stopPropagation(); sfx.unlock(); setPause(!paused); });
+document.getElementById('btn-resume').addEventListener('click', () => { sfx.play('click'); setPause(false); });
+document.addEventListener('visibilitychange', () => { if (document.hidden) setPause(true); });
 function openPick(now) {
   pickOpen = true; pickShown = false; pickBoost = rec.sim.supply > 0; pausedAt = now; pointer = null; keys.clear();
   if (auto) { pickShown = true; takePick(auto.pick(rec.sim)); return; }
@@ -429,11 +453,13 @@ function start() {
   clock = new InputClock(performance.now(), 0, TICK_MS);
   lastFrame = performance.now();                             // a stall before the match began is not a stall inside it
   view.clearFx(); freeze = 0; pointer = null; pickOpen = false; pausedAt = 0; resumeAt = 0;
+  leavePause(); pauseBtn.disabled = false; pauseBtn.classList.remove('down'); hud.countdown(null);
   hud.reset(SHIELDS); hud.title(false); hud.result(null);
   state = 'play';
 }
 function finish() {
   music.stop();
+  pauseBtn.disabled = true; pauseBtn.classList.remove('down');
   state = 'over';
   pointer = null;
   const sim = rec.sim, b = scoreBreakdown(sim), up = rec.upload(), v = verify(game, up);
@@ -470,12 +496,13 @@ app.ticker.add(t => {
   const now = performance.now(), dt = Math.min(0.05, t.deltaMS / 1000);
   if (state === 'play' && resumeAt) {                        // counting the player back in after a choice
     const left = resumeAt - now;
-    if (left <= 0) { clock.skip(now - pausedAt); resumeAt = 0; pausedAt = 0; hud.countdown(null); }
+    if (left <= 0) { clock.skip(now - pausedAt); resumeAt = 0; pausedAt = 0; hud.countdown(null); pauseBtn.classList.remove('down'); }
+    else if (pausedAt && !pickBoost && left > FEEL.pick.resume * 1000) hud.countdown(Math.ceil(left / 1000));   // after a pause: 3, 2, 1
     // no numbers: a supply is followed at once by the boost, which is the cue to fly again
   }
   if (!pointer && !stick.hidden) stick.hidden = true;        // a choice, a restart or the end let go of the stick
   if (state === 'play' && pickOpen && !pickShown && now >= showAt) showPick();
-  if (state === 'play' && !pickOpen && !resumeAt) {
+  if (state === 'play' && !pickOpen && !resumeAt && !paused) {
     if (now - lastFrame > 250) clock.skip(now - lastFrame - TICK_MS);   // hidden tab / long hitch: pause, don't fast-forward
     const upTo = clock.targetTick(now);
     while (rec.phase === 'play' && rec.sim.tick <= upTo) {
@@ -489,7 +516,7 @@ app.ticker.add(t => {
   lastFrame = now;
 
   const sim = rec.sim, boss = sim.enemies.find(e => isBoss(e.type));
-  const held = pickOpen || resumeAt > 0;                     // a choice or its count-in: the picture holds still too
+  const held = pickOpen || resumeAt > 0 || paused;                     // a choice or its count-in: the picture holds still too
   const cruising = held && pickBoost;                        // a boss's supply: the sim waits, the flight goes on as the boost
   const frozen = freeze > 0 || (held && !cruising);
   if (frozen) freeze -= dt;                                  // render-only hit-stop; the sim kept stepping above
@@ -502,4 +529,12 @@ app.ticker.add(t => {
   });
 });
 
-if (import.meta.env.DEV) window.__game = { app, view, sfx, music, FEEL, WORLD_W, WORLD_H, get rec() { return rec; }, get state() { return state; }, start, playtest, takePick };   // console inspection only
+if (import.meta.env.DEV) window.__game = { app, view, sfx, music, FEEL, WORLD_W, WORLD_H, get rec() { return rec; }, get state() { return state; }, get dbg() { return { paused, pickOpen, pickShown, resumeAt, pausedAt, now: performance.now() }; }, start, playtest, takePick };   // console inspection only
+
+// --- The opening: every launch plays the prologue over the stage map (tap to begin, so its music can start; skippable),
+// then fades into the map. ?skipintro leaves it out (dev links); so does watching a strategy play.
+if (!q.has('skipintro') && !auto && state === 'title') {
+  introOn = true;
+  playIntro(0, { gate: '點擊畫面開始', fade: true, onStart: () => { sfx.unlock(); music.play('prologue'); } })
+    .then(() => { introOn = false; music.play('menu'); });
+}

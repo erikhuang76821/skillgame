@@ -154,7 +154,7 @@
         ],
         "shipped": [
           "game/src/render/bossForms.js",
-          "game/src/render/bossForms.forms.png"
+          "game/src/render/bossForms.forms.webp"
         ]
       },
       "technical": {
@@ -196,7 +196,7 @@
         "shmup"
       ],
       "reusePolicy": "game-only",
-      "contentHash": "sha256:7087c5262866f4c9828af3f137299f7ad11f1674fc5c442c3313c182d25e7830"
+      "contentHash": "sha256:7da5472a2a9125e5348d8c90a8ef8d4639b5f7354740971bc1c43f1e5ffa126f"
     },
     {
       "id": "skytalon.chr.leg6-forms",
@@ -223,7 +223,7 @@
         ],
         "shipped": [
           "game/src/render/leg6Forms.js",
-          "game/src/render/leg6Forms.forms.png"
+          "game/src/render/leg6Forms.forms.webp"
         ]
       },
       "technical": {
@@ -266,7 +266,7 @@
         "shmup"
       ],
       "reusePolicy": "game-only",
-      "contentHash": "sha256:68d88bc9d5050f7d355963bab2f86b9bcc34d956b9f3e165989e8a4c572ae842"
+      "contentHash": "sha256:b66d91a06621867242ff07f2e6aa0b9ea3e95a440c2c57059d8dba4a58ce859b"
     },
     {
       "id": "skytalon.chr.leg6-creatures",
@@ -286,7 +286,7 @@
         ],
         "shipped": [
           "game/src/render/leg6Creatures.js",
-          "game/src/render/leg6Creatures.forms.png"
+          "game/src/render/leg6Creatures.forms.webp"
         ]
       },
       "technical": {
@@ -330,7 +330,7 @@
         "shmup"
       ],
       "reusePolicy": "game-only",
-      "contentHash": "sha256:291101246dd40adc19f9a6c4f7caa3af4f0fbbb1452812e3d183aa9b1c5eefba"
+      "contentHash": "sha256:62d4038573a4d909b7d86ad3e1a40da69c9d75b970566180bbabf54f9fd5eb86"
     },
     {
       "status": "raw-only",
@@ -359,7 +359,7 @@
         ],
         "shipped": [
           "game/src/render/leg2Forms.js",
-          "game/src/render/leg2Forms.forms.png"
+          "game/src/render/leg2Forms.forms.webp"
         ]
       },
       "technical": {
@@ -388,7 +388,7 @@
         "像素",
         "shmup"
       ],
-      "contentHash": "sha256:da153e17d599657730bce74fc532eccbab48fd35874b14d6dd31032567c7e022"
+      "contentHash": "sha256:10f17d25023bc7cb86029b6c4f8f5fc053f7114ced2014181f75e830afcb835a"
     },
     {
       "status": "raw-only",
@@ -411,7 +411,7 @@
         ],
         "shipped": [
           "game/src/render/leg2Machines.js",
-          "game/src/render/leg2Machines.forms.png"
+          "game/src/render/leg2Machines.forms.webp"
         ]
       },
       "technical": {
@@ -437,7 +437,7 @@
         "像素",
         "shmup"
       ],
-      "contentHash": "sha256:0b8cc73dced86b15948ed67b38954b7a51861ada17ac30ebb205e03d08a127e9"
+      "contentHash": "sha256:2e5d3a04cf5afa63681e9468a867e9308a971f8d7942ba8fee028dad85ebedf8"
     },
     {
       "status": "raw-only",
@@ -465,7 +465,7 @@
         ],
         "shipped": [
           "game/src/render/leg3Forms.js",
-          "game/src/render/leg3Forms.forms.png"
+          "game/src/render/leg3Forms.forms.webp"
         ]
       },
       "technical": {
@@ -494,7 +494,7 @@
         "像素",
         "shmup"
       ],
-      "contentHash": "sha256:baeafe7a1ac08be68516f18c00440130f8f241ee3e53f2d036ace1ea5f1feb82"
+      "contentHash": "sha256:fbf64473705283efe19d1978b315e14c6de747788618067a05d2c8809c441831"
     },
     {
       "status": "raw-only",
@@ -517,7 +517,7 @@
         ],
         "shipped": [
           "game/src/render/leg3Machines.js",
-          "game/src/render/leg3Machines.forms.png"
+          "game/src/render/leg3Machines.forms.webp"
         ]
       },
       "technical": {
@@ -543,7 +543,7 @@
         "像素",
         "shmup"
       ],
-      "contentHash": "sha256:3db70a722c4e3aa9119bcddafbaa684d7a68f9f87e60fe9330b0613b3398bb93"
+      "contentHash": "sha256:7ee1bca1bed8fb23cc93bf1f8f454a9fbc4d348e9e869877cb4694346d615d24"
     },
     {
       "status": "raw-only",
@@ -571,7 +571,7 @@
         ],
         "shipped": [
           "game/src/render/leg4Forms.js",
-          "game/src/render/leg4Forms.forms.png"
+          "game/src/render/leg4Forms.forms.webp"
         ]
       },
       "technical": {
@@ -600,7 +600,7 @@
         "像素",
         "shmup"
       ],
-      "contentHash": "sha256:70f59421c436a1666346cf6f80b79c4f3abb6a49801d227dd8b64598e317be71"
+      "contentHash": "sha256:d9105f7f783dbcf100e914bd8bfc31aca2b6b61693b098f73d24c8a444014cfe"
     },
     {
       "status": "raw-only",
@@ -624,7 +624,7 @@
         ],
         "shipped": [
           "game/src/render/leg4Machines.js",
-          "game/src/render/leg4Machines.forms.png"
+          "game/src/render/leg4Machines.forms.webp"
         ]
       },
       "technical": {
@@ -651,7 +651,7 @@
         "像素",
         "shmup"
       ],
-      "contentHash": "sha256:70222a3d4a9c727597f256c9625e17eee9aef350dd8bb5352441563c5ad1899d"
+      "contentHash": "sha256:4c2bbbde1d600fa83bff9a8f2ee09a6815fe038b6f008757c4a701bee2ec1be3"
     },
     {
       "status": "raw-only",
@@ -679,7 +679,7 @@
         ],
         "shipped": [
           "game/src/render/leg5Forms.js",
-          "game/src/render/leg5Forms.forms.png"
+          "game/src/render/leg5Forms.forms.webp"
         ]
       },
       "technical": {
@@ -708,7 +708,7 @@
         "像素",
         "shmup"
       ],
-      "contentHash": "sha256:876baaf785b473627387b604d5615f34da5d3c3e239bfeb1e470db6b306fd1e3"
+      "contentHash": "sha256:94db9420239d8364cb5e2be5e7d8d9be753a4144156aa14d40cf098b1c323bd0"
     },
     {
       "status": "raw-only",
@@ -732,7 +732,7 @@
         ],
         "shipped": [
           "game/src/render/leg5Machines.js",
-          "game/src/render/leg5Machines.forms.png"
+          "game/src/render/leg5Machines.forms.webp"
         ]
       },
       "technical": {
@@ -760,7 +760,7 @@
         "shmup",
         "靈魂體"
       ],
-      "contentHash": "sha256:dfd884a5ccfa80af4b40de401769c84b877a8d1f942cdac9855e4d1d7c0362c6"
+      "contentHash": "sha256:c548f0d621cbd159eeae8ca06865c3752de2ad52f884939fcc2dde45f631eeb6"
     },
     {
       "status": "shipped",
@@ -875,6 +875,60 @@
         "cinematic",
         "cutscene"
       ],
+      "id": "skytalon.cut.prologue",
+      "kind": "key-art",
+      "name": "遊戲開場動畫：星門甦醒、眾神艦隊、最後的燈火、標題",
+      "files": {
+        "raw": [
+          "art/raw/intro0/p1_gate_wakes.png",
+          "art/raw/intro0/p2_armada.png",
+          "art/raw/intro0/p3_last_light.png",
+          "art/raw/intro0/p4_title.png"
+        ],
+        "prompt": [
+          "art/raw/intro0/prompts/round1.sh",
+          "game/src/ui/intro.js"
+        ],
+        "shipped": [
+          "game/src/assets/intro0/p1_gate_wakes.avif",
+          "game/src/assets/intro0/p1_gate_wakes.lo.webp",
+          "game/src/assets/intro0/p2_armada.avif",
+          "game/src/assets/intro0/p2_armada.lo.webp",
+          "game/src/assets/intro0/p3_last_light.avif",
+          "game/src/assets/intro0/p3_last_light.lo.webp",
+          "game/src/assets/intro0/p4_title.avif",
+          "game/src/assets/intro0/p4_title.lo.webp"
+        ]
+      },
+      "technical": {
+        "format": "AVIF q50，540 × 960（9:16）；另附 270 × 480 WebP q50 備用（不支援 AVIF 的瀏覽器）",
+        "use": "ui/intro.js（INTROS[0]）：每次啟動先播，「點擊畫面開始」後播放並響起開場音樂，可跳過，最後一張疊 DOM 標題，淡入航段地圖",
+        "drawCalls": "0（DOM，在畫布之上）"
+      },
+      "provenance": {
+        "tool": "Codex CLI 的圖片生成（2026-11-23，由 Claude 依使用者指示「新增一段動畫開場，才進到關卡選單」下指令）",
+        "job": "劇情依 gdd/05 v8 §5 世界觀，接在航段一出征之前；風格沿用航段一過場的提詞",
+        "postprocess": "python art/tools/intro_images.py（置中裁 9:16，LANCZOS 縮成 540×960 AVIF q50 與 270×480 WebP q50）"
+      },
+      "keywords": [
+        "cutscene",
+        "過場",
+        "開場",
+        "標題",
+        "prologue",
+        "pixel",
+        "像素"
+      ],
+      "contentHash": "sha256:b687dc6977055074157d577d44304120dc2587914bb64f1aff242b3add30f06f"
+    },
+    {
+      "status": "shipped",
+      "reusePolicy": "game-only",
+      "styleTags": [
+        "pixel",
+        "cinematic",
+        "cutscene"
+      ],
       "id": "skytalon.cut.leg1-intro",
       "kind": "key-art",
       "name": "航段一出征過場：眾神艦隊降臨、最後的壁壘、地下機庫、出擊",
@@ -891,21 +945,25 @@
           "game/src/ui/intro.js"
         ],
         "shipped": [
-          "game/src/assets/intro/s1_gods_descend.webp",
-          "game/src/assets/intro/s2_last_bastion.webp",
-          "game/src/assets/intro/s3_hangar.webp",
-          "game/src/assets/intro/s4_launch.webp"
+          "game/src/assets/intro/s1_gods_descend.avif",
+          "game/src/assets/intro/s1_gods_descend.lo.webp",
+          "game/src/assets/intro/s2_last_bastion.avif",
+          "game/src/assets/intro/s2_last_bastion.lo.webp",
+          "game/src/assets/intro/s3_hangar.avif",
+          "game/src/assets/intro/s3_hangar.lo.webp",
+          "game/src/assets/intro/s4_launch.avif",
+          "game/src/assets/intro/s4_launch.lo.webp"
         ]
       },
       "technical": {
-        "format": "WebP q78，540 × 960（9:16）",
+        "format": "AVIF q50，540 × 960（9:16）；另附 270 × 480 WebP q50 備用（不支援 AVIF 的瀏覽器）",
         "use": "ui/intro.js：DOM + GSAP 演出（推拉鏡頭、交叉淡入、火星、震動、閃光與速度線），不是影片檔",
         "drawCalls": "0（DOM，在畫布之上）"
       },
       "provenance": {
         "tool": "Codex CLI 的圖片生成（2026-11-23，由 Claude 依使用者指示「重新生成一段出征的動畫」下指令）",
         "job": "參考素材包 shmup-bosses-3phase 的 intro_cutscene_pixi（只當結構參考）；劇情依 gdd/05 v8 §5 世界觀；第一張第一輪的戰艦帶神殿，違反 art/README.md 的「不畫廟宇」，已重生（舊圖在 art/raw/intro/alt/）",
-        "postprocess": "PIL：LANCZOS 縮成 540×960，WebP quality 78"
+        "postprocess": "python art/tools/intro_images.py（置中裁 9:16，LANCZOS 縮成 540×960 AVIF q50 與 270×480 WebP q50）"
       },
       "keywords": [
         "cutscene",
@@ -916,7 +974,7 @@
         "pixel",
         "像素"
       ],
-      "contentHash": "sha256:efff15a2593e456388888011f2a7a1a87bfb839bf41be465c4a434f7721a122d"
+      "contentHash": "sha256:68fb2768eb1f6c6430dd06f544b148959ca226ef1dfef7cce36e3b199c04c08d"
     },
     {
       "status": "shipped",
@@ -942,14 +1000,18 @@
           "art/raw/intro2/prompts/round2_s3.sh"
         ],
         "shipped": [
-          "game/src/assets/intro2/s1_atlas_falls.webp",
-          "game/src/assets/intro2/s2_moon_base.webp",
-          "game/src/assets/intro2/s3_fleet_gathers.webp",
-          "game/src/assets/intro2/s4_to_the_moon.webp"
+          "game/src/assets/intro2/s1_atlas_falls.avif",
+          "game/src/assets/intro2/s1_atlas_falls.lo.webp",
+          "game/src/assets/intro2/s2_moon_base.avif",
+          "game/src/assets/intro2/s2_moon_base.lo.webp",
+          "game/src/assets/intro2/s3_fleet_gathers.avif",
+          "game/src/assets/intro2/s3_fleet_gathers.lo.webp",
+          "game/src/assets/intro2/s4_to_the_moon.avif",
+          "game/src/assets/intro2/s4_to_the_moon.lo.webp"
         ]
       },
       "technical": {
-        "format": "WebP q70，540 × 960（9:16）",
+        "format": "AVIF q50，540 × 960（9:16）；另附 270 × 480 WebP q50 備用（不支援 AVIF 的瀏覽器）",
         "use": "ui/intro.js：DOM + GSAP 演出，不是影片檔",
         "drawCalls": "0（DOM，在畫布之上）"
       },
@@ -967,7 +1029,7 @@
         "pixel",
         "像素"
       ],
-      "contentHash": "sha256:3b7ded668ea718560a37fca0d0d1013fe1d5cfc04e7f914a5f6fd20e4abe2a3a"
+      "contentHash": "sha256:827220431bd21cd22683f51a424a75d9aa160fa0ef7bfa6a2f735e4f3ffcaf04"
     },
     {
       "status": "shipped",
@@ -992,14 +1054,18 @@
           "game/src/ui/intro.js"
         ],
         "shipped": [
-          "game/src/assets/intro3/s1_inner_retaken.webp",
-          "game/src/assets/intro3/s2_mars_twins.webp",
-          "game/src/assets/intro3/s3_jupiter_storm.webp",
-          "game/src/assets/intro3/s4_outer_giants.webp"
+          "game/src/assets/intro3/s1_inner_retaken.avif",
+          "game/src/assets/intro3/s1_inner_retaken.lo.webp",
+          "game/src/assets/intro3/s2_mars_twins.avif",
+          "game/src/assets/intro3/s2_mars_twins.lo.webp",
+          "game/src/assets/intro3/s3_jupiter_storm.avif",
+          "game/src/assets/intro3/s3_jupiter_storm.lo.webp",
+          "game/src/assets/intro3/s4_outer_giants.avif",
+          "game/src/assets/intro3/s4_outer_giants.lo.webp"
         ]
       },
       "technical": {
-        "format": "WebP q70，540 × 960（9:16，非 9:16 的原圖從中間裁切）",
+        "format": "AVIF q50，540 × 960（9:16，非 9:16 的原圖從中間裁切）；另附 270 × 480 WebP q50 備用（不支援 AVIF 的瀏覽器）",
         "use": "ui/intro.js：DOM + GSAP 演出，不是影片檔",
         "drawCalls": "0（DOM，在畫布之上）"
       },
@@ -1016,7 +1082,7 @@
         "pixel",
         "像素"
       ],
-      "contentHash": "sha256:95a361e9d7dd4fee707f10771aa657de9cc7d930418b96ac5bf12d3b6c8471c4"
+      "contentHash": "sha256:92df9a68a46db0a8c4722a0cab965ca0ac158ff89e0547b96d25260979d662b0"
     },
     {
       "status": "shipped",
@@ -1041,14 +1107,18 @@
           "game/src/ui/intro.js"
         ],
         "shipped": [
-          "game/src/assets/intro4/s1_rings_fall.webp",
-          "game/src/assets/intro4/s2_flee_to_edge.webp",
-          "game/src/assets/intro4/s3_styx.webp",
-          "game/src/assets/intro4/s4_into_the_dark.webp"
+          "game/src/assets/intro4/s1_rings_fall.avif",
+          "game/src/assets/intro4/s1_rings_fall.lo.webp",
+          "game/src/assets/intro4/s2_flee_to_edge.avif",
+          "game/src/assets/intro4/s2_flee_to_edge.lo.webp",
+          "game/src/assets/intro4/s3_styx.avif",
+          "game/src/assets/intro4/s3_styx.lo.webp",
+          "game/src/assets/intro4/s4_into_the_dark.avif",
+          "game/src/assets/intro4/s4_into_the_dark.lo.webp"
         ]
       },
       "technical": {
-        "format": "WebP q70，540 × 960（9:16，非 9:16 的原圖從中間裁切）",
+        "format": "AVIF q50，540 × 960（9:16，非 9:16 的原圖從中間裁切）；另附 270 × 480 WebP q50 備用（不支援 AVIF 的瀏覽器）",
         "use": "ui/intro.js：DOM + GSAP 演出，不是影片檔",
         "drawCalls": "0（DOM，在畫布之上）"
       },
@@ -1065,7 +1135,7 @@
         "pixel",
         "像素"
       ],
-      "contentHash": "sha256:33aa7d61bf4b73ca7e6889a9309bd78bbf17940404ef4e372143bdc01d895daf"
+      "contentHash": "sha256:b977d55a90a540223df6ed23eb0a92caf3ba8eac2ea749bd32aca88b3ea1f885"
     },
     {
       "status": "shipped",
@@ -1090,14 +1160,18 @@
           "game/src/ui/intro.js"
         ],
         "shipped": [
-          "game/src/assets/intro5/s1_styx_breaks.webp",
-          "game/src/assets/intro5/s2_sun_fire.webp",
-          "game/src/assets/intro5/s3_black_hole.webp",
-          "game/src/assets/intro5/s4_into_the_glare.webp"
+          "game/src/assets/intro5/s1_styx_breaks.avif",
+          "game/src/assets/intro5/s1_styx_breaks.lo.webp",
+          "game/src/assets/intro5/s2_sun_fire.avif",
+          "game/src/assets/intro5/s2_sun_fire.lo.webp",
+          "game/src/assets/intro5/s3_black_hole.avif",
+          "game/src/assets/intro5/s3_black_hole.lo.webp",
+          "game/src/assets/intro5/s4_into_the_glare.avif",
+          "game/src/assets/intro5/s4_into_the_glare.lo.webp"
         ]
       },
       "technical": {
-        "format": "WebP q70，540 × 960（9:16，非 9:16 的原圖從中間裁切）",
+        "format": "AVIF q50，540 × 960（9:16，非 9:16 的原圖從中間裁切）；另附 270 × 480 WebP q50 備用（不支援 AVIF 的瀏覽器）",
         "use": "ui/intro.js：DOM + GSAP 演出，不是影片檔",
         "drawCalls": "0（DOM，在畫布之上）"
       },
@@ -1114,7 +1188,7 @@
         "pixel",
         "像素"
       ],
-      "contentHash": "sha256:9a1d74c4bbae7aefb79ad8061714f1504572804b966596bb78dcfc6f6ee62158"
+      "contentHash": "sha256:1d7f46f95cfd6a1835755020a756a5adf971b9e9fe95337f5214742cc7f351e1"
     },
     {
       "status": "shipped",
@@ -1139,14 +1213,18 @@
           "game/src/ui/intro.js"
         ],
         "shipped": [
-          "game/src/assets/intro6/s1_chaos_breaks.webp",
-          "game/src/assets/intro6/s2_time_warp.webp",
-          "game/src/assets/intro6/s3_mesozoic.webp",
-          "game/src/assets/intro6/s4_prehistoric_sortie.webp"
+          "game/src/assets/intro6/s1_chaos_breaks.avif",
+          "game/src/assets/intro6/s1_chaos_breaks.lo.webp",
+          "game/src/assets/intro6/s2_time_warp.avif",
+          "game/src/assets/intro6/s2_time_warp.lo.webp",
+          "game/src/assets/intro6/s3_mesozoic.avif",
+          "game/src/assets/intro6/s3_mesozoic.lo.webp",
+          "game/src/assets/intro6/s4_prehistoric_sortie.avif",
+          "game/src/assets/intro6/s4_prehistoric_sortie.lo.webp"
         ]
       },
       "technical": {
-        "format": "WebP q70，540 × 960（9:16，非 9:16 的原圖從中間裁切）",
+        "format": "AVIF q50，540 × 960（9:16，非 9:16 的原圖從中間裁切）；另附 270 × 480 WebP q50 備用（不支援 AVIF 的瀏覽器）",
         "use": "ui/intro.js：DOM + GSAP 演出，不是影片檔",
         "drawCalls": "0（DOM，在畫布之上）"
       },
@@ -1163,7 +1241,7 @@
         "pixel",
         "像素"
       ],
-      "contentHash": "sha256:60c230b6ff6ac2200a1c9045908d2c57f0a8d2a89299afc2040d6d667e74ac7d"
+      "contentHash": "sha256:f36b753557080854eb52bf6105cd578c2a4cb536f43a09ae00780ecc3b0c9a2b"
     },
     {
       "status": "shipped",
@@ -1197,7 +1275,7 @@
         "bgm",
         "procedural"
       ],
-      "contentHash": "sha256:bc8d82b13a01ec76eead0851cf9af47d26404fbe8b85d3e956d9cf3d84f5d3a8"
+      "contentHash": "sha256:105ca7b0886f8b97160734357dac8933cb663fadce41ec2530546452304bb67b"
     },
     {
       "status": "shipped",

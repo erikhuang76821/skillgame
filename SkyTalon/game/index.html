@@ -28,6 +28,11 @@
     .intro-ember { position: absolute; width: 6px; height: 6px; border-radius: 50%; background: radial-gradient(#fff2c0, #ff8a2a 55%, transparent 70%); opacity: 0; pointer-events: none; }
     .intro-streak { position: absolute; width: 2px; height: 22%; background: linear-gradient(transparent, rgba(220, 240, 255, .85), transparent); opacity: 0; pointer-events: none; }
     .intro-sub { position: fixed; left: 50%; bottom: 7vh; transform: translateX(-50%); width: min(92vw, 54vh); text-wrap: balance; word-break: keep-all; text-align: center; font-size: clamp(15px, 2.4vh, 22px); font-weight: 700; line-height: 1.5; color: #f3ecdf; text-shadow: 0 2px 6px #000, 0 0 2px #000; pointer-events: none; }
+    .intro-title { position: fixed; left: 0; right: 0; top: 16vh; text-align: center; font-size: clamp(40px, 7.5vh, 72px); font-weight: 900; color: #ffd24a; letter-spacing: .16em; text-shadow: 0 0 24px rgba(255, 190, 80, .55), 0 3px 8px #000; pointer-events: none; }
+    .intro-title small { display: block; font-size: .3em; font-weight: 600; letter-spacing: .3em; color: #f3ecdf; opacity: .85; margin-top: .4em; }
+    .intro-gate { position: fixed; left: 0; right: 0; bottom: 14vh; text-align: center; font-size: clamp(16px, 2.6vh, 22px); font-weight: 700; color: #f3ecdf; text-shadow: 0 2px 6px #000; letter-spacing: .12em; animation: gate-pulse 1.6s ease-in-out infinite; pointer-events: none; }
+    @keyframes gate-pulse { 50% { opacity: .35; } }
+    @media (prefers-reduced-motion: reduce) { .intro-gate { animation: none; } }
     .intro-sub.hl { color: #ffd24a; font-size: clamp(18px, 3vh, 28px); letter-spacing: .08em; }
     .intro-skip { position: fixed; right: 16px; top: 16px; padding: 6px 14px; border-radius: 999px; border: 1px solid rgba(243, 236, 223, .4); background: rgba(20, 16, 36, .55); color: #f3ecdf; font: inherit; font-size: 13px; cursor: pointer; }
     #frame { position: fixed; pointer-events: none; --dim: rgba(16, 12, 28, .55); }
@@ -36,8 +41,8 @@
                   linear-gradient(180deg, var(--dim), transparent 48px, transparent calc(100% - 48px), var(--dim)); }
     #hud { position: absolute; inset: 0; padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); }
     #hud > * { position: absolute; text-shadow: 0 2px 0 rgba(20, 14, 30, .9); }
-    #hud .score { top: 10px; left: 14px; font-size: 26px; font-variant-numeric: tabular-nums; transform-origin: left center; }
-    #hud .chain { top: 44px; left: 14px; font-size: 14px; color: #ffd24a; transform-origin: left center; }
+    #hud .score { top: 10px; left: 62px; font-size: 26px; font-variant-numeric: tabular-nums; transform-origin: left center; }
+    #hud .chain { top: 44px; left: 62px; font-size: 14px; color: #ffd24a; transform-origin: left center; }
     #hud .section { top: 14px; left: 0; right: 0; text-align: center; font-size: 13px; opacity: .8; }
     #hud .shields { top: 12px; right: 14px; display: flex; gap: 5px; }
     #hud .shields i { width: 18px; height: 18px; border-radius: 4px; background: #7fe7f2; box-shadow: inset 0 -4px 0 rgba(0, 60, 80, .35), 0 0 0 2px #1c1626; }
@@ -105,6 +110,10 @@
     #panel-pick .opt kbd { font: inherit; font-size: 11px; opacity: .6; }
     #panel-pick .next { font-size: 12px; opacity: .75; margin: 10px 0 0; }
     #hud .dc { bottom: 6px; left: 8px; font: 11px/1 ui-monospace, monospace; opacity: .75; }
+    #btn-pause { position: absolute; top: calc(4px + env(safe-area-inset-top)); left: 8px; pointer-events: auto; font-weight: 700; letter-spacing: -.1em; }
+    #btn-pause.down { translate: 0 2px; background: rgba(12, 9, 20, .92); box-shadow: inset 0 3px 6px rgba(0, 0, 0, .6), 0 0 0 2px rgba(255, 210, 74, .55); color: #ffd24a; }   /* paused, or counting back in */
+    #btn-pause:disabled { opacity: .4; }   /* always there; only usable during a match */
+    #panel-pause { text-align: center; }
     #hud .toggles { bottom: calc(8px + env(safe-area-inset-bottom)); right: 8px; display: flex; gap: 6px; pointer-events: auto; }
     button { font: inherit; color: inherit; border: 0; border-radius: 8px; padding: 9px 12px; min-height: 44px; min-width: 44px;
       background: rgba(28, 22, 38, .78); box-shadow: 0 0 0 2px rgba(243, 236, 223, .25); }
@@ -149,6 +158,7 @@
       <div class="count" hidden></div>
       <div class="note" hidden></div>
       <div class="dc" hidden></div>
+      <button id="btn-pause" type="button" aria-label="暫停" disabled>II</button>
       <div class="toggles">
         <button id="btn-low" type="button" aria-pressed="true">特效</button>
         <button id="btn-mute" type="button" aria-pressed="true">音效</button>
@@ -171,6 +181,7 @@
             <li><b>音效出處</b>：射擊、命中、爆炸音效取自「効果音ラボ」（soundeffect-lab.info）；部分介面與道具音效取自 Unity UI Audio Collection（MIT License，Copyright (c) 2024 Elijah Brown）；音樂與其他音效由程式即時合成。</li>
             <li><b>紅色射線</b>：橫跨畫面往下壓，通電與斷電輪流。變細的時候穿過去。</li>
             <li><b>生命</b>：共 3 點，被打中少 1 點、連鎖歸零；結束時每少被打中一次加 150 分（最多 450）。</li>
+            <li><b>暫停</b>：左上角的 II（鍵盤 Esc 或 P）。切到別的程式也會自動暫停；繼續前倒數三秒。</li>
             <li>判定只有機身中央的亮點。同一關每個人遇到的敵機完全相同。</li>
           </ul>
         </details>
@@ -183,6 +194,14 @@
         <div class="sub"></div>
         <div class="opts"></div>
         <div class="next"></div>
+      </section>
+
+      <section class="panel" id="panel-pause" hidden>
+        <h2>暫停</h2>
+        <div class="sub">時間停住了。繼續後會倒數三秒。</div>
+        <div class="actions">
+          <button id="btn-resume" type="button" class="primary">繼續</button>
+        </div>
       </section>
 
       <section class="panel" id="panel-result" hidden>

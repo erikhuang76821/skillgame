@@ -1,4 +1,4 @@
-// The sprite modules keep their pixels in PNG sheets (art/tools/forms_png.py): each sprite is {"$png": [x, y, w, h]}
+// The sprite modules keep their pixels in lossless WebP sheets (art/tools/forms_png.py): each sprite is {"$png": [x, y, w, h]}
 // and a pixel's gray value is the character the generator wrote for it. hydrateForms() decodes every sheet once at
 // boot and puts the rows of text back in place, so the atlas code reads the same data it always did. No network: the
 // sheets are bundled (inlined into the single file for the store build).

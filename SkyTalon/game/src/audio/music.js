@@ -11,8 +11,9 @@ const MIDI = n => 440 * 2 ** ((n - 69) / 12);
 const MINOR = { 1: 0, 2: 2, 3: 3, 4: 5, 5: 7, 6: 8, 7: 10, '7#': 11, 8: 12, 9: 14, 10: 15 };
 const PHRYGIAN = { ...MINOR, 2: 1, 9: 13 };
 const DORIAN = { ...MINOR, 6: 9 };
+const MAJOR = { 1: 0, 2: 2, 3: 4, 4: 5, 5: 7, 6: 9, 7: 11, '7#': 11, 8: 12, 9: 14, 10: 16 };
 const TRIAD = { m: [0, 3, 7], M: [0, 4, 7] };
-const VOICES = { lead: 'brass', pad: 'strings', ost: 'strings', scale: MINOR, arp: [0, 7, 12, 7], taikoGain: 0.9, brassOct: 0 };
+const VOICES = { lead: 'brass', pad: 'strings', ost: 'strings', scale: MINOR, arp: [0, 7, 12, 7], taikoGain: 0.9, brassOct: 0, cymbal: true };
 
 /** the boss variant of a flight theme: faster, driving sixteenths, heavier drums, the melody an octave down */
 const bossOf = (T, extra = {}) => ({
@@ -69,7 +70,26 @@ const LEG6 = {
   ostinato: 'xxx.xx.xxxx.xx.x', taiko: 'x..x.x..x..x.x.x', snare: '....x.......x...',
 };
 
+const MENU = {
+  // the stage map: F major, soft and unhurried, a harp-like pluck over wooden mallets and a strings pad, no drums, 72 bpm
+  ...VOICES, bpm: 72, gain: 0.13, tonic: 65, scale: MAJOR, lead: 'pluck', ost: 'mallet', cymbal: false,
+  chords: [[53, 'M'], [50, 'm'], [46, 'M'], [48, 'M'], [53, 'M'], [57, 'm'], [46, 'M'], [48, 'M']],
+  melody: [[3, 2], [5, 2], [6, 1], [5, 1], [3, 2], [2, 2], [1, 2], [2, 4],
+    [3, 2], [5, 2], [8, 2], [7, 1], [6, 1], [5, 2], [3, 1], [2, 1], [1, 4]],
+  ostinato: 'x...x.x.x...x.x.', taiko: '................', snare: '................',
+};
+const PROLOGUE = {
+  // the game's opening: D minor, slow and wide, a choir under a lone horn, one deep drum a bar, 76 bpm
+  ...VOICES, bpm: 76, gain: 0.2, tonic: 62, lead: 'horn', pad: 'choir', arp: [0, 7, 12, 7],
+  chords: [[50, 'm'], [46, 'M'], [43, 'm'], [45, 'M'], [50, 'm'], [46, 'M'], [43, 'm'], [45, 'M']],
+  melody: [[1, 2], [5, 2], [4, 1], [3, 1], [2, 2], [1, 3], [null, 1], ['7#', 4],
+    [5, 2], [8, 2], [7, 1], [6, 1], [5, 2], [6, 1], [5, 1], [4, 1], [3, 1], [5, 4]],
+  ostinato: 'x...x...x...x...', taiko: 'x...............', snare: '................',
+};
+
 export const THEMES = {
+  menu: MENU,
+  prologue: PROLOGUE,
   leg1: LEG1,
   // leg one's boss keeps its own C minor theme
   leg1boss: bossOf(LEG1, {
@@ -192,8 +212,8 @@ export class Music {
     }
     if (T.snare[s] === 'x') noise(0.18, 0.28, 'bandpass', 1700, 0.8, 0.35);
     // into every second bar of a four-bar phrase: a cymbal swell; on the phrase's first beat, the crash it swells into
-    if (s === 12 && barN % 4 === 3) noise(0.05, 0.12, 'highpass', 5000, 0.7, 0.5, beat);
-    if (s === 0 && barN % 4 === 0 && barN > 0) noise(1.6, 0.14, 'highpass', 4500, 0.7, 0.6);
+    if (T.cymbal && s === 12 && barN % 4 === 3) noise(0.05, 0.12, 'highpass', 5000, 0.7, 0.5, beat);
+    if (T.cymbal && s === 0 && barN % 4 === 0 && barN > 0) noise(1.6, 0.14, 'highpass', 4500, 0.7, 0.6);
   }
 }
 

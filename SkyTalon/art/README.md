@@ -194,4 +194,4 @@
 
 ## 像素資料存成 PNG（2026-11-23）
 
-頭目、小王、小怪的生成模組（`game/src/render/*Forms.js`、`*Machines.js`、`leg6Creatures.js`）只留調色盤與座標，像素移到同名的 `*.forms.png`（8 位元灰階，像素值就是原本那一列的字元碼），執行期由 `render/formsSheets.js` 解碼還原。跑完任何生成工具（`boss_forms.py`、`creature_forms.py` 等）之後要再跑 `python art/tools/forms_png.py`；`--check` 會列出還留著文字像素的模組。
+頭目、小王、小怪的生成模組（`game/src/render/*Forms.js`、`*Machines.js`、`leg6Creatures.js`）只留調色盤與座標，像素移到同名的 `*.forms.webp`（無損 WebP 灰階，像素值就是原本那一列的字元碼），執行期由 `render/formsSheets.js` 解碼還原。跑完任何生成工具（`boss_forms.py`、`creature_forms.py` 等）之後要再跑 `python art/tools/forms_png.py`；`--check` 會列出還留著文字像素的模組。
