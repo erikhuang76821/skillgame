@@ -637,7 +637,7 @@ export class View {
     if (this.discharge > 0) this.discharge = Math.max(0, this.discharge - fxDt);
 
     // contrails from the wing tips: puffs left behind that the ground carries away
-    const alive = sim.shields > 0;
+    const alive = sim.shields > 0 && !this.hideShip;
     if (flying && alive && FEEL.enabled) {
       this.contrailT += fxDt;
       while (this.contrailT >= FEEL.contrail.every) {

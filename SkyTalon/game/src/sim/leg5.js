@@ -53,7 +53,7 @@ export const L5_HP_ADD = Object.freeze([1, 2, 2, 2]);
 export const L5_ROSTER = Object.freeze([[PROMSKIFF, GUNNER, WEAVER, DIVER], [FLARESKIFF, LANCER, DRONE, MINER], [SLOWSHIP, BULWARK, SEEKER, WEAVER], [TALISMAN, BEAMER, SPLITTER, LANCER]]);
 const HEAVY = new Set([BULWARK, BEAMER]);
 const SWARM = new Set([DRONE, DIVER, SEEKER]);
-const MORE = Object.freeze([4, 3, 3, 5]);
+const MORE = Object.freeze([5, 4, 4, 5]);   // v3: chapters one to three +1 (the opening supply gives the wingman)
 
 export const L5_SMALL_R = 4;                                  // the ship's hit radius in the black hole (chapters three and four)
 export const L5_PROM_R = 320, L5_PROM_W = 36, L5_PROM_OUT = 120, L5_PROM_WARN = 87, L5_PROM_LIVE = 81, L5_PROM_HOLD = 360;
@@ -395,6 +395,6 @@ export const LEG5 = Object.freeze({
 });
 
 export const GAME5 = Object.freeze({
-  id: 'sky-talon-leg5', version: 2, maxTicks: MAX_TICKS, maxChoices: SUPPLIES,
+  id: 'sky-talon-leg5', version: 3, maxTicks: MAX_TICKS, maxChoices: SUPPLIES,
   createSim: seed => createSim(seed, LEG5), step, phase, choose, score, stateHash, scoreBreakdown,
 });

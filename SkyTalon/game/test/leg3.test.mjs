@@ -14,7 +14,7 @@ import { STRATEGIES } from '../tools/strategies.mjs';
 
 const play = role => Object.values(STRATEGIES).find(s => s.role === role).policy;
 const STRONG = play('strong'), SIMPLE = play('simple');
-const GOLDEN3 = { game: 'sky-talon-leg3', version: 2, seed: 1234, ticks: 20989, score: 46734, hash: 1933554312 };
+const GOLDEN3 = { game: 'sky-talon-leg3', version: 3, seed: 1234, ticks: 21230, score: 49713, hash: 1066595090 };
 const bare = (seed = 5) => {
   const sim = GAME3.createSim(seed);
   while (phase(sim) === 'choice') choose(sim, 0);
@@ -27,9 +27,9 @@ const shotAt = (x, y) => ({ x: x * ONE, y: y * ONE, vx: 0, vy: 0, left: 0, dmg: 
 const hold = sim => { sim.invuln = 5; step(sim, 0); };
 
 test('leg three does not touch the other legs: legs one, two and six play their golden matches', () => {
-  assert.deepEqual(playMatch(GAME, 1234, STRONG).result(), { game: 'sky-talon', version: 12, seed: 1234, ticks: 19803, score: 53902, hash: 2439202323 });
-  assert.deepEqual(playMatch(GAME6, 1234, STRONG).result(), { game: 'sky-talon-leg6', version: 3, seed: 1234, ticks: 20992, score: 55213, hash: 873819208 });
-  assert.deepEqual(playMatch(GAME2, 1234, STRONG).result(), { game: 'sky-talon-leg2', version: 3, seed: 1234, ticks: 19404, score: 48660, hash: 24234368 });
+  assert.deepEqual(playMatch(GAME, 1234, STRONG).result(), { game: 'sky-talon', version: 13, seed: 1234, ticks: 20204, score: 54425, hash: 4263489266 });
+  assert.deepEqual(playMatch(GAME6, 1234, STRONG).result(), { game: 'sky-talon-leg6', version: 4, seed: 1234, ticks: 21383, score: 58897, hash: 3556292689 });
+  assert.deepEqual(playMatch(GAME2, 1234, STRONG).result(), { game: 'sky-talon-leg2', version: 4, seed: 1234, ticks: 19792, score: 54909, hash: 1116054496 });
 });
 
 test('leg three: same seed + same inputs => identical result; golden match; an uploaded match verifies', () => {

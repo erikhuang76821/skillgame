@@ -20,7 +20,7 @@ test('the random strategy plays (the ship fires by itself): it scores, but far b
   const r = runEvidence(DEMO, DEMO_STRATEGIES, { n: 30 });
   const random = r.pairs.find(p => p.role === 'random');
   const still = r.pairs.find(p => p.other === 'stay put'), chase = r.pairs.find(p => p.other === 'chase the nearest enemy');
-  assert.ok(random.scoreRatio > 0.02 && random.scoreRatio < 0.5, `ratio ${random.scoreRatio}`);
+  assert.ok(random.scoreRatio > 0.01 && random.scoreRatio < 0.5, `ratio ${random.scoreRatio}`);   // v13: the fixed opening supply lifts the strong strategy, so random steering lands near 2%
   assert.ok(random.scoreRatio > still.scoreRatio, 'steering at random still shoots more down than not steering');
   assert.ok(chase.scoreRatio > random.scoreRatio && chase.scoreRatio < 0.7, `looking at the enemies helps, not dodging costs: ${chase.scoreRatio}`);
 });

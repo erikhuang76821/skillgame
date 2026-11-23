@@ -418,6 +418,6 @@ export const LEG4 = Object.freeze({
 });
 
 export const GAME4 = Object.freeze({
-  id: 'sky-talon-leg4', version: 2, maxTicks: MAX_TICKS, maxChoices: SUPPLIES,
+  id: 'sky-talon-leg4', version: 3, maxTicks: MAX_TICKS, maxChoices: SUPPLIES,
   createSim: seed => createSim(seed, LEG4), step, phase, choose, score, stateHash, scoreBreakdown,
 });

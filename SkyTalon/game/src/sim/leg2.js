@@ -50,11 +50,11 @@ export const [SELENE, PAN, TWINS, NEMESIS] = L2_BOSSES;
 const bossType = slot => (slot % 2 === 0 ? L2_MIDS : L2_BOSSES)[slot >> 1];
 
 // ---------- numbers (gdd/05 v12 §3, §4, §10; all starting values) ----------
-export const L2_HP_ADD = Object.freeze([0, 0, 1, 0]);
+export const L2_HP_ADD = Object.freeze([2, 1, 2, 4]);   // v4: chapter one +2, two and three +1, four +4 (the opening supply gives the wingman)
 export const L2_ROSTER = Object.freeze([[ORBITER, DRONE, GUNNER, DIVER], [SHUTTER, WEAVER, LANCER, MINER], [TWINVEC, SPLITTER, BULWARK, GUNNER], [RAMMER, BEAMER, LANCER, WEAVER]]);
 const HEAVY = new Set([SHUTTER, TWINVEC, BULWARK, BEAMER]);                 // come one (or one pair) at a time
 const SWARM = new Set([ORBITER, DRONE, DIVER, SEEKER, RAMMER]);             // come in numbers: no chapter health for them
-const MORE = Object.freeze([2, 1, 5, 3]);                                   // how many more of a chapter's machines a wave unit gets
+const MORE = Object.freeze([2, 1, 5, 4]);   // v4: chapter four 3 -> 4 (the opening supply gives the wingman)                                   // how many more of a chapter's machines a wave unit gets
 
 export const L2_ORBIT_VY = 2, L2_ORBIT_FIRE = 50, L2_ORBIT_WARN = 20, L2_ORBIT_SPEED = 4, L2_ORBIT_RX = 155, L2_ORBIT_RY = 100, L2_GUARDS = 5, L2_GUARDS_MORE = 4;
 export const L2_SHUT_CLOSED = 70, L2_SHUT_OPEN = 100, L2_SHUT_WARN = 20, L2_SHUT_CYCLES = 4, L2_SHUT_FAN = Object.freeze([-18, -9, 0, 9, 18]), L2_SHUT_SPEED = 4;
@@ -119,15 +119,17 @@ export function schedule(seed) {
       const spare = n => { if (old.length) one(t0 + 100 + n * 60, old[(u + n) % old.length], idx + 12 + n); };
       // 起: the chapter's new machine alone, then a shooter alone, then both
       if (sec.safe || (ch === 0 && sec.name === SCRIPT[1].name)) {
-        if (i === 0) one(t0 + 20, a, idx);
-        else if (i === 1) one(t0 + 20, c, idx);
-        else { one(t0 + 10, a, idx); one(t0 + 110, c, idx + 1); if (i >= 2) one(t0 + 60, d, idx + 3); if (i >= 3) { one(t0 + 170, b, idx + 2); spare(0); } }
+        if (i === 0) { one(t0 + 20, a, idx); if (ch === 0) one(t0 + 130, a, idx + 6); }
+        else if (i === 1) { one(t0 + 20, c, idx); if (ch === 0) one(t0 + 130, c, idx + 4); }   // v4: the leg's first lesson shows each newcomer twice (still alone; the opening supply gives the wingman)
+        else { one(t0 + 10, a, idx); one(t0 + 110, c, idx + 1); if (ch === 0 && i === 2) one(t0 + 160, c, idx + 7); /* v4: the first unit with both gets a second shooter */ if (i >= 2) one(t0 + 60, d, idx + 3); if (ch === 0) one(t0 + 150, c, idx + 5); if (i >= 3) { one(t0 + 170, b, idx + 2); spare(0); } }
         continue;
       }
       // 承 and 合: everything together, more each unit (the other three are leg one's, met there: they need no unit alone)
-      const n = Math.min(1 + MORE[ch] + (climax ? 2 : 0) + (i >> 1), climax ? 9 : 8), mix = [a, c, b, d, a, c, d, b, b, d, a, c];
+      const n = Math.min(1 + MORE[ch] + (climax ? (ch === 3 ? 3 : 2) : 0) + (i >> 1), climax ? (ch === 3 ? 10 : 9) : 8),   // v4: the last climax one more
+            mix = [a, c, b, d, a, c, d, b, b, d, a, c];
       for (let j = 0, placed = 0; placed < n && j < mix.length; j++) { if (HEAVY.has(mix[j]) && j >= 4) continue; one(t0 + 10 + placed * Math.floor(200 / n), mix[j], idx + j); placed++; }
       spare(0); if (climax || i >= 3 || ch >= 2) spare(1);
+      if (ch === 3) { spare(2); if (climax) one(t0 + 40, old[(u + 3) % old.length], idx + 15); }   // v4: chapter four brings back more old machines (the opening supply gives the wingman)
     }
   });
   // leg one's convoy and the storm's two mines, in the same units
@@ -500,6 +502,6 @@ export const LEG2 = Object.freeze({
 });
 
 export const GAME2 = Object.freeze({
-  id: 'sky-talon-leg2', version: 3, maxTicks: MAX_TICKS, maxChoices: SUPPLIES,
+  id: 'sky-talon-leg2', version: 4, maxTicks: MAX_TICKS, maxChoices: SUPPLIES,
   createSim: seed => createSim(seed, LEG2), step, phase, choose, score, stateHash, scoreBreakdown,
 });

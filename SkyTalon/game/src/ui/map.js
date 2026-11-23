@@ -41,10 +41,10 @@ export function stageMap(root, onEnter) {
       b.className = `leg ${go ? 'open' : 'locked'}${i < cleared ? ' done' : ''}${named ? '' : ' secret'}`;
       b.disabled = !go;
       b.querySelector('.name').textContent = `航段${NUMERAL[i]}　${named ? leg.name : '秘密任務'}`;
-      b.querySelector('.path').textContent = named && !leg.teaser ? leg.path : '';
+      b.querySelector('.path').textContent = '';   // the card shows the leg and its state only (the route stays in LEGS for the cutscenes and docs)
       b.querySelector('.state').textContent =
         leg.teaser ? '新航段製作中' :
-        go ? (i < cleared ? '已通關　點一下再飛' : '點一下出發') :
+        go ? (i < cleared ? '已通關' : '可出擊') :
         !named ? '待解鎖' :
         i <= cleared ? '已解鎖：這個航段還在製作，尚未開放' : '打完前一個航段解鎖';
     });

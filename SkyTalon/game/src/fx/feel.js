@@ -41,7 +41,9 @@ export const FEEL = {
   aim: { alpha: [0.2, 0.85], width: 3, len: 1500 },    // a lancer's line: faint at the lock, bright when it fires
   wall: { dot: 6, alpha: 0.5, markDrop: 46 },          // a coming wall: dim dots where bullets will be, a mark on the gap
   mineWarn: 45,                                        // ticks before a mine goes off that it starts blinking red
-  pause: { count: 3 },                // seconds counted down (3, 2, 1) before play goes on after a pause
+  // after a pause: "3", "2", "1" evenly (2.3 s in all); max = pauses per leg, leaving the page included
+  // (a pause freezes the bullets on screen, so an unlimited one would let a player study every pattern)
+  pause: { steps: [2.3 / 3, 2.3 / 3, 2.3 / 3], max: 3 },
   pick: { resume: 0.4, clearLife: 0.35, shield: 0.5, delay: 0.5, pop: 0.35, popFrom: 0.84, shade: 0.45 },   // delay: a boss's wreck burns this long before its supply shows; pop: the panel's entrance
   // resume: seconds before play resumes after a supply (short: the boost follows at once); the clear ring; the invulnerability ring's alpha
   // a beam: its warning column fills in, then moving light (view.beamFx): body alpha, the wide halo, how many motes and streaks

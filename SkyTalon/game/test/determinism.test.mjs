@@ -26,7 +26,7 @@ test('same seed + same inputs => identical result', () => {
 
 test('golden match (cross-engine determinism; update only when GAME.version is bumped)', () => {
   assert.deepEqual(playMatch(GAME, 1234, STRONG).result(),
-    { game: 'sky-talon', version: 12, seed: 1234, ticks: 19803, score: 53902, hash: 2439202323 });
+    { game: 'sky-talon', version: 13, seed: 1234, ticks: 20204, score: 54425, hash: 4263489266 });
 });
 
 test('uploaded match verifies; tampered score does not', () => {

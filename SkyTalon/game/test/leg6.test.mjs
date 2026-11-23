@@ -25,7 +25,7 @@ const enemy = (sim, type, x, y, extra = {}) => { const e = { id: sim.nextId++, t
 
 test('leg six does not touch leg one: with leg six loaded, leg one plays the same golden match', () => {
   assert.deepEqual(playMatch(GAME, 1234, STRONG).result(),
-    { game: 'sky-talon', version: 12, seed: 1234, ticks: 19803, score: 53902, hash: 2439202323 });
+    { game: 'sky-talon', version: 13, seed: 1234, ticks: 20204, score: 54425, hash: 4263489266 });
   assert.equal(KIND.slice(0, 21).every(k => !k.leg), true, "leg one's kinds are as they were");
 });
 
@@ -299,7 +299,7 @@ test('leg six: the strong player beats the simple ones on every one of a few see
   }
 });
 
-const GOLDEN6 = { game: 'sky-talon-leg6', version: 3, seed: 1234, ticks: 20992, score: 55213, hash: 873819208 };
+const GOLDEN6 = { game: 'sky-talon-leg6', version: 4, seed: 1234, ticks: 21383, score: 58897, hash: 3556292689 };
 
 // --- second pass: sixteen creatures, standing boss patterns ---
 import { ROSTER, L6_PATTERNS, L6_SPIRAL_EVERY } from '../src/sim/leg6.js';

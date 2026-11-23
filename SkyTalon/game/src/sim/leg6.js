@@ -65,7 +65,7 @@ const [POSTO, ALLO, QUETZ, SPINO] = L6_MIDS, [PLATEO, DIPLO, MOSA, TREX] = L6_BO
 const bossType = slot => (slot % 2 === 0 ? L6_MIDS : L6_BOSSES)[slot >> 1];
 
 // ---------- numbers (gdd/05 v11 §3–§6; all starting values) ----------
-export const L6_HP_ADD = Object.freeze([0, 0, 1, 2]);         // every creature's extra health, by chapter
+export const L6_HP_ADD = Object.freeze([2, 0, 1, 3]);   // v4: chapter one +2, chapter four +1 (the opening supply gives the wingman)         // every creature's extra health, by chapter
 // what stands on the ground is carried down the screen with it, at the speed the ground is drawn going by (and the
 // speed leg one's peaks come down at, so that this leg's trees stand still on it too)
 export const L6_GROUND_VY = 3;
@@ -180,9 +180,9 @@ export function schedule(seed) {
       const spare = n => { if (old.length) one(t0 + 100 + n * 60, old[(u + n) % old.length], idx + 12 + n); };
       // 起 (the chapter's opening, or the warm-up): the first creature alone, then the first shooter alone, then both
       if (sec.safe || (ch === 0 && sec.name === SCRIPT[1].name)) {
-        if (i === 0) one(t0 + 20, a, idx);
-        else if (i === 1) one(t0 + 20, c, idx);
-        else { one(t0 + 10, a, idx); one(t0 + 110, c, idx + 1); if (i >= 3) { one(t0 + 170, a, idx + 2); spare(0); } }
+        if (i === 0) { one(t0 + 20, a, idx); if (ch === 0) one(t0 + 130, a, idx + 6); }
+        else if (i === 1) { one(t0 + 20, c, idx); if (ch === 0) one(t0 + 130, c, idx + 4); }   // v4: the leg's first lesson shows each newcomer twice (still alone; the opening supply gives the wingman)
+        else { one(t0 + 10, a, idx); one(t0 + 110, c, idx + 1); if (ch === 0 && i === 2) { one(t0 + 160, c, idx + 7); one(t0 + 210, c, idx + 8); } /* v4: the first unit with both gets two more shooters */ if (i >= 3) { one(t0 + 170, a, idx + 2); spare(0); } }
         continue;
       }
       // 承: the second creature alone in its first unit, the fourth alone in its second, then everything together, more each unit
@@ -627,6 +627,6 @@ function settlePacks(sim) {
 }
 
 export const GAME6 = Object.freeze({
-  id: 'sky-talon-leg6', version: 3, maxTicks: MAX_TICKS, maxChoices: SUPPLIES,
+  id: 'sky-talon-leg6', version: 4, maxTicks: MAX_TICKS, maxChoices: SUPPLIES,
   createSim: seed => createSim(seed, LEG6), step, phase, choose, score, stateHash, scoreBreakdown,
 });

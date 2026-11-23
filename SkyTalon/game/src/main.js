@@ -381,15 +381,23 @@ const names = () => game === GAME5 ? { boss: BOSS_NAMES_5, chapter: CHAPTER_NAME
 let pickOpen = false, pickShown = false, pickBoost = false, showAt = 0, pausedAt = 0, resumeAt = 0;
 // Pause: the sim stops stepping (no input is recorded), the picture holds; going on counts down first, and the input
 // clock skips the paused time (like a supply), so the replay is the same as if there had been no pause.
-let paused = false;
+// A leg allows FEEL.pause.max pauses (leaving the page counts); the count-in after one counts 3, 2, 1 evenly.
+let paused = false, pausesLeft = 0, countIn = 0;
 const pauseBtn = document.getElementById('btn-pause'), pausePanel = document.getElementById('panel-pause');
+const COUNT_IN = FEEL.pause.steps.reduce((a, b) => a + b, 0) * 1000;
+function showPausesLeft() {
+  pauseBtn.querySelector('sup').textContent = state === 'play' ? pausesLeft : '';
+  pausePanel.querySelector('.left').textContent = pausesLeft > 0 ? `這個航段還能暫停 ${pausesLeft} 次。` : '這個航段的暫停次數用完了。';
+}
 function setPause(on) {
-  if (state !== 'play' || on === paused || (on && (pickOpen || resumeAt))) return;
+  if (state !== 'play' || on === paused || (on && (pickOpen || resumeAt || pausesLeft <= 0))) return;
   const now = performance.now();
   paused = on; pausePanel.hidden = !on;
-  if (on) pauseBtn.classList.add('down');
-  if (on) { pausedAt = now; pickBoost = false; pointer = null; keys.clear(); showStick(); sfx.play('click'); }
-  else resumeAt = now + FEEL.pause.count * 1000;
+  if (on) {
+    pausesLeft--; showPausesLeft();
+    pauseBtn.classList.add('down');
+    pausedAt = now; pickBoost = false; pointer = null; keys.clear(); showStick(); sfx.play('click');
+  } else { resumeAt = now + COUNT_IN; countIn = resumeAt; }
 }
 function leavePause() { paused = false; pausePanel.hidden = true; }
 pauseBtn.addEventListener('pointerdown', e => e.stopPropagation());
@@ -453,14 +461,17 @@ function start() {
   clock = new InputClock(performance.now(), 0, TICK_MS);
   lastFrame = performance.now();                             // a stall before the match began is not a stall inside it
   view.clearFx(); freeze = 0; pointer = null; pickOpen = false; pausedAt = 0; resumeAt = 0;
-  leavePause(); pauseBtn.disabled = false; pauseBtn.classList.remove('down'); hud.countdown(null);
+  leavePause(); pausesLeft = FEEL.pause.max; countIn = 0;
+  pauseBtn.disabled = false; pauseBtn.classList.remove('down'); hud.countdown(null);
   hud.reset(SHIELDS); hud.title(false); hud.result(null);
   state = 'play';
+  showPausesLeft();
 }
 function finish() {
   music.stop();
   pauseBtn.disabled = true; pauseBtn.classList.remove('down');
   state = 'over';
+  showPausesLeft();
   pointer = null;
   const sim = rec.sim, b = scoreBreakdown(sim), up = rec.upload(), v = verify(game, up);
   const cleared = sim.won === 1;
@@ -496,8 +507,13 @@ app.ticker.add(t => {
   const now = performance.now(), dt = Math.min(0.05, t.deltaMS / 1000);
   if (state === 'play' && resumeAt) {                        // counting the player back in after a choice
     const left = resumeAt - now;
-    if (left <= 0) { clock.skip(now - pausedAt); resumeAt = 0; pausedAt = 0; hud.countdown(null); pauseBtn.classList.remove('down'); }
-    else if (pausedAt && !pickBoost && left > FEEL.pick.resume * 1000) hud.countdown(Math.ceil(left / 1000));   // after a pause: 3, 2, 1
+    if (left <= 0) {
+      clock.skip(now - pausedAt); resumeAt = 0; pausedAt = 0; countIn = 0; hud.countdown(null);
+      pauseBtn.classList.remove('down'); pauseBtn.disabled = pausesLeft <= 0;
+    } else if (countIn) {                                     // after a pause: 3, 2, 1, evenly
+      const [a, b] = FEEL.pause.steps, gone = (COUNT_IN - left) / 1000;
+      hud.countdown(gone < a ? 3 : gone < a + b ? 2 : 1);
+    }
     // no numbers: a supply is followed at once by the boost, which is the cue to fly again
   }
   if (!pointer && !stick.hidden) stick.hidden = true;        // a choice, a restart or the end let go of the stick
@@ -516,6 +532,7 @@ app.ticker.add(t => {
   lastFrame = now;
 
   const sim = rec.sim, boss = sim.enemies.find(e => isBoss(e.type));
+  view.hideShip = state === 'title';                          // the stage map shows the field only, not the ship
   const held = pickOpen || resumeAt > 0 || paused;                     // a choice or its count-in: the picture holds still too
   const cruising = held && pickBoost;                        // a boss's supply: the sim waits, the flight goes on as the boost
   const frozen = freeze > 0 || (held && !cruising);
@@ -529,7 +546,7 @@ app.ticker.add(t => {
   });
 });
 
-if (import.meta.env.DEV) window.__game = { app, view, sfx, music, FEEL, WORLD_W, WORLD_H, get rec() { return rec; }, get state() { return state; }, get dbg() { return { paused, pickOpen, pickShown, resumeAt, pausedAt, now: performance.now() }; }, start, playtest, takePick };   // console inspection only
+if (import.meta.env.DEV) window.__game = { app, view, sfx, music, FEEL, WORLD_W, WORLD_H, get rec() { return rec; }, get state() { return state; }, get dbg() { return { paused, pausesLeft, pickOpen, pickShown, resumeAt, pausedAt, now: performance.now() }; }, start, playtest, takePick };   // console inspection only
 
 // --- The opening: every launch plays the prologue over the stage map (tap to begin, so its music can start; skippable),
 // then fades into the map. ?skipintro leaves it out (dev links); so does watching a strategy play.
@@ -538,3 +555,4 @@ if (!q.has('skipintro') && !auto && state === 'title') {
   playIntro(0, { gate: '點擊畫面開始', fade: true, onStart: () => { sfx.unlock(); music.play('prologue'); } })
     .then(() => { introOn = false; music.play('menu'); });
 }
+document.documentElement.classList.remove('booting');        // everything is in place: show the frame (index.html)

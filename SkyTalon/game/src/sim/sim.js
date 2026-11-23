@@ -348,7 +348,18 @@ export const hasNet = sim => sim.gear[SPREAD] > 0 && sim.gear[PIERCE] > 0;
 
 /** The order the eight kinds of gear come round in for this seed, and the three on offer at the k-th choice. */
 const gearOrder = seed => rng.shuffle(seed >>> 0, 'offer', 0, [0, 1, 2, 3, 4, 5, 6, 7]);
-export const offerAt = (seed, k) => { const o = gearOrder(seed); return [0, 1, 2].map(j => o[(3 * k + j) % o.length]); };
+// v13: the opening supply is a fixed shape: heavy or thrusters, the wingman, spread or laser (each pair settled by
+// which of the two comes first in this seed's order). The later supplies walk the order three times over, minus one
+// copy of the three already offered, so across the 8 supplies every piece of gear still comes round exactly 3 times
+// (and no supply offers the same piece twice: the dropped copies come from the first pass).
+const OPENING = [[3, 7], [5], [1, 4]];
+const opening = o => OPENING.map(pair => pair.reduce((a, b) => (o.indexOf(a) <= o.indexOf(b) ? a : b)));
+export const offerAt = (seed, k) => {
+  const o = gearOrder(seed), first = opening(o);
+  if (k === 0) return first;
+  const rest = [...o.filter(g => !first.includes(g)), ...o, ...o];
+  return [0, 1, 2].map(j => rest[(3 * (k - 1) + j) % rest.length]);
+};
 export const clock = sim => sim.tick + sim.skip;
 const picking = sim => !sim.over && sim.supply >= 0;       // sim.supply = which supply is waiting (-1 none)
 /** What is on offer right now (null outside a choice): three gear ids. */
@@ -1217,6 +1228,6 @@ export function stateHash(sim) {
 export const ENGINE = Object.freeze({ add, spawn, fire, ring, aimed3, spiral, emit, px, near, hurt, kill, damage, dropAt, fadeAll, stun, lockOn, beamUp, chargeUp, blocked, playerR, clamp, shot, dropKind });
 
 export const GAME = Object.freeze({
-  id: 'sky-talon', version: 12, maxTicks: MAX_TICKS, maxChoices: SUPPLIES,
+  id: 'sky-talon', version: 13, maxTicks: MAX_TICKS, maxChoices: SUPPLIES,
   createSim, step, phase, choose, score, stateHash, scoreBreakdown,
 });

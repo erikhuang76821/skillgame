@@ -14,7 +14,7 @@ import { STRATEGIES } from '../tools/strategies.mjs';
 
 const play = role => Object.values(STRATEGIES).find(s => s.role === role).policy;
 const STRONG = play('strong'), SIMPLE = play('simple');
-const GOLDEN2 = { game: 'sky-talon-leg2', version: 3, seed: 1234, ticks: 19404, score: 48660, hash: 24234368 };
+const GOLDEN2 = { game: 'sky-talon-leg2', version: 4, seed: 1234, ticks: 19792, score: 54909, hash: 1116054496 };
 /** A leg-two sim past its opening supply, with nothing scheduled and no gear: the test puts in what it needs. */
 const bare = (seed = 5) => {
   const sim = GAME2.createSim(seed);
@@ -27,8 +27,8 @@ const OPTS = { sig: false, rage: false, P: p => p, D: p => p };
 const shotAt = (x, y) => ({ x: x * ONE, y: y * ONE, vx: 0, vy: 0, left: 0, dmg: 1, hit: [] });
 
 test('leg two does not touch leg one or leg six: with leg two loaded, both play their golden matches', () => {
-  assert.deepEqual(playMatch(GAME, 1234, STRONG).result(), { game: 'sky-talon', version: 12, seed: 1234, ticks: 19803, score: 53902, hash: 2439202323 });
-  assert.deepEqual(playMatch(GAME6, 1234, STRONG).result(), { game: 'sky-talon-leg6', version: 3, seed: 1234, ticks: 20992, score: 55213, hash: 873819208 });
+  assert.deepEqual(playMatch(GAME, 1234, STRONG).result(), { game: 'sky-talon', version: 13, seed: 1234, ticks: 20204, score: 54425, hash: 4263489266 });
+  assert.deepEqual(playMatch(GAME6, 1234, STRONG).result(), { game: 'sky-talon-leg6', version: 4, seed: 1234, ticks: 21383, score: 58897, hash: 3556292689 });
   assert.equal(KIND.slice(0, 21).every(k => !k.leg), true, "leg one's kinds are as they were");
 });
 

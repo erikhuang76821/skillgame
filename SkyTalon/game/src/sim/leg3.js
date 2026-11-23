@@ -51,11 +51,11 @@ export const [ENYO, AMALTHEA, PROMETHEUS, JANUS] = L3_BOSSES;
 const bossType = slot => (slot % 2 === 0 ? L3_MIDS : L3_BOSSES)[slot >> 1];
 
 // ---------- numbers (gdd/05 v13 §3, §4; all starting values) ----------
-export const L3_HP_ADD = Object.freeze([1, 1, 1, 4]);
+export const L3_HP_ADD = Object.freeze([1, 1, 2, 7]);   // v3: chapters three and four +1, so four still climbs above three
 export const L3_ROSTER = Object.freeze([[MORTAR, GUNNER, WEAVER, DRONE], [AEGIS, LANCER, DIVER, MINER], [CRYSTAL, BULWARK, SEEKER, WEAVER], [ECHO, BEAMER, SPLITTER, LANCER]]);
 const HEAVY = new Set([AEGIS, BULWARK, BEAMER]);
 const SWARM = new Set([DRONE, DIVER, SEEKER, CRYSTAL]);
-const MORE = Object.freeze([4, 2, 2, 6]);
+const MORE = Object.freeze([4, 3, 3, 6]);   // v3: chapters two and three +1 (the opening supply gives the wingman)
 
 export const L3_HIST = 64;                                    // ship positions kept (a ring, one a tick)
 export const L3_MORTAR_PERIOD = 120, L3_MORTAR_R = 56, L3_MORTAR_WARN = 54, L3_MORTAR_LIVE = 8, L3_MORTAR_MAX = 2, L3_MORTAR_HOLD = 360;
@@ -116,7 +116,7 @@ export function schedule(seed) {
         else { one(t0 + 10, a, idx); one(t0 + 110, c, idx + 1); if (i >= 2) one(t0 + 60, d, idx + 3); if (i >= 3) { one(t0 + 170, b, idx + 2); spare(0); } }
         continue;
       }
-      const n = Math.min(1 + MORE[ch] + (climax ? (ch === 2 ? 1 : 2) : 0) + (i >> 1), climax || ch === 3 ? 9 : 8), mix = [a, c, b, d, a, c, d, b, b, d, a, c];
+      const n = Math.min(1 + MORE[ch] + (climax ? 2 : 0) + (i >> 1), climax || ch === 3 ? 9 : 8), mix = [a, c, b, d, a, c, d, b, b, d, a, c];
       for (let j = 0, placed = 0; placed < n && j < mix.length; j++) { if (HEAVY.has(mix[j]) && j >= 4) continue; one(t0 + 10 + placed * Math.floor(200 / n), mix[j], idx + j); placed++; }
       spare(0); if (climax || i >= 3 || ch >= 2) spare(1);
     }
@@ -384,6 +384,6 @@ export const LEG3 = Object.freeze({
 });
 
 export const GAME3 = Object.freeze({
-  id: 'sky-talon-leg3', version: 2, maxTicks: MAX_TICKS, maxChoices: SUPPLIES,
+  id: 'sky-talon-leg3', version: 3, maxTicks: MAX_TICKS, maxChoices: SUPPLIES,
   createSim: seed => createSim(seed, LEG3), step, phase, choose, score, stateHash, scoreBreakdown,
 });
