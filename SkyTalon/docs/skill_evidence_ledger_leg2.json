@@ -1,0 +1,143 @@
+[
+ {
+  "schema": 1,
+  "generation": 1,
+  "game": "sky-talon-leg2",
+  "version": 1,
+  "strategyHash": "e3cbb7cb5fc80956",
+  "n": 30,
+  "seedBase": 2026,
+  "thresholds": {
+   "alpha": 0.05,
+   "minQuestions": 30
+  },
+  "pass": true,
+  "pairs": [
+   {
+    "other": "random steering",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "stay put",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "sweep left and right",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "chase the nearest enemy",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "chase, last option",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   }
+  ],
+  "resultHash": "8ab4732de7458e68"
+ },
+ {
+  "schema": 1,
+  "generation": 2,
+  "game": "sky-talon-leg2",
+  "version": 2,
+  "strategyHash": "4b17529a4716dae9",
+  "n": 30,
+  "seedBase": 2026,
+  "thresholds": {
+   "alpha": 0.05,
+   "minQuestions": 30
+  },
+  "pass": true,
+  "pairs": [
+   {
+    "other": "random steering",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "stay put",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "sweep left and right",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "chase the nearest enemy",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "chase, last option",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   }
+  ],
+  "resultHash": "7cbe99a455a27311"
+ },
+ {
+  "schema": 1,
+  "generation": 3,
+  "game": "sky-talon-leg2",
+  "version": 3,
+  "strategyHash": "e3f78ce22d0a5df9",
+  "n": 30,
+  "seedBase": 2026,
+  "thresholds": {
+   "alpha": 0.05,
+   "minQuestions": 30
+  },
+  "pass": true,
+  "pairs": [
+   {
+    "other": "random steering",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "stay put",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "sweep left and right",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "chase the nearest enemy",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "chase, last option",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   }
+  ],
+  "resultHash": "464e95f3b7ed1634"
+ }
+]

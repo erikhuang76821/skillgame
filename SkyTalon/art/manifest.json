@@ -1,0 +1,1303 @@
+{
+  "schemaVersion": 1,
+  "game": "SkyTalon",
+  "pathBase": "SkyTalon/",
+  "about": "SkyTalon 資產的唯一來源（knowledge-base/decisions/2026-10-21-kb-asset-architecture.md §5.3）。本作沒有圖檔與音檔，全部是程式繪製；改了繪製程式後跑 node shared/tools/index-build.mjs --update-hashes。",
+  "assets": [
+    {
+      "id": "skytalon.prc.ground",
+      "kind": "procedural",
+      "status": "procedural",
+      "name": "俯視地表 shader（島嶼、海岸、秋色林地、雲與雲影，0 bytes）",
+      "files": {
+        "raw": [],
+        "prompt": [],
+        "shipped": [
+          "game/src/render/ground.js"
+        ]
+      },
+      "recipe": "一支片段 shader 畫進低解析 render texture（1 格 = 3 世界像素），最近鄰放大。fbm 高度場分色帶（深海、淺海、潟湖、浪花、沙、松、苔、金、琥珀、鏽、岩、奶油）；向陽面與背陽面三階明暗；上遠下近的透視壓縮；雲層捲動比地表快 1.7 倍並在右下投影；4×4 抖色；遠處暖色霧；uRush（0–1）加深透視並在機體下方畫細長霧絲速度線（3.4 倍捲動）。低特效：fbm 3 階、不畫雲影",
+      "styleTags": [
+        "pixel",
+        "procedural",
+        "top-down",
+        "sunset"
+      ],
+      "keywords": [
+        "terrain",
+        "地表",
+        "shader",
+        "procedural",
+        "程式繪製",
+        "island",
+        "島嶼",
+        "cloud",
+        "雲",
+        "parallax",
+        "視差",
+        "fake 3d",
+        "假 3D",
+        "shmup"
+      ],
+      "reusePolicy": "reusable",
+      "contentHash": "sha256:3c89cb2e240b93a3a2abd33b96cf2c4b37de53b383a94a36e18cd6dd0e35c765"
+    },
+    {
+      "id": "skytalon.prc.atlas",
+      "kind": "procedural",
+      "status": "procedural",
+      "name": "機體、裝備掛件、敵機、子彈、特效 atlas（多邊形手工光柵化，256×466，0 bytes）",
+      "files": {
+        "raw": [],
+        "prompt": [],
+        "shipped": [
+          "game/src/render/atlas.js"
+        ]
+      },
+      "recipe": "每個 sprite 用多邊形在美術像素中心取樣填色（不靠 canvas 反鋸齒），再做左上亮、右下暗的倒角與深色描邊。玩家機 5 格側傾：機翼橫向壓縮 1／0.86／0.68，左右明暗差 9%／格。陰影用棋盤格邊緣代替模糊。全部進同一張 canvas，一個貼圖一個批次 v8：玩家機改用兩倍美術解析度（44×48，以 PIXEL 的一半顯示），加上面板線、進氣口、雙垂尾、機鼻罩與翼尖條紋；裝備是疊在機體上的獨立小圖（連射砲管、重彈莢艙、散射鴨翼、推進器噴口各三級，穿透長槍、電漿線圈與發射器、護盾發射點各一張），顯示時跟著側傾橫向壓縮；第四章起加太空套件（側推進器、散熱鰭、金色護目）。四個小王各有造型（涅柔斯三叉艦首、玻瑞阿斯風標長翼、安泰俄斯岩板重裝、伊里斯彩虹帶機翼），都是艦艇而不是人形。運輸機是甲板上三個貨櫃的貨船；預覽圖由 art/tools/atlas-preview.mjs 產生。 像素特效：護盾（綠、青、金三套色階各 8 格）、敵機甲殼（六角板 2 格）、衝擊環（6 格）、碎片 3 種，都是逐格畫的像素幀，不是放大的平滑圓環。做法照 knowledge-base/18_pixel-vfx-codex.md 的規則用程式重做（每種材質四階色階、暗階偏藍亮階收在暖白、柔邊用 4×4 Bayer 抖色、出現時回彈、消失時碎裂而不是淡出、擴張環越擴越細），沒有複製該專案的程式或匯出它的圖。 四個頭目依神祇在古典圖像裡的特徵物重畫成戰艦：俄刻阿諾斯（蟹螯、角、水環）、倪克斯（星幕大翼、新月）、厄俄斯（玫瑰與番紅花色光芒、車輪核心）、阿特拉斯（青銅雙臂托天球）。太空型態（第四章起）照使用者提供的範例圖堆疊：側身裝甲板、翼上推進莢艙與火焰、雙聯裝砲管、微飛彈掛架；燈與火焰另一張不做倒角的小圖。 v9：小王與頭目不再由這張圖集畫，改用 skytalon.chr.boss-forms。",
+      "styleTags": [
+        "pixel",
+        "procedural",
+        "outline",
+        "bevel"
+      ],
+      "keywords": [
+        "atlas",
+        "sprite",
+        "jet",
+        "戰鬥機",
+        "enemy",
+        "敵機",
+        "bullet",
+        "子彈",
+        "procedural",
+        "程式繪製",
+        "bank",
+        "側傾",
+        "shmup"
+      ],
+      "reusePolicy": "reusable",
+      "contentHash": "sha256:f103de5065146789ea3b96d6287dc17321fd3ef1560138fea468bf0968383927"
+    },
+    {
+      "id": "skytalon.chr.ship-forms",
+      "kind": "sprite-sheet",
+      "status": "shipped",
+      "name": "主角機的三種升級型態（展翼型、重裝型、軌道砲型），各 5 格側傾",
+      "files": {
+        "raw": [
+          "art/raw/ship_wing.jpg",
+          "art/raw/ship_heavy.jpg",
+          "art/raw/ship_rail.jpg",
+          "art/raw/ship_space_ref.webp"
+        ],
+        "prompt": [],
+        "shipped": [
+          "game/src/render/shipForms.js"
+        ]
+      },
+      "technical": {
+        "format": "palette data in a JS module (no image file ships)",
+        "artPxToWorldPx": 1,
+        "scaleMode": "linear",
+        "frames": [
+          "wing0-4",
+          "heavy0-4",
+          "rail0-4"
+        ],
+        "palette": 40
+      },
+      "styleTags": [
+        "pixel",
+        "top-down",
+        "1px-outline",
+        "mecha"
+      ],
+      "provenance": {
+        "tool": "Gemini（使用者自行生成並提供，2026-11-20）",
+        "job": "無（提示詞沒有留存）",
+        "postprocess": "art/tools/ship_forms.py（找出美術像素大小 10.24 px → 每格取一個顏色 → 去掉純色背景 → 三張共用 40 色 → 輸出成色盤索引資料）；側傾格在開機時由 atlas.js 橫向壓縮與左右明暗產生"
+      },
+      "keywords": [
+        "player",
+        "ship",
+        "jet",
+        "主角機",
+        "機體",
+        "升級型態",
+        "mecha",
+        "機甲",
+        "pixel",
+        "像素",
+        "shmup"
+      ],
+      "reusePolicy": "game-only",
+      "contentHash": "sha256:48a56236b128e084e8658ba4ce7342236ec9904d231b5c74977e6fc3ade07372"
+    },
+    {
+      "id": "skytalon.chr.boss-forms",
+      "kind": "sprite-sheet",
+      "status": "shipped",
+      "name": "四個頭目（各三階段：外甲、骨架、核心）與四個小王",
+      "files": {
+        "raw": [
+          "art/raw/boss/big_oceanus.png",
+          "art/raw/boss/big_nyx.png",
+          "art/raw/boss/big_eos.png",
+          "art/raw/boss/big_atlas.png",
+          "art/raw/boss/mids.png"
+        ],
+        "prompt": [
+          "art/boss_brief.md",
+          "art/raw/boss/prompt_big.sh",
+          "art/raw/boss/prompt_mids_round1.sh"
+        ],
+        "shipped": [
+          "game/src/render/bossForms.js",
+          "game/src/render/bossForms.forms.png"
+        ]
+      },
+      "technical": {
+        "format": "palette data in a JS module, pixels in an 8-bit gray PNG sheet (value = the row character)",
+        "artPxToWorldPx": "頭目 3、小王 2",
+        "scaleMode": "nearest",
+        "frames": [
+          "boss, boss_1, boss_2",
+          "boss2, boss2_1, boss2_2",
+          "boss3, boss3_1, boss3_2",
+          "boss4, boss4_1, boss4_2",
+          "mid1-4"
+        ],
+        "palette": "每艘 44 色"
+      },
+      "styleTags": [
+        "pixel",
+        "top-down",
+        "1px-outline",
+        "mecha",
+        "warship"
+      ],
+      "provenance": {
+        "tool": "Codex CLI 的圖片生成（2026-11-20，由 Claude 依 art/boss_brief.md 下指令）",
+        "job": "提示詞全文在 art/raw/boss/prompt_big.sh（頭目）與 prompt_mids_round1.sh（小王）；風格參考圖是 art/raw/ship_heavy.jpg",
+        "postprocess": "art/tools/boss_forms.py（去掉綠幕 → 依欄位空隙切成三個階段 → 三個階段用同一個倍率縮到遊戲格數 → 每艘 44 色 → 輸出成色盤索引資料，並記下核心在圖上的位置）；python art/tools/forms_png.py（像素移到 PNG 表，執行期由 render/formsSheets.js 還原）"
+      },
+      "keywords": [
+        "boss",
+        "mid-boss",
+        "頭目",
+        "小王",
+        "warship",
+        "戰艦",
+        "巨艦",
+        "三階段",
+        "pixel",
+        "像素",
+        "shmup"
+      ],
+      "reusePolicy": "game-only",
+      "contentHash": "sha256:7087c5262866f4c9828af3f137299f7ad11f1674fc5c442c3313c182d25e7830"
+    },
+    {
+      "id": "skytalon.chr.leg6-forms",
+      "kind": "sprite-sheet",
+      "status": "raw-only",
+      "name": "航段六（中生代）四個頭目（各三階段）與四個小王：板龍、梁龍、滄龍、暴龍；波斯特鱷、異特龍、風神翼龍、棘龍",
+      "files": {
+        "raw": [
+          "art/raw/leg6/boss1_plateosaurus.png",
+          "art/raw/leg6/boss2_diplodocus.png",
+          "art/raw/leg6/boss3_mosasaurus.png",
+          "art/raw/leg6/boss4_tyrannosaurus.png",
+          "art/raw/leg6/mid1_postosuchus.png",
+          "art/raw/leg6/mid2_allosaurus.png",
+          "art/raw/leg6/mid3_quetzalcoatlus.png",
+          "art/raw/leg6/mid4_spinosaurus.png"
+        ],
+        "prompt": [
+          "gdd/12_leg6_mesozoic.md",
+          "art/raw/leg6/prompts/round2_bosses.sh",
+          "art/raw/leg6/prompts/round1_bosses_rejected_and_mids.sh",
+          "art/raw/leg6/prompts/sample_C.sh",
+          "art/raw/leg6/prompts/round3_creatures_and_mids.sh"
+        ],
+        "shipped": [
+          "game/src/render/leg6Forms.js",
+          "game/src/render/leg6Forms.forms.png"
+        ]
+      },
+      "technical": {
+        "format": "palette data in a JS module, pixels in an 8-bit gray PNG sheet (value = the row character)",
+        "artPxToWorldPx": "頭目 3、小王 2",
+        "scaleMode": "nearest",
+        "frames": [
+          "boss, boss_1, boss_2",
+          "boss2, boss2_1, boss2_2",
+          "boss3, boss3_1, boss3_2",
+          "boss4, boss4_1, boss4_2",
+          "mid1-4"
+        ],
+        "palette": "每艘 44 色"
+      },
+      "styleTags": [
+        "pixel",
+        "top-down",
+        "1px-outline",
+        "creature",
+        "dinosaur"
+      ],
+      "provenance": {
+        "tool": "Codex CLI 的圖片生成（2026-11-20，由 Claude 依 gdd/12_leg6_mesozoic.md 下指令）",
+        "job": "提示詞全文在 art/raw/leg6/prompts/；構圖範例是使用者選定的 art/raw/leg6_samples/C_topdown_roar_2.png；配色參考是使用者提供的素材包 shmup-bosses-3phase（在 repo 外，沒有複製進來）；2026-11-20 第三輪重畫波斯特鱷、異特龍（碎片移到額頭正面）與風神翼龍（改成亮色），舊圖在 art/raw/leg6/alt/*_round1.png",
+        "postprocess": "art/tools/boss_forms.py leg6（去綠幕 → 切三階段 → 同倍率縮到遊戲格數 → 每隻 44 色 → 色盤索引資料；核心位置取頭部最飽和像素的中心）；python art/tools/forms_png.py（像素移到 PNG 表，執行期由 render/formsSheets.js 還原）"
+      },
+      "keywords": [
+        "boss",
+        "mid-boss",
+        "頭目",
+        "小王",
+        "dinosaur",
+        "恐龍",
+        "中生代",
+        "航段六",
+        "三階段",
+        "pixel",
+        "像素",
+        "shmup"
+      ],
+      "reusePolicy": "game-only",
+      "contentHash": "sha256:68d88bc9d5050f7d355963bab2f86b9bcc34d956b9f3e165989e8a4c572ae842"
+    },
+    {
+      "id": "skytalon.chr.leg6-creatures",
+      "kind": "sprite-sheet",
+      "status": "raw-only",
+      "name": "航段六（中生代）十六種小怪與巨木：真雙型齒翼龍、派克鳥龍、艾雷拉龍、腔骨龍、劍龍、嗜鳥龍、雙脊龍、喙嘴翼龍、無齒翼龍、薄板龍、古巨龜、魚鳥、三角龍、甲龍、馳龍、厚頭龍",
+      "files": {
+        "raw": [
+          "art/raw/leg6/round3/creatures_ch1.png",
+          "art/raw/leg6/round3/creatures_ch2.png",
+          "art/raw/leg6/round3/creatures_ch3.png",
+          "art/raw/leg6/round3/creatures_ch4.png",
+          "art/raw/leg6/round3/tree.png"
+        ],
+        "prompt": [
+          "art/raw/leg6/prompts/round3_creatures_and_mids.sh"
+        ],
+        "shipped": [
+          "game/src/render/leg6Creatures.js",
+          "game/src/render/leg6Creatures.forms.png"
+        ]
+      },
+      "technical": {
+        "format": "palette data in a JS module, pixels in an 8-bit gray PNG sheet (value = the row character)",
+        "artPxToWorldPx": "1",
+        "scaleMode": "nearest",
+        "frames": [
+          "eudi, peteino, herrera, coelo",
+          "stego, orni, dilopho, rham",
+          "ptera, elasmo, archelon, ichthy",
+          "trike, anky, dromaeo, pachy",
+          "tree"
+        ],
+        "palette": "每隻 24 色"
+      },
+      "styleTags": [
+        "pixel",
+        "top-down",
+        "1px-outline",
+        "creature",
+        "dinosaur"
+      ],
+      "provenance": {
+        "tool": "Codex CLI 的圖片生成（2026-11-20，由 Claude 依使用者指示「先補美術」下指令）",
+        "job": "提示詞全文在 art/raw/leg6/prompts/round3_creatures_and_mids.sh；筆觸參考是 art/raw/leg6/mid4_spinosaurus.png；黑底的多餘版本在 art/raw/leg6/round3/rejected/",
+        "postprocess": "art/tools/creature_forms.py（去綠幕 → 以相連區塊切出四隻 → 各自縮到遊戲尺寸 → 每隻 24 色 → 色盤索引資料）；python art/tools/forms_png.py（像素移到 PNG 表，執行期由 render/formsSheets.js 還原）"
+      },
+      "keywords": [
+        "enemy",
+        "creature",
+        "小怪",
+        "dinosaur",
+        "恐龍",
+        "翼龍",
+        "中生代",
+        "航段六",
+        "tree",
+        "巨木",
+        "pixel",
+        "像素",
+        "shmup"
+      ],
+      "reusePolicy": "game-only",
+      "contentHash": "sha256:291101246dd40adc19f9a6c4f7caa3af4f0fbbb1452812e3d183aa9b1c5eefba"
+    },
+    {
+      "status": "raw-only",
+      "reusePolicy": "game-only",
+      "styleTags": [
+        "pixel",
+        "top-down",
+        "1px-outline",
+        "mech"
+      ],
+      "id": "skytalon.chr.leg2-forms",
+      "kind": "sprite-sheet",
+      "name": "航段二（反攻內圈）頭目與小王：塞勒涅、潘、晨星、昏星、涅墨西斯（各三階段）；恩底彌翁、阿耳戈斯、厄洛斯、厄里斯",
+      "files": {
+        "raw": [
+          "art/raw/leg2/boss1_selene.png",
+          "art/raw/leg2/boss2_pan.png",
+          "art/raw/leg2/boss3_morning.png",
+          "art/raw/leg2/boss3_evening.png",
+          "art/raw/leg2/boss4_nemesis.png",
+          "art/raw/leg2/mids.png"
+        ],
+        "prompt": [
+          "gdd/13_legs2to5.md",
+          "art/raw/leg2/prompts/round1.sh"
+        ],
+        "shipped": [
+          "game/src/render/leg2Forms.js",
+          "game/src/render/leg2Forms.forms.png"
+        ]
+      },
+      "technical": {
+        "format": "palette data in a JS module, pixels in an 8-bit gray PNG sheet (value = the row character)",
+        "artPxToWorldPx": "頭目 3、小王 2",
+        "scaleMode": "nearest",
+        "frames": [
+          "boss, boss2, boss3m, boss3e, boss4（各 _1、_2）",
+          "mid1, mid2, mid3, mid4"
+        ],
+        "palette": "每隻 44 色"
+      },
+      "provenance": {
+        "tool": "Codex CLI 的圖片生成（2026-11-22，由 Claude 依使用者指示「好，做畫面」下指令）",
+        "job": "提示詞全文在 art/raw/leg2/prompts/round1.sh；筆觸參考是 art/raw/boss/big_oceanus.png 與 art/raw/boss/mids.png；造型概念參考是素材包 shmup-bosses-3phase/demo_assets_arc2（只當概念，不照抄）；深色背景與多餘的版本在 art/raw/leg2/alt/",
+        "postprocess": "python art/tools/boss_forms.py leg2（去綠幕 → 切三階段 → 縮到遊戲尺寸 → 每隻 44 色 → 色盤索引資料）；python art/tools/forms_png.py（像素移到 PNG 表，執行期由 render/formsSheets.js 還原）"
+      },
+      "keywords": [
+        "boss",
+        "頭目",
+        "小王",
+        "mech",
+        "航段二",
+        "希臘神話",
+        "pixel",
+        "像素",
+        "shmup"
+      ],
+      "contentHash": "sha256:da153e17d599657730bce74fc532eccbab48fd35874b14d6dd31032567c7e022"
+    },
+    {
+      "status": "raw-only",
+      "reusePolicy": "game-only",
+      "styleTags": [
+        "pixel",
+        "top-down",
+        "1px-outline",
+        "mech"
+      ],
+      "id": "skytalon.chr.leg2-machines",
+      "kind": "sprite-sheet",
+      "name": "航段二（反攻內圈）新小怪：月塵護衛機、鏡面砲艇（關殼、開殼）、雙極追擊機、爭端自爆艇",
+      "files": {
+        "raw": [
+          "art/raw/leg2/minions.png"
+        ],
+        "prompt": [
+          "art/raw/leg2/prompts/round1.sh"
+        ],
+        "shipped": [
+          "game/src/render/leg2Machines.js",
+          "game/src/render/leg2Machines.forms.png"
+        ]
+      },
+      "technical": {
+        "format": "palette data in a JS module, pixels in an 8-bit gray PNG sheet (value = the row character)",
+        "artPxToWorldPx": "1",
+        "scaleMode": "nearest",
+        "frames": [
+          "orbiter, shut, open, twinvec, rammer"
+        ],
+        "palette": "每隻 24 色"
+      },
+      "provenance": {
+        "tool": "Codex CLI 的圖片生成（2026-11-22，由 Claude 依使用者指示「好，做畫面」下指令）",
+        "job": "提示詞全文在 art/raw/leg2/prompts/round1.sh；筆觸參考是 art/raw/boss/big_oceanus.png；深色背景的版本在 art/raw/leg2/alt/",
+        "postprocess": "python art/tools/creature_forms.py leg2（去綠幕 → 以相連區塊切出五個 → 各自縮到遊戲尺寸 → 每個 24 色 → 色盤索引資料）；python art/tools/forms_png.py（像素移到 PNG 表，執行期由 render/formsSheets.js 還原）"
+      },
+      "keywords": [
+        "enemy",
+        "小怪",
+        "mech",
+        "航段二",
+        "pixel",
+        "像素",
+        "shmup"
+      ],
+      "contentHash": "sha256:0b8cc73dced86b15948ed67b38954b7a51861ada17ac30ebb205e03d08a127e9"
+    },
+    {
+      "status": "raw-only",
+      "reusePolicy": "game-only",
+      "styleTags": [
+        "pixel",
+        "top-down",
+        "1px-outline",
+        "mech"
+      ],
+      "id": "skytalon.chr.leg3-forms",
+      "kind": "sprite-sheet",
+      "name": "航段三（外圈巨神）頭目與小王：厄倪俄、阿瑪爾忒亞、普羅米修斯、雅努斯（各三階段）；福波斯、得摩斯、伽倪墨得斯、潘朵拉、厄庇墨透斯",
+      "files": {
+        "raw": [
+          "art/raw/leg3/boss1_enyo.png",
+          "art/raw/leg3/boss2_amalthea.png",
+          "art/raw/leg3/boss3_prometheus.png",
+          "art/raw/leg3/boss4_janus.png",
+          "art/raw/leg3/mids.png"
+        ],
+        "prompt": [
+          "gdd/13_legs2to5.md",
+          "art/raw/leg3/prompts/round1.sh"
+        ],
+        "shipped": [
+          "game/src/render/leg3Forms.js",
+          "game/src/render/leg3Forms.forms.png"
+        ]
+      },
+      "technical": {
+        "format": "palette data in a JS module, pixels in an 8-bit gray PNG sheet (value = the row character)",
+        "artPxToWorldPx": "頭目 3、小王 2",
+        "scaleMode": "nearest",
+        "frames": [
+          "boss, boss2, boss3, boss4（各 _1、_2）",
+          "mid1, deimos, mid2, mid3, mid4"
+        ],
+        "palette": "每隻 44 色"
+      },
+      "provenance": {
+        "tool": "Codex CLI 的圖片生成（2026-11-22，由 Claude 依使用者指示「開始航段三」下指令）",
+        "job": "提示詞全文在 art/raw/leg3/prompts/round1.sh；筆觸參考是 art/raw/boss/big_oceanus.png 與 art/raw/boss/mids.png；造型概念參考是素材包 shmup-bosses-3phase/demo_assets_arc3（只當概念）；深色背景的版本在 art/raw/leg3/alt/",
+        "postprocess": "python art/tools/boss_forms.py leg3；python art/tools/forms_png.py（像素移到 PNG 表，執行期由 render/formsSheets.js 還原）"
+      },
+      "keywords": [
+        "boss",
+        "頭目",
+        "小王",
+        "mech",
+        "航段三",
+        "希臘神話",
+        "pixel",
+        "像素",
+        "shmup"
+      ],
+      "contentHash": "sha256:baeafe7a1ac08be68516f18c00440130f8f241ee3e53f2d036ace1ea5f1feb82"
+    },
+    {
+      "status": "raw-only",
+      "reusePolicy": "game-only",
+      "styleTags": [
+        "pixel",
+        "top-down",
+        "1px-outline",
+        "mech"
+      ],
+      "id": "skytalon.chr.leg3-machines",
+      "kind": "sprite-sheet",
+      "name": "航段三（外圈巨神）新小怪與頭目附屬物：攻城迫擊艇、神盾護衛艇、災厄晶簇機、時序殘影機、鎖鏈錨、巨鷹",
+      "files": {
+        "raw": [
+          "art/raw/leg3/minions.png"
+        ],
+        "prompt": [
+          "art/raw/leg3/prompts/round1.sh"
+        ],
+        "shipped": [
+          "game/src/render/leg3Machines.js",
+          "game/src/render/leg3Machines.forms.png"
+        ]
+      },
+      "technical": {
+        "format": "palette data in a JS module, pixels in an 8-bit gray PNG sheet (value = the row character)",
+        "artPxToWorldPx": "1",
+        "scaleMode": "nearest",
+        "frames": [
+          "mortar, aegis, crystal, echo, anchor, eagle"
+        ],
+        "palette": "每個 24 色"
+      },
+      "provenance": {
+        "tool": "Codex CLI 的圖片生成（2026-11-22，由 Claude 依使用者指示「開始航段三」下指令）",
+        "job": "提示詞全文在 art/raw/leg3/prompts/round1.sh；深色背景的版本在 art/raw/leg3/alt/",
+        "postprocess": "python art/tools/creature_forms.py leg3；python art/tools/forms_png.py（像素移到 PNG 表，執行期由 render/formsSheets.js 還原）"
+      },
+      "keywords": [
+        "enemy",
+        "小怪",
+        "mech",
+        "航段三",
+        "pixel",
+        "像素",
+        "shmup"
+      ],
+      "contentHash": "sha256:3db70a722c4e3aa9119bcddafbaa684d7a68f9f87e60fe9330b0613b3398bb93"
+    },
+    {
+      "status": "raw-only",
+      "reusePolicy": "game-only",
+      "styleTags": [
+        "pixel",
+        "top-down",
+        "1px-outline",
+        "mech"
+      ],
+      "id": "skytalon.chr.leg4-forms",
+      "kind": "sprite-sheet",
+      "name": "航段四（冥界邊境）頭目與小王：布里阿瑞俄斯、謨涅摩緒涅、普羅透斯、斯堤克斯（各三階段）；布戎忒斯、喀耳刻、特里同、卡戎",
+      "files": {
+        "raw": [
+          "art/raw/leg4/boss1_briareus.png",
+          "art/raw/leg4/boss2_mnemosyne.png",
+          "art/raw/leg4/boss3_proteus.png",
+          "art/raw/leg4/boss4_styx.png",
+          "art/raw/leg4/mids.png"
+        ],
+        "prompt": [
+          "gdd/13_legs2to5.md",
+          "art/raw/leg4/prompts/round1.sh"
+        ],
+        "shipped": [
+          "game/src/render/leg4Forms.js",
+          "game/src/render/leg4Forms.forms.png"
+        ]
+      },
+      "technical": {
+        "format": "palette data in a JS module, pixels in an 8-bit gray PNG sheet (value = the row character)",
+        "artPxToWorldPx": "頭目 3、小王 2",
+        "scaleMode": "nearest",
+        "frames": [
+          "boss, boss2, boss3, boss4（各 _1、_2）",
+          "mid1, mid2, mid3, mid4"
+        ],
+        "palette": "每隻 44 色"
+      },
+      "provenance": {
+        "tool": "Codex CLI 的圖片生成（2026-11-22，由 Claude 依使用者指示「開始航段四」下指令）",
+        "job": "提示詞全文在 art/raw/leg4/prompts/round1.sh；筆觸參考是 art/raw/boss/big_oceanus.png 與 art/raw/boss/mids.png；造型概念參考是素材包 shmup-bosses-3phase/demo_assets_arc4（只當概念）；深色背景的版本在 art/raw/leg4/alt/",
+        "postprocess": "python art/tools/boss_forms.py leg4；python art/tools/forms_png.py（像素移到 PNG 表，執行期由 render/formsSheets.js 還原）"
+      },
+      "keywords": [
+        "boss",
+        "頭目",
+        "小王",
+        "mech",
+        "航段四",
+        "希臘神話",
+        "pixel",
+        "像素",
+        "shmup"
+      ],
+      "contentHash": "sha256:70f59421c436a1666346cf6f80b79c4f3abb6a49801d227dd8b64598e317be71"
+    },
+    {
+      "status": "raw-only",
+      "reusePolicy": "game-only",
+      "styleTags": [
+        "pixel",
+        "top-down",
+        "1px-outline",
+        "mech"
+      ],
+      "id": "skytalon.chr.leg4-machines",
+      "kind": "sprite-sheet",
+      "name": "航段四（冥界邊境）新小怪與頭目附屬物：節拍砲艇、微弱斥候、重裝獸機、深淵聲納浮標、殘骸再起機與殘骸、機械臂、擺渡船、腳踵",
+      "files": {
+        "raw": [
+          "art/raw/leg4/minions.png",
+          "art/raw/leg4/parts.png"
+        ],
+        "prompt": [
+          "art/raw/leg4/prompts/round1.sh"
+        ],
+        "shipped": [
+          "game/src/render/leg4Machines.js",
+          "game/src/render/leg4Machines.forms.png"
+        ]
+      },
+      "technical": {
+        "format": "palette data in a JS module, pixels in an 8-bit gray PNG sheet (value = the row character)",
+        "artPxToWorldPx": "1",
+        "scaleMode": "nearest",
+        "frames": [
+          "metronome, scout, beast, buoy, revenant, husk",
+          "arm, ferry, heel"
+        ],
+        "palette": "每個 24 色"
+      },
+      "provenance": {
+        "tool": "Codex CLI 的圖片生成（2026-11-22，由 Claude 依使用者指示「開始航段四」下指令）",
+        "job": "提示詞全文在 art/raw/leg4/prompts/round1.sh；深色背景的版本在 art/raw/leg4/alt/",
+        "postprocess": "python art/tools/creature_forms.py leg4；python art/tools/forms_png.py（像素移到 PNG 表，執行期由 render/formsSheets.js 還原）"
+      },
+      "keywords": [
+        "enemy",
+        "小怪",
+        "mech",
+        "航段四",
+        "pixel",
+        "像素",
+        "shmup"
+      ],
+      "contentHash": "sha256:70222a3d4a9c727597f256c9625e17eee9aef350dd8bb5352441563c5ad1899d"
+    },
+    {
+      "status": "raw-only",
+      "reusePolicy": "game-only",
+      "styleTags": [
+        "pixel",
+        "top-down",
+        "1px-outline",
+        "mech"
+      ],
+      "id": "skytalon.chr.leg5-forms",
+      "kind": "sprite-sheet",
+      "name": "航段五（太陽與黑洞）頭目與小王：赫利俄斯、許珀里翁、混沌、黃泉鳥居（各三階段）；法厄同、赫利阿得斯、燭陰、八咫鏡",
+      "files": {
+        "raw": [
+          "art/raw/leg5/boss1_helios.png",
+          "art/raw/leg5/boss2_hyperion.png",
+          "art/raw/leg5/boss3_hundun.png",
+          "art/raw/leg5/boss4_torii.png",
+          "art/raw/leg5/mids.png"
+        ],
+        "prompt": [
+          "gdd/13_legs2to5.md",
+          "art/raw/leg5/prompts/round1.sh"
+        ],
+        "shipped": [
+          "game/src/render/leg5Forms.js",
+          "game/src/render/leg5Forms.forms.png"
+        ]
+      },
+      "technical": {
+        "format": "palette data in a JS module, pixels in an 8-bit gray PNG sheet (value = the row character)",
+        "artPxToWorldPx": "頭目 3、小王 2",
+        "scaleMode": "nearest",
+        "frames": [
+          "boss, boss2, boss3, boss4（各 _1、_2）",
+          "mid1, mid2, mid3, mid4"
+        ],
+        "palette": "每隻 44 色"
+      },
+      "provenance": {
+        "tool": "Codex CLI 的圖片生成（2026-11-22，由 Claude 依使用者指示「開始航段五」下指令）",
+        "job": "提示詞全文在 art/raw/leg5/prompts/round1.sh；筆觸參考是 art/raw/boss/big_oceanus.png 與 art/raw/boss/mids.png；造型概念參考是素材包 shmup-bosses-3phase/demo_assets_arc5（只當概念）；黑洞兩章的題材由使用者決定維持（gdd/13 §7 第 2 點），造型全部自創、不含宗教符號或文字；深色背景的版本在 art/raw/leg5/alt/",
+        "postprocess": "python art/tools/boss_forms.py leg5；python art/tools/forms_png.py（像素移到 PNG 表，執行期由 render/formsSheets.js 還原）"
+      },
+      "keywords": [
+        "boss",
+        "頭目",
+        "小王",
+        "mech",
+        "航段五",
+        "希臘神話",
+        "pixel",
+        "像素",
+        "shmup"
+      ],
+      "contentHash": "sha256:876baaf785b473627387b604d5615f34da5d3c3e239bfeb1e470db6b306fd1e3"
+    },
+    {
+      "status": "raw-only",
+      "reusePolicy": "game-only",
+      "styleTags": [
+        "pixel",
+        "top-down",
+        "1px-outline",
+        "mech"
+      ],
+      "id": "skytalon.chr.leg5-machines",
+      "kind": "sprite-sheet",
+      "name": "航段五（太陽與黑洞）新小怪、混沌的陣眼與生門、靈魂體小人（主角在黑洞兩章的樣子，三格側傾）",
+      "files": {
+        "raw": [
+          "art/raw/leg5/minions.png",
+          "art/raw/leg5/soul.png"
+        ],
+        "prompt": [
+          "art/raw/leg5/prompts/round1.sh"
+        ],
+        "shipped": [
+          "game/src/render/leg5Machines.js",
+          "game/src/render/leg5Machines.forms.png"
+        ]
+      },
+      "technical": {
+        "format": "palette data in a JS module, pixels in an 8-bit gray PNG sheet (value = the row character)",
+        "artPxToWorldPx": "1",
+        "scaleMode": "nearest",
+        "frames": [
+          "promskiff, flareskiff, slowship, talisman, eye, gate",
+          "soul0, soul1, soul2"
+        ],
+        "palette": "每個 24 色"
+      },
+      "provenance": {
+        "tool": "Codex CLI 的圖片生成（2026-11-22，由 Claude 依使用者指示「開始航段五」下指令）",
+        "job": "提示詞全文在 art/raw/leg5/prompts/round1.sh；靈魂體小人的筆觸參考是 art/raw/ship_wing.jpg；深色背景的版本在 art/raw/leg5/alt/",
+        "postprocess": "python art/tools/creature_forms.py leg5；python art/tools/forms_png.py（像素移到 PNG 表，執行期由 render/formsSheets.js 還原）"
+      },
+      "keywords": [
+        "enemy",
+        "小怪",
+        "mech",
+        "航段五",
+        "pixel",
+        "像素",
+        "shmup",
+        "靈魂體"
+      ],
+      "contentHash": "sha256:dfd884a5ccfa80af4b40de401769c84b877a8d1f942cdac9855e4d1d7c0362c6"
+    },
+    {
+      "status": "shipped",
+      "reusePolicy": "game-only",
+      "styleTags": [
+        "pixel",
+        "top-down",
+        "painted",
+        "background"
+      ],
+      "id": "skytalon.bg.leg6-ground",
+      "kind": "background",
+      "name": "航段六（失落的中生代）四章地面：三疊紀裂谷、侏羅紀巨木林、白堊紀內海、白堊紀末日",
+      "files": {
+        "raw": [
+          "art/raw/leg6/bg/ch1.jpg",
+          "art/raw/leg6/bg/ch2.jpg",
+          "art/raw/leg6/bg/ch3.jpg",
+          "art/raw/leg6/bg/ch4.jpg"
+        ],
+        "prompt": [],
+        "shipped": [
+          "game/src/assets/leg6/ground_ch1.webp",
+          "game/src/assets/leg6/ground_ch2.webp",
+          "game/src/assets/leg6/ground_ch3.webp",
+          "game/src/assets/leg6/ground_ch4.webp"
+        ]
+      },
+      "technical": {
+        "format": "WebP q80（由 raw JPG 540×1920 等比縮成 405×1440，避免檔案過大）",
+        "size": "405 × 1440，上下無縫",
+        "artPxToWorldPx": "720 / 405（場地寬對齊圖寬）",
+        "scaleMode": "linear",
+        "drawCalls": "1（換章交叉淡入時 2）",
+        "use": "素材包的再散布條款不明，不放進公開 repo；檔案不在時航段五、六改用著色器繪製的地面"
+      },
+      "provenance": {
+        "tool": "素材包 shmup-bosses-3phase 的 demo_assets/backgrounds（使用者指定可用的素材包）",
+        "job": "使用者在對話中指示航段六場景參考 all_arcs_demo.html#arc6（2026-11-23）；原圖未改，只轉 WebP",
+        "postprocess": "PIL：LANCZOS 等比縮成 405×1440，WebP quality 80"
+      },
+      "keywords": [
+        "background",
+        "地面",
+        "航段六",
+        "史前",
+        "pixel",
+        "像素",
+        "shmup"
+      ],
+      "contentHash": "sha256:1e54059ba431b5c92693e31c1598767dac00b81e67b50935d41ba20430a41c23",
+      "localOnly": true
+    },
+    {
+      "status": "shipped",
+      "reusePolicy": "game-only",
+      "styleTags": [
+        "pixel",
+        "top-down",
+        "painted",
+        "background"
+      ],
+      "id": "skytalon.bg.leg5-ground",
+      "kind": "background",
+      "name": "航段五（太陽與黑洞）四章地面：日冕、日面深處、黑洞（一）、黑洞（二）",
+      "files": {
+        "raw": [
+          "art/raw/leg5/bg/bg_corona.jpg",
+          "art/raw/leg5/bg/bg_photosphere.jpg",
+          "art/raw/leg5/bg/bg_bh_eastern.jpg",
+          "art/raw/leg5/bg/bg_bh_japanese.jpg"
+        ],
+        "prompt": [],
+        "shipped": [
+          "game/src/assets/leg5/ground_ch1.webp",
+          "game/src/assets/leg5/ground_ch2.webp",
+          "game/src/assets/leg5/ground_ch3.webp",
+          "game/src/assets/leg5/ground_ch4.webp"
+        ]
+      },
+      "technical": {
+        "format": "WebP q80（由 raw JPG 960×2560 縮成 540×1440，避免檔案過大）",
+        "size": "540 × 1440，上下無縫",
+        "artPxToWorldPx": "960 / 540（圖寬對應 960 世界像素，比場地寬，隨視角左右滑動 0.65）",
+        "scaleMode": "linear",
+        "drawCalls": "1（換章交叉淡入時 2）",
+        "use": "素材包的再散布條款不明，不放進公開 repo；檔案不在時航段五、六改用著色器繪製的地面"
+      },
+      "provenance": {
+        "tool": "素材包 shmup-bosses-3phase 的 demo_assets_arc5（使用者指定可用的素材包）",
+        "job": "使用者在對話中指示航段五背景參考 all_arcs_demo.html#arc5，並同意降低解析度（2026-11-23）",
+        "postprocess": "PIL：LANCZOS 縮成 540×1440，WebP quality 80"
+      },
+      "keywords": [
+        "background",
+        "地面",
+        "航段五",
+        "太陽",
+        "黑洞",
+        "pixel",
+        "像素",
+        "shmup"
+      ],
+      "contentHash": "sha256:8c03cbef3a9ff51beeef710e4d156a268b69f079d48d54d5e0ebace46668cba3",
+      "localOnly": true
+    },
+    {
+      "status": "shipped",
+      "reusePolicy": "game-only",
+      "styleTags": [
+        "pixel",
+        "cinematic",
+        "cutscene"
+      ],
+      "id": "skytalon.cut.leg1-intro",
+      "kind": "key-art",
+      "name": "航段一出征過場：眾神艦隊降臨、最後的壁壘、地下機庫、出擊",
+      "files": {
+        "raw": [
+          "art/raw/intro/s1_gods_descend.png",
+          "art/raw/intro/s2_last_bastion.png",
+          "art/raw/intro/s3_hangar.png",
+          "art/raw/intro/s4_launch.png"
+        ],
+        "prompt": [
+          "art/raw/intro/prompts/round1.sh",
+          "art/raw/intro/prompts/round2_s1.sh",
+          "game/src/ui/intro.js"
+        ],
+        "shipped": [
+          "game/src/assets/intro/s1_gods_descend.webp",
+          "game/src/assets/intro/s2_last_bastion.webp",
+          "game/src/assets/intro/s3_hangar.webp",
+          "game/src/assets/intro/s4_launch.webp"
+        ]
+      },
+      "technical": {
+        "format": "WebP q78，540 × 960（9:16）",
+        "use": "ui/intro.js：DOM + GSAP 演出（推拉鏡頭、交叉淡入、火星、震動、閃光與速度線），不是影片檔",
+        "drawCalls": "0（DOM，在畫布之上）"
+      },
+      "provenance": {
+        "tool": "Codex CLI 的圖片生成（2026-11-23，由 Claude 依使用者指示「重新生成一段出征的動畫」下指令）",
+        "job": "參考素材包 shmup-bosses-3phase 的 intro_cutscene_pixi（只當結構參考）；劇情依 gdd/05 v8 §5 世界觀；第一張第一輪的戰艦帶神殿，違反 art/README.md 的「不畫廟宇」，已重生（舊圖在 art/raw/intro/alt/）",
+        "postprocess": "PIL：LANCZOS 縮成 540×960，WebP quality 78"
+      },
+      "keywords": [
+        "cutscene",
+        "過場",
+        "開場",
+        "航段一",
+        "出征",
+        "pixel",
+        "像素"
+      ],
+      "contentHash": "sha256:efff15a2593e456388888011f2a7a1a87bfb839bf41be465c4a434f7721a122d"
+    },
+    {
+      "status": "shipped",
+      "reusePolicy": "game-only",
+      "styleTags": [
+        "pixel",
+        "cinematic",
+        "cutscene"
+      ],
+      "id": "skytalon.cut.leg2-intro",
+      "kind": "key-art",
+      "name": "航段二出征過場：阿特拉斯倒下、月面前進基地、地球艦隊集結、飛向月球",
+      "files": {
+        "raw": [
+          "art/raw/intro2/s1_atlas_falls.png",
+          "art/raw/intro2/s2_moon_base.png",
+          "art/raw/intro2/s3_fleet_gathers.png",
+          "art/raw/intro2/s4_to_the_moon.png"
+        ],
+        "prompt": [
+          "art/raw/intro2/prompts/round1.sh",
+          "game/src/ui/intro.js",
+          "art/raw/intro2/prompts/round2_s3.sh"
+        ],
+        "shipped": [
+          "game/src/assets/intro2/s1_atlas_falls.webp",
+          "game/src/assets/intro2/s2_moon_base.webp",
+          "game/src/assets/intro2/s3_fleet_gathers.webp",
+          "game/src/assets/intro2/s4_to_the_moon.webp"
+        ]
+      },
+      "technical": {
+        "format": "WebP q70，540 × 960（9:16）",
+        "use": "ui/intro.js：DOM + GSAP 演出，不是影片檔",
+        "drawCalls": "0（DOM，在畫布之上）"
+      },
+      "provenance": {
+        "tool": "Codex CLI 的圖片生成（2026-11-23，由 Claude 依使用者指示「依照故事劇本設計航段二動畫」下指令）",
+        "job": "劇情銜接航段一結尾（阿特拉斯在軌道倒下）與航段二「反攻內圈」（gdd/05 v8 §5 路線圖、gdd/13 §4.1）；第三張第一輪的戰機看起來是飛進母艦，已重生成飛離母艦（舊圖在 art/raw/intro2/alt/），新圖裁成 9:16",
+        "postprocess": "PIL：LANCZOS 縮成 540×960，WebP quality 70"
+      },
+      "keywords": [
+        "cutscene",
+        "過場",
+        "航段二",
+        "月球",
+        "出征",
+        "pixel",
+        "像素"
+      ],
+      "contentHash": "sha256:3b7ded668ea718560a37fca0d0d1013fe1d5cfc04e7f914a5f6fd20e4abe2a3a"
+    },
+    {
+      "status": "shipped",
+      "reusePolicy": "game-only",
+      "styleTags": [
+        "pixel",
+        "cinematic",
+        "cutscene"
+      ],
+      "id": "skytalon.cut.leg3-intro",
+      "kind": "key-art",
+      "name": "航段三（外圈巨神）出征過場：涅墨西斯倒下、火星雙子艦隊、木星雷雲巨神、穿越小行星帶",
+      "files": {
+        "raw": [
+          "art/raw/intro3/s1_inner_retaken.png",
+          "art/raw/intro3/s2_mars_twins.png",
+          "art/raw/intro3/s3_jupiter_storm.png",
+          "art/raw/intro3/s4_outer_giants.png"
+        ],
+        "prompt": [
+          "art/raw/intro_gen_legs3to6.sh",
+          "game/src/ui/intro.js"
+        ],
+        "shipped": [
+          "game/src/assets/intro3/s1_inner_retaken.webp",
+          "game/src/assets/intro3/s2_mars_twins.webp",
+          "game/src/assets/intro3/s3_jupiter_storm.webp",
+          "game/src/assets/intro3/s4_outer_giants.webp"
+        ]
+      },
+      "technical": {
+        "format": "WebP q70，540 × 960（9:16，非 9:16 的原圖從中間裁切）",
+        "use": "ui/intro.js：DOM + GSAP 演出，不是影片檔",
+        "drawCalls": "0（DOM，在畫布之上）"
+      },
+      "provenance": {
+        "tool": "Codex CLI 的圖片生成（2026-11-23，由 Claude 依使用者指示「開始做後面動畫」下指令）",
+        "job": "每段接上前一段的結尾（gdd/05 v8 §5 路線圖、gdd/13、gdd/12 §2）",
+        "postprocess": "PIL：裁成 9:16、LANCZOS 縮成 540×960、WebP quality 70"
+      },
+      "keywords": [
+        "cutscene",
+        "過場",
+        "航段三",
+        "出征",
+        "pixel",
+        "像素"
+      ],
+      "contentHash": "sha256:95a361e9d7dd4fee707f10771aa657de9cc7d930418b96ac5bf12d3b6c8471c4"
+    },
+    {
+      "status": "shipped",
+      "reusePolicy": "game-only",
+      "styleTags": [
+        "pixel",
+        "cinematic",
+        "cutscene"
+      ],
+      "id": "skytalon.cut.leg4-intro",
+      "kind": "key-art",
+      "name": "航段四（冥界邊境）出征過場：雅努斯沉入土星環、艦隊逃往邊緣、冥河與渡船、衝進冥界霧氣",
+      "files": {
+        "raw": [
+          "art/raw/intro4/s1_rings_fall.png",
+          "art/raw/intro4/s2_flee_to_edge.png",
+          "art/raw/intro4/s3_styx.png",
+          "art/raw/intro4/s4_into_the_dark.png"
+        ],
+        "prompt": [
+          "art/raw/intro_gen_legs3to6.sh",
+          "game/src/ui/intro.js"
+        ],
+        "shipped": [
+          "game/src/assets/intro4/s1_rings_fall.webp",
+          "game/src/assets/intro4/s2_flee_to_edge.webp",
+          "game/src/assets/intro4/s3_styx.webp",
+          "game/src/assets/intro4/s4_into_the_dark.webp"
+        ]
+      },
+      "technical": {
+        "format": "WebP q70，540 × 960（9:16，非 9:16 的原圖從中間裁切）",
+        "use": "ui/intro.js：DOM + GSAP 演出，不是影片檔",
+        "drawCalls": "0（DOM，在畫布之上）"
+      },
+      "provenance": {
+        "tool": "Codex CLI 的圖片生成（2026-11-23，由 Claude 依使用者指示「開始做後面動畫」下指令）",
+        "job": "每段接上前一段的結尾（gdd/05 v8 §5 路線圖、gdd/13、gdd/12 §2）",
+        "postprocess": "PIL：裁成 9:16、LANCZOS 縮成 540×960、WebP quality 70"
+      },
+      "keywords": [
+        "cutscene",
+        "過場",
+        "航段四",
+        "出征",
+        "pixel",
+        "像素"
+      ],
+      "contentHash": "sha256:33aa7d61bf4b73ca7e6889a9309bd78bbf17940404ef4e372143bdc01d895daf"
+    },
+    {
+      "status": "shipped",
+      "reusePolicy": "game-only",
+      "styleTags": [
+        "pixel",
+        "cinematic",
+        "cutscene"
+      ],
+      "id": "skytalon.cut.leg5-intro",
+      "kind": "key-art",
+      "name": "航段五（太陽與黑洞）出征過場：冥河斷流、日冕火海、太陽背後的黑洞、迎著強光出擊",
+      "files": {
+        "raw": [
+          "art/raw/intro5/s1_styx_breaks.png",
+          "art/raw/intro5/s2_sun_fire.png",
+          "art/raw/intro5/s3_black_hole.png",
+          "art/raw/intro5/s4_into_the_glare.png"
+        ],
+        "prompt": [
+          "art/raw/intro_gen_legs3to6.sh",
+          "game/src/ui/intro.js"
+        ],
+        "shipped": [
+          "game/src/assets/intro5/s1_styx_breaks.webp",
+          "game/src/assets/intro5/s2_sun_fire.webp",
+          "game/src/assets/intro5/s3_black_hole.webp",
+          "game/src/assets/intro5/s4_into_the_glare.webp"
+        ]
+      },
+      "technical": {
+        "format": "WebP q70，540 × 960（9:16，非 9:16 的原圖從中間裁切）",
+        "use": "ui/intro.js：DOM + GSAP 演出，不是影片檔",
+        "drawCalls": "0（DOM，在畫布之上）"
+      },
+      "provenance": {
+        "tool": "Codex CLI 的圖片生成（2026-11-23，由 Claude 依使用者指示「開始做後面動畫」下指令）",
+        "job": "每段接上前一段的結尾（gdd/05 v8 §5 路線圖、gdd/13、gdd/12 §2）",
+        "postprocess": "PIL：裁成 9:16、LANCZOS 縮成 540×960、WebP quality 70"
+      },
+      "keywords": [
+        "cutscene",
+        "過場",
+        "航段五",
+        "出征",
+        "pixel",
+        "像素"
+      ],
+      "contentHash": "sha256:9a1d74c4bbae7aefb79ad8061714f1504572804b966596bb78dcfc6f6ee62158"
+    },
+    {
+      "status": "shipped",
+      "reusePolicy": "game-only",
+      "styleTags": [
+        "pixel",
+        "cinematic",
+        "cutscene"
+      ],
+      "id": "skytalon.cut.leg6-intro",
+      "kind": "key-art",
+      "name": "航段六（失落的中生代）出征過場：混沌碎裂、時空隧道、一億年前的地球、衝向三疊紀裂谷",
+      "files": {
+        "raw": [
+          "art/raw/intro6/s1_chaos_breaks.png",
+          "art/raw/intro6/s2_time_warp.png",
+          "art/raw/intro6/s3_mesozoic.png",
+          "art/raw/intro6/s4_prehistoric_sortie.png"
+        ],
+        "prompt": [
+          "art/raw/intro_gen_legs3to6.sh",
+          "game/src/ui/intro.js"
+        ],
+        "shipped": [
+          "game/src/assets/intro6/s1_chaos_breaks.webp",
+          "game/src/assets/intro6/s2_time_warp.webp",
+          "game/src/assets/intro6/s3_mesozoic.webp",
+          "game/src/assets/intro6/s4_prehistoric_sortie.webp"
+        ]
+      },
+      "technical": {
+        "format": "WebP q70，540 × 960（9:16，非 9:16 的原圖從中間裁切）",
+        "use": "ui/intro.js：DOM + GSAP 演出，不是影片檔",
+        "drawCalls": "0（DOM，在畫布之上）"
+      },
+      "provenance": {
+        "tool": "Codex CLI 的圖片生成（2026-11-23，由 Claude 依使用者指示「開始做後面動畫」下指令）",
+        "job": "每段接上前一段的結尾（gdd/05 v8 §5 路線圖、gdd/13、gdd/12 §2）",
+        "postprocess": "PIL：裁成 9:16、LANCZOS 縮成 540×960、WebP quality 70"
+      },
+      "keywords": [
+        "cutscene",
+        "過場",
+        "航段六",
+        "出征",
+        "pixel",
+        "像素"
+      ],
+      "contentHash": "sha256:60c230b6ff6ac2200a1c9045908d2c57f0a8d2a89299afc2040d6d667e74ac7d"
+    },
+    {
+      "status": "shipped",
+      "reusePolicy": "game-only",
+      "styleTags": [
+        "audio",
+        "music",
+        "procedural"
+      ],
+      "id": "skytalon.audio.music",
+      "kind": "procedural",
+      "name": "戰鬥音樂（程式即時合成）：飛行主題與頭目主題",
+      "files": {
+        "raw": [],
+        "prompt": [],
+        "shipped": [
+          "game/src/audio/music.js"
+        ]
+      },
+      "technical": {
+        "format": "Web Audio 步進音序器（方波、三角波、噪音鼓），0 bytes 音檔",
+        "use": "開局播飛行主題，頭目進場切頭目主題，擊破後切回，結算淡出；走音效的總音量，靜音鍵一併靜音"
+      },
+      "provenance": {
+        "tool": "Claude 自寫（參考 GitHub topic game-audio 中 uilianks/chirp 的「音樂寫成程式」概念，未使用其程式碼）",
+        "job": "使用者指示「如果沒有可以參考這裡」（UI Audio Collection 沒有音樂）"
+      },
+      "keywords": [
+        "music",
+        "音樂",
+        "bgm",
+        "procedural"
+      ],
+      "contentHash": "sha256:7a1acf748b8c7f53b79a1cb2605b1b1eee528c106ad8f55d1e464a26870d433c"
+    },
+    {
+      "status": "shipped",
+      "reusePolicy": "game-only",
+      "styleTags": [
+        "audio",
+        "sfx"
+      ],
+      "id": "skytalon.audio.ui-clips",
+      "kind": "audio-recipe",
+      "name": "介面與道具音效：被擊中、通關、拾取、選裝備、推進、頭目進場",
+      "files": {
+        "raw": [
+          "art/raw/audio/Glitch_1.mp3",
+          "art/raw/audio/Success_2.mp3",
+          "art/raw/audio/Fillup_Coin_2G.wav",
+          "art/raw/audio/Powerup_Crystal_1.wav",
+          "art/raw/audio/Swoosh_3.wav",
+          "art/raw/audio/Appear_1.wav",
+          "art/raw/audio/LICENSE-Unity-UI-Audio-Collection.txt"
+        ],
+        "prompt": [],
+        "shipped": [
+          "game/src/assets/sfx/hurt.mp3",
+          "game/src/assets/sfx/clear.mp3",
+          "game/src/assets/sfx/pickup.mp3",
+          "game/src/assets/sfx/powerup.mp3",
+          "game/src/assets/sfx/boost.mp3",
+          "game/src/assets/sfx/appear.mp3",
+          "game/src/audio/clips.js"
+        ]
+      },
+      "technical": {
+        "format": "MP3 單聲道 22.05 kHz 48 kbps，裁切去頭尾、淡出、響度正規化（-16 LUFS）",
+        "size": "6 個合計約 30 KB",
+        "use": "audio/clips.js → Sfx.loadClips：同名的程式合成音效在解碼後被取代，解碼失敗時退回合成音效"
+      },
+      "provenance": {
+        "tool": "GitHub DevsDaddy/Unity-UI-Audio-Collection（MIT，Copyright (c) 2024 Elijah Brown）",
+        "job": "使用者指示「將戰鬥相關的音效或音樂追加，注意檔案大小」（2026-11-23）；授權檔在 art/raw/audio/，遊戲內「玩法說明」有出處",
+        "postprocess": "ffmpeg：silenceremove、atrim、afade、loudnorm，-ac 1 -ar 22050 -b:a 48k，去除中繼資料"
+      },
+      "keywords": [
+        "audio",
+        "音效",
+        "sfx",
+        "combat",
+        "戰鬥"
+      ],
+      "contentHash": "sha256:d22dfa87d89bda90ddd0f273d2d53c7357313969842f94d762111f7781484039"
+    },
+    {
+      "status": "shipped",
+      "reusePolicy": "game-only",
+      "styleTags": [
+        "audio",
+        "sfx"
+      ],
+      "id": "skytalon.audio.battle-clips",
+      "kind": "audio-recipe",
+      "name": "戰鬥音效：射擊、命中、擊毀（轟轟轟）、爆炸、頭目擊破",
+      "files": {
+        "raw": [
+          "art/raw/audio/selab/shot1.mp3",
+          "art/raw/audio/selab/shot-struck1.mp3",
+          "art/raw/audio/selab/bomb3.mp3",
+          "art/raw/audio/selab/bomb1.mp3",
+          "art/raw/audio/selab/big-explosion1.mp3"
+        ],
+        "prompt": [
+          "art/tools/make_battle_sfx.py"
+        ],
+        "shipped": [
+          "game/src/assets/sfx/shot.mp3",
+          "game/src/assets/sfx/hit.mp3",
+          "game/src/assets/sfx/kill.mp3",
+          "game/src/assets/sfx/boom.mp3",
+          "game/src/assets/sfx/bossdown.mp3"
+        ]
+      },
+      "technical": {
+        "format": "MP3 單聲道 22.05 kHz 48 kbps；每段從最響處前 8 ms 開始（無前導）；擊毀放慢到 85% 並疊兩聲回響",
+        "size": "5 個合計約 31 KB",
+        "use": "audio/clips.js；檔案不在時（公開 repo）改播 audio/sfx.js 的合成音效"
+      },
+      "provenance": {
+        "tool": "効果音ラボ https://soundeffect-lab.info/sound/battle/battle2.html（免費、可商用、可加工；禁止再配布，故不放進公開 repo）",
+        "job": "使用者指示「從這邊找尋更好的替代音效」（2026-11-23），取代小森平的音效",
+        "postprocess": "python art/tools/make_battle_sfx.py"
+      },
+      "keywords": [
+        "audio",
+        "音效",
+        "sfx",
+        "combat",
+        "戰鬥",
+        "爆炸"
+      ],
+      "contentHash": "sha256:afff2acd4efa0291e540740cb9c81b742b9fdc41fd91a1644a528c5e4839ecec",
+      "localOnly": true
+    }
+  ]
+}

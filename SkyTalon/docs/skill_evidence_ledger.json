@@ -1,0 +1,372 @@
+[
+ {
+  "schema": 1,
+  "generation": 1,
+  "game": "sky-talon",
+  "version": 1,
+  "strategyHash": "fb8c2dfefaefa624",
+  "n": 30,
+  "seedBase": 2026,
+  "thresholds": {
+   "alpha": 0.05,
+   "minQuestions": 30
+  },
+  "pass": true,
+  "pairs": [
+   {
+    "other": "random steering",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "stay put",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "sweep left and right",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "chase the nearest enemy",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   }
+  ],
+  "resultHash": "36812f13ef1eda1d"
+ },
+ {
+  "schema": 1,
+  "generation": 2,
+  "game": "sky-talon",
+  "version": 2,
+  "strategyHash": "91901a78e35b4fe8",
+  "n": 30,
+  "seedBase": 2026,
+  "thresholds": {
+   "alpha": 0.05,
+   "minQuestions": 30
+  },
+  "pass": true,
+  "pairs": [
+   {
+    "other": "random steering",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "stay put",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "sweep left and right",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "chase the nearest enemy",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "chase, defence cards",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   }
+  ],
+  "resultHash": "ae0e28e776afa68c"
+ },
+ {
+  "schema": 1,
+  "generation": 3,
+  "game": "sky-talon",
+  "version": 4,
+  "strategyHash": "9f265a469e966c33",
+  "n": 30,
+  "seedBase": 2026,
+  "thresholds": {
+   "alpha": 0.05,
+   "minQuestions": 30
+  },
+  "pass": true,
+  "pairs": [
+   {
+    "other": "random steering",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "stay put",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "sweep left and right",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "chase the nearest enemy",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "chase, defence cards",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   }
+  ],
+  "resultHash": "257ce1b1a5c7950e"
+ },
+ {
+  "schema": 1,
+  "generation": 4,
+  "game": "sky-talon",
+  "version": 8,
+  "strategyHash": "cf4d4cccfdd7d460",
+  "n": 30,
+  "seedBase": 2026,
+  "thresholds": {
+   "alpha": 0.05,
+   "minQuestions": 30
+  },
+  "pass": true,
+  "pairs": [
+   {
+    "other": "random steering",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "stay put",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "sweep left and right",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "chase the nearest enemy",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "chase, last option",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   }
+  ],
+  "resultHash": "2429f268f624c30a"
+ },
+ {
+  "schema": 1,
+  "generation": 5,
+  "game": "sky-talon",
+  "version": 9,
+  "strategyHash": "f041f520e32f30e8",
+  "n": 30,
+  "seedBase": 2026,
+  "thresholds": {
+   "alpha": 0.05,
+   "minQuestions": 30
+  },
+  "pass": true,
+  "pairs": [
+   {
+    "other": "random steering",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "stay put",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "sweep left and right",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "chase the nearest enemy",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "chase, last option",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   }
+  ],
+  "resultHash": "4dcef4b990f9033b"
+ },
+ {
+  "schema": 1,
+  "generation": 6,
+  "game": "sky-talon",
+  "version": 10,
+  "strategyHash": "78e018f304f5d0a3",
+  "n": 30,
+  "seedBase": 2026,
+  "thresholds": {
+   "alpha": 0.05,
+   "minQuestions": 30
+  },
+  "pass": true,
+  "pairs": [
+   {
+    "other": "random steering",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "stay put",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "sweep left and right",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "chase the nearest enemy",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "chase, last option",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   }
+  ],
+  "resultHash": "20cb94345f284ce3"
+ },
+ {
+  "schema": 1,
+  "generation": 7,
+  "game": "sky-talon",
+  "version": 11,
+  "strategyHash": "fac2542a5b6b0a83",
+  "n": 30,
+  "seedBase": 2026,
+  "thresholds": {
+   "alpha": 0.05,
+   "minQuestions": 30
+  },
+  "pass": true,
+  "pairs": [
+   {
+    "other": "random steering",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "stay put",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "sweep left and right",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "chase the nearest enemy",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "chase, last option",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   }
+  ],
+  "resultHash": "57a8627361e5bb0e"
+ },
+ {
+  "schema": 1,
+  "generation": 8,
+  "game": "sky-talon",
+  "version": 12,
+  "strategyHash": "451df0cace60dfe7",
+  "n": 30,
+  "seedBase": 2026,
+  "thresholds": {
+   "alpha": 0.05,
+   "minQuestions": 30
+  },
+  "pass": true,
+  "pairs": [
+   {
+    "other": "random steering",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "stay put",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "sweep left and right",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "chase the nearest enemy",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "chase, last option",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   }
+  ],
+  "resultHash": "e96298976049456f"
+ }
+]

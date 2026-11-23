@@ -65,7 +65,8 @@ export function loadManifests(root) {
       if (!KINDS.includes(a.kind)) errors.push(`${at}: kind「${a.kind}」不在 ${KINDS.join(' / ')}`);
       if (!STATUSES.includes(a.status)) errors.push(`${at}: status「${a.status}」不在 ${STATUSES.join(' / ')}`);
       if (!REUSE.includes(a.reusePolicy)) errors.push(`${at}: reusePolicy「${a.reusePolicy}」不在 ${REUSE.join(' / ')}`);
-      for (const f of Object.values(a.files ?? {}).flat()) if (!existsSync(join(root, m.pathBase, plain(f)))) errors.push(`${at}: 找不到檔案 ${m.pathBase}${plain(f)}`);
+      // localOnly: the asset's terms forbid publishing its files, so a public checkout does not have them (the game falls back)
+      if (!a.localOnly) for (const f of Object.values(a.files ?? {}).flat()) if (!existsSync(join(root, m.pathBase, plain(f)))) errors.push(`${at}: 找不到檔案 ${m.pathBase}${plain(f)}`);
       if (!primary(a) && a.kind !== 'procedural') errors.push(`${at}: 至少要有一個 raw 或 shipped 檔`);
     }
   }

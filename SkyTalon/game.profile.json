@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "game": "SkyTalon",
+  "genre": ["shmup"],
+  "skillAxis": ["aim", "reaction", "planning"],
+  "renderer": ["2d"],
+  "scriptedProgression": true,
+  "source": ["original", "af-survivor-skill-pick"],
+  "jurisdiction": ["TW", "US-*"],
+  "artStyle": ["procedural"]
+}

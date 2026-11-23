@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SkyTalon 美術預覽</title>
+  <style>
+    html, body { margin: 0; height: 100%; background: #14121c; overflow: hidden; }
+    #stage { position: fixed; inset: 0; }
+    #note { position: fixed; left: 8px; bottom: 8px; color: #fff; font: 12px/1.4 system-ui, sans-serif; text-shadow: 0 1px 0 #000; }
+  </style>
+</head>
+<body>
+  <div id="stage"></div>
+  <div id="note">美術預覽（N6 審查用，不進正式包）：?low=1 低特效、?still=1 停止捲動</div>
+  <script type="module" src="/src/render/artPreview.js"></script>
+</body>
+</html>

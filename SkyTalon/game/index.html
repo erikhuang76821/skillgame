@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <title>諸神黃昏 Twilight of the Gods</title>
+  <style>
+    html, body { margin: 0; height: 100%; background: #14121c; overflow: hidden; touch-action: none;
+      -webkit-user-select: none; user-select: none; overscroll-behavior: none; color: #f3ecdf;
+      font: 600 16px/1.35 system-ui, "PingFang TC", "Microsoft JhengHei", sans-serif; }
+    /* Layering: #stage (clips) > #stage-shake (shaken by GSAP) > canvas; #fx, #frame and #hud are siblings, never shaken. */
+    #stage { position: fixed; inset: 0; overflow: hidden; background: #14121c; }
+    #stage-shake { position: absolute; inset: -16px; will-change: transform; }
+    #stage-shake canvas { position: absolute; inset: 16px; display: block; }
+    #fx { position: fixed; inset: 0; pointer-events: none; }
+    #fx-vignette, #fx-flash { position: absolute; inset: 0; opacity: 0; }
+    #fx-vignette { background: radial-gradient(ellipse at center, transparent 50%, rgba(190, 20, 40, .6) 100%); }
+    #fx-flash { background: #fff3dc; mix-blend-mode: screen; }
+    /* The play field (720 x 1280 world) sits in #frame; anything outside it is dimmed, so every screen shows the same field.
+       The dimming fades in over a 48px band just outside the field (gradients on a box that much larger, its shadow
+       dimming the rest), so the field's edge is a soft falloff, not a cut line across the ground; nothing inside the
+       field is darkened. */
+    /* leg one's departure cutscene (ui/intro.js): a 9:16 film over everything, subtitles under it, a skip button */
+    .intro { position: fixed; inset: 0; z-index: 50; background: #05040a; display: grid; place-items: center; cursor: pointer; }
+    .intro-film { position: relative; overflow: hidden; height: min(100vh, 177.78vw); aspect-ratio: 9 / 16; }
+    .intro-film img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; image-rendering: pixelated; opacity: 0; will-change: transform, opacity; }
+    .intro-flash { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 70%, #fff8e0 0%, #ffd27a 40%, transparent 75%); opacity: 0; pointer-events: none; mix-blend-mode: screen; }
+    .intro-ember { position: absolute; width: 6px; height: 6px; border-radius: 50%; background: radial-gradient(#fff2c0, #ff8a2a 55%, transparent 70%); opacity: 0; pointer-events: none; }
+    .intro-streak { position: absolute; width: 2px; height: 22%; background: linear-gradient(transparent, rgba(220, 240, 255, .85), transparent); opacity: 0; pointer-events: none; }
+    .intro-sub { position: fixed; left: 50%; bottom: 7vh; transform: translateX(-50%); width: min(92vw, 54vh); text-wrap: balance; word-break: keep-all; text-align: center; font-size: clamp(15px, 2.4vh, 22px); font-weight: 700; line-height: 1.5; color: #f3ecdf; text-shadow: 0 2px 6px #000, 0 0 2px #000; pointer-events: none; }
+    .intro-sub.hl { color: #ffd24a; font-size: clamp(18px, 3vh, 28px); letter-spacing: .08em; }
+    .intro-skip { position: fixed; right: 16px; top: 16px; padding: 6px 14px; border-radius: 999px; border: 1px solid rgba(243, 236, 223, .4); background: rgba(20, 16, 36, .55); color: #f3ecdf; font: inherit; font-size: 13px; cursor: pointer; }
+    #frame { position: fixed; pointer-events: none; --dim: rgba(16, 12, 28, .55); }
+    #frame::before { content: ''; position: absolute; inset: -48px; box-shadow: 0 0 0 200vmax var(--dim);
+      background: linear-gradient(90deg, var(--dim), transparent 48px, transparent calc(100% - 48px), var(--dim)),
+                  linear-gradient(180deg, var(--dim), transparent 48px, transparent calc(100% - 48px), var(--dim)); }
+    #hud { position: absolute; inset: 0; padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); }
+    #hud > * { position: absolute; text-shadow: 0 2px 0 rgba(20, 14, 30, .9); }
+    #hud .score { top: 10px; left: 14px; font-size: 26px; font-variant-numeric: tabular-nums; transform-origin: left center; }
+    #hud .chain { top: 44px; left: 14px; font-size: 14px; color: #ffd24a; transform-origin: left center; }
+    #hud .section { top: 14px; left: 0; right: 0; text-align: center; font-size: 13px; opacity: .8; }
+    #hud .shields { top: 12px; right: 14px; display: flex; gap: 5px; }
+    #hud .shields i { width: 18px; height: 18px; border-radius: 4px; background: #7fe7f2; box-shadow: inset 0 -4px 0 rgba(0, 60, 80, .35), 0 0 0 2px #1c1626; }
+    #hud .shields i.lost { background: rgba(60, 50, 80, .6); box-shadow: 0 0 0 2px #1c1626; }
+    #hud .boss { top: 70px; left: 12%; right: 12%; height: 10px; background: rgba(28, 22, 38, .8); border-radius: 5px; box-shadow: 0 0 0 2px #1c1626; overflow: hidden; }
+    #hud .boss i { display: block; height: 100%; background: linear-gradient(#ff7a8e, #c94f6d); transform-origin: left center; }
+    #hud .boss { overflow: visible; }
+    #hud .boss b { display: none; position: absolute; top: -2px; bottom: -2px; width: 3px; margin-left: -1px; background: #1c1626; }
+    #hud .boss.staged b { display: block; }                  /* a boss: where the armour and the frame break */
+    #hud .boss u { position: absolute; left: 0; right: 0; top: -8px; height: 5px; border-radius: 3px; background: #8ff6ff; box-shadow: 0 0 0 2px #1c1626; transform-origin: left center; }   /* a mid-boss's shield */
+    #hud .banner { top: 34%; left: 0; right: 0; text-align: center; font-size: 30px; letter-spacing: .2em; color: #ffd24a;
+      background: rgba(28, 22, 38, .72); padding: 10px 0; }
+    #hud .build { bottom: calc(10px + env(safe-area-inset-bottom)); left: 10px; right: 120px; display: flex; flex-wrap: wrap; gap: 4px; font-size: 11px; font-weight: 500; }
+    #hud .build span { padding: 2px 6px; border-radius: 6px; background: rgba(28, 22, 38, .72); box-shadow: 0 0 0 1px rgba(243, 236, 223, .2); text-shadow: none; }
+    #hud .build .mod { color: #7fe7f2; }
+    #hud .build .evo { color: #ffd24a; }
+    #hud .shade { inset: 0; background: rgba(16, 12, 28, .5); }
+    #hud .note { top: 20%; left: 0; right: 0; text-align: center; font-size: 15px; letter-spacing: .3em; opacity: .9; }
+    #hud .count { top: 40%; left: 0; right: 0; text-align: center; font-size: 64px; color: #ffd24a; }
+    /* the stage map: legs from the bottom up, three in view, the rest by scrolling up */
+    #panel-title .map { --node: 104px; height: calc(var(--node) * 3 + 16px); overflow-y: auto; overscroll-behavior: contain; touch-action: pan-y; scroll-snap-type: y proximity;
+      display: flex; flex-direction: column-reverse; gap: 8px; margin: 10px 0 8px; padding: 0 2px; scrollbar-width: thin; }
+    .stick { position: fixed; z-index: 30; width: 132px; height: 132px; margin: -66px 0 0 -66px; border-radius: 50%; pointer-events: none; background: rgba(20, 16, 36, .22); box-shadow: inset 0 0 0 2px rgba(243, 236, 223, .35); }   /* the virtual stick: its ring where the finger went down */
+    .stick i { position: absolute; left: 46px; top: 46px; width: 40px; height: 40px; border-radius: 50%; background: rgba(255, 210, 74, .35); box-shadow: inset 0 0 0 2px rgba(255, 210, 74, .8); }
+    .stick[hidden] { display: none; }
+    #panel-title .leg { position: relative; flex: 0 0 var(--node); box-sizing: border-box; scroll-snap-align: end; display: grid; grid-template-columns: 46px 1fr auto; column-gap: 12px; align-items: center;
+      text-align: left; padding: 10px 12px; border-radius: 12px; font: inherit; color: inherit; background: rgba(243, 236, 223, .08); box-shadow: inset 0 0 0 1px rgba(243, 236, 223, .22); }
+    #panel-title .leg::before { content: ''; position: absolute; left: 34px; top: -9px; height: 9px; width: 2px; background: rgba(243, 236, 223, .3); }
+    #panel-title .leg:last-child::before { display: none; }
+    #panel-title .leg .no { width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; font-size: 20px; background: rgba(20, 16, 36, .7); box-shadow: inset 0 0 0 2px rgba(243, 236, 223, .35); }
+    #panel-title .leg .name { font-size: 17px; }
+    #panel-title .leg .path { font-size: 12px; font-weight: 500; opacity: .8; margin-top: 2px; }
+    #panel-title .leg .state { font-size: 11px; margin-top: 4px; opacity: .75; }
+    #panel-title .leg .best { text-align: right; font-size: 11px; opacity: .8; line-height: 1.3; }   /* the best score flown on this leg */
+    #panel-title .leg .best b { display: block; font-size: 16px; color: #ffd24a; }
+    #panel-title .leg.open { cursor: pointer; background: rgba(255, 210, 74, .13); box-shadow: inset 0 0 0 2px #ffd24a; }
+    #panel-title .leg.open .no { box-shadow: inset 0 0 0 2px #ffd24a; color: #ffd24a; }
+    #panel-title .leg.open .state { color: #ffd24a; opacity: 1; }
+    #panel-title .leg.locked { opacity: .55; }
+    #panel-title .leg.done .no { background: #ffd24a; color: #1c1626; }   /* a leg flown to the end */
+    /* the leg that a clear has just opened: a pulsing outline and a tip, until a leg is entered */
+    #panel-title .leg.guide { box-shadow: inset 0 0 0 3px #ffd24a, 0 0 18px rgba(255, 210, 74, .55); animation: guide-pulse 1.1s ease-in-out infinite; }
+    #panel-title .leg .tip { position: absolute; right: 10px; top: -11px; padding: 2px 9px; border-radius: 999px; font-size: 11px; font-weight: 700; background: #ffd24a; color: #1c1626; animation: guide-bob 1.1s ease-in-out infinite; }
+    #panel-title .leg.guide.locked { opacity: .9; }
+    @keyframes guide-pulse { 50% { box-shadow: inset 0 0 0 3px #fff1c9, 0 0 30px rgba(255, 210, 74, .85); } }
+    @keyframes guide-bob { 50% { transform: translateY(-3px); } }
+    @media (prefers-reduced-motion: reduce) { #panel-title .leg.guide, #panel-title .leg .tip { animation: none; } }
+    /* a leg flown to the end: the congratulation in place of the retry buttons */
+    #panel-result .congrats { text-align: center; margin: 2px 0 10px; }
+    #panel-result .congrats .crown { font-size: 34px; color: #ffd24a; text-shadow: 0 0 14px rgba(255, 210, 74, .7); }
+    #panel-result .congrats .line { font-size: 15px; margin-top: 2px; }
+    #panel-result .congrats .next-leg { font-size: 13px; margin-top: 6px; color: #ffd24a; }
+    #panel-title details { margin: 6px 0; font-size: 13px; }
+    #panel-title details summary { cursor: pointer; opacity: .85; padding: 4px 0; }
+    #panel-pick { pointer-events: auto; }
+    #panel-pick .opts { display: grid; gap: 8px; }
+    #panel-pick .opt { display: grid; grid-template-columns: 52px 1fr auto; column-gap: 12px; align-items: center; text-align: left; padding: 10px 12px; min-height: 76px; }
+    #panel-pick .opt .pic { grid-row: span 2; display: grid; gap: 4px; justify-items: stretch; }
+    #panel-pick .opt .ico { width: 44px; height: 44px; margin: 0 auto; padding: 5px; box-sizing: border-box; border-radius: 10px; background: rgba(20, 16, 36, .55); box-shadow: inset 0 0 0 1px rgba(243, 236, 223, .22); }
+    #panel-pick .opt .tag { font-size: 11px; text-align: center; padding: 2px 0; border-radius: 6px; background: rgba(243, 236, 223, .14); }
+    #panel-pick .opt .name { font-size: 17px; }
+    #panel-pick .opt .lv { font-size: 12px; opacity: .8; font-variant-numeric: tabular-nums; }
+    #panel-pick .opt .text { grid-column: 2 / 4; font-size: 13px; font-weight: 500; opacity: .85; }
+    #panel-pick .opt .evo { grid-column: 2 / 4; font-size: 12px; color: #ffd24a; }
+    #panel-pick .opt kbd { font: inherit; font-size: 11px; opacity: .6; }
+    #panel-pick .next { font-size: 12px; opacity: .75; margin: 10px 0 0; }
+    #hud .dc { bottom: 6px; left: 8px; font: 11px/1 ui-monospace, monospace; opacity: .75; }
+    #hud .toggles { bottom: calc(8px + env(safe-area-inset-bottom)); right: 8px; display: flex; gap: 6px; pointer-events: auto; }
+    button { font: inherit; color: inherit; border: 0; border-radius: 8px; padding: 9px 12px; min-height: 44px; min-width: 44px;
+      background: rgba(28, 22, 38, .78); box-shadow: 0 0 0 2px rgba(243, 236, 223, .25); }
+    button[aria-pressed="false"] { opacity: .55; }
+    .panel { position: absolute; left: 6%; right: 6%; top: 50%; translate: 0 -50%; padding: 18px 18px 16px; border-radius: 14px;
+      background: rgba(28, 22, 38, .9); box-shadow: 0 0 0 2px rgba(243, 236, 223, .22), 0 14px 40px rgba(0, 0, 0, .45); text-shadow: none; }
+    .panel h1, .panel h2 { margin: 0 0 4px; font-size: 26px; letter-spacing: .06em; color: #ffd24a; }
+    .panel .sub { font-size: 13px; opacity: .75; margin-bottom: 12px; }
+    .panel ul { margin: 0 0 12px; padding: 0 0 0 1.1em; font-size: 14px; font-weight: 500; }
+    .panel li { margin: 3px 0; }
+    .panel li b { color: #7fe7f2; }
+    .panel .go { text-align: center; font-size: 15px; color: #ffd24a; margin-top: 6px; }
+    .rows { font-size: 14px; font-weight: 500; }
+    .row { display: grid; grid-template-columns: 5.5em 1fr auto; gap: 8px; padding: 5px 0; border-bottom: 1px solid rgba(243, 236, 223, .12); }
+    .row .detail { opacity: .7; }
+    .row b { font-variant-numeric: tabular-nums; }
+    .sum { display: flex; justify-content: space-between; align-items: baseline; margin: 10px 0 2px; font-size: 15px; }
+    .sum .total { font-size: 30px; color: #ffd24a; font-variant-numeric: tabular-nums; }
+    .meta { font-size: 12px; opacity: .8; display: flex; justify-content: space-between; margin-bottom: 12px; }
+    .meta .bad { color: #ff7a8e; }
+    .actions { display: flex; gap: 8px; pointer-events: auto; }
+    .actions button { flex: 1; }
+    .actions .primary { background: #c94f6d; }
+    .actions.playtest { margin-top: 8px; }
+    .playtest-note { margin: 8px 0 0; }
+    [hidden] { display: none !important; }
+  </style>
+</head>
+<body>
+  <div id="stage"><div id="stage-shake"></div></div>
+  <div id="fx" aria-hidden="true"><div id="fx-vignette"></div><div id="fx-flash"></div></div>
+  <div id="frame">
+    <div id="hud">
+      <div class="score" aria-label="分數">0</div>
+      <div class="chain"></div>
+      <div class="section"></div>
+      <div class="shields" aria-label="護盾"></div>
+      <div class="boss" hidden><i></i><u hidden></u><b style="left:25%"></b><b style="left:60%"></b></div>
+      <div class="banner" hidden></div>
+      <div class="build" aria-label="目前的配置"></div>
+      <div class="shade" hidden></div>
+      <div class="count" hidden></div>
+      <div class="note" hidden></div>
+      <div class="dc" hidden></div>
+      <div class="toggles">
+        <button id="btn-low" type="button" aria-pressed="true">特效</button>
+        <button id="btn-mute" type="button" aria-pressed="true">音效</button>
+      </div>
+
+      <section class="panel" id="panel-title">
+        <h1>諸神黃昏<small style="display:block;font-size:.5em;letter-spacing:.12em;opacity:.8">Twilight of the Gods</small></h1>
+        <div class="sub">古代眾神要統治宇宙，地球是最後的壁壘。選一個航段出發；往上滑看後面的航段。</div>
+        <div class="map" id="map"></div>
+        <details>
+          <summary>玩法說明</summary>
+          <ul>
+            <li><b>擊破</b>：每架有基礎分；連續擊破不被打中，每架再加 2 分 × 連鎖數（最多加 40）。</li>
+            <li><b>擦彈</b>：敵彈擦身而過，每顆 2 分。</li>
+            <li><b>眾神</b>：一個航段四章，每章一個小王與一個頭目；打掉有分，越早打掉加越多。頭目半血後會變快、多一種攻擊。</li>
+            <li><b>補給</b>：打掉小王或頭目，就能從三件裝備選一件（時間會暫停）。裝備不加分，只讓你打得掉、活得久。</li>
+            <li><b>功能球</b>：有些敵機被擊破會掉出回血或限時強化，在場上慢慢飄、碰到邊會彈回，20 秒後消失。金圈的精英機一定會掉。</li>
+            <li><b>甲殼</b>：進太空後敵機外面多一層殼，一般子彈要先把殼打掉；重彈一發打穿，電漿砲不受影響。</li>
+            <li><b>山峰與隕石</b>：打不壞，撞到會受傷，但也能拿來擋子彈。</li>
+            <li><b>音效出處</b>：射擊、命中、爆炸音效取自「効果音ラボ」（soundeffect-lab.info）；部分介面與道具音效取自 Unity UI Audio Collection（MIT License，Copyright (c) 2024 Elijah Brown）；音樂與其他音效由程式即時合成。</li>
+            <li><b>紅色射線</b>：橫跨畫面往下壓，通電與斷電輪流。變細的時候穿過去。</li>
+            <li><b>生命</b>：共 3 點，被打中少 1 點、連鎖歸零；結束時每少被打中一次加 150 分（最多 450）。</li>
+            <li>判定只有機身中央的亮點。同一關每個人遇到的敵機完全相同。</li>
+          </ul>
+        </details>
+        <div class="sub">手機：在畫面任何地方按住拖曳，就是虛擬搖桿；放開就停。電腦：方向鍵或 WASD。</div>
+        <div class="go">點航段一出發</div>
+      </section>
+
+      <section class="panel" id="panel-pick" hidden>
+        <h2></h2>
+        <div class="sub"></div>
+        <div class="opts"></div>
+        <div class="next"></div>
+      </section>
+
+      <section class="panel" id="panel-result" hidden>
+        <h2></h2>
+        <div class="congrats" hidden><div class="crown">★</div><div class="line"></div><div class="next-leg"></div></div>
+        <div class="rows"></div>
+        <div class="sum"><span>總分</span><span class="total">0</span></div>
+        <div class="meta"><span class="best"></span><span class="verify" role="status"></span></div>
+        <div class="actions">
+          <button id="btn-retry" type="button" class="primary">再戰</button>
+          <button id="btn-next" type="button">退出</button>
+          <button id="btn-home" type="button" class="primary" hidden>回到航段地圖</button>
+        </div>
+        <div class="actions playtest" hidden>
+          <button id="btn-export" type="button">匯出試玩紀錄</button>
+        </div>
+        <div class="sub playtest-note" hidden></div>
+      </section>
+    </div>
+  </div>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

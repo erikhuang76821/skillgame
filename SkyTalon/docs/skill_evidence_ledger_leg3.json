@@ -1,0 +1,96 @@
+[
+ {
+  "schema": 1,
+  "generation": 1,
+  "game": "sky-talon-leg3",
+  "version": 1,
+  "strategyHash": "883854f76f7e910c",
+  "n": 30,
+  "seedBase": 2026,
+  "thresholds": {
+   "alpha": 0.05,
+   "minQuestions": 30
+  },
+  "pass": true,
+  "pairs": [
+   {
+    "other": "random steering",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "stay put",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "sweep left and right",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "chase the nearest enemy",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "chase, last option",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   }
+  ],
+  "resultHash": "3fd5f8c32e344771"
+ },
+ {
+  "schema": 1,
+  "generation": 2,
+  "game": "sky-talon-leg3",
+  "version": 2,
+  "strategyHash": "d214c5e0b47f246c",
+  "n": 30,
+  "seedBase": 2026,
+  "thresholds": {
+   "alpha": 0.05,
+   "minQuestions": 30
+  },
+  "pass": true,
+  "pairs": [
+   {
+    "other": "random steering",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "stay put",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "sweep left and right",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "chase the nearest enemy",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "chase, last option",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   }
+  ],
+  "resultHash": "ef20fe6f92609cda"
+ }
+]
