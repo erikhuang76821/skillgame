@@ -38,14 +38,15 @@ const FIRST = registerKinds([
   { name: 'elasmosaurus', hp: 5, r: 22, pts: 45, ground: 1 },
   { name: 'triceratops', hp: 6, r: 34, pts: 60 },
   { name: 'ankylosaurus', hp: 8, r: 36, pts: 70, ground: 1 },
-  { name: 'postosuchus', hp: 150, r: 60, pts: 500, mid: 1 },
-  { name: 'allosaurus', hp: 170, r: 65, pts: 750, mid: 1 },
-  { name: 'quetzalcoatlus', hp: 260, r: 70, pts: 1250, mid: 1 },
-  { name: 'spinosaurus', hp: 340, r: 74, pts: 2000, mid: 1 },
-  { name: 'plateosaurus', hp: 120, r: 70, pts: 1000, boss: 1 },
-  { name: 'diplodocus', hp: 150, r: 70, pts: 1500, boss: 1 },
-  { name: 'mosasaurus', hp: 270, r: 80, pts: 2500, boss: 1 },
-  { name: 'tyrannosaurus', hp: 620, r: 90, pts: 4000, boss: 1 },
+  // v4: mid-bosses and bosses up (150/170/260/340 -> 170/210/340/430, 120/150/270/620 -> 170/210/450/800): leg six above leg five
+  { name: 'postosuchus', hp: 170, r: 60, pts: 500, mid: 1 },
+  { name: 'allosaurus', hp: 210, r: 65, pts: 750, mid: 1 },
+  { name: 'quetzalcoatlus', hp: 340, r: 70, pts: 1250, mid: 1 },
+  { name: 'spinosaurus', hp: 430, r: 74, pts: 2000, mid: 1 },
+  { name: 'plateosaurus', hp: 170, r: 70, pts: 1000, boss: 1 },
+  { name: 'diplodocus', hp: 210, r: 70, pts: 1500, boss: 1 },
+  { name: 'mosasaurus', hp: 450, r: 80, pts: 2500, boss: 1 },
+  { name: 'tyrannosaurus', hp: 800, r: 90, pts: 4000, boss: 1 },
   // second pass: two more of its own for every chapter, most of them shooters
   { name: 'herrerasaurus', hp: 3, r: 24, pts: 35, ground: 1 },      // on the ground, breathes a fan of fire as it goes by
   { name: 'peteinosaurus', hp: 2, r: 16, pts: 25 },                 // weaves down, dropping fire
@@ -65,7 +66,7 @@ const [POSTO, ALLO, QUETZ, SPINO] = L6_MIDS, [PLATEO, DIPLO, MOSA, TREX] = L6_BO
 const bossType = slot => (slot % 2 === 0 ? L6_MIDS : L6_BOSSES)[slot >> 1];
 
 // ---------- numbers (gdd/05 v11 §3–§6; all starting values) ----------
-export const L6_HP_ADD = Object.freeze([2, 0, 1, 3]);   // v4: chapter one +2, chapter four +1 (the opening supply gives the wingman)         // every creature's extra health, by chapter
+export const L6_HP_ADD = Object.freeze([2, 1, 2, 4]);   // v4: chapter one +2, two to four +1 (the opening supply gives the wingman; leg six above leg five)         // every creature's extra health, by chapter
 // what stands on the ground is carried down the screen with it, at the speed the ground is drawn going by (and the
 // speed leg one's peaks come down at, so that this leg's trees stand still on it too)
 export const L6_GROUND_VY = 3;
@@ -136,7 +137,7 @@ const HEAVY = new Set([STEGO, TRIKE, ANKY, ARCHELON, DILOPHO]);   // come one at
 const SWARM = new Set([EUDI, COELO, PETEINO, RHAM, ICHTHY, DROMAEO]);     // come in numbers: a chapter does not make each of them tougher
 const laneX = lane => Math.min(WORLD_W - 110, Math.max(110, LANE_X0 + lane * LANE_STEP));
 // how many more of a chapter's creatures a wave unit gets, by chapter
-const MORE = Object.freeze([2, 2, 4, 4]);
+const MORE = Object.freeze([2, 3, 4, 4]);   // v4: chapter two +1 (leg six above leg five)
 
 export function schedule(seed) {
   const out = [];
@@ -627,6 +628,6 @@ function settlePacks(sim) {
 }
 
 export const GAME6 = Object.freeze({
-  id: 'sky-talon-leg6', version: 4, maxTicks: MAX_TICKS, maxChoices: SUPPLIES,
+  id: 'sky-talon-leg6', version: 5, maxTicks: MAX_TICKS, maxChoices: SUPPLIES,
   createSim: seed => createSim(seed, LEG6), step, phase, choose, score, stateHash, scoreBreakdown,
 });

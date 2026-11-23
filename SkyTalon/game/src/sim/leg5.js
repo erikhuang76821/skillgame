@@ -32,14 +32,15 @@ const FIRST = registerKinds([
   { name: 'flareskiff', hp: 8, r: 28, pts: 50 },
   { name: 'slowship', hp: 8, r: 34, pts: 60 },
   { name: 'talisman', hp: 6, r: 26, pts: 40 },
-  { name: 'phaethon', hp: 100, r: 58, pts: 500, mid: 1 },
-  { name: 'heliades', hp: 170, r: 62, pts: 750, mid: 1 },
-  { name: 'zhuyin', hp: 190, r: 66, pts: 1250, mid: 1 },
-  { name: 'yata', hp: 260, r: 70, pts: 2000, mid: 1 },
-  { name: 'helios', hp: 360, r: 96, pts: 1000, boss: 1, armour: [84, 168, -60, 200] },
-  { name: 'hyperion', hp: 420, r: 102, pts: 1500, boss: 1, armour: [86, 176, -90, 230] },
-  { name: 'hundun', hp: 450, r: 106, pts: 2500, boss: 1, armour: [90, 182, -100, 160] },
-  { name: 'torii', hp: 600, r: 110, pts: 4000, boss: 1, armour: [96, 186, -80, 150] },
+  // v4: mid-bosses and bosses up (100/170/190/260 -> 130/200/230/320, 360/420/450/600 -> 420/500/540/700): leg five above leg four
+  { name: 'phaethon', hp: 130, r: 58, pts: 500, mid: 1 },
+  { name: 'heliades', hp: 200, r: 62, pts: 750, mid: 1 },
+  { name: 'zhuyin', hp: 230, r: 66, pts: 1250, mid: 1 },
+  { name: 'yata', hp: 320, r: 70, pts: 2000, mid: 1 },
+  { name: 'helios', hp: 420, r: 96, pts: 1000, boss: 1, armour: [84, 168, -60, 200] },
+  { name: 'hyperion', hp: 500, r: 102, pts: 1500, boss: 1, armour: [86, 176, -90, 230] },
+  { name: 'hundun', hp: 540, r: 106, pts: 2500, boss: 1, armour: [90, 182, -100, 160] },
+  { name: 'torii', hp: 700, r: 110, pts: 4000, boss: 1, armour: [96, 186, -80, 150] },
 ]);
 export const PROMSKIFF = FIRST, FLARESKIFF = FIRST + 1, SLOWSHIP = FIRST + 2, TALISMAN = FIRST + 3;
 export const L5_MIDS = Object.freeze([FIRST + 4, FIRST + 5, FIRST + 6, FIRST + 7]);
@@ -49,7 +50,7 @@ export const [HELIOS, HYPERION, HUNDUN, TORII] = L5_BOSSES;
 const bossType = slot => (slot % 2 === 0 ? L5_MIDS : L5_BOSSES)[slot >> 1];
 
 // ---------- numbers (gdd/05 v15 §3, §4; all starting values) ----------
-export const L5_HP_ADD = Object.freeze([1, 2, 2, 2]);
+export const L5_HP_ADD = Object.freeze([1, 2, 2, 3]);   // v4: chapter four +1
 export const L5_ROSTER = Object.freeze([[PROMSKIFF, GUNNER, WEAVER, DIVER], [FLARESKIFF, LANCER, DRONE, MINER], [SLOWSHIP, BULWARK, SEEKER, WEAVER], [TALISMAN, BEAMER, SPLITTER, LANCER]]);
 const HEAVY = new Set([BULWARK, BEAMER]);
 const SWARM = new Set([DRONE, DIVER, SEEKER]);
@@ -395,6 +396,6 @@ export const LEG5 = Object.freeze({
 });
 
 export const GAME5 = Object.freeze({
-  id: 'sky-talon-leg5', version: 3, maxTicks: MAX_TICKS, maxChoices: SUPPLIES,
+  id: 'sky-talon-leg5', version: 4, maxTicks: MAX_TICKS, maxChoices: SUPPLIES,
   createSim: seed => createSim(seed, LEG5), step, phase, choose, score, stateHash, scoreBreakdown,
 });

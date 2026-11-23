@@ -28,7 +28,7 @@ const hold = sim => { sim.invuln = 5; step(sim, 0); };
 
 test('leg three does not touch the other legs: legs one, two and six play their golden matches', () => {
   assert.deepEqual(playMatch(GAME, 1234, STRONG).result(), { game: 'sky-talon', version: 13, seed: 1234, ticks: 20204, score: 54425, hash: 4263489266 });
-  assert.deepEqual(playMatch(GAME6, 1234, STRONG).result(), { game: 'sky-talon-leg6', version: 4, seed: 1234, ticks: 21383, score: 58897, hash: 3556292689 });
+  assert.deepEqual(playMatch(GAME6, 1234, STRONG).result(), { game: 'sky-talon-leg6', version: 5, seed: 1234, ticks: 23198, score: 57259, hash: 45493420 });
   assert.deepEqual(playMatch(GAME2, 1234, STRONG).result(), { game: 'sky-talon-leg2', version: 4, seed: 1234, ticks: 19792, score: 54909, hash: 1116054496 });
 });
 

@@ -299,7 +299,7 @@ test('leg six: the strong player beats the simple ones on every one of a few see
   }
 });
 
-const GOLDEN6 = { game: 'sky-talon-leg6', version: 4, seed: 1234, ticks: 21383, score: 58897, hash: 3556292689 };
+const GOLDEN6 = { game: 'sky-talon-leg6', version: 5, seed: 1234, ticks: 23198, score: 57259, hash: 45493420 };
 
 // --- second pass: sixteen creatures, standing boss patterns ---
 import { ROSTER, L6_PATTERNS, L6_SPIRAL_EVERY } from '../src/sim/leg6.js';

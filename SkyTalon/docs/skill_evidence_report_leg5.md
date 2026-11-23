@@ -1,8 +1,8 @@
-# Skill Evidence Report — sky-talon-leg5 v3（自動產生）
+# Skill Evidence Report — sky-talon-leg5 v4（自動產生）
 
-- 產生：`node tools/skill-evidence5.mjs --confirm --generation 3 --out ../docs/skill_evidence_report_leg5.md`
-- 題目：30 題，由基準種子 2026 產生；確認用第 3 批
-- 策略與量法程式雜湊：97361aeef3f51657（涵蓋 15 個檔案：src/sim/core/fixed.js、src/sim/core/grid.js、src/sim/core/hash.js、src/sim/core/index.js、src/sim/core/match.js、src/sim/core/rng.js、src/sim/leg2.js、src/sim/leg3.js、src/sim/leg4.js、src/sim/leg5.js、src/sim/leg6.js、src/sim/sim.js、tools/lib/evidence.mjs、tools/skill-evidence5.mjs、tools/strategies.mjs）
+- 產生：`node tools/skill-evidence5.mjs --confirm --generation 4 --out ../docs/skill_evidence_report_leg5.md`
+- 題目：30 題，由基準種子 2026 產生；確認用第 4 批
+- 策略與量法程式雜湊：6f9697c594c59b76（涵蓋 15 個檔案：src/sim/core/fixed.js、src/sim/core/grid.js、src/sim/core/hash.js、src/sim/core/index.js、src/sim/core/match.js、src/sim/core/rng.js、src/sim/leg2.js、src/sim/leg3.js、src/sim/leg4.js、src/sim/leg5.js、src/sim/leg6.js、src/sim/sim.js、tools/lib/evidence.mjs、tools/skill-evidence5.mjs、tools/strategies.mjs）
 - 自動統計判定（門檻取自 RULE-SKILL-EVIDENCE：顯著水準 0.05、至少 30 題）：排除純運氣 → **通過**；勝過每一條簡單策略 → **通過**。不含「簡單策略的接近程度」，那一項由人判定
 - 前提：題目由種子抽出、每題一局、每個策略每題一個確定的結果、分數越高越好。名次制、低分制、多人賽不適用這份判定
 - 這份報告只陳述量測結果，不作法律判斷
@@ -11,22 +11,22 @@
 
 | 策略 | 角色 | 能看到什麼 | 能力限制 | 平均分 | 中位數 | 最低 | 最高 |
 |---|---|---|---|---|---|---|---|
-| expert | strong | 畫面上的機體、敵機、敵彈、障礙物、掉落物的位置與行進方向，以及已預告或已出現的光柱 | 每 3 tick 決定一次；只往前看 36 tick；敵機動向依種類猜測，不讀內部狀態（不知道哪一架帶掉落物）；射線的位置與通電節奏、閃電柱與頭目衝鋒的預告都從畫面讀出來；追獵體假設直線前進；裝備依一張固定的優先表選 | 40492.5 | 47435.5 | 9652 | 49584 |
-| random steering | random | 不看畫面 | 每 20 tick 在 9 個動作（停 + 8 向）裡均勻抽一個；裝備在三個選項裡均勻抽；沒有排除任何動作 | 380.3 | 309.5 | 31 | 1303 |
-| stay put | simple | 不看畫面 | 原地不動；裝備一律選第一個選項；不特地去撿掉落物 | 12.2 | 2 | 2 | 31 |
-| sweep left and right | simple | 不看畫面 | 每 80 tick 換一次左右方向；裝備一律選第一個選項；不特地去撿掉落物 | 1101.3 | 885.5 | 102 | 3447 |
-| chase the nearest enemy | simple | 敵機位置（不看敵彈） | 一直移到最近敵機的正下方；不躲子彈、不躲撞擊；裝備一律選第一個選項；不特地去撿掉落物 | 1606.6 | 1636.5 | 534 | 3708 |
-| chase, last option | simple | 敵機位置（不看敵彈） | 一直移到最近敵機的正下方；不躲子彈、不躲撞擊；裝備一律選第三個選項；不特地去撿掉落物 | 1694.6 | 1500 | 371 | 3601 |
+| expert | strong | 畫面上的機體、敵機、敵彈、障礙物、掉落物的位置與行進方向，以及已預告或已出現的光柱 | 每 3 tick 決定一次；只往前看 36 tick；敵機動向依種類猜測，不讀內部狀態（不知道哪一架帶掉落物）；射線的位置與通電節奏、閃電柱與頭目衝鋒的預告都從畫面讀出來；追獵體假設直線前進；裝備依一張固定的優先表選 | 31560.4 | 33763 | 8442 | 49675 |
+| random steering | random | 不看畫面 | 每 20 tick 在 9 個動作（停 + 8 向）裡均勻抽一個；裝備在三個選項裡均勻抽；沒有排除任何動作 | 462.3 | 388.5 | 55 | 1189 |
+| stay put | simple | 不看畫面 | 原地不動；裝備一律選第一個選項；不特地去撿掉落物 | 14.2 | 4 | 2 | 31 |
+| sweep left and right | simple | 不看畫面 | 每 80 tick 換一次左右方向；裝備一律選第一個選項；不特地去撿掉落物 | 902.9 | 648.5 | 78 | 3356 |
+| chase the nearest enemy | simple | 敵機位置（不看敵彈） | 一直移到最近敵機的正下方；不躲子彈、不躲撞擊；裝備一律選第一個選項；不特地去撿掉落物 | 1734.5 | 1525.5 | 718 | 4370 |
+| chase, last option | simple | 敵機位置（不看敵彈） | 一直移到最近敵機的正下方；不躲子彈、不躲撞擊；裝備一律選第三個選項；不特地去撿掉落物 | 1797.9 | 1573.5 | 625 | 4056 |
 
 ## 同題配對：expert 對其他策略
 
 | 對手 | 角色 | 勝 | 平 | 敗 | 平手率 | 配對優勢 | 符號檢定 p（單側，只算分出勝負的題） | 平均分差 | 中位分差 | 分數比 | 結果 |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| random steering | random | 30 | 0 | 0 | 0.0% | 100.0% | < 0.0001 | 40112.2 | 47085 | 0.9% | 通過 |
-| stay put | simple | 30 | 0 | 0 | 0.0% | 100.0% | < 0.0001 | 40480.2 | 47405.5 | 0.0% | 通過 |
-| sweep left and right | simple | 30 | 0 | 0 | 0.0% | 100.0% | < 0.0001 | 39391.2 | 46468.5 | 2.7% | 通過 |
-| chase the nearest enemy | simple | 30 | 0 | 0 | 0.0% | 100.0% | < 0.0001 | 38885.9 | 46149 | 4.0% | 通過 |
-| chase, last option | simple | 30 | 0 | 0 | 0.0% | 100.0% | < 0.0001 | 38797.9 | 45804.5 | 4.2% | 通過 |
+| random steering | random | 30 | 0 | 0 | 0.0% | 100.0% | < 0.0001 | 31098.1 | 33396.5 | 1.5% | 通過 |
+| stay put | simple | 30 | 0 | 0 | 0.0% | 100.0% | < 0.0001 | 31546.2 | 33734 | 0.0% | 通過 |
+| sweep left and right | simple | 30 | 0 | 0 | 0.0% | 100.0% | < 0.0001 | 30657.5 | 33659.5 | 2.9% | 通過 |
+| chase the nearest enemy | simple | 30 | 0 | 0 | 0.0% | 100.0% | < 0.0001 | 29825.9 | 32432 | 5.5% | 通過 |
+| chase, last option | simple | 30 | 0 | 0 | 0.0% | 100.0% | < 0.0001 | 29762.5 | 32442 | 5.7% | 通過 |
 
 配對優勢 =（勝 + 平手的一半）÷ 題數。平手不帶方向，不進檢定，但留在每一個比率裡。分數比 = 對手平均分 ÷ 強策略平均分；有負分或強策略平均分不大於零時不計算（—）。
 
@@ -35,8 +35,8 @@
 | 簡單策略 | 平均分 ÷ 強策略平均分 | 沒輸給強策略的題數比例 | 平手率 |
 |---|---|---|---|
 | stay put | 0.0% | 0.0% | 0.0% |
-| sweep left and right | 2.7% | 0.0% | 0.0% |
-| chase the nearest enemy | 4.0% | 0.0% | 0.0% |
-| chase, last option | 4.2% | 0.0% | 0.0% |
+| sweep left and right | 2.9% | 0.0% | 0.0% |
+| chase the nearest enemy | 5.5% | 0.0% | 0.0% |
+| chase, last option | 5.7% | 0.0% | 0.0% |
 
 比例高代表不靠判斷也能玩到接近強策略；平手率高代表多數題目上兩者沒有差別。這兩種情況都要由人看過並寫下理由。

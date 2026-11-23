@@ -3,6 +3,8 @@
 > 範本：`lite-skillgame-stack` 的 `references/game-spec-template.md`。知識來源：[01_skill-integrity](../../knowledge-base/01_skill-integrity.md)、[03_design-patterns](../../knowledge-base/03_design-patterns.md)（§2 公平、§3 計分、§4 局長）、[12_genre-recipes §3](../../knowledge-base/12_genre-recipes.md)、[13_input-fairness](../../knowledge-base/13_input-fairness.md)、[16_difficulty-curve](../../knowledge-base/16_difficulty-curve.md)、[04_tech-stack §4](../../knowledge-base/04_tech-stack.md)。
 > 題目原創；v2 加入的「三選一」借自 [af-survivor-skill-pick](../../knowledge-base/ad-funnel/af-survivor-skill-pick.md)，改造對照在 §13。
 > **v2（2026-11-18）**：加入選卡（§8、§5「卡片」）。卡片數值是起始值，N5 依技巧證據與難度曲線調整後回寫。
+> **航段五 v4、航段六 v5（2026-11-23）**：使用者要求後面的航段比前面難，航段五、六的小王、頭目與波次加強（07 §21）。
+>
 > **v13（2026-11-23）**：開局那次補給改成固定形狀：重彈或推進器、僚機、散射或電漿砲（§「選擇：補給時暫停」；使用者要求）。二選一由這一題的裝備順序決定，兩件裡排在前面的那件；之後的補給照舊。所有航段版本 +1（航段一 v13、二 v4、三 v3、四 v3、五 v3、六 v4），golden 與技巧證據重算。開局較強，航段二、三、五、六的波次與加血往難的方向調（07 §20）。
 >
 > **v12（2026-11-23）**：散射的斜射彈改從兩側機翼前方射出（§5 裝備表「散射」）；沒有連射時的初始射速慢 10%（`FIRE_PERIOD` 5 → 5.5 tick）。為了讓難度曲線維持在心流帶，航段四第四章 `MORE` 9 → 8、加血 5 → 4（第十四版 §10），航段六第二章的合從 +2 架改成 +1 架（07 §19）。所有航段版本 +1（航段一 v12、二 v3、三 v2、四 v2、五 v2、六 v3），golden 與技巧證據重算。

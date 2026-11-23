@@ -28,7 +28,7 @@ const shotAt = (x, y) => ({ x: x * ONE, y: y * ONE, vx: 0, vy: 0, left: 0, dmg: 
 
 test('leg two does not touch leg one or leg six: with leg two loaded, both play their golden matches', () => {
   assert.deepEqual(playMatch(GAME, 1234, STRONG).result(), { game: 'sky-talon', version: 13, seed: 1234, ticks: 20204, score: 54425, hash: 4263489266 });
-  assert.deepEqual(playMatch(GAME6, 1234, STRONG).result(), { game: 'sky-talon-leg6', version: 4, seed: 1234, ticks: 21383, score: 58897, hash: 3556292689 });
+  assert.deepEqual(playMatch(GAME6, 1234, STRONG).result(), { game: 'sky-talon-leg6', version: 5, seed: 1234, ticks: 23198, score: 57259, hash: 45493420 });
   assert.equal(KIND.slice(0, 21).every(k => !k.leg), true, "leg one's kinds are as they were");
 });
 
