@@ -59,7 +59,7 @@ app.renderer.on('resize', layout);
 const sfx = new Sfx();
 const panAt = x => ((x ?? 360) / 360 - 1) * 0.7;          // field x (world px) -> stereo pan, never hard left or right
 sfx.clipSource = CLIPS;                                     // recorded combat clips, decoded on the first gesture
-const music = new Music(sfx);                               // synthesised flight and boss themes
+const music = new Music(sfx);                               // synthesised themes, one flight and one boss per leg
 applyLow();
 hud.toggles({ muted: sfx.muted, low: !FEEL.enabled });
 hud.onMute(() => { sfx.unlock(); sfx.setMuted(!sfx.muted); hud.toggles({ muted: sfx.muted, low: !FEEL.enabled }); });
@@ -142,6 +142,7 @@ const map = stageMap(frameEl.querySelector('#map'), i => {
   if (state !== 'title' || introOn) return;
   game = { 2: GAME2, 3: GAME3, 4: GAME4, 5: GAME5, 6: GAME6 }[LEGS[i].leg] ?? GAME;
   const n = LEGS[i].leg ?? 1;
+  music.play(`leg${n}`);                                    // the leg's theme starts with its cutscene and runs on into the match
   if (!INTROS[n]) { start(); return; }
   introOn = true;
   playIntro(n, { onReveal: () => { if (state === 'title') start(); } }).then(() => { introOn = false; });
@@ -169,6 +170,7 @@ document.getElementById('btn-home').addEventListener('click', () => {
   map.guide(legIndex() + 1);
 });
 /** Where the flown leg is on the stage map. */
+const legNo = () => LEGS[legIndex()]?.leg ?? 1;
 const legIndex = () => LEGS.findIndex(l => (l.leg ?? 1) === (game === GAME6 ? 6 : game === GAME2 ? 2 : game === GAME3 ? 3 : game === GAME4 ? 4 : game === GAME5 ? 5 : 1));
 
 // --- Human playtest mode (N9): ?playtest=1&tester=<name> keeps every finished match for export; nothing is sent ---
@@ -189,7 +191,7 @@ function playJuice(ev, sim) {
   switch (ev.type) {
     case 'fire':
       view.muzzle(sim);
-      if (++shotSound % 2 === 0) sfx.play('shot', { pitch: 0.88 + Math.random() * 0.24, pan: panAt(sim.px / ONE) * 0.6 });   // every other volley; each shot a little higher or lower (render only)
+      if (++shotSound % 2 === 0) sfx.play('shot', { pitch: 0.9 + Math.random() * 0.14, pan: panAt(sim.px / ONE) * 0.6 });   // every other volley; each shot a little higher or lower (render only)
       break;
     case 'hit': view.hitFlash(sim, ev.x, ev.y); sfx.play('hit', { gain: 0.7, pan: panAt(ev.x), room: 0.25, pitch: 0.9 + Math.random() * 0.2 }); break;
     case 'kill':
@@ -200,12 +202,12 @@ function playJuice(ev, sim) {
       break;
     case 'graze': view.graze(ev.x, ev.y); sfx.play('graze'); break;
     case 'hurt':
-      hurt(1); shake(shakeEl, 'crit'); sfx.play('hurt');
+      hurt(1); shake(shakeEl, 'crit'); sfx.play('hurt', { pan: panAt(ev.x) * 0.5, room: 0.45 });
       view.explode(ev.x, ev.y);
       freeze = Math.max(freeze, FEEL.hitStop.crit);
       break;
     case 'dive': sfx.play('dive'); break;
-    case 'bossIn': hud.banner(names().boss[ev.boss]); sfx.play('warn'); sfx.play('appear'); music.play('boss'); break;
+    case 'bossIn': hud.banner(names().boss[ev.boss]); sfx.play('warn'); sfx.play('appear'); music.play(`leg${legNo()}boss`); break;
     case 'bossLeave': hud.banner(`${names().boss[ev.boss].split(' ')[0]} 離開了`); break;
     // leg six
     case 'bombUp': sfx.play('dive', { gain: 0.4, pitch: 0.6 }); break;
@@ -333,7 +335,7 @@ function playJuice(ev, sim) {
     case 'split': view.sparks(ev.x, ev.y, 8); break;
     case 'bossRing': view.pulseBoss(); sfx.play('ring'); break;
     case 'bossDown':
-      flash(); shake(shakeEl, 'boss'); sfx.play('boom'); sfx.play('bossdown'); music.play('flight');
+      flash(); shake(shakeEl, 'boss'); sfx.play('boom'); sfx.play('bossdown'); music.play(`leg${legNo()}`);
       freeze = Math.max(freeze, FEEL.hitStop.boss);
       if (game === GAME5 && ev.boss === 3) { view.soulMorph(rec.sim.px / ONE, rec.sim.py / ONE); hud.note('機體化成靈魂體：只有胸口的亮點會被打中'); }   // the sun is behind: the black hole next (gdd/13 §7 point 3)
       break;
@@ -421,7 +423,7 @@ function applyCheat(sim) {
 }
 
 function start() {
-  music.play('flight');
+  music.play(`leg${legNo()}`);
   rec = new Recorder(game, seed);
   if (CHEAT) applyCheat(rec.sim);
   clock = new InputClock(performance.now(), 0, TICK_MS);
@@ -500,4 +502,4 @@ app.ticker.add(t => {
   });
 });
 
-if (import.meta.env.DEV) window.__game = { app, view, sfx, FEEL, WORLD_W, WORLD_H, get rec() { return rec; }, get state() { return state; }, start, playtest, takePick };   // console inspection only
+if (import.meta.env.DEV) window.__game = { app, view, sfx, music, FEEL, WORLD_W, WORLD_H, get rec() { return rec; }, get state() { return state; }, start, playtest, takePick };   // console inspection only

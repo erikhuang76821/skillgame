@@ -25,7 +25,9 @@ rmSync(join(DIR, 'assets'), { recursive: true, force: true });
 const out = join(GAME_DIR, '..', 'release', 'skytalon.zip');
 mkdirSync(dirname(out), { recursive: true });
 rmSync(out, { force: true });
-execFileSync('tar', ['-a', '-c', '-f', out, '-C', DIR, 'index.html']);
+// Windows' own bsdtar writes the zip; a GNU tar earlier on PATH (Git Bash) reads "C:" as a remote host and cannot
+const TAR = process.platform === 'win32' ? join(process.env.SystemRoot ?? 'C:\Windows', 'System32', 'tar.exe') : 'tar';
+execFileSync(TAR, ['-a', '-c', '-f', out, '-C', DIR, 'index.html']);
 const kb = n => `${(n / 1024).toFixed(1)} KB`;
 console.log(`index.html ${kb(statSync(html).size)} · zip ${kb(statSync(out).size)} -> ${out}`);
 if (statSync(out).size > HARD) { console.error(`zip over the hard limit (${kb(HARD)})`); process.exit(1); }

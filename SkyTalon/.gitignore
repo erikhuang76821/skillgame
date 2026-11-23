@@ -4,15 +4,15 @@ art/raw/**/rejected/
 # build output
 game/dist-zip/
 
-# assets whose terms forbid passing the files on (or are unknown): used in the local build, never published.
-# The game falls back without them (synthesised sounds, shader grounds); see art/manifest.json "localOnly".
+# source material that is not passed on as files: the raw downloads, and the battle sounds as standalone audio files.
+# The released single-file game (release/index.html) carries the sounds inside it; a source checkout without them plays
+# the synthesised recipes instead. See art/manifest.json "localOnly".
 art/raw/audio/selab/
 game/src/assets/sfx/shot.mp3
 game/src/assets/sfx/hit.mp3
 game/src/assets/sfx/kill.mp3
 game/src/assets/sfx/boom.mp3
 game/src/assets/sfx/bossdown.mp3
+game/src/assets/sfx/hurt.mp3
 art/raw/leg5/bg/
 art/raw/leg6/bg/
-game/src/assets/leg5/
-game/src/assets/leg6/
