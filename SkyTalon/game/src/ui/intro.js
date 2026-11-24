@@ -89,7 +89,7 @@ export const INTROS = { 0: PROLOGUE, 1: LEG1, 2: LEG2, 3: LEG3, 4: LEG4, 5: LEG5
 /** Play the cutscene over the page; resolves when it ends or is skipped. Plays nothing (resolves at once) if a
  *  picture fails to load. `onReveal` runs the moment it starts to hand over (the match starts under the film), so the
  *  last thing seen is the camera diving into the sky and the battlefield coming through, never the stage map.
- *  `gate`: a line shown over the first picture; the film waits for a tap or key there (so audio may start: `onStart`).
+ *  `gate`: a line shown over the first picture, under the game's name (the name fades out once the film starts); the film waits for a tap or key there (so audio may start: `onStart`).
  *  `fade`: hand over with a plain fade instead of the dive (the opening fades into the stage map). */
 export function playIntro(leg, { onReveal, gate, onStart, fade = false } = {}) {
   const SCENES = INTROS[leg];
@@ -98,7 +98,7 @@ export function playIntro(leg, { onReveal, gate, onStart, fade = false } = {}) {
   return new Promise(resolve => {
     const root = document.createElement('div');
     root.className = 'intro';
-    root.innerHTML = '<div class="intro-film"></div><div class="intro-sub"></div><div class="intro-title" hidden>諸神黃昏<small>Twilight of the Gods</small></div>'
+    root.innerHTML = `<div class="intro-film"></div><div class="intro-sub"></div><div class="intro-title"${gate ? '' : ' hidden'}>諸神黃昏<b>最後出擊</b><small>Twilight of the Gods</small></div>`
       + (gate ? `<div class="intro-gate">${gate}</div>` : '') + '<button type="button" class="intro-skip">跳過 ▸</button>';
     const film = root.querySelector('.intro-film'), sub = root.querySelector('.intro-sub'), title = root.querySelector('.intro-title'), gateEl = root.querySelector('.intro-gate');
     let waiting = !!gate;
@@ -122,7 +122,7 @@ export function playIntro(leg, { onReveal, gate, onStart, fade = false } = {}) {
         .to(root, { opacity: 0, duration: C.outro * 0.55, ease: 'power1.out' }, C.outro * 0.45);
     };
     // behind a gate, the first tap or key only starts the film; after that a tap, Space, Enter or Esc skips it
-    const begin = () => { waiting = false; onStart?.(); gsap.to(gateEl, { opacity: 0, duration: 0.3, onComplete: () => gateEl.remove() }); if (ready) tl.play(0); };
+    const begin = () => { waiting = false; onStart?.(); gsap.to(gateEl, { opacity: 0, duration: 0.3, onComplete: () => gateEl.remove() }); gsap.to(title, { opacity: 0, duration: 0.8, ease: 'power1.in' }); if (ready) tl.play(0); };
     const onKey = e => { if ([' ', 'Enter', 'Escape'].includes(e.key)) { e.preventDefault(); e.stopPropagation(); if (waiting) begin(); else finish(); } };
     root.addEventListener('pointerdown', e => { e.stopPropagation(); if (waiting && !e.target.closest('.intro-skip')) begin(); else { onStart?.(); finish(); } });
     addEventListener('keydown', onKey, true);

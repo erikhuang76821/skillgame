@@ -110,11 +110,11 @@ export const FEEL = {
   // (seconds; the camera dives to dive× while the battlefield fades in),
   // embers per burning scene, speed lines at the launch, shake in px when the wave wall rises
   intro: { scene: [3.6, 3.8, 3.2, 3.4], fade: 0.7, hold: 0.4, outro: 0.8, dive: 1.6, embers: 18, streaks: 26, shake: 8 },
-  // steering feel (input layer only; the sim still takes one direction per tick at full speed, so a slower pace is the
-  // share of ticks that carry the direction). Stick: screen px. min = the pace just past the dead zone, curve shapes the
-  // rest (above 1 = finer near the centre), full = the deflection that reaches full speed. The pace starts at `start` when
-  // steering begins and climbs by `accel` per tick to what the stick (or a key, always full) asks for; letting go stops at once.
-  steer: { dead: 10, full: 56, reach: 56, min: 0.28, curve: 1.6, start: 0.35, accel: 0.07 },
+  // steering feel (input layer only; the sim still takes one direction per tick at full speed). Keys: the pace starts at
+  // `start` and climbs by `accel` per tick (a share of ticks carries the direction). Drag: the aim point moves by the
+  // finger's travel times `gain`, and the ship flies to it at full speed.
+  steer: { start: 0.35, accel: 0.07 },
+  drag: { gain: 1.2 },
   l5: { warn: 0.34, live: 0.75, prom: 0xff8a2a, flare: 0xffc24a, flareAlpha: 0.38, shade: 0x5a2a10, shadeAlpha: 0.22,
     // the flare (view: soft lanes, no flat boxes): pillar colour and its glow, the glare from start to end of the countdown,
     // breathing rate (rad/s), motes of light rising in the gaps, the burst's fill and bloom and how long its afterglow lasts (s)

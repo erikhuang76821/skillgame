@@ -125,7 +125,7 @@ input 佇列 ─▶ sim.step()（固定 1/60 s，可一幀多步）─▶ sim.ev
 | 安全區 | `env(safe-area-inset-*)` 轉邏輯 px |
 | 電腦 / 平板 | 同一直版欄位置中，兩側模糊主視覺 |
 | 手機橫拿 | 全屏轉向提示並暫停 |
-| 觸控 | 主要按鈕 ≥ 44 pt；浮動搖桿（任意處拖曳）、輕點 < 220 ms = 動作 |
+| 觸控 | 主要按鈕 ≥ 44 pt；自由走位用相對拖曳追點（[13 §5](13_input-fairness.md)），輕點 < 220 ms = 動作 |
 | 外殼 | PWA（`orientation: portrait`），必要時 Capacitor |
 
 ## 8. 範本與起手

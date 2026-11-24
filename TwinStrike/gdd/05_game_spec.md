@@ -60,7 +60,7 @@
 
 - `encode(lanes, phase) = lanes | (phase << 4)`，與 `examples/rhythm` 相同。
 - 同一 tick 同時有左右兩個點擊：先判左、再判右（固定順序）。譜面保證不會出現左右同時（§3 間距規則），所以不影響公平。
-- 鍵盤需要補接 `KeyboardEvent`（範本只接了 pointer，[13 §5](../../knowledge-base/13_input-fairness.md)）。
+- 鍵盤需要補接 `KeyboardEvent`（範本只接了 pointer，[13 §6](../../knowledge-base/13_input-fairness.md)）。
 - 延遲校正 `calibrate()` 的結果寫進 `rec.meta.inputOffsetMs`，排位前強制做一次。
 
 ## §3 隨機來源（v3）

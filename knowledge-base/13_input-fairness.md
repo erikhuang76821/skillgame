@@ -3,7 +3,7 @@ id: KB-input-fairness
 kind: method
 topic: [input, fairness]
 genre: ["*"]
-reviewedAt: 2026-10-21
+reviewedAt: 2026-11-24
 ---
 # 13 輸入公平性 — 時間戳輸入、延遲校正、防巨集
 
@@ -62,7 +62,32 @@ rec.meta.lateTaps = taps.late;                                // 結束時，給
 
 這兩個只是**標記**，不直接作廢——真正的處理流程（人工複查、高額獎金局抽查、誤判申訴）仍屬 [09](09_knowledge-gaps.md) G9。門檻要用真人試玩資料重設。
 
-## 5. 還沒做到的
+## 5. 自由移動的觸控：相對拖曳追點
+<!-- card: KB-input-fairness.drag-to-aim; genre=shmup,survivor,arena; skillAxis=aim,reaction; topic=input,ux -->
+
+適用：機體在平面上自由走位、靠閃避與站位得分的品類（直版彈幕、倖存者、競技場）。不適用：比時機的點擊類（用 §1–§3）、要瞄準方向的雙搖桿射擊。
+
+**做法**：手指在畫面任何地方按下拖曳，移動的是一個「目標點」，不是機體。目標點跟著手指的位移量走（乘上靈敏度），機體每 tick 朝目標點全速飛，到了就停；放手後機體飛完剩下的距離再停。
+
+| 比較 | 浮動虛擬搖桿 | 相對拖曳追點 |
+|---|---|---|
+| 手指與機體 | 手指管方向，機體不跟手 | 機體跟著手指的移動量走，手指不必壓在機體上（不擋視線，E3） |
+| 精細走位 | 靠推桿深淺換速度，小幅修正難 | 手指動 2 px 機體就動 2 px 左右，貼彈微調直覺 |
+| 學習 | 要先理解搖桿 | 拖到哪飛到哪，零說明 |
+| 放手 | 立刻停 | 飛到目標點才停 |
+
+**確定性接法**（sim 輸入格式不變）：
+
+- 目標點存在輸入層，單位用 sim 的定點座標；`pointerdown` 時設成機體目前位置，`pointermove` 加上（手指位移 ÷ 畫面縮放 × 靈敏度），並限制在可飛範圍內。
+- 每 tick 依「目標點 − 機體」決定 8 向方向碼：每軸誤差超過**半步**（當下速度 ÷ 2，含推進器等加速）才往該軸走，否則該軸不動。用半步當門檻，機體會停在目標點上，不會來回抖。
+- sim 仍只收方向碼，所以紀錄、重播、驗分、技巧證據的 bot 都不用改，也不必升 `GAME.version`；速度上限仍由 sim 決定，觸控不會比鍵盤快。
+- 鍵盤按下時清掉目標點，回到鍵盤操控。暫停、選卡、重開、失焦一律清掉目標點與手指。
+- 只認第一根手指（鎖 `pointerId`、`setPointerCapture`），HUD 按鈕 `stopPropagation`，不讓按暫停變成拖曳。
+- 靈敏度是手感數值，放 `FEEL`（參考作品約 1.2）。
+
+實作：[SkyTalon/game/src/main.js](../SkyTalon/game/src/main.js) 的 `moveAim` 與 `directionCode`；觀察來源見 [15 §5](15_reference-games.md)。
+
+## 6. 還沒做到的
 <!-- card: KB-input-fairness.todo; kind=gap -->
 
 - ~~校正畫面 UI~~ ✅ 2026-10-21：實作範例在 [TwinStrike/game/src/ui/calibration.js](../TwinStrike/game/src/ui/calibration.js)（聽拍 + 看閃光兩輪，觸控 offset 與音訊延遲分開量；說明見 [TwinStrike gdd/06 §8.1](../TwinStrike/gdd/06_combo_feel.md)）。

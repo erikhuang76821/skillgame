@@ -5,7 +5,7 @@ import { Application } from 'pixi.js';
 import { gsap } from 'gsap';
 import { Recorder, verify, ONE } from './sim/core/index.js';
 import { InputClock } from './sim/core/input.js';
-import { GAME, TICK_MS, SCRIPT, SHIELDS, KIND, BOSS_SLOTS, GEAR, UPGRADE, CHAPTERS, CHAPTER_FROM, UNIT_TICKS, GEAR_MAX_LV, WORLD_W, WORLD_H, OBST_R, RAPID, BARRIER, SPREAD, LASER, WINGMAN, PIERCE, HEAVY, THRUSTERS, isBoss, isMid, shieldMax, clock as scriptClock, sectionAt, scoreBreakdown } from './sim/sim.js';
+import { GAME, TICK_MS, SCRIPT, SHIELDS, KIND, BOSS_SLOTS, GEAR, UPGRADE, CHAPTERS, CHAPTER_FROM, UNIT_TICKS, GEAR_MAX_LV, WORLD_W, WORLD_H, OBST_R, RAPID, BARRIER, SPREAD, LASER, WINGMAN, PIERCE, HEAVY, THRUSTERS, THRUST_SPEED, PLAYER_SPEED, BOOST_SPEED, PLAYER_MARGIN_X, PLAYER_MIN_Y, PLAYER_MAX_Y, isBoss, isMid, shieldMax, clock as scriptClock, sectionAt, scoreBreakdown } from './sim/sim.js';
 import { GAME6 } from './sim/leg6.js';
 import { GAME2 } from './sim/leg2.js';
 import { GAME3 } from './sim/leg3.js';
@@ -80,43 +80,39 @@ if (import.meta.env.DEV) {
 const CODE = [[6, 5, 4], [7, 0, 3], [8, 1, 2]];             // [dy + 1][dx + 1]
 const keys = new Set();
 const KEY_DIR = { ArrowLeft: [-1, 0], a: [-1, 0], ArrowRight: [1, 0], d: [1, 0], ArrowUp: [0, -1], w: [0, -1], ArrowDown: [0, 1], s: [0, 1] };
-// A virtual stick: pressing anywhere on the play field puts the stick's centre there; dragging away from it steers in
-// that direction (one of eight, by 45-degree sectors), and letting go stops. The ship does not follow the finger, so the
-// finger never covers it (E3). Screen px, so it feels the same on every screen size.
-let pointer = null;                                         // { ox, oy, x, y } client px while a finger / button is down
-let pace = 0, paceAcc = 0;                                  // the current pace (0..1) and the error carried between ticks
-const stick = document.createElement('div');
-stick.className = 'stick'; stick.hidden = true; stick.innerHTML = '<i></i>';
-document.body.append(stick);
-function showStick() {
-  if (!pointer) { stick.hidden = true; return; }
-  const R = FEEL.steer.reach, dx = pointer.x - pointer.ox, dy = pointer.y - pointer.oy, m = Math.hypot(dx, dy), k = m > R ? R / m : 1;
-  stick.hidden = false;
-  stick.style.left = `${pointer.ox}px`; stick.style.top = `${pointer.oy}px`;
-  stick.firstChild.style.transform = `translate(${dx * k}px, ${dy * k}px)`;
+// Drag to fly: a finger anywhere on the play field moves an aim point by the finger's own travel (times FEEL.drag.gain),
+// and the ship flies after that point at full speed, then stops on it. The finger does not have to sit on the ship, so it
+// never covers it (E3). The aim is in sim sub-pixels and the sim still gets one of the nine codes per tick, so a record and
+// its replay are unchanged.
+let pointer = null;                                         // { x, y } client px of the finger that steers
+let aim = null;                                             // { x, y } sim sub-px the ship is flying to
+let pace = 0, paceAcc = 0;                                  // keys: the current pace (0..1) and the error carried between ticks
+const shipSpeed = sim => (sim.gear[THRUSTERS] ? THRUST_SPEED[sim.gear[THRUSTERS] - 1] : PLAYER_SPEED) + (sim.boost > 0 ? BOOST_SPEED : 0);
+function moveAim(dx, dy) {
+  const k = (FEEL.drag.gain * ONE) / view.scale;
+  aim.x = Math.min((WORLD_W - PLAYER_MARGIN_X) * ONE, Math.max(PLAYER_MARGIN_X * ONE, aim.x + dx * k));
+  aim.y = Math.min(PLAYER_MAX_Y * ONE, Math.max(PLAYER_MIN_Y * ONE, aim.y + dy * k));
 }
-// One tick's direction code. A small push of the stick flies slower than a full one, and every start builds up speed:
-// the pace (0..1) is spread over the ticks by carrying the remainder (a pace of 0.5 steers every other tick), so what
-// the sim records stays one of the nine codes and a replay is unchanged.
-function directionCode() {
+// One tick's direction code. Keys build up speed (the pace is spread over the ticks by carrying the remainder); the drag
+// heads for the aim on each axis that is more than half a step away, so the ship settles on the point without jitter.
+function directionCode(sim) {
   const S = FEEL.steer;
-  let dx = 0, dy = 0, want = 0;
+  let dx = 0, dy = 0;
   for (const k of keys) { const d = KEY_DIR[k]; if (d) { dx += d[0]; dy += d[1]; } }
-  if (dx || dy) want = 1;
-  else if (pointer) {
-    const tx = pointer.x - pointer.ox, ty = pointer.y - pointer.oy, m = Math.hypot(tx, ty);
-    if (m > S.dead) {
-      const a = Math.round(Math.atan2(ty, tx) / (Math.PI / 4)) * (Math.PI / 4);
-      dx = Math.round(Math.cos(a)); dy = Math.round(Math.sin(a));
-      want = S.min + (1 - S.min) * Math.pow(Math.min(1, (m - S.dead) / (S.full - S.dead)), S.curve);
-    }
+  if (dx || dy) {
+    aim = null;
+    pace = pace === 0 ? S.start : Math.min(1, pace + S.accel);
+    paceAcc += pace;
+    if (paceAcc < 1) return 0;
+    paceAcc -= 1;
+    return CODE[Math.sign(dy) + 1][Math.sign(dx) + 1];
   }
-  if (!want) { pace = 0; paceAcc = 0; return 0; }
-  pace = pace === 0 ? Math.min(want, S.start) : pace < want ? Math.min(want, pace + S.accel) : want;
-  paceAcc += pace;
-  if (paceAcc < 1) return 0;
-  paceAcc -= 1;
-  return CODE[Math.sign(dy) + 1][Math.sign(dx) + 1];
+  pace = 0; paceAcc = 0;
+  if (!aim) return 0;
+  const half = (shipSpeed(sim) * ONE) / 2, ex = aim.x - sim.px, ey = aim.y - sim.py;
+  dx = ex > half ? 1 : ex < -half ? -1 : 0; dy = ey > half ? 1 : ey < -half ? -1 : 0;
+  if (!dx && !dy && !pointer) aim = null;                    // arrived after the finger let go
+  return CODE[dy + 1][dx + 1];
 }
 addEventListener('keydown', e => {
   sfx.unlock();
@@ -129,14 +125,14 @@ addEventListener('keydown', e => {
   if (state === 'title' && !introOn && (KEY_DIR[k] || k === ' ' || k === 'Enter')) start();
 });
 addEventListener('keyup', e => keys.delete(e.key.length === 1 ? e.key.toLowerCase() : e.key));
-addEventListener('blur', () => { keys.clear(); pointer = null; });
+addEventListener('blur', () => { keys.clear(); pointer = aim = null; });
 // the stage map's quiet theme: after the opening, on the way back from a match, or at the first tap when the opening was skipped
 addEventListener('pointerdown', () => { if (state === 'title' && !introOn && !music.theme) { sfx.unlock(); music.play('menu'); } });
 stage.addEventListener('pointerdown', e => {
   sfx.unlock();
   if (state === 'play' && !paused) {
-    pointer = { ox: e.clientX, oy: e.clientY, x: e.clientX, y: e.clientY };
-    showStick();
+    pointer = { x: e.clientX, y: e.clientY };
+    aim = { x: rec.sim.px, y: rec.sim.py };
     try { stage.setPointerCapture(e.pointerId); } catch { /* the pointer is already gone; steering still works */ }
   }
 });
@@ -161,13 +157,13 @@ if (import.meta.env.DEV && new URLSearchParams(location.search).has('unlock')) {
 const legBestKey = i => `sky-talon-leg-best-${i}`;
 const refreshMap = () => map.refresh(Number(store.get(LEGS_KEY) || 0), LEGS.map((_, i) => Number(store.get(legBestKey(i))) || 0));
 refreshMap();
-stage.addEventListener('pointermove', e => { if (pointer) { pointer.x = e.clientX; pointer.y = e.clientY; showStick(); } });
-for (const t of ['pointerup', 'pointercancel']) stage.addEventListener(t, () => { pointer = null; showStick(); });
+stage.addEventListener('pointermove', e => { if (pointer && aim) { moveAim(e.clientX - pointer.x, e.clientY - pointer.y); pointer.x = e.clientX; pointer.y = e.clientY; } });
+for (const t of ['pointerup', 'pointercancel']) stage.addEventListener(t, () => { pointer = null; });
 document.getElementById('btn-retry').addEventListener('click', () => { sfx.unlock(); sfx.play('click'); start(); });
 // another stage: back to the stage map (the next seed is ready there), not straight into a match
 document.getElementById('btn-next').addEventListener('click', () => {
   sfx.unlock(); sfx.play('click'); seed = (seed + 1) >>> 0; music.play('menu');
-  rec = new Recorder(game, seed); view.clearFx(); pointer = null; pickOpen = false; resumeAt = 0;
+  rec = new Recorder(game, seed); view.clearFx(); pointer = aim = null; pickOpen = false; resumeAt = 0;
   hud.result(null); hud.pick(null); hud.reset(SHIELDS); hud.title(true); state = 'title'; map.toStart();
 });
 // a leg flown to the end: back to the stage map, which points at the leg that has just opened
@@ -396,7 +392,7 @@ function setPause(on) {
   if (on) {
     pausesLeft--; showPausesLeft();
     pauseBtn.classList.add('down');
-    pausedAt = now; pickBoost = false; pointer = null; keys.clear(); showStick(); sfx.play('click');
+    pausedAt = now; pickBoost = false; pointer = aim = null; keys.clear(); sfx.play('click');
   } else { resumeAt = now + COUNT_IN; countIn = resumeAt; }
 }
 function leavePause() { paused = false; pausePanel.hidden = true; }
@@ -405,7 +401,7 @@ pauseBtn.addEventListener('click', e => { e.stopPropagation(); sfx.unlock(); set
 document.getElementById('btn-resume').addEventListener('click', () => { sfx.play('click'); setPause(false); });
 document.addEventListener('visibilitychange', () => { if (document.hidden) setPause(true); });
 function openPick(now) {
-  pickOpen = true; pickShown = false; pickBoost = rec.sim.supply > 0; pausedAt = now; pointer = null; keys.clear();
+  pickOpen = true; pickShown = false; pickBoost = rec.sim.supply > 0; pausedAt = now; pointer = aim = null; keys.clear();
   if (auto) { pickShown = true; takePick(auto.pick(rec.sim)); return; }
   showAt = now + (pickBoost ? FEEL.pick.delay * 1000 : 0);
 }
@@ -460,7 +456,7 @@ function start() {
   if (CHEAT) applyCheat(rec.sim);
   clock = new InputClock(performance.now(), 0, TICK_MS);
   lastFrame = performance.now();                             // a stall before the match began is not a stall inside it
-  view.clearFx(); freeze = 0; pointer = null; pickOpen = false; pausedAt = 0; resumeAt = 0;
+  view.clearFx(); freeze = 0; pointer = aim = null; pickOpen = false; pausedAt = 0; resumeAt = 0;
   leavePause(); pausesLeft = FEEL.pause.max; countIn = 0;
   pauseBtn.disabled = false; pauseBtn.classList.remove('down'); hud.countdown(null);
   hud.reset(SHIELDS); hud.title(false); hud.result(null);
@@ -472,7 +468,7 @@ function finish() {
   pauseBtn.disabled = true; pauseBtn.classList.remove('down');
   state = 'over';
   showPausesLeft();
-  pointer = null;
+  pointer = aim = null;
   const sim = rec.sim, b = scoreBreakdown(sim), up = rec.upload(), v = verify(game, up);
   const cleared = sim.won === 1;
   // a leg flown to the end opens the next one on the map; in the dev build a skipped-ahead test run counts too
@@ -516,14 +512,13 @@ app.ticker.add(t => {
     }
     // no numbers: a supply is followed at once by the boost, which is the cue to fly again
   }
-  if (!pointer && !stick.hidden) stick.hidden = true;        // a choice, a restart or the end let go of the stick
   if (state === 'play' && pickOpen && !pickShown && now >= showAt) showPick();
   if (state === 'play' && !pickOpen && !resumeAt && !paused) {
     if (now - lastFrame > 250) clock.skip(now - lastFrame - TICK_MS);   // hidden tab / long hitch: pause, don't fast-forward
     const upTo = clock.targetTick(now);
     while (rec.phase === 'play' && rec.sim.tick <= upTo) {
       if (CHEAT?.god) rec.sim.shields = rec.sim.maxShields;
-      rec.step(auto ? auto.input(rec.sim) : directionCode());
+      rec.step(auto ? auto.input(rec.sim) : directionCode(rec.sim));
       for (const ev of rec.sim.events) playJuice(ev, rec.sim);
     }
     if (rec.phase === 'choice') openPick(now);
