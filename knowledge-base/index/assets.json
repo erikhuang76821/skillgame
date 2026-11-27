@@ -9,7 +9,7 @@
   },
   {
    "path": "BladeOath/art/manifest.json",
-   "sha256": "sha256:8792308e5f31aeb20be51190e8db5d8b958fa5c9aa2f43854c10a3f3fba904e9"
+   "sha256": "sha256:4b0b82df41ff80532cdea9a7260ee52b35ca3b82ce54a8ee8b4f3790732a2324"
   },
   {
    "path": "LanternHold/art/manifest.json",
@@ -882,10 +882,10 @@
    "kind": "sprite-sheet",
    "status": "shipped",
    "reusePolicy": "reusable",
-   "name": "玩家・劍客：賽璐璐 9 姿勢（待機、走、起手、出招、格擋、閃避、受擊、跳、倒地）",
+   "name": "玩家・劍客：賽璐璐 12 姿勢（待機、走路 4 格、起手、出招、格擋、閃避、受擊、跳、倒地）",
    "files": {
     "raw": [
-     "BladeOath/art/raw/cel_chr_player_t1.png"
+     "BladeOath/art/raw/cel_chr_player_t2.png"
     ],
     "prompt": [
      "BladeOath/art/prompts/cel_chr_player.txt"
@@ -902,7 +902,10 @@
     "scaleMode": "linear",
     "frames": [
      "player/idle",
-     "player/walk",
+     "player/walk1",
+     "player/walk2",
+     "player/walk3",
+     "player/walk4",
      "player/windup",
      "player/strike",
      "player/guard",
@@ -916,8 +919,8 @@
    },
    "provenance": {
     "generator": "picanywhere (gpt-image-2)",
-    "job": "job_20261126-174921_609（角色、場景、道具）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
-    "pipeline": "art/tools/cel_build.py（去背與去溢色 → 以每欄密度找 9 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
+    "job": "job_20261127-084803_658（角色 12 姿勢 t2）；job_20261126-174921_609（場景、道具；角色 t1 已被 t2 取代）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
+    "pipeline": "art/tools/cel_build.py（去背與去溢色 → 先切上下兩列、再以每欄密度找 6 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
     "log": "art/raw/LOG.md"
    },
    "style": [
@@ -934,8 +937,8 @@
     "character",
     "pose-sheet"
    ],
-   "reusable": "換角色時改 cel_prompts.py 的 CHARS 描述重生；9 姿勢順序與 render/cel.js 的 celPose 對應",
-   "contentHash": "sha256:0fe6641df08038af4d98f72dc113d7ff170070315c335c75e1c1baebbbe81c0b",
+   "reusable": "換角色時改 cel_prompts.py 的 CHARS 描述重生；12 姿勢順序與 render/cel.js 的 POSES／celPose 對應",
+   "contentHash": "sha256:f51459a84d05f1f8dadbfe8c39b259115a2f0ec2091d30868575a2a2f3e4f529",
    "game": "BladeOath"
   },
   {
@@ -943,10 +946,10 @@
    "kind": "sprite-sheet",
    "status": "shipped",
    "reusePolicy": "reusable",
-   "name": "屍兵：賽璐璐 9 姿勢（待機、走、起手、出招、格擋、閃避、受擊、跳、倒地）",
+   "name": "屍兵：賽璐璐 12 姿勢（待機、走路 4 格、起手、出招、格擋、閃避、受擊、跳、倒地）",
    "files": {
     "raw": [
-     "BladeOath/art/raw/cel_chr_soldier_t1.png"
+     "BladeOath/art/raw/cel_chr_soldier_t2.png"
     ],
     "prompt": [
      "BladeOath/art/prompts/cel_chr_soldier.txt"
@@ -963,7 +966,10 @@
     "scaleMode": "linear",
     "frames": [
      "soldier/idle",
-     "soldier/walk",
+     "soldier/walk1",
+     "soldier/walk2",
+     "soldier/walk3",
+     "soldier/walk4",
      "soldier/windup",
      "soldier/strike",
      "soldier/guard",
@@ -977,8 +983,8 @@
    },
    "provenance": {
     "generator": "picanywhere (gpt-image-2)",
-    "job": "job_20261126-174921_609（角色、場景、道具）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
-    "pipeline": "art/tools/cel_build.py（去背與去溢色 → 以每欄密度找 9 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
+    "job": "job_20261127-084803_658（角色 12 姿勢 t2）；job_20261126-174921_609（場景、道具；角色 t1 已被 t2 取代）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
+    "pipeline": "art/tools/cel_build.py（去背與去溢色 → 先切上下兩列、再以每欄密度找 6 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
     "log": "art/raw/LOG.md"
    },
    "style": [
@@ -995,8 +1001,8 @@
     "character",
     "pose-sheet"
    ],
-   "reusable": "換角色時改 cel_prompts.py 的 CHARS 描述重生；9 姿勢順序與 render/cel.js 的 celPose 對應",
-   "contentHash": "sha256:0fe6641df08038af4d98f72dc113d7ff170070315c335c75e1c1baebbbe81c0b",
+   "reusable": "換角色時改 cel_prompts.py 的 CHARS 描述重生；12 姿勢順序與 render/cel.js 的 POSES／celPose 對應",
+   "contentHash": "sha256:f51459a84d05f1f8dadbfe8c39b259115a2f0ec2091d30868575a2a2f3e4f529",
    "game": "BladeOath"
   },
   {
@@ -1004,10 +1010,10 @@
    "kind": "sprite-sheet",
    "status": "shipped",
    "reusePolicy": "reusable",
-   "name": "蠱蟲：賽璐璐 9 姿勢（待機、走、起手、出招、格擋、閃避、受擊、跳、倒地）",
+   "name": "蠱蟲：賽璐璐 12 姿勢（待機、走路 4 格、起手、出招、格擋、閃避、受擊、跳、倒地）",
    "files": {
     "raw": [
-     "BladeOath/art/raw/cel_chr_bug_t1.png"
+     "BladeOath/art/raw/cel_chr_bug_t2.png"
     ],
     "prompt": [
      "BladeOath/art/prompts/cel_chr_bug.txt"
@@ -1024,7 +1030,10 @@
     "scaleMode": "linear",
     "frames": [
      "bug/idle",
-     "bug/walk",
+     "bug/walk1",
+     "bug/walk2",
+     "bug/walk3",
+     "bug/walk4",
      "bug/windup",
      "bug/strike",
      "bug/guard",
@@ -1038,8 +1047,8 @@
    },
    "provenance": {
     "generator": "picanywhere (gpt-image-2)",
-    "job": "job_20261126-174921_609（角色、場景、道具）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
-    "pipeline": "art/tools/cel_build.py（去背與去溢色 → 以每欄密度找 9 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
+    "job": "job_20261127-084803_658（角色 12 姿勢 t2）；job_20261126-174921_609（場景、道具；角色 t1 已被 t2 取代）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
+    "pipeline": "art/tools/cel_build.py（去背與去溢色 → 先切上下兩列、再以每欄密度找 6 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
     "log": "art/raw/LOG.md"
    },
    "style": [
@@ -1056,8 +1065,8 @@
     "character",
     "pose-sheet"
    ],
-   "reusable": "換角色時改 cel_prompts.py 的 CHARS 描述重生；9 姿勢順序與 render/cel.js 的 celPose 對應",
-   "contentHash": "sha256:0fe6641df08038af4d98f72dc113d7ff170070315c335c75e1c1baebbbe81c0b",
+   "reusable": "換角色時改 cel_prompts.py 的 CHARS 描述重生；12 姿勢順序與 render/cel.js 的 POSES／celPose 對應",
+   "contentHash": "sha256:f51459a84d05f1f8dadbfe8c39b259115a2f0ec2091d30868575a2a2f3e4f529",
    "game": "BladeOath"
   },
   {
@@ -1065,10 +1074,10 @@
    "kind": "sprite-sheet",
    "status": "shipped",
    "reusePolicy": "reusable",
-   "name": "蠱師：賽璐璐 9 姿勢（待機、走、起手、出招、格擋、閃避、受擊、跳、倒地）",
+   "name": "蠱師：賽璐璐 12 姿勢（待機、走路 4 格、起手、出招、格擋、閃避、受擊、跳、倒地）",
    "files": {
     "raw": [
-     "BladeOath/art/raw/cel_chr_caster_t1.png"
+     "BladeOath/art/raw/cel_chr_caster_t2.png"
     ],
     "prompt": [
      "BladeOath/art/prompts/cel_chr_caster.txt"
@@ -1085,7 +1094,10 @@
     "scaleMode": "linear",
     "frames": [
      "caster/idle",
-     "caster/walk",
+     "caster/walk1",
+     "caster/walk2",
+     "caster/walk3",
+     "caster/walk4",
      "caster/windup",
      "caster/strike",
      "caster/guard",
@@ -1099,8 +1111,8 @@
    },
    "provenance": {
     "generator": "picanywhere (gpt-image-2)",
-    "job": "job_20261126-174921_609（角色、場景、道具）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
-    "pipeline": "art/tools/cel_build.py（去背與去溢色 → 以每欄密度找 9 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
+    "job": "job_20261127-084803_658（角色 12 姿勢 t2）；job_20261126-174921_609（場景、道具；角色 t1 已被 t2 取代）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
+    "pipeline": "art/tools/cel_build.py（去背與去溢色 → 先切上下兩列、再以每欄密度找 6 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
     "log": "art/raw/LOG.md"
    },
    "style": [
@@ -1117,8 +1129,8 @@
     "character",
     "pose-sheet"
    ],
-   "reusable": "換角色時改 cel_prompts.py 的 CHARS 描述重生；9 姿勢順序與 render/cel.js 的 celPose 對應",
-   "contentHash": "sha256:0fe6641df08038af4d98f72dc113d7ff170070315c335c75e1c1baebbbe81c0b",
+   "reusable": "換角色時改 cel_prompts.py 的 CHARS 描述重生；12 姿勢順序與 render/cel.js 的 POSES／celPose 對應",
+   "contentHash": "sha256:f51459a84d05f1f8dadbfe8c39b259115a2f0ec2091d30868575a2a2f3e4f529",
    "game": "BladeOath"
   },
   {
@@ -1126,10 +1138,10 @@
    "kind": "sprite-sheet",
    "status": "shipped",
    "reusePolicy": "reusable",
-   "name": "屍傀力士：賽璐璐 9 姿勢（待機、走、起手、出招、格擋、閃避、受擊、跳、倒地）",
+   "name": "屍傀力士：賽璐璐 12 姿勢（待機、走路 4 格、起手、出招、格擋、閃避、受擊、跳、倒地）",
    "files": {
     "raw": [
-     "BladeOath/art/raw/cel_chr_brute_t1.png"
+     "BladeOath/art/raw/cel_chr_brute_t2.png"
     ],
     "prompt": [
      "BladeOath/art/prompts/cel_chr_brute.txt"
@@ -1146,7 +1158,10 @@
     "scaleMode": "linear",
     "frames": [
      "brute/idle",
-     "brute/walk",
+     "brute/walk1",
+     "brute/walk2",
+     "brute/walk3",
+     "brute/walk4",
      "brute/windup",
      "brute/strike",
      "brute/guard",
@@ -1160,8 +1175,8 @@
    },
    "provenance": {
     "generator": "picanywhere (gpt-image-2)",
-    "job": "job_20261126-174921_609（角色、場景、道具）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
-    "pipeline": "art/tools/cel_build.py（去背與去溢色 → 以每欄密度找 9 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
+    "job": "job_20261127-084803_658（角色 12 姿勢 t2）；job_20261126-174921_609（場景、道具；角色 t1 已被 t2 取代）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
+    "pipeline": "art/tools/cel_build.py（去背與去溢色 → 先切上下兩列、再以每欄密度找 6 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
     "log": "art/raw/LOG.md"
    },
    "style": [
@@ -1178,8 +1193,8 @@
     "character",
     "pose-sheet"
    ],
-   "reusable": "換角色時改 cel_prompts.py 的 CHARS 描述重生；9 姿勢順序與 render/cel.js 的 celPose 對應",
-   "contentHash": "sha256:0fe6641df08038af4d98f72dc113d7ff170070315c335c75e1c1baebbbe81c0b",
+   "reusable": "換角色時改 cel_prompts.py 的 CHARS 描述重生；12 姿勢順序與 render/cel.js 的 POSES／celPose 對應",
+   "contentHash": "sha256:f51459a84d05f1f8dadbfe8c39b259115a2f0ec2091d30868575a2a2f3e4f529",
    "game": "BladeOath"
   },
   {
@@ -1187,10 +1202,10 @@
    "kind": "sprite-sheet",
    "status": "shipped",
    "reusePolicy": "reusable",
-   "name": "蠱母（精英）：賽璐璐 9 姿勢（待機、走、起手、出招、格擋、閃避、受擊、跳、倒地）",
+   "name": "蠱母（精英）：賽璐璐 12 姿勢（待機、走路 4 格、起手、出招、格擋、閃避、受擊、跳、倒地）",
    "files": {
     "raw": [
-     "BladeOath/art/raw/cel_chr_mother_t1.png"
+     "BladeOath/art/raw/cel_chr_mother_t2.png"
     ],
     "prompt": [
      "BladeOath/art/prompts/cel_chr_mother.txt"
@@ -1207,7 +1222,10 @@
     "scaleMode": "linear",
     "frames": [
      "mother/idle",
-     "mother/walk",
+     "mother/walk1",
+     "mother/walk2",
+     "mother/walk3",
+     "mother/walk4",
      "mother/windup",
      "mother/strike",
      "mother/guard",
@@ -1221,8 +1239,8 @@
    },
    "provenance": {
     "generator": "picanywhere (gpt-image-2)",
-    "job": "job_20261126-174921_609（角色、場景、道具）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
-    "pipeline": "art/tools/cel_build.py（去背與去溢色 → 以每欄密度找 9 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
+    "job": "job_20261127-084803_658（角色 12 姿勢 t2）；job_20261126-174921_609（場景、道具；角色 t1 已被 t2 取代）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
+    "pipeline": "art/tools/cel_build.py（去背與去溢色 → 先切上下兩列、再以每欄密度找 6 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
     "log": "art/raw/LOG.md"
    },
    "style": [
@@ -1239,8 +1257,8 @@
     "character",
     "pose-sheet"
    ],
-   "reusable": "換角色時改 cel_prompts.py 的 CHARS 描述重生；9 姿勢順序與 render/cel.js 的 celPose 對應",
-   "contentHash": "sha256:0fe6641df08038af4d98f72dc113d7ff170070315c335c75e1c1baebbbe81c0b",
+   "reusable": "換角色時改 cel_prompts.py 的 CHARS 描述重生；12 姿勢順序與 render/cel.js 的 POSES／celPose 對應",
+   "contentHash": "sha256:f51459a84d05f1f8dadbfe8c39b259115a2f0ec2091d30868575a2a2f3e4f529",
    "game": "BladeOath"
   },
   {
@@ -1248,10 +1266,10 @@
    "kind": "sprite-sheet",
    "status": "shipped",
    "reusePolicy": "reusable",
-   "name": "屍傀將（中頭目）：賽璐璐 9 姿勢（待機、走、起手、出招、格擋、閃避、受擊、跳、倒地）",
+   "name": "屍傀將（中頭目）：賽璐璐 12 姿勢（待機、走路 4 格、起手、出招、格擋、閃避、受擊、跳、倒地）",
    "files": {
     "raw": [
-     "BladeOath/art/raw/cel_chr_general_t1.png"
+     "BladeOath/art/raw/cel_chr_general_t2.png"
     ],
     "prompt": [
      "BladeOath/art/prompts/cel_chr_general.txt"
@@ -1268,7 +1286,10 @@
     "scaleMode": "linear",
     "frames": [
      "general/idle",
-     "general/walk",
+     "general/walk1",
+     "general/walk2",
+     "general/walk3",
+     "general/walk4",
      "general/windup",
      "general/strike",
      "general/guard",
@@ -1282,8 +1303,8 @@
    },
    "provenance": {
     "generator": "picanywhere (gpt-image-2)",
-    "job": "job_20261126-174921_609（角色、場景、道具）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
-    "pipeline": "art/tools/cel_build.py（去背與去溢色 → 以每欄密度找 9 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
+    "job": "job_20261127-084803_658（角色 12 姿勢 t2）；job_20261126-174921_609（場景、道具；角色 t1 已被 t2 取代）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
+    "pipeline": "art/tools/cel_build.py（去背與去溢色 → 先切上下兩列、再以每欄密度找 6 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
     "log": "art/raw/LOG.md"
    },
    "style": [
@@ -1300,8 +1321,8 @@
     "character",
     "pose-sheet"
    ],
-   "reusable": "換角色時改 cel_prompts.py 的 CHARS 描述重生；9 姿勢順序與 render/cel.js 的 celPose 對應",
-   "contentHash": "sha256:0fe6641df08038af4d98f72dc113d7ff170070315c335c75e1c1baebbbe81c0b",
+   "reusable": "換角色時改 cel_prompts.py 的 CHARS 描述重生；12 姿勢順序與 render/cel.js 的 POSES／celPose 對應",
+   "contentHash": "sha256:f51459a84d05f1f8dadbfe8c39b259115a2f0ec2091d30868575a2a2f3e4f529",
    "game": "BladeOath"
   },
   {
@@ -1309,10 +1330,10 @@
    "kind": "sprite-sheet",
    "status": "shipped",
    "reusePolicy": "reusable",
-   "name": "墮仙（終頭目）：賽璐璐 9 姿勢（待機、走、起手、出招、格擋、閃避、受擊、跳、倒地）",
+   "name": "墮仙（終頭目）：賽璐璐 12 姿勢（待機、走路 4 格、起手、出招、格擋、閃避、受擊、跳、倒地）",
    "files": {
     "raw": [
-     "BladeOath/art/raw/cel_chr_fallen_t1.png"
+     "BladeOath/art/raw/cel_chr_fallen_t2.png"
     ],
     "prompt": [
      "BladeOath/art/prompts/cel_chr_fallen.txt"
@@ -1329,7 +1350,10 @@
     "scaleMode": "linear",
     "frames": [
      "fallen/idle",
-     "fallen/walk",
+     "fallen/walk1",
+     "fallen/walk2",
+     "fallen/walk3",
+     "fallen/walk4",
      "fallen/windup",
      "fallen/strike",
      "fallen/guard",
@@ -1343,8 +1367,8 @@
    },
    "provenance": {
     "generator": "picanywhere (gpt-image-2)",
-    "job": "job_20261126-174921_609（角色、場景、道具）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
-    "pipeline": "art/tools/cel_build.py（去背與去溢色 → 以每欄密度找 9 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
+    "job": "job_20261127-084803_658（角色 12 姿勢 t2）；job_20261126-174921_609（場景、道具；角色 t1 已被 t2 取代）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
+    "pipeline": "art/tools/cel_build.py（去背與去溢色 → 先切上下兩列、再以每欄密度找 6 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
     "log": "art/raw/LOG.md"
    },
    "style": [
@@ -1361,8 +1385,8 @@
     "character",
     "pose-sheet"
    ],
-   "reusable": "換角色時改 cel_prompts.py 的 CHARS 描述重生；9 姿勢順序與 render/cel.js 的 celPose 對應",
-   "contentHash": "sha256:0fe6641df08038af4d98f72dc113d7ff170070315c335c75e1c1baebbbe81c0b",
+   "reusable": "換角色時改 cel_prompts.py 的 CHARS 描述重生；12 姿勢順序與 render/cel.js 的 POSES／celPose 對應",
+   "contentHash": "sha256:f51459a84d05f1f8dadbfe8c39b259115a2f0ec2091d30868575a2a2f3e4f529",
    "game": "BladeOath"
   },
   {
@@ -1396,8 +1420,8 @@
    },
    "provenance": {
     "generator": "picanywhere (gpt-image-2) / Codex CLI",
-    "job": "job_20261126-174921_609（角色、場景、道具）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
-    "pipeline": "art/tools/cel_build.py（去背與去溢色 → 以每欄密度找 9 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
+    "job": "job_20261127-084803_658（角色 12 姿勢 t2）；job_20261126-174921_609（場景、道具；角色 t1 已被 t2 取代）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
+    "pipeline": "art/tools/cel_build.py（去背與去溢色 → 先切上下兩列、再以每欄密度找 6 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
     "log": "art/raw/LOG.md"
    },
    "style": [
@@ -1451,8 +1475,8 @@
    },
    "provenance": {
     "generator": "picanywhere (gpt-image-2) / Codex CLI",
-    "job": "job_20261126-174921_609（角色、場景、道具）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
-    "pipeline": "art/tools/cel_build.py（去背與去溢色 → 以每欄密度找 9 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
+    "job": "job_20261127-084803_658（角色 12 姿勢 t2）；job_20261126-174921_609（場景、道具；角色 t1 已被 t2 取代）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
+    "pipeline": "art/tools/cel_build.py（去背與去溢色 → 先切上下兩列、再以每欄密度找 6 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
     "log": "art/raw/LOG.md"
    },
    "style": [
@@ -1506,8 +1530,8 @@
    },
    "provenance": {
     "generator": "picanywhere (gpt-image-2) / Codex CLI",
-    "job": "job_20261126-174921_609（角色、場景、道具）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
-    "pipeline": "art/tools/cel_build.py（去背與去溢色 → 以每欄密度找 9 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
+    "job": "job_20261127-084803_658（角色 12 姿勢 t2）；job_20261126-174921_609（場景、道具；角色 t1 已被 t2 取代）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
+    "pipeline": "art/tools/cel_build.py（去背與去溢色 → 先切上下兩列、再以每欄密度找 6 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
     "log": "art/raw/LOG.md"
    },
    "style": [
@@ -1561,8 +1585,8 @@
    },
    "provenance": {
     "generator": "picanywhere (gpt-image-2) / Codex CLI",
-    "job": "job_20261126-174921_609（角色、場景、道具）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
-    "pipeline": "art/tools/cel_build.py（去背與去溢色 → 以每欄密度找 9 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
+    "job": "job_20261127-084803_658（角色 12 姿勢 t2）；job_20261126-174921_609（場景、道具；角色 t1 已被 t2 取代）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
+    "pipeline": "art/tools/cel_build.py（去背與去溢色 → 先切上下兩列、再以每欄密度找 6 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
     "log": "art/raw/LOG.md"
    },
    "style": [
@@ -1616,8 +1640,8 @@
    },
    "provenance": {
     "generator": "picanywhere (gpt-image-2) / Codex CLI",
-    "job": "job_20261126-174921_609（角色、場景、道具）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
-    "pipeline": "art/tools/cel_build.py（去背與去溢色 → 以每欄密度找 9 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
+    "job": "job_20261127-084803_658（角色 12 姿勢 t2）；job_20261126-174921_609（場景、道具；角色 t1 已被 t2 取代）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
+    "pipeline": "art/tools/cel_build.py（去背與去溢色 → 先切上下兩列、再以每欄密度找 6 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
     "log": "art/raw/LOG.md"
    },
    "style": [
@@ -1671,8 +1695,8 @@
    },
    "provenance": {
     "generator": "picanywhere (gpt-image-2) / Codex CLI",
-    "job": "job_20261126-174921_609（角色、場景、道具）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
-    "pipeline": "art/tools/cel_build.py（去背與去溢色 → 以每欄密度找 9 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
+    "job": "job_20261127-084803_658（角色 12 姿勢 t2）；job_20261126-174921_609（場景、道具；角色 t1 已被 t2 取代）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
+    "pipeline": "art/tools/cel_build.py（去背與去溢色 → 先切上下兩列、再以每欄密度找 6 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
     "log": "art/raw/LOG.md"
    },
    "style": [
@@ -1734,8 +1758,8 @@
    },
    "provenance": {
     "generator": "picanywhere (gpt-image-2)",
-    "job": "job_20261126-174921_609（角色、場景、道具）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
-    "pipeline": "art/tools/cel_build.py（去背與去溢色 → 以每欄密度找 9 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
+    "job": "job_20261127-084803_658（角色 12 姿勢 t2）；job_20261126-174921_609（場景、道具；角色 t1 已被 t2 取代）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
+    "pipeline": "art/tools/cel_build.py（去背與去溢色 → 先切上下兩列、再以每欄密度找 6 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
     "log": "art/raw/LOG.md"
    },
    "style": [

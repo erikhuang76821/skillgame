@@ -3,26 +3,26 @@
  "schemaVersion": 1,
  "about": "產生物，禁止手改。來源：knowledge-base/ 各頁的 front-matter 與 <!-- card: … --> 標記，詞彙 shared/index/facets.json；重建：node shared/tools/index-build.mjs。",
  "counts": {
-  "pages": 20,
-  "cards": 134,
+  "pages": 21,
+  "cards": 138,
   "unindexed": 27,
   "byKind": {
    "gap": 4,
    "lesson": 6,
-   "method": 67,
+   "method": 68,
    "principle": 14,
    "recipe": 9,
-   "research": 34
+   "research": 37
   },
   "byTopic": {
-   "art": 28,
+   "art": 32,
    "audio": 11,
-   "budget": 8,
+   "budget": 9,
    "design": 24,
    "difficulty": 9,
    "fairness": 18,
    "input": 6,
-   "juice": 13,
+   "juice": 15,
    "legal": 10,
    "liveops": 2,
    "market": 18,
@@ -384,6 +384,25 @@
    "rules": [],
    "reviewedAt": "2026-11-20",
    "cards": 6,
+   "skipped": 0
+  },
+  {
+   "id": "KB-pixel-composer-gallery",
+   "path": "knowledge-base/20_pixel-composer-gallery.md",
+   "title": "20 外部素材庫：Pixel Composer Gallery（節點式像素特效範例）",
+   "kind": "research",
+   "facets": {
+    "topic": [
+     "juice",
+     "art"
+    ],
+    "genre": [
+     "*"
+    ]
+   },
+   "rules": [],
+   "reviewedAt": "2026-11-27",
+   "cards": 4,
    "skipped": 0
   },
   {
@@ -3410,6 +3429,110 @@
    "reviewedAt": "2026-11-20",
    "tokens": 383,
    "hash": "sha256:8b67f9b91b9f9ad0"
+  },
+  {
+   "id": "KB-pixel-composer-gallery.overview",
+   "page": "KB-pixel-composer-gallery",
+   "path": "knowledge-base/20_pixel-composer-gallery.md",
+   "line": 13,
+   "end": 19,
+   "heading": [
+    "1. 它是什麼"
+   ],
+   "kind": "research",
+   "facets": {
+    "topic": [
+     "art"
+    ],
+    "genre": [
+     "*"
+    ],
+    "artStyle": [
+     "pixel"
+    ]
+   },
+   "rules": [],
+   "reviewedAt": "2026-11-27",
+   "tokens": 284,
+   "hash": "sha256:275d2065c9b91fab"
+  },
+  {
+   "id": "KB-pixel-composer-gallery.catalog",
+   "page": "KB-pixel-composer-gallery",
+   "path": "knowledge-base/20_pixel-composer-gallery.md",
+   "line": 21,
+   "end": 38,
+   "heading": [
+    "2. 目錄：依品類整理（由名稱判斷，未逐一開檔）"
+   ],
+   "kind": "research",
+   "facets": {
+    "topic": [
+     "art",
+     "juice"
+    ],
+    "genre": [
+     "*"
+    ],
+    "artStyle": [
+     "pixel"
+    ]
+   },
+   "rules": [],
+   "reviewedAt": "2026-11-27",
+   "tokens": 452,
+   "hash": "sha256:a3e6ce218f864c6b"
+  },
+  {
+   "id": "KB-pixel-composer-gallery.workflow",
+   "page": "KB-pixel-composer-gallery",
+   "path": "knowledge-base/20_pixel-composer-gallery.md",
+   "line": 40,
+   "end": 47,
+   "heading": [
+    "3. 怎麼用：當參考，用程式重做"
+   ],
+   "kind": "method",
+   "facets": {
+    "topic": [
+     "art",
+     "juice",
+     "budget"
+    ],
+    "genre": [
+     "*"
+    ],
+    "artStyle": [
+     "pixel"
+    ]
+   },
+   "rules": [],
+   "reviewedAt": "2026-11-27",
+   "tokens": 314,
+   "hash": "sha256:8447adfbc960568f"
+  },
+  {
+   "id": "KB-pixel-composer-gallery.gaps",
+   "page": "KB-pixel-composer-gallery",
+   "path": "knowledge-base/20_pixel-composer-gallery.md",
+   "line": 49,
+   "end": 53,
+   "heading": [
+    "4. 待補"
+   ],
+   "kind": "research",
+   "facets": {
+    "topic": [
+     "art"
+    ],
+    "genre": [
+     "*"
+    ]
+   },
+   "rules": [],
+   "reviewedAt": "2026-11-27",
+   "tokens": 76,
+   "hash": "sha256:1fd36359f29fad4c"
   },
   {
    "id": "KB-af-gate-lane-shooter.pitch",

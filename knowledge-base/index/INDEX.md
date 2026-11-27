@@ -42,7 +42,7 @@
 | `RULE-KB-CARDS` | must | 程式 | `TEST-INDEX` | [2026-11-10-libraries-and-loop.md](../../knowledge-base/decisions/2026-11-10-libraries-and-loop.md) | [2026-11-10-libraries-and-loop.md](../../knowledge-base/decisions/2026-11-10-libraries-and-loop.md) |
 | `RULE-KB-CARD-SIZE` | should | 程式 | `TEST-INDEX` | [2026-11-10-libraries-and-loop.md](../../knowledge-base/decisions/2026-11-10-libraries-and-loop.md) | [2026-11-10-libraries-and-loop.md](../../knowledge-base/decisions/2026-11-10-libraries-and-loop.md) |
 
-## 知識卡（134 張，20 頁；未分卡 27 頁）
+## 知識卡（138 張，21 頁；未分卡 27 頁）
 
 | 頁 | id | kind | topic | 卡片 | 略過 |
 |---|---|---|---|---|---|
@@ -65,6 +65,7 @@
 | [17_design-principles.md](../../knowledge-base/17_design-principles.md) | `KB-design-principles` | principle | design | 9 | 1 |
 | [18_pixel-vfx-codex.md](../../knowledge-base/18_pixel-vfx-codex.md) | `KB-pixel-vfx-codex` | research | juice, art | 10 | 0 |
 | [19_vfx-spec-templates.md](../../knowledge-base/19_vfx-spec-templates.md) | `KB-vfx-spec` | method | art | 6 | 0 |
+| [20_pixel-composer-gallery.md](../../knowledge-base/20_pixel-composer-gallery.md) | `KB-pixel-composer-gallery` | research | juice, art | 4 | 0 |
 | [af-gate-lane-shooter.md](../../knowledge-base/ad-funnel/af-gate-lane-shooter.md) | `KB-af-gate-lane-shooter` | research | design, market | 11 | 0 |
 
 ## 資產（176 筆）
@@ -84,14 +85,14 @@
 | `bladeoath.chr.general` | sprite-sheet | shipped | 屍傀將（中頭目）：頭／軀幹 正側背、偃月刀 16 角 | [actors.png](../../BladeOath/game/src/assets/pixel/actors.png) | reusable |
 | `bladeoath.chr.fallen` | sprite-sheet | shipped | 墮仙（終頭目）：頭／軀幹 正側背、長劍 16 角 | [actors.png](../../BladeOath/game/src/assets/pixel/actors.png) | reusable |
 | `bladeoath.prop.mound-chest` | sprite-sheet | shipped | 劍塚（石堆＋斷劍＋石燈）、寶箱 關／開 | [actors.png](../../BladeOath/game/src/assets/pixel/actors.png) | reusable |
-| `bladeoath.cel.player` | sprite-sheet | shipped | 玩家・劍客：賽璐璐 9 姿勢（待機、走、起手、出招、格擋、閃避、受擊、跳、倒地） | [actors.png](../../BladeOath/game/src/assets/cel/actors.png) | reusable |
-| `bladeoath.cel.soldier` | sprite-sheet | shipped | 屍兵：賽璐璐 9 姿勢（待機、走、起手、出招、格擋、閃避、受擊、跳、倒地） | [actors.png](../../BladeOath/game/src/assets/cel/actors.png) | reusable |
-| `bladeoath.cel.bug` | sprite-sheet | shipped | 蠱蟲：賽璐璐 9 姿勢（待機、走、起手、出招、格擋、閃避、受擊、跳、倒地） | [actors.png](../../BladeOath/game/src/assets/cel/actors.png) | reusable |
-| `bladeoath.cel.caster` | sprite-sheet | shipped | 蠱師：賽璐璐 9 姿勢（待機、走、起手、出招、格擋、閃避、受擊、跳、倒地） | [actors.png](../../BladeOath/game/src/assets/cel/actors.png) | reusable |
-| `bladeoath.cel.brute` | sprite-sheet | shipped | 屍傀力士：賽璐璐 9 姿勢（待機、走、起手、出招、格擋、閃避、受擊、跳、倒地） | [actors.png](../../BladeOath/game/src/assets/cel/actors.png) | reusable |
-| `bladeoath.cel.mother` | sprite-sheet | shipped | 蠱母（精英）：賽璐璐 9 姿勢（待機、走、起手、出招、格擋、閃避、受擊、跳、倒地） | [actors.png](../../BladeOath/game/src/assets/cel/actors.png) | reusable |
-| `bladeoath.cel.general` | sprite-sheet | shipped | 屍傀將（中頭目）：賽璐璐 9 姿勢（待機、走、起手、出招、格擋、閃避、受擊、跳、倒地） | [actors.png](../../BladeOath/game/src/assets/cel/actors.png) | reusable |
-| `bladeoath.cel.fallen` | sprite-sheet | shipped | 墮仙（終頭目）：賽璐璐 9 姿勢（待機、走、起手、出招、格擋、閃避、受擊、跳、倒地） | [actors.png](../../BladeOath/game/src/assets/cel/actors.png) | reusable |
+| `bladeoath.cel.player` | sprite-sheet | shipped | 玩家・劍客：賽璐璐 12 姿勢（待機、走路 4 格、起手、出招、格擋、閃避、受擊、跳、倒地） | [actors.png](../../BladeOath/game/src/assets/cel/actors.png) | reusable |
+| `bladeoath.cel.soldier` | sprite-sheet | shipped | 屍兵：賽璐璐 12 姿勢（待機、走路 4 格、起手、出招、格擋、閃避、受擊、跳、倒地） | [actors.png](../../BladeOath/game/src/assets/cel/actors.png) | reusable |
+| `bladeoath.cel.bug` | sprite-sheet | shipped | 蠱蟲：賽璐璐 12 姿勢（待機、走路 4 格、起手、出招、格擋、閃避、受擊、跳、倒地） | [actors.png](../../BladeOath/game/src/assets/cel/actors.png) | reusable |
+| `bladeoath.cel.caster` | sprite-sheet | shipped | 蠱師：賽璐璐 12 姿勢（待機、走路 4 格、起手、出招、格擋、閃避、受擊、跳、倒地） | [actors.png](../../BladeOath/game/src/assets/cel/actors.png) | reusable |
+| `bladeoath.cel.brute` | sprite-sheet | shipped | 屍傀力士：賽璐璐 12 姿勢（待機、走路 4 格、起手、出招、格擋、閃避、受擊、跳、倒地） | [actors.png](../../BladeOath/game/src/assets/cel/actors.png) | reusable |
+| `bladeoath.cel.mother` | sprite-sheet | shipped | 蠱母（精英）：賽璐璐 12 姿勢（待機、走路 4 格、起手、出招、格擋、閃避、受擊、跳、倒地） | [actors.png](../../BladeOath/game/src/assets/cel/actors.png) | reusable |
+| `bladeoath.cel.general` | sprite-sheet | shipped | 屍傀將（中頭目）：賽璐璐 12 姿勢（待機、走路 4 格、起手、出招、格擋、閃避、受擊、跳、倒地） | [actors.png](../../BladeOath/game/src/assets/cel/actors.png) | reusable |
+| `bladeoath.cel.fallen` | sprite-sheet | shipped | 墮仙（終頭目）：賽璐璐 12 姿勢（待機、走路 4 格、起手、出招、格擋、閃避、受擊、跳、倒地） | [actors.png](../../BladeOath/game/src/assets/cel/actors.png) | reusable |
 | `bladeoath.cel.scene.gate` | background | shipped | 山門：賽璐璐遠景＋近景地面帶（橫向卷軸） | [far_gate.png](../../BladeOath/game/src/assets/cel/far_gate.png) | reusable |
 | `bladeoath.cel.scene.forest` | background | shipped | 蠱林：賽璐璐遠景＋近景地面帶（橫向卷軸） | [far_forest.png](../../BladeOath/game/src/assets/cel/far_forest.png) | reusable |
 | `bladeoath.cel.scene.well` | background | shipped | 枯井：賽璐璐遠景＋近景地面帶（橫向卷軸） | [far_well.png](../../BladeOath/game/src/assets/cel/far_well.png) | reusable |
