@@ -70,8 +70,9 @@ test('trig table and hash are exact constants (cross-engine guard)', () => {
   assert.equal(hash32(1, 2, 3), 1647877407);
 });
 
+// Update only together with GAME.version (src/sim/sim.js).
 test('golden match hash (cross-engine determinism)', () => {
-  assert.deepEqual(play(1234).result(), { seed: 1234, score: 1076, hash: 20147071, ticks: 3675 });
+  assert.deepEqual(play(1234).result(), { seed: 1234, score: 1720, hash: 104174396, ticks: 9588 });
 });
 
 test('full-match replay cost (server verification budget)', () => {

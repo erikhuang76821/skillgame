@@ -42,13 +42,13 @@
 | hulk | 80 | 15 | 35 | 5 | chase | 32×32 |
 | abductor | 40 | 0 | 50 | 8 | beam（拉人） | 32×32 |
 | saucer_scout | 600 | 20 | 50 | 100 | orbit | 64×40 |
-| mother_probe | 1800 | 25 | 45 | 300 | chase + 召喚 | 64×64 |
+| mother_probe | 900 | 25 | 45 | 300 | chase + 召喚 | 64×64 |
 
 ## Weapon / Passive（升級池）
 
 | id | 類型 | Lv1 | 每級成長 | 上限 |
 |---|---|---|---|---|
-| pinecone | 投射 | 10 傷 / 0.8 s | +1 發 / +3 傷 | 5 |
+| pinecone | 投射 | 10 傷 / 0.33 s | +1 發 / +3 傷 | 5 |
 | antler | 迴力鏢 | 14 傷 / 1.6 s | +4 傷、+範圍 | 5 |
 | campfire | 環繞 | 3 團火 6 傷 | +1 團 | 5 |
 | moonbeam | 直線雷射 | 20 傷 / 2.5 s | +寬度 | 5 |

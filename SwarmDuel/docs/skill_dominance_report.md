@@ -1,21 +1,21 @@
-# Skill Dominance Report（自動產生）
+# Skill Dominance Report — swarm-duel v2（自動產生）
 
-- 產生：`node tools/skill-dominance.mjs 30`；30 個種子 × 3 個技巧等級 bot；模擬耗時 60.2 s
+- 產生：`node tools/skill-dominance.mjs 30`；30 個種子 × 3 個技巧等級 bot；模擬耗時 23.6 s
 - Bot 只送出與真人相同的輸入（8 向 + Dash + Howl + 選卡），由確定性模擬判分
 
 ## 各等級分數
 
 | 等級 | 平均 | 標準差 | 最低 | 最高 | 撐滿 180s 比例 | 平均存活秒 | 平均 Perfect Dodge |
 |---|---|---|---|---|---|---|---|
-| novice | 78 | 48 | 45 | 240 | 0.0% | 42 | 0 |
-| intermediate | 1109 | 260 | 653 | 1742 | 60.0% | 169 | 12 |
-| expert | 1546 | 410 | 888 | 2629 | 50.0% | 154 | 21 |
+| novice | 210 | 79 | 119 | 451 | 0.0% | 71 | 0 |
+| intermediate | 1350 | 230 | 721 | 1676 | 90.0% | 178 | 8 |
+| expert | 1966 | 444 | 899 | 3009 | 83.3% | 176 | 11 |
 
 ## 同種子對戰勝率（Duel 的實際判勝方式）
 
 | 對戰 | 前者勝率 |
 |---|---|
-| expert vs intermediate | 76.7% |
+| expert vs intermediate | 90.0% |
 | intermediate vs novice | 100.0% |
 | expert vs novice | 100.0% |
 
@@ -23,8 +23,8 @@
 
 | 來源 | 佔總變異 |
 |---|---|
-| 技巧等級 | 82.7% |
-| 種子（題目難度） | 4.9% |
-| 交互/殘差 | 12.5% |
+| 技巧等級 | 86.1% |
+| 種子（題目難度） | 5.4% |
+| 交互/殘差 | 8.5% |
 
 > Duel / Tournament 中所有對手共用同一種子，所以「種子」那一欄在判勝時被完全抵銷；它只影響跨種子的排行榜（例如不同日的 Daily Seed），因此跨日排行以「當日百分位」而非原始分數比較。

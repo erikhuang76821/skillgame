@@ -19,7 +19,7 @@
 | 規則透明 | 標題寫明計分公式；結算逐項列出分數來源 |
 | 錢買不到分數 | 排位只賣外觀 |
 | 可驗證 | 確定性模擬 + 輸入紀錄重播驗分（結算畫面即時顯示 ✓） |
-| 有證據 | `tools/skill-dominance.mjs`：技巧等級解釋 71% 分數變異；⚠ 技巧天花板偏平（R9），見 [gdd/03](gdd/03_skill_integrity.md) |
+| 有證據 | `tools/skill-dominance.mjs`：技巧等級解釋 86.1% 分數變異、高手對會走位同種子勝率 90%（v2），見 [gdd/03](gdd/03_skill_integrity.md)；難度曲線見 [gdd/07](gdd/07_difficulty_curve.md) |
 
 ## 目錄
 

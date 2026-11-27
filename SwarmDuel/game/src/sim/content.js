@@ -7,7 +7,7 @@ export const VIEW_WORLD = { w: 720, h: 1280 };
 
 export const TUNING = {
   hp: 100, speed: 120, magnet: 48, pickup: 14, playerR: 10, invulnTicks: 30,
-  dashTicks: 15, dashInvuln: 12, dashCd: 120, dashMul: 3,
+  dashTicks: 15, dashInvuln: 12, dashCd: 100, dashMul: 3,
   howlCost: 100, howlR: 160, howlDmg: 40, howlComboGate: 50,
   grazeMargin: 8, grazePts: 40, grazeHowl: 3, spawnR: 780, bossR: 760,
   enemyCap: 300, orbCap: 400, hotdogEvery: 150, hotdogHeal: 30,
@@ -19,23 +19,24 @@ export const ENEMIES = {
   probe:        { hp: 6,    atk: 4,  speed: 80,  pts: 2,   r: 7,  behavior: 'dash',  visual: { sprite: 'greyling', scale: 1.5, tint: 0x9fd8ff } },
   hulk:         { hp: 80,   atk: 15, speed: 35,  pts: 5,   r: 16, behavior: 'chase', visual: { sprite: 'greyling', scale: 3,   tint: 0xc0a8ff } },
   saucer_scout: { hp: 600,  atk: 20, speed: 50,  pts: 100, r: 28, behavior: 'chase', boss: true, visual: { sprite: 'greyling', scale: 5, tint: 0xffd36b } },
-  mother_probe: { hp: 1800, atk: 25, speed: 45,  pts: 300, r: 34, behavior: 'chase', boss: true, visual: { sprite: 'greyling', scale: 6, tint: 0xff8080 } },
+  mother_probe: { hp: 900,  atk: 25, speed: 45,  pts: 300, r: 34, behavior: 'chase', boss: true, visual: { sprite: 'greyling', scale: 6, tint: 0xff8080 } },
 };
 
 // rate = spawns per second, interpolated from rate[0] at t0 to rate[1] at t1 (seconds).
 export const WAVES = [
-  { t0: 0,   t1: 30,  rate: [1.5, 3], kinds: { greyling: 1 } },
-  { t0: 30,  t1: 60,  rate: [3, 5],   kinds: { greyling: 3, probe: 1 } },
-  { t0: 60,  t1: 120, rate: [5, 8],   kinds: { greyling: 4, probe: 2, hulk: 1 } },
-  { t0: 120, t1: 180, rate: [8, 12],  kinds: { greyling: 4, probe: 3, hulk: 2 } },
+  { t0: 0,   t1: 30,  rate: [1, 2],       kinds: { greyling: 1 } },
+  { t0: 30,  t1: 60,  rate: [2, 2.5],     kinds: { greyling: 5, probe: 1 } },
+  { t0: 60,  t1: 90,  rate: [2.5, 3],     kinds: { greyling: 6, probe: 1, hulk: 1 } },
+  { t0: 90,  t1: 120, rate: [3, 3.5],     kinds: { greyling: 6, probe: 1, hulk: 1 } },
+  { t0: 120, t1: 150, rate: [3.5, 3.75],  kinds: { greyling: 5, probe: 2, hulk: 1 } },
+  { t0: 150, t1: 180, rate: [3.75, 4.25], kinds: { greyling: 9, probe: 2, hulk: 1 } },
 ];
 
 export const EVENTS = [
-  { at: 60,  type: 'boss', enemy: 'saucer_scout' },
-  { at: 80,  type: 'ring', enemy: 'greyling', count: 24, radius: 420 },
-  { at: 100, type: 'ring', enemy: 'greyling', count: 24, radius: 420 },
-  { at: 120, type: 'boss', enemy: 'mother_probe' },
-  { at: 170, type: 'beams', every: 50, warn: 48, live: 12, radius: 40, dmg: 20 },
+  { at: 115, type: 'ring', enemy: 'greyling', count: 18, radius: 420 },
+  { at: 120, type: 'boss', enemy: 'saucer_scout' },
+  { at: 160, type: 'boss', enemy: 'mother_probe' },
+  { at: 170, type: 'beams', every: 150, warn: 60, live: 12, radius: 40, dmg: 20 },
 ];
 
 export const UPGRADES = {
@@ -52,7 +53,7 @@ export const FALLBACK = ['snack', 'bounty'];
 export const SLOTS = { weapon: 4, passive: 4 };
 
 export const WEAPONS = {
-  pinecone:   { cd: 48, shots: [1, 1, 2, 2, 3], dmg: [10, 13, 13, 16, 16], speed: 300, life: 90, r: 4 },
+  pinecone:   { cd: 20, shots: [1, 1, 2, 2, 3], dmg: [10, 13, 13, 16, 16], speed: 300, life: 90, r: 4 },
   campfire:   { radius: 70, spin: 3, hitCd: 20, dmg: [7, 8, 9, 10, 11] },
   static_fur: { cd: 30, radius: [72, 84, 96, 108, 120], dmg: [4, 5, 6, 7, 8] },
 };
