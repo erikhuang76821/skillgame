@@ -16,10 +16,10 @@ const randomPolicy = {
     if (sim.tick % 60) return 0;
     const h = k => hash32(sim.seed, 0xbad + k, sim.tick);
     const pick = h(0) % 4;
-    const cmd = pick === 0 ? encode(OP.BUILD, h(1) % 12, 0)
+    const cmd = pick === 0 ? encode(OP.BUILD, h(1) % 12, h(1) % 12 < 6 ? 0 : 1)
       : pick === 1 ? encode(OP.MENU, h(3) % 12, h(2) % 3)
       : pick === 2 ? encode(OP.MOVE, h(1) % 16, h(2) % 240)
-      : encode(OP.WALL, h(1) % 24, 0);
+      : encode(OP.WALL, h(1) % 8, 0);
     q.push(...cmd);
     return q.shift();
   },

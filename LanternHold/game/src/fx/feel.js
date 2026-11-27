@@ -12,6 +12,9 @@ export const FEEL = {
   hurt: { dur: 0.5, ease: 'power2.out' },
   shot: { dur: 0.14, ease: 'none' },                 // arrow / beam flight (render only; damage already applied)
   hitFlash: 0.08,                                    // white tint on hit
+  struck: { dur: 0.16, tint: 0xff7070, jitter: 2 }, // our buildings, walls and soldiers when hit: red tint + 1-art-px shake
+  dmgNum: { rise: 18, dur: 0.6, merge: 0.15, max: 48, pop: 1.5, big: 1.3, small: 0.75 },   // floating damage numbers
+  hitStop: { ms: 50, dmg: 20 },                       // a countering or 20+ hit freezes only that foe's animation
   levelUp: { scale: 1.6, dur: 0.35, ease: 'back.out(1.7)' },
   build: { from: 0.3, dur: 0.35, ease: 'back.out(1.7)' },
   warn: { in: 0.2, hold: 2.2, out: 0.4 },
@@ -22,6 +25,7 @@ export const FEEL = {
   ring: { dur: 0.35, ease: 'power2.out' },                                     // explosions, steam, winter
   zap: { dur: 0.2 },
   combo: { min: 4, scale: 1.5, dur: 0.5 },
+  defeat: { fade: 1.2, slam: 0.35 },                                         // 團滅: darken, then the title slams in
   ui: { in: 0.2, out: 0.12, inEase: 'back.out(1.7)', outEase: 'power2.in' },
 };
 
