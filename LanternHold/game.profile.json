@@ -5,6 +5,7 @@
   "skillAxis": ["planning", "resource"],
   "renderer": ["2d"],
   "scriptedProgression": true,
+  "fileMusic": false,
   "source": ["af-horde-defense", "af-survivor-skill-pick"],
   "jurisdiction": ["TW", "US-*"],
   "artStyle": ["pixel"]

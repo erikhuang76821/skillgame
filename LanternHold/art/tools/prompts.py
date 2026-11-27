@@ -134,8 +134,150 @@ BODIES.update({
                      "a teal outline glow. " + ICON_TAIL,
 })
 
+TOWER = ("Each tower is a slim round stone watchtower with a pointed roof cradle holding a large glowing crystal on top, wooden door "
+         "at the base, about 36x44 art pixels, 3/4 top-down view, front facing the viewer, each art pixel a big visible square. Same "
+         "tower shape for all, only the crystal colour and decoration change. Evenly spaced with wide empty gaps, nothing touching.")
+BODIES.update({
+    # batch 2 (2026-11-18): towers, skeleton ally, poison/aura/summon fx, missing card icons
+    "bld_towers": "Four towers side by side left to right: (1) 'arcane tower' plain grey stone with a violet crystal; (2) 'frost tower' "
+                  "an icy pale-blue crystal, frost and icicles on the stones; (3) 'banner tower' a warm gold-orange crystal and a teal "
+                  "war banner hanging on the side; (4) 'bone tower' a pale bone-ivory crystal, decorated with animal bones and ribs "
+                  "around the roof (no skulls, no religious symbols). " + TOWER,
+    "bld_tower_poison": "One tower: 'poison tower' with a sickly toxic green crystal, dripping dark vines on the stones and a small "
+                        "bubbling green cauldron glow at the base (no skulls). " + TOWER,
+    "unit_skeleton": chr_sheet("Ally unit 'skeleton': a small friendly summoned bone soldier, pale ivory-grey bones (not pure white), "
+                               "dark indigo outline, tiny glowing teal eyes, holding a short sword and a small round wooden buckler.",
+                               ALLY_ROWS + "; the attack row is a sword slash", 16, 18),
+    "fx_new": "An effects sprite sheet, 3 rows x 4 frames, every frame separate with wide empty gaps, each frame about 16x16 art "
+              "pixels, each art pixel a big visible square, frames left to right are an animation: row 1 poison cloud (a toxic green "
+              "bubbling gas cloud puffing up, peaking, bubbles popping, fading); row 2 aura pulse (a warm golden-orange flat ground ring "
+              "seen from above at 3/4, expanding and fading, a plain ring, not a halo, not a coin); row 3 summon dust (pale bone-grey "
+              "dust and small bone fragments rising from the ground in a swirl, growing then dissipating).",
+    "icons_new_a": "A 3x2 grid of 6 game icons in the same pixel style. Row 1: (1) 'tower' a slim stone watchtower with a glowing violet "
+                   "crystal on top; (2) 'arcane range' a violet crystal with concentric range rings expanding outward; (3) 'arcane power' "
+                   "a violet crystal with a bright burst of energy. Row 2: (4) 'arcane haste' a violet crystal with speed lines and a "
+                   "small arrow-shaped spark; (5) 'artisan' a crossed hammer and chisel over a stone block; (6) 'longbow' a tall wooden "
+                   "longbow with a drawn arrow. " + ICON_TAIL,
+    "icons_new_b": "A grid of 5 game icons in the same pixel style. Row 1: (1) 'sturdy' a thick steel breastplate armour; (2) 'charge' a "
+                   "soldier's round shield and spear thrusting forward with motion lines; (3) 'cleave' a broad axe with a wide orange "
+                   "sweeping slash arc. Row 2: (4) 'chant' a small warm lantern sending out curved sound waves and musical notes (no "
+                   "religious symbols); (5) 'blessing' a warm teal-and-gold sparkle burst over an open hand with a small rising "
+                   "heart-shaped light (no halo, no religious symbols). " + ICON_TAIL,
+})
+MAGENTA = {"bld_tower_poison", "fx_new"}   # green subjects: key on magenta instead of the default green
+
+
+# ---------------------------------------------------------------- batch 3 (2026-11-18): scene themes, pads, unlockable units, meta icons
+def tile(desc):
+    return ("A seamless tileable top-down texture of " + desc + ", evenly distributed with no focal point, no objects, low contrast "
+            "so sprites read on top of it. Fill the whole square canvas edge to edge (no chroma-key background for this one). Chunky "
+            "pixel art, about 64x64 art pixels across the whole image. Dusky evening light so it matches a lantern-lit night set, but "
+            "keep the theme colours clearly recognisable.")
+
+
+THEMES = {
+    "plains": ("a green meadow with short grass tufts and a few tiny pebbles", "a worn dirt road through a meadow, packed brown earth with small stones"),
+    "desert": ("warm golden desert sand with soft wind ripples and a few tiny pebbles", "a packed darker sand trail with small stones and wheel ruts"),
+    "highland": ("rocky alpine grass, muted green tufts broken by small grey stone patches", "a grey gravel mountain path with small loose stones"),
+    "spring": ("fresh bright green grass with tiny pale pink and cream flower specks", "a light tan earth path with a few small pebbles"),
+    "autumn": ("forest floor covered in orange, red and brown fallen leaf litter", "a dark brown earth path with a few scattered orange leaves"),
+    "winter": ("snow-covered ground with soft bluish shading and small drifts, light grey-blue, NOT pure white", "a trampled snow-and-mud path, grey-brown slush with footprints"),
+}
+for t, (g, p) in THEMES.items():
+    BODIES[f"tile_ground_{t}"] = tile(g)
+    BODIES[f"tile_path_{t}"] = tile(p)
+
+PROP = "each object separate with wide empty gaps, 3/4 top-down view, each art pixel a big visible square, feet at the bottom."
+BODIES.update({
+    "props_dry": "A props sheet for three scene themes, " + PROP + " Row 1 desert: (1) a tall saguaro cactus with two arms, about 16x28; "
+                 "(2) a short round barrel cactus, about 14x14; (3) a dry tumbleweed-like desert bush, about 16x12; (4) a weathered "
+                 "sandstone rock, about 20x14. Row 2 highland: (5) a jagged grey mountain crag rock, about 24x22; (6) a smaller crag rock, "
+                 "about 18x16; (7) a slim alpine pine tree, about 18x30. Row 3 plains: (8) a round leafy green bush, about 18x14; (9) a "
+                 "golden haystack, about 22x18. No skulls.",
+    "props_season": "A props sheet for three scene themes, " + PROP + " Row 1 spring: (1) a blossom tree with a pale pink and cream "
+                    "flower canopy and brown trunk, about 24x30; (2) a small patch of white and pale pink flowers with dark teal leaves, "
+                    "about 16x10. Row 2 autumn: (3) a maple tree with an orange-red canopy, about 24x30; (4) a second, smaller maple tree "
+                    "with a golden-orange canopy, about 20x26; (5) a pile of orange and brown fallen leaves, about 18x10. Row 3 winter: (6) "
+                    "a dark teal pine tree heavily covered in snow, about 20x30; (7) a second, smaller snowy pine, about 16x24; (8) a grey "
+                    "rock with a cap of snow, about 18x14. Snow is light grey-blue, never pure white.",
+    "pads": "Two build-site foundations seen from a 3/4 top-down view, side by side with wide empty gaps, each about 36x28 art pixels, "
+            "each art pixel a big visible square, flat on the ground (low, not buildings): (1) a square grey stone foundation slab with "
+            "a small wooden hammer and a tiny teal flag marker on it; (2) a round arcane stone plinth with faint glowing violet abstract "
+            "geometric rune lines carved into it (simple lines and dots, no religious symbols, no letters).",
+    "unit_spearman": chr_sheet("Ally unit 'spearman': a lean soldier in light leather and teal cloth armour with a small open steel cap, "
+                               "holding a long wooden spear.", ALLY_ROWS + "; the attack row is a forward spear thrust", 16, 18),
+    "unit_crossbow": chr_sheet("Ally unit 'crossbowman': a stocky soldier in a round steel helmet and brown padded jacket with teal trim, "
+                               "holding a heavy wooden crossbow.", ALLY_ROWS + "; the attack row aims and fires the crossbow (no bolt flying away)", 16, 18),
+    "unit_knight": chr_sheet("Ally unit 'knight' on foot (no horse): a sturdy knight in steel plate armour with a teal surcoat, closed "
+                             "helmet with a small orange plume, holding a sword and a kite shield.", ALLY_ROWS + "; the attack row is a sword swing", 16, 18),
+    "icons_talents_a": "A 3x3 grid of 9 game talent icons in the same pixel style. Row 1: (1) 'walls' a grey stone wall with a small "
+                       "upward teal arrow; (2) 'castle' a small stone keep with a glowing lantern on top; (3) 'repair' a hammer crossed "
+                       "with a trowel over a cracked stone. Row 2: (4) 'palisade' a row of sharpened wooden stakes; (5) 'gold' a small "
+                       "pile of shiny gold ore nuggets (NOT coins); (6) 'train' a straw training dummy on a post. Row 3: (7) 'veteran' a "
+                       "teal shoulder badge with three gold chevron stripes; (8) 'horn' a curved brown war horn with a brass rim; (9) "
+                       "'reroll' a playing card with two circular arrows around it. " + ICON_TAIL,
+    "icons_meta": "A 4x2 grid of 8 game icons in the same pixel style. Row 1: (1) 'ignore' a card with a red diagonal strike line; "
+                  "(2) 'lock' a brass padlock; (3) 'bounty' a brown leather pouch with a gold nugget and a small plus sparkle (no coins); "
+                  "(4) 'diamond' a faceted cut blue gemstone (NOT a coin). Row 2: (5) 'talent' a small glowing teal skill tree of three "
+                  "linked nodes; (6) 'achievement' a ribbon medal with a teal ribbon and a gold star disc (no religious symbol); (7) "
+                  "'campaign' two crossed swords; (8) 'loadout' three small soldier helmets side by side. " + ICON_TAIL,
+    "icons_portraits": "A 3x2 grid of 6 head-and-shoulders unit portrait icons in the same pixel style, each facing slightly right: Row "
+                       "1: (1) an archer in a teal hood; (2) a shield soldier in a rounded steel helmet holding a round wooden shield "
+                       "edge; (3) a gentle healer in a teal hooded robe with a small glowing lantern. Row 2: (4) a spearman with a small "
+                       "open steel cap and a spear tip; (5) a crossbowman in a round steel helmet with the crossbow stock; (6) a knight in "
+                       "a closed steel helmet with a small orange plume. " + ICON_TAIL,
+})
+MAGENTA |= {"props_dry"}
+# key art (2026-11-18): home-screen cover, shipped at 270x200 native
+BODIES["key_cover"] = ("Title cover key art, one full illustrated scene filling the whole landscape canvas edge to edge (no chroma-key "
+                       "background for this one), wide 4:3 framing, chunky pixel art at about 270x200 art pixels across the whole image. "
+                       "A stone castle keep with a big glowing brass lantern on its top stands on a low hill in the centre, ringed by "
+                       "wooden palisade and stone wall segments; a few tiny archers and a shield soldier stand on the walls. From the "
+                       "dark forest edges at the left, right and bottom, purple shadow creatures (small rats, beetles, a wolf) swarm in "
+                       "along winding dirt paths, and the huge silhouette of a shadow beast with a giant toothy maw and many small "
+                       "glowing lilac eyes looms in the lower-right forest. Warm orange lamp light pools around the castle against a "
+                       "cool deep-indigo dusk-to-night; a sense of an imminent siege. The top 20% of the image is a calm, simple indigo "
+                       "sky with a few faint stars and soft clouds, empty enough for a title to sit on. No text, no logo, no letters, no "
+                       "skulls, no coins, no religious symbols.")
+# batch 3 retakes: t1 achievement read as a gold disc (coin risk); t1 reroll lost its arrows at 24 px
+BODIES["icon_achievement_v2"] = ("One single game icon, large and centered: 'achievement' a teal ribbon rosette badge with pleated teal "
+                                 "petals, two ribbon tails hanging below, and a small amber five-pointed star in the middle. NOT a "
+                                 "coin, no round gold disc, no religious symbol. " + ICON_TAIL)
+BODIES["icon_reroll_v2"] = ("One single game icon, large and centered: 'reroll' two thick bright teal curved arrows chasing each other "
+                            "in a circle around a small cream playing card. Bold, simple, readable at tiny size. " + ICON_TAIL)
+
+
+# batch 4 (2026-11-18): trait-card icons that had no art (the other trait cards reuse existing icons, see main.js TRAIT_ICON)
+BODIES["icons_traits"] = ("A 3x3 grid of 9 game skill icons in the same pixel style. Row 1: (1) 'heavy bow' a thick recurve wooden bow "
+                          "with a big glowing orange arrowhead; (2) 'heavy blow' a steel war hammer striking down with an orange impact "
+                          "spark; (3) 'group heal' three small warm lanterns in a row linked by soft teal light ribbons (no religious "
+                          "symbols). Row 2: (4) 'vitality' a sturdy brown leather vest with a bright teal plus sign on the chest; (5) "
+                          "'sledgehammer' a big iron sledgehammer with a wooden handle; (6) 'swift feet' a brown leather boot with three "
+                          "teal motion lines behind it. Row 3: (7) 'bone pact' two crossed pale bones wrapped in a violet glow (no skull); "
+                          "(8) 'attack' a steel sword pointing up with a small orange upward arrow beside it; (9) 'attack speed' a steel "
+                          "sword with three teal speed streaks. " + ICON_TAIL)
+
+
+# batch 5 (2026-11-18): four new enemies with their own mechanics (gdd/04 §9)
+BODIES["foe_slime"] = chr_sheet("Enemy 'shadow slime': a round wobbly blob of translucent violet goo with a darker core, two glowing "
+                                "lilac eyes and a bright lilac rim highlight on top.", "2 rows: row 1 hop cycle (4 frames: squash, "
+                                "stretch up, airborne, land), row 2 attack (2 frames: rearing up tall, slapping forward flat)", 14, 12)
+BODIES["foe_boar"] = chr_sheet("Enemy 'shadow boar': a stocky charging boar with dark violet bristly hide, two curved pale tusks, "
+                               "glowing lilac eyes and a lilac rim light along the spine.", "2 rows: row 1 run cycle (4 frames), row 2 "
+                               "charge attack (2 frames: head lowered, tusk ram forward with dust puff)", 20, 14)
+BODIES["foe_shaman"] = chr_sheet("Enemy 'shroom shaman': a small hunched mushroom creature with a wide violet cap, a ragged lilac shawl "
+                                 "and a crooked twig staff tipped with a glowing lilac orb (no skulls, no religious symbols).", "2 rows: row "
+                                 "1 walk cycle (4 frames, shuffling), row 2 cast (2 frames: staff raised with the orb glowing bright, orb "
+                                 "pulsing with small lilac sparkles)", 14, 18)
+BODIES["foe_mole"] = chr_sheet("Enemy 'shadow mole': a chunky digging mole with dark violet fur, big pale claws, a pointed snout and "
+                               "tiny glowing lilac eyes.", "2 rows: row 1 walk cycle above ground (4 frames, waddling), row 2 burrowed "
+                               "(4 frames: a small mound of dark earth moving forward with soil clods kicked up, only the claws peeking "
+                               "out in some frames)", 16, 12)
+
+
 def prompt(name):
-    return STYLE_LOCK + "\n\n" + BODIES[name]
+    lock = STYLE_LOCK.replace("pure green #00FF00", "pure magenta #FF00FF") if name in MAGENTA else STYLE_LOCK
+    return lock + "\n\n" + BODIES[name]
 
 if __name__ == "__main__":
     out = Path(__file__).resolve().parents[1] / "prompts"

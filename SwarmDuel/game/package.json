@@ -8,7 +8,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "size": "node scripts/size-check.mjs",
-    "test": "node --test test/*.test.mjs"
+    "test": "node --test test/*.test.mjs",
+    "playtest": "node tools/playtest.mjs 30 --out ../docs/playtest_report.md"
   },
   "dependencies": {
     "@fontsource/pixelify-sans": "^5.2.5",

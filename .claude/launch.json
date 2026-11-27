@@ -30,6 +30,98 @@
         "--strictPort"
       ],
       "port": 5174
+    },
+    {
+      "name": "gate-lane",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "GateLane/game",
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "5175",
+        "--strictPort"
+      ],
+      "port": 5175
+    },
+    {
+      "name": "lantern-hold",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "LanternHold/game",
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "5176",
+        "--strictPort"
+      ],
+      "port": 5176
+    },
+    {
+      "name": "lantern-hold-zip",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": [
+        "--prefix",
+        "LanternHold/game",
+        "vite",
+        "preview",
+        "LanternHold/game",
+        "--outDir",
+        "dist-zip",
+        "--port",
+        "5177",
+        "--strictPort"
+      ],
+      "port": 5177
+    },
+    {
+      "name": "vfx-lab",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "shared/vfx-lab",
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "5179",
+        "--strictPort"
+      ],
+      "port": 5179
+    },
+    {
+      "name": "sky-talon",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "SkyTalon/game",
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "5178",
+        "--strictPort"
+      ],
+      "port": 5178
+    },
+    {
+      "name": "blade-oath",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "BladeOath/game",
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "5180",
+        "--strictPort"
+      ],
+      "port": 5180
     }
   ]
 }

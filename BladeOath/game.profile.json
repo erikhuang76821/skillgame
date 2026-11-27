@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "game": "BladeOath",
+  "genre": [
+    "melee-duel"
+  ],
+  "skillAxis": [
+    "timing",
+    "reaction",
+    "aim",
+    "planning"
+  ],
+  "renderer": [
+    "2d"
+  ],
+  "scriptedProgression": true,
+  "fileMusic": false,
+  "source": [
+    "original"
+  ],
+  "jurisdiction": [
+    "TW",
+    "US-*"
+  ],
+  "artStyle": [
+    "pixel",
+    "2.5d"
+  ]
+}

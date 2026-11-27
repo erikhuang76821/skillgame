@@ -24,6 +24,7 @@
 | [gdd/06_cards.md](gdd/06_cards.md) | 卡片成長：三選一、兵種類型（忽略／鎖定）、羈絆、反應、進化、寶箱 |
 | [docs/playtest_report.md](docs/playtest_report.md) | 自動試玩報告（難度曲線 D2–D6） |
 | [docs/store_listing.md](docs/store_listing.md) | 上架資料（名稱、理念、說明）與規範對照 |
+| [gdd/08_meta.md](gdd/08_meta.md) | 局外系統：主畫面、戰役、天賦、配置、成就、鑽石 |
 | [gdd/02_art_spec.md](gdd/02_art_spec.md) | 像素美術規格、資產清單、atlas、生成風格鎖；手感與音效見 [knowledge-base/05_juice-and-feel](../knowledge-base/05_juice-and-feel.md)、[14_audio](../knowledge-base/14_audio.md) |
 | [gdd/03_skill_integrity.md](gdd/03_skill_integrity.md) | 技巧完整性、去隨機化 |
 | [gdd/05_game_spec.md](gdd/05_game_spec.md) | 玩法規格 §0–§13（數值草案） |

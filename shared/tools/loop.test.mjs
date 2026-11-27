@@ -1,13 +1,14 @@
 // Tests for loop.mjs (decision 2026-11-10 §4.2–§4.3, §8 item 3, phase D) and the profile-scoped card filter.
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import { spawnSync } from 'node:child_process';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildContext, fitsProfile } from './context.mjs';
 import { loadVocabulary } from './kb-index.mjs';
-import { applyMustRead, checkNodes, classifyRun, deriveStatus, formatEvent, hashPaths, loadNodes, mustReadTable, nodeHashes, nodeProduces, parseEvent, planGate, routeFor, runGate, topoOrder } from './loop.mjs';
+import { applyMustRead, approvalError, checkNodes, classifyRun, deriveStatus, formatEvent, hashPaths, loadNodes, mustReadTable, nodeHashes, nodeProduces, parseEvent, planGate, routeFor, runGate, topoOrder } from './loop.mjs';
 import { findRoot, loadRules } from './rules.mjs';
 
 const root = findRoot(fileURLToPath(import.meta.url));
@@ -207,7 +208,7 @@ test('gate, real context: unanswered flag, malformed source and a misspelt scope
   assert.ok(!g0.rules.some(r => r.id.startsWith('RULE-CURVE-')), 'no curve rule in the gate');
   assert.ok(!g0.tests.some(t => t.id === 'TEST-CURVE'), 'TEST-CURVE is not asked for');
   // What still blocks it is the skill evidence TwinStrike does not have (no strategy file, no ledger): not the curve.
-  assert.deepEqual([g0.result, g0.rules.filter(r => r.result === 'not-run').map(r => r.id)], ['blocked', ['RULE-SKILL-EVIDENCE', 'RULE-SKILL-NOT-LUCK', 'RULE-SKILL-BEATS-SIMPLE']]);
+  assert.deepEqual([g0.result, g0.rules.filter(r => r.result === 'not-run').map(r => r.id)], ['blocked', ['RULE-SKILL-EVIDENCE', 'RULE-SKILL-NOT-LUCK', 'RULE-SKILL-BEATS-SIMPLE', 'RULE-SKILL-CLOSENESS']]);
   const route = routeFor(nodes, n5, g1, 0);
   assert.equal(route.goto, 'N5-tune');
   assert.match(route.reason, /資料待補.*RULE-CURVE-TREND/);
@@ -258,7 +259,7 @@ test('gate: a game without scripted progression is not blocked by the missing cu
   assert.deepEqual([scripted.result, scripted.missing], ['blocked', ['docs/not-written.md']]);
   const free = await runGate(root, 'TwinStrike', n5, { ...stubs, profile: { ...profileOf('TwinStrike'), scriptedProgression: false } });
   assert.deepEqual(free.missing, []);
-  assert.deepEqual([free.result, free.rules.filter(r => r.result === 'not-run').map(r => r.id)], ['blocked', ['RULE-SKILL-EVIDENCE', 'RULE-SKILL-NOT-LUCK', 'RULE-SKILL-BEATS-SIMPLE']], 'only the skill evidence TwinStrike lacks still blocks');
+  assert.deepEqual([free.result, free.rules.filter(r => r.result === 'not-run').map(r => r.id)], ['blocked', ['RULE-SKILL-EVIDENCE', 'RULE-SKILL-NOT-LUCK', 'RULE-SKILL-BEATS-SIMPLE', 'RULE-SKILL-CLOSENESS']], 'only the skill evidence TwinStrike lacks still blocks (the review cannot start without the report)');
   assert.ok(!free.rules.some(r => ['RULE-CURVE-TREND', 'RULE-CURVE-CLIFF'].includes(r.id)), 'the curve rules are not part of this gate');
 });
 
@@ -283,4 +284,53 @@ test('gate: an injected profile reaches the audit too, so context, produces and 
   const n2 = nodes.find(n => n.id === 'N2-spec'), profile = { ...JSON.parse(readFileSync(join(root, 'TwinStrike', 'game.profile.json'), 'utf8')), scriptedProgression: false };
   await runGate(root, 'TwinStrike', n2, { runner: () => ({ ok: true, detail: '' }), auditor, profile });
   assert.deepEqual(seen, [false]);
+});
+
+test('gate: a review card missing its material cannot be reviewed, so it blocks instead of waiting for approval', async () => {
+  const review = runnable => ({ id: 'V', kind: 'review', cost: 'human', implements: ['R-V'], run: null, cwd: '.', runnable, missing: runnable ? [] : ['docs/report.md'] });
+  const node = { id: 'N5-tune', produces: [], gate: { must: ['R-V'] }, checkpoint: null };
+  const pack = runnable => ({ rules: [{ id: 'R-V', level: 'must', gate: true }], tests: [review(runnable)] });
+  const ready = await runGate(root, 'GateLane', node, { pack: pack(true), runner: () => assert.fail('review cards never run'), registry: [] });
+  assert.deepEqual([ready.result, ready.rules[0].result, ready.needsApproval], ['pass', 'review', true]);
+  const g = await runGate(root, 'GateLane', node, { pack: pack(false), runner: () => assert.fail('review cards never run'), registry: [] });
+  assert.deepEqual([g.result, g.rules[0].result, g.needsApproval], ['blocked', 'not-run', false]);
+  assert.match(g.tests[0].detail, /無法審查：缺 docs\/report\.md/);
+});
+
+test('log: approving a gate with review rules needs a note; a plain gate does not; waivers always do', () => {
+  const reviewed = { rules: [{ id: 'RULE-SKILL-CLOSENESS', result: 'review' }, { id: 'RULE-SKILL-EVIDENCE', result: 'pass' }] };
+  const plain = { rules: [{ id: 'RULE-SKILL-EVIDENCE', result: 'pass' }] };
+  const base = { approve: 'pm', waive: false, note: null, status: 'awaiting-approval' };
+  assert.match(approvalError({ ...base, lastGate: reviewed }).msg, /RULE-SKILL-CLOSENESS.*--note/);
+  assert.equal(approvalError({ ...base, lastGate: reviewed }).code, 2);
+  assert.equal(approvalError({ ...base, note: '差距穩定、強策略沒有作弊', lastGate: reviewed }), null);
+  assert.equal(approvalError({ ...base, lastGate: plain }), null);
+  assert.equal(approvalError({ ...base, status: 'failed', note: 'x', lastGate: reviewed }).code, 1);
+  assert.equal(approvalError({ ...base, waive: true, status: 'failed', lastGate: plain }).code, 2);
+  assert.equal(approvalError({ ...base, approve: null, note: '備註', lastGate: reviewed }), null);
+});
+
+test('N5 approval expires when the measured code changes, not only the strategies; N10 approval when any game code changes', () => {
+  const n5 = nodes.find(n => n.id === 'N5-tune'), n10 = nodes.find(n => n.id === 'N10-release');
+  assert.ok(n5.gate.must.includes('RULE-SKILL-CLOSENESS'));
+  const tmp = mkdtempSync(join(tmpdir(), 'loop-req-')), file = join(tmp, 'G', 'game', 'tools', 'lib', 'evidence.mjs');
+  try {
+    mkdirSync(join(tmp, 'G', 'game', 'tools', 'lib'), { recursive: true });
+    mkdirSync(join(tmp, 'G', 'game', 'src', 'sim', 'core'), { recursive: true });
+    writeFileSync(file, 'export const v = 1;\n');
+    writeFileSync(join(tmp, 'G', 'game', 'src', 'sim', 'core', 'rng.js'), 'export const r = 1;\n');
+    const profile = { scriptedProgression: false };
+    const hashes = () => Object.fromEntries(nodes.map(n => [n.id, nodeHashes(tmp, 'G', nodes, n, profile)]));
+    const h = hashes();
+    const events = [{ eventId: 'g', type: 'gate', node: n5.id, result: 'pass', needsApproval: true, at: 't1', ...h[n5.id] },
+      { eventId: 'a', type: 'approval', node: n5.id, approval: { by: 'pm' }, at: 't2', ...h[n5.id] }];
+    assert.equal(deriveStatus(nodes, events, h).nodes[n5.id].status, 'passed');
+    writeFileSync(file, 'export const v = 2;\n');
+    const h2 = hashes();
+    assert.equal(deriveStatus(nodes, events, h2).nodes[n5.id].status, 'stale');
+    assert.notEqual(h2[n10.id].inputHash, h[n10.id].inputHash);
+    writeFileSync(file, 'export const v = 1;\n');
+    writeFileSync(join(tmp, 'G', 'game', 'src', 'sim', 'core', 'rng.js'), 'export const r = 2;\n');
+    assert.equal(deriveStatus(nodes, events, hashes()).nodes[n5.id].status, 'stale');
+  } finally { rmSync(tmp, { recursive: true, force: true }); }
 });

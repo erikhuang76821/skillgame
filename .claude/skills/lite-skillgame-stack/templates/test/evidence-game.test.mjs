@@ -30,7 +30,10 @@ const cli = (args, cwd) => spawnSync(process.execPath, [CLI, ...args], { encodin
 
 test('CLI: misuse exits 2 without running; thresholds come from the rules; a tuning run exits 0', async () => {
   for (const args of [['0'], ['1.5'], ['30', '40'], ['--bogus'], ['--alpha', '0.5'], ['--min-questions', '1'], ['--out'], ['--ledger', '--confirm'],
-    ['--generation', '2'], ['--confirm', '30'], ['--rule', 'RULE-SKILL-DOMINANCE'], ['--rule'], ['5', '--out', join(tmpdir(), 'no-such-dir-evidence', 'x', 'report.md')]]) {
+    ['--generation', '2'],
+    // A confirmation run whose ledger cannot be written is refused. The ledger path is given explicitly: the default one
+    // (<Game>/docs/) exists in a real game, and this test must never open a confirmation batch there.
+    ['--confirm', '30', '--ledger', join(tmpdir(), 'no-such-dir-evidence', 'x', 'ledger.json')], ['--rule', 'RULE-SKILL-DOMINANCE'], ['--rule'], ['5', '--out', join(tmpdir(), 'no-such-dir-evidence', 'x', 'report.md')]]) {
     const r = cli(args);
     assert.equal(r.status, 2, `${args.join(' ')} -> ${r.status}\n${r.stderr}`);
     assert.match(r.stderr, /✘/); assert.equal(r.stdout, '', args.join(' '));

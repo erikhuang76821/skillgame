@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "about": "測試庫登錄（knowledge-base/decisions/2026-11-10-libraries-and-loop.md §3.3、§8）：每張卡說明一個檢查怎麼跑、證明哪些規則。只登錄、不搬程式；程式仍在 source 指向的位置。規則的 enforcement 仍以 rules.json 為準，index-build 只核對兩邊是否對得上（覆蓋索引在 knowledge-base/index/tests.json）。review 卡的檢核內容取自規則的 enforcement.checklist，不在這裡另寫。cwd 的 <Game> 代表遊戲資料夾；needs / produces 相對於 <Game>/。",
+  "about": "測試庫登錄（knowledge-base/decisions/2026-11-10-libraries-and-loop.md §3.3、§8）：每張卡說明一個檢查怎麼跑、證明哪些規則。只登錄、不搬程式；程式仍在 source 指向的位置。規則的 enforcement 仍以 rules.json 為準，index-build 只核對兩邊是否對得上（覆蓋索引在 knowledge-base/index/tests.json）。review 卡的檢核內容取自規則的 enforcement.checklist，不在這裡另寫。cwd 的 <Game> 代表遊戲資料夾；needs / produces 相對於 <Game>/。fresh 只是給人的註記（結果跟著哪個版本號變），沒有程式讀它：結果是否過期由迴圈的內容雜湊判斷。needs 缺檔時卡片無法執行，review 卡顯示「無法審查」並擋住關卡。",
   "tests": [
     {
       "id": "TEST-UNIT",
@@ -150,15 +150,15 @@
     {
       "id": "TEST-AUDIT",
       "kind": "audit",
-      "implements": ["RULE-GAME-DOCS", "RULE-GAME-REPORTS", "RULE-REPORT-FRESH", "RULE-SPEC-CONSTANTS", "RULE-SPEC-FAIRNESS", "RULE-AF-ADAPTATION", "RULE-SIM-PURITY", "RULE-TEMPLATE-LEFTOVER", "RULE-KB-CITED", "RULE-ASSET-REGISTER"],
+      "implements": ["RULE-GAME-DOCS", "RULE-GAME-REPORTS", "RULE-REPORT-FRESH", "RULE-SPEC-CONSTANTS", "RULE-SPEC-FAIRNESS", "RULE-AF-ADAPTATION", "RULE-SIM-PURITY", "RULE-NO-FORCED-HIT", "RULE-TEMPLATE-LEFTOVER", "RULE-KB-CITED", "RULE-ASSET-REGISTER"],
       "facets": { "topic": ["process", "fairness"] },
       "run": "node shared/tools/game-audit.mjs <Game>",
       "cwd": ".",
       "source": "shared/tools/game-audit.mjs",
-      "needs": ["README.md", "gdd", "game/src/sim/sim.js"],
+      "needs": ["README.md", "gdd"],
       "cost": "cheap",
       "fresh": null,
-      "note": "pre-commit 會跑；must 未過擋 commit，should 只警告"
+      "note": "pre-commit 會跑；must 未過擋 commit，should 只警告。只需要文件就能跑：N2 規格關卡在 sim.js 寫出來（N4）之前就要用它檢查 RULE-SPEC-FAIRNESS；要 sim 的檢查（RULE-SPEC-CONSTANTS、RULE-SIM-PURITY、RULE-REPORT-FRESH）在 sim 不存在時明確判不通過，N4 的 produces 檢查也會擋"
     },
     {
       "id": "TEST-INDEX",
@@ -217,6 +217,19 @@
       "cost": "human",
       "fresh": "contentHash",
       "note": "審查結果存 evidence，綁資產 contentHash 與規則 reviewedAt（2026-10-21 決策 §5.5）"
+    },
+    {
+      "id": "TEST-MUSIC-PACK",
+      "kind": "script",
+      "implements": ["RULE-MUSIC-ENCODE", "RULE-MUSIC-LOOP"],
+      "facets": { "topic": ["audio", "budget"] },
+      "run": "node shared/tools/music-pack.mjs --self-test",
+      "cwd": ".",
+      "source": "shared/tools/music-pack.mjs",
+      "needs": [],
+      "cost": "cheap",
+      "fresh": null,
+      "note": "驗證打包工具本身（速度偵測、循環長度、參數取自 rules.json）；沒有 ffmpeg 或 python+scipy 時 exit 2（無法執行，不算通過）。接縫與音質仍要人工試聽（knowledge-base/14 §5）"
     }
   ]
 }

@@ -1,0 +1,253 @@
+diff --git a/src/sim/sim.js b/src/sim/sim.js
+index b1227a3..6a2cfe9 100644
+--- a/src/sim/sim.js
++++ b/src/sim/sim.js
+@@ -77,8 +77,29 @@ export function isqrt(n) {
+ 
+ export const halfWidth = troops => Math.min(140, 10 + 6 * isqrt(Math.max(troops, 1)));
+ 
++// --- PROTOTYPE switches (PROTO env: A = grow vs flat gates, B = divider walls) ---
++const MODE = globalThis.process?.env?.PROTO ?? '';
++export const PROTO = { grow: MODE.includes('A'), walls: MODE.includes('B'), guard: MODE.includes('G'), hazard: MODE.includes('C') };
++// C: a fence across the lane with one moving gap; the formation must fit through it when it arrives.
++// PROTO_HZ = halfGap,killPct,period (defaults below are the recorded baseline; period 0 = the gap does not move).
++// Soldiers outside the gap hit the fence: loss = troops x (formation width outside the gap ÷ formation width) x killPct.
++const HZ = (globalThis.process?.env?.PROTO_HZ ?? '150,100,180').split(',').map(Number);
++export const HAZARD = Object.freeze({ halfGap: HZ[0], killPct: HZ[1], period: HZ[2], lo: 150, span: 300, levels: [5, 6, 7, 8] });
++export const gapX = (h, tick) => {
++  if (!HAZARD.period) return HAZARD.lo + Math.trunc((HAZARD.span * (h.phase % 181)) / 180);
++  const p = (tick + h.phase) % HAZARD.period, half = HAZARD.period >> 1, tri = p < half ? p : HAZARD.period - p;
++  return HAZARD.lo + Math.trunc((HAZARD.span * tri) / half);
++};
++const GROW_LEVELS = new Set([2, 3]);
++const FLAT = (globalThis.process?.env?.PROTO_FLAT ?? '3,4').split(',').map(Number);
++// Wall: from a gate row to the next one; the side you pass the first row on is locked until the second row.
++const WALL_START = new Set(PROTO.walls ? WAVES.map((w, i) => i).filter(i => i + 1 < WAVES.length && WAVES[i].seg === WAVES[i + 1].seg && typeof WAVES[i].level === 'number' && WAVES[i].level >= 4).filter((i, n, a) => n === 0 || a[n - 1] !== i - 1) : []);
++export const WALL_HALF = 20;
++// Preview sign: the second row of a wall is printed on a sign at the first row, so it can be read as soon as the first row is on screen.
++
+ function buildCourse(seed) {
+-  const zombies = [], gates = [], barrels = [];
++  const zombies = [], gates = [], barrels = [], walls = [], hazards = [];
++  let lastGoodLeft = true;
+   let zid = 0, gid = 0, bid = 0;
+   const group = (n, hp, cx, y, armored, spd, bite) => {
+     const cols = Math.min(n, 6);
+@@ -95,31 +116,39 @@ function buildCourse(seed) {
+     const r = (lo, hi) => rng.range(seed, 'course', wi * 64 + k++, lo, hi);
+     const hp = Math.max(1, Math.trunc((dmg * L.hits) / 10)), spd = L.speed ?? 2;
+     // Groups: seeded x, never both on the same side so the player has to choose what to shoot.
+-    const firstLeft = r(0, 1) === 0;
++    const growLeft = PROTO.grow && GROW_LEVELS.has(level) ? r(0, 1) === 0 : null;
++    const firstLeft = growLeft === null ? r(0, 1) === 0 : !growLeft;   // the near group (gi 1) guards the growing gate
+     L.groups.forEach((n, gi) => {
+       const half = Math.min(n, 6) * 15, left = gi === 2 ? r(0, 1) === 0 : (gi === 0) === firstLeft;
+       const cx = left ? r(40 + half, 300) : r(300, LANE_W - 40 - half);
+-      group(n, hp, cx, base + GROUP_OFFSETS[gi], L.armored ?? 0, spd, Math.max(1, Math.trunc(ref / RULES.biteDiv)));
++      const ghp = PROTO.guard && growLeft !== null && gi === 1 ? Math.trunc((hp * r(2, 5)) / 2) : hp;   // G: how hard the gate's guard is varies by seed
++      group(n, ghp, cx, base + GROUP_OFFSETS[gi], L.armored ?? 0, spd, Math.max(1, Math.trunc(ref / RULES.biteDiv)));
+     });
+     if (L.barrel) {
+       const bhp = L.barrel === 'weapon' ? dmg * 12 : L.barrel === 'dodge' ? dmg * 80 : dmg * 6;
+       barrels.push({ id: bid++, x: r(90, LANE_W - 90), y: base + BARREL_OFFSET, hp: bhp, maxHp: bhp, reward: L.barrel === 'weapon' ? 'weapon' : 'troops', amount: L.barrel === 'weapon' ? 1 : Math.trunc(ref / 8) });
+     }
+     // Gate row: the good side is seeded; values scale with the reference army so late gates still matter.
+-    const sc = Math.max(1, Math.trunc(ref / 10)), goodLeft = r(0, 1) === 0, y = base + GATE_OFFSET;
++    const sc = Math.max(1, Math.trunc(ref / 10)), y = base + GATE_OFFSET;
++    let goodLeft = r(0, 1) === 0;
++    if (WALL_START.has(wi - 1)) goodLeft = !lastGoodLeft;   // second row of a wall: the better gate is on the other side
+     const add = (lo, hi, sign = 1) => ({ kind: 'add', v: sign * r(lo, hi) * sc, step: Math.max(1, sc >> 1) });
+     let good, bad;
+     if (L.gate === 'easy') { good = add(2, 4); bad = add(0, 1); }
+     else if (L.gate === 'neg') { good = add(1, 2); bad = add(4, 8, -1); }
+     else if (L.gate === 'mul') { good = { kind: 'mul', v: 2, step: 0 }; bad = add(4, 7); }   // ×2 beats +N only once your army is past the reference
+     else { good = add(1, 2, -1); bad = add(5, 9, -1); }                                       // bothNeg: pick the lesser evil (or pump it)
++    if (growLeft !== null) { good = { kind: 'add', v: r(0, 1) * sc, step: sc }; bad = { kind: 'add', v: r(...FLAT) * sc, step: 0 }; goodLeft = growLeft; }
++    lastGoodLeft = goodLeft;
++    if (WALL_START.has(wi)) walls.push({ y0: y, y1: y + WAVE_LEN });
++    if (PROTO.hazard && HAZARD.levels.includes(level) && !WALL_START.has(wi - 1)) hazards.push({ id: hazards.length, y: base + 620, phase: r(0, 179) });
+     gates.push({ id: gid++, y, side: 0, ...(goodLeft ? good : bad), hits: 0 });
+     gates.push({ id: gid++, y, side: 1, ...(goodLeft ? bad : good), hits: 0 });
+   });
+   // Escort wave that walks in with the boss.
+   const escortHp = REF_DMG[WAVES.length] * 2;
+   for (let i = 0; i < 3; i++) group(12, escortHp, [150, 300, 450][i], BOSS_AT - 200 + i * 90, 0, 2, Math.max(1, Math.trunc(REF_TROOPS[WAVES.length] / RULES.biteDiv)));
+-  return { zombies, gates, barrels };
++  return { zombies, gates, barrels, walls, hazards };
+ }
+ 
+ export function createSim(seed) {
+@@ -127,7 +156,7 @@ export function createSim(seed) {
+   return {
+     seed: seed >>> 0, tick: 0, dist: 0, sx: LANE_W >> 1, target: LANE_W >> 1,
+     troops: RULES.startTroops, weapon: 1, peakTroops: RULES.startTroops,
+-    zombies: course.zombies, gates: course.gates, barrels: course.barrels, bullets: [],
++    zombies: course.zombies, gates: course.gates, barrels: course.barrels, bullets: [], walls: course.walls, wallSide: -1, hazards: course.hazards,
+     boss: { x: LANE_W >> 1, y: BOSS_AT, hp: BOSS_HP, maxHp: BOSS_HP, active: 0 },
+     score: 0, kills: 0, armoredKills: 0, barrelsBroken: 0, gatesPumped: 0, bossDmgPts: 0, bossBonus: 0, survivorBonus: 0,
+     result: 0,   // 0 running, 1 win, -1 lose
+@@ -185,7 +214,7 @@ function moveBullets(sim) {
+       if (z.hp > 0 && z.active && z.y > y0 - R && z.y <= y1 + R && z.x - R <= b.x && b.x <= z.x + R) hits.push(z.y, 0, z);
+     }
+     for (const g of gates) {
+-      if (g.kind === 'add' && g.hits < RULES.pumpMax && !g.used && g.y > y0 && g.y <= y1 && (b.x < LANE_W >> 1) === (g.side === 0)) hits.push(g.y, 1, g);   // a maxed gate lets bullets through
++      if (g.kind === 'add' && g.step > 0 && g.hits < RULES.pumpMax && !g.used && g.y > y0 && g.y <= y1 && (b.x < LANE_W >> 1) === (g.side === 0)) hits.push(g.y, 1, g);   // a maxed gate lets bullets through
+     }
+     for (const br of barrels) {
+       if (br.hp > 0 && br.y - bh > y0 && br.y - bh <= y1 && Math.abs(br.x - b.x) <= bh) hits.push(br.y - bh, 2, br);
+@@ -304,6 +333,17 @@ export function step(sim, input) {
+ 
+   const prev = sim.dist;
+   if (sim.dist < BOSS_STOP) sim.dist = Math.min(BOSS_STOP, sim.dist + RULES.runSpeed);
++  const wall = sim.walls.find(w => sim.dist > w.y0 && sim.dist <= w.y1);
++  if (wall) {
++    if (sim.wallSide < 0) sim.wallSide = prev <= wall.y0 ? (sim.sx < LANE_W >> 1 ? 0 : 1) : sim.wallSide;
++    const whw = halfWidth(sim.troops);   // the whole formation stays on its side, not just the centre
++    sim.sx = sim.wallSide === 0 ? Math.min(sim.sx, (LANE_W >> 1) - WALL_HALF - whw) : Math.max(sim.sx, (LANE_W >> 1) + WALL_HALF + whw);
++  } else sim.wallSide = -1;
++  for (const h of sim.hazards) if (h.y > prev && h.y <= sim.dist) {
++    const gx = gapX(h, sim.tick), hw = halfWidth(sim.troops);
++    const over = Math.min(2 * hw, Math.max(0, Math.abs(sim.sx - gx) + hw - HAZARD.halfGap));
++    if (over > 0) { const n = Math.ceil((sim.troops * over * HAZARD.killPct) / (2 * hw * 100)); hurt(sim, n, sim.sx, 'hazard'); if (sim.result) { sim.tick++; return; } }
++  }
+ 
+   if (sim.tick % RULES.firePeriod === 0) fire(sim);
+   moveBullets(sim);
+diff --git a/tools/bots.mjs b/tools/bots.mjs
+index 9ffcb35..83005f9 100644
+--- a/tools/bots.mjs
++++ b/tools/bots.mjs
+@@ -2,7 +2,7 @@
+ // Bots send only the byte a human sends (a lane position), read only what is on screen
+ // (objects within VIEW_AHEAD), and stay deterministic (hash32, not Math.random).
+ import { hash32 } from '../src/sim/core/index.js';
+-import { RULES, LANE_W, VIEW_AHEAD, WEAPON_DMG, encodeX, halfWidth } from '../src/sim/sim.js';
++import { RULES, LANE_W, VIEW_AHEAD, WEAPON_DMG, encodeX, halfWidth, gapX } from '../src/sim/sim.js';
+ 
+ const SIDE_X = [LANE_W >> 2, (LANE_W * 3) >> 2];
+ const jitter = (sim, salt, key, spread) => (hash32(sim.seed, salt, key) % (2 * spread + 1)) - spread;
+@@ -23,6 +23,15 @@ const nearestZombieX = sim => {
+   return best ? best.x : LANE_W >> 1;
+ };
+ 
++/** Next fence within `range` px and where its gap will be when the squad reaches it (what a player reads off the screen). */
++function hazardAhead(sim, range) {
++  for (const h of sim.hazards ?? []) {
++    const d = h.y - sim.dist;
++    if (d > 0 && d <= range) return { h, x: gapX(h, sim.tick + Math.ceil(d / RULES.runSpeed) - 1) };
++  }
++  return null;
++}
++
+ const apply = (troops, g, hits = 0) => (g.kind === 'mul' ? troops * g.v : troops + g.v + Math.min(RULES.pumpMax - g.hits, hits) * g.step);
+ 
+ /** Wanders: a new random spot every 2 s, ignores what is on the lane. */
+@@ -35,6 +44,8 @@ function intermediate(salt) {
+   return {
+     input(sim) {
+       if (sim.boss.active) return encodeX(sim.boss.x + jitter(sim, salt, sim.tick >> 5, 40));
++      const fence = hazardAhead(sim, 200);   // notices the fence late and aims roughly
++      if (fence) return encodeX(fence.x + jitter(sim, salt, fence.h.id, 45));
+       // Notices a barrel late (300 px) and, half the time, sidesteps it; never plans to break one.
+       for (const br of sim.barrels) {
+         const d = br.y - sim.dist;
+@@ -58,6 +69,8 @@ function expert(salt) {
+   return {
+     input(sim) {
+       if (sim.boss.active) return encodeX(sim.boss.x + jitter(sim, salt, sim.tick >> 5, 10));
++      const fence = hazardAhead(sim, 220);
++      if (fence) return encodeX(fence.x + jitter(sim, salt, fence.h.id, 6));
+       const hw = halfWidth(sim.troops);
+       const k = Math.min(sim.troops, 2 + sim.weapon, RULES.maxBullets);
+       const spacing = k > 1 ? (2 * hw) / (k - 1) : 1e9;
+@@ -81,10 +94,23 @@ function expert(salt) {
+       let side = -1, gap = 1e9;
+       if (pair) {
+         gap = pair[0].y - sim.dist;
+-        const volleys = Math.trunc(gap / RULES.runSpeed / RULES.firePeriod);
+-        const shots = gap > 300 ? Math.trunc((volleys * k) / 4) : 0;   // conservative: zombies soak up part of the volleys
+-        const val = pair.map(g => apply(sim.troops, g, g.kind === 'add' ? shots : 0));
+-        side = val[1] > val[0] ? 1 : 0;
++        const dmg = Math.ceil((sim.troops * WEAPON_DMG[sim.weapon]) / (10 * k));
++        // Shots that can still reach a gate = volleys before it arrives x bullets, minus the zombies in front of it on that side.
++        const pumps = g => {
++          if (g.kind !== 'add' || !g.step || gap < 200) return 0;
++          const volleys = Math.trunc((gap - 120) / RULES.runSpeed / RULES.firePeriod);
++          let soak = 0;
++          for (const z of sim.zombies) if (z.hp > 0 && z.y > sim.dist && z.y < g.y && (z.x < LANE_W >> 1) === (g.side === 0)) soak += Math.ceil(z.hp / dmg);
++          return Math.max(0, Math.trunc((volleys * k * 3) / 4) - soak);
++        };
++        const after = (t, g, p) => Math.max(0, apply(t, g, p));
++        const wall = gap <= VIEW_AHEAD ? sim.walls?.find(w => w.y0 === pair[0].y) : null;   // second row: only via the preview sign, once the first row is visible
++        const next = wall ? sim.gates.filter(g => g.y === wall.y1) : null;
++        const val = pair.map((g, s) => {
++          const v1 = after(sim.troops, g, pumps(g));
++          return next ? after(v1, next[s], next[s].kind === 'add' && next[s].step ? 3 : 0) : v1;   // behind a wall: the next row on the same side is forced
++        });
++        side = sim.wallSide >= 0 ? sim.wallSide : val[1] > val[0] ? 1 : 0;
+       }
+       const pumping = side >= 0 && gap < 650 && pair[side].kind === 'add' && pair[side].hits < RULES.pumpMax;
+       if (side >= 0 && gap < 160) return encodeX(SIDE_X[side] + jitter(sim, salt, pair[0].id, 10));   // be on the right side when the row arrives
+@@ -119,3 +145,24 @@ export const BASELINES = {
+   '只追最近的怪': { input: sim => encodeX(nearestZombieX(sim)) },
+   '選大的門＋頭目戰追頭目': { input: sim => encodeX(sim.boss.active ? sim.boss.x : gateSide(sim)) },
+ };
++// PROTOTYPE: one-sentence rules aimed at the new mechanics.
++BASELINES['永遠選會長大的門（否則選大的）'] = { input: sim => { const p = nextGates(sim); if (sim.boss.active) return encodeX(sim.boss.x); if (!p) return encodeX(LANE_W >> 1); const g = p.findIndex(x => x.kind === 'add' && x.step > 0 && p.some(y => y.step === 0)); return encodeX(SIDE_X[g >= 0 ? g : apply(sim.troops, p[1]) > apply(sim.troops, p[0]) ? 1 : 0]); } };
++BASELINES['牆前算兩列加總選邊（否則選大的）'] = { input: sim => { const p = nextGates(sim); if (sim.boss.active) return encodeX(sim.boss.x); if (!p) return encodeX(LANE_W >> 1); if (sim.wallSide >= 0) return encodeX(SIDE_X[sim.wallSide]); const w = sim.walls?.find(w => w.y0 === p[0].y), n = w && sim.gates.filter(g => g.y === w.y1); const v = p.map((g, s) => n ? apply(apply(sim.troops, g), n[s]) : apply(sim.troops, g)); return encodeX(SIDE_X[v[1] > v[0] ? 1 : 0]); } };
++BASELINES['柵欄前回到中間（否則選大的門）'] = { input: sim => { if (sim.boss.active) return encodeX(sim.boss.x); const h = (sim.hazards ?? []).find(h => h.y > sim.dist && h.y - sim.dist < 300); return h ? 0 || encodeX(LANE_W >> 1) : BASELINES['只選數字大的門'].input(sim); } };
++// PROTOTYPE: Codex's four one-sentence rules (review 2026-11-11).
++const growIdx = p => p.findIndex(x => x.kind === 'add' && x.step > 0 && p.some(y => y.kind === 'add' && y.step === 0));
++const faceSide = (sim, p) => (apply(sim.troops, p[1]) > apply(sim.troops, p[0]) ? 1 : 0);
++// 1: stand behind the growing gate; just before the row, take whichever gate now shows more.
++const growRule = sim => { const p = nextGates(sim); if (!p) return null; const g = growIdx(p); if (g < 0) return null; return SIDE_X[p[0].y - sim.dist < 160 ? faceSide(sim, p) : g]; };
++// 2: at a wall, take the first row's worse gate (the better one on row two is on the other side).
++const wallRule = sim => { const p = nextGates(sim); if (sim.wallSide >= 0) return SIDE_X[sim.wallSide]; if (!p || !sim.walls?.some(w => w.y0 === p[0].y)) return null; return SIDE_X[1 - faceSide(sim, p)]; };
++// 3: before a fence, go early to the middle of the half the gap is moving toward.
++const fenceRule = sim => { const h = (sim.hazards ?? []).find(h => h.y > sim.dist && h.y - sim.dist < 360); if (!h) return null; const d = gapX(h, sim.tick + 1) - gapX(h, sim.tick); return d === 0 ? gapX(h, sim.tick) : SIDE_X[d > 0 ? 1 : 0]; };
++// 4: the wall-sum rule (with the preview sign) for walls.
++const wallSumRule = sim => { const p = nextGates(sim); if (sim.wallSide >= 0) return SIDE_X[sim.wallSide]; const w = p && sim.walls?.find(w => w.y0 === p[0].y); if (!w) return null; const n = sim.gates.filter(g => g.y === w.y1); const v = p.map((g, s) => apply(Math.max(0, apply(sim.troops, g)), n[s])); return SIDE_X[v[1] > v[0] ? 1 : 0]; };
++const rule = (...fs) => ({ input: sim => { if (sim.boss.active) return encodeX(sim.boss.x); for (const f of fs) { const x = f(sim); if (x != null) return encodeX(x); } const p = nextGates(sim); return encodeX(p ? SIDE_X[faceSide(sim, p)] : LANE_W >> 1); } });
++BASELINES['C1 成長門射到最後一刻再比面值'] = rule(growRule);
++BASELINES['C2 有牆先走較差的門'] = rule(wallRule);
++BASELINES['C3 柵欄前去缺口移動方向的半邊'] = rule(fenceRule);
++BASELINES['C4 口訣：柵欄跟缺口＋牆算兩列＋成長門射到最後'] = rule(fenceRule, wallSumRule, growRule);
++BASELINES['C5 口訣：柵欄跟缺口＋有牆走較差＋成長門射到最後'] = rule(fenceRule, wallRule, growRule);
+diff --git a/tools/humanBots.mjs b/tools/humanBots.mjs
+index c3a3531..d8a0f74 100644
+--- a/tools/humanBots.mjs
++++ b/tools/humanBots.mjs
+@@ -5,7 +5,7 @@
+ // the boss's sway, and get sloppier late in the run.
+ // Same rules as every bot: only bytes a human could send, only what is on screen, deterministic (hash32).
+ import { hash32, TPS } from '../src/sim/core/index.js';
+-import { RULES, LANE_W, WEAPON_DMG, encodeX, halfWidth } from '../src/sim/sim.js';
++import { RULES, LANE_W, WEAPON_DMG, encodeX, halfWidth, gapX } from '../src/sim/sim.js';
+ 
+ const bell = (seed, salt, i) => { let s = 0; for (let k = 0; k < 4; k++) s += (hash32(seed, salt + k, i) / 4294967296) * 2 - 1; return s / 2; };
+ const roll = (seed, salt, i) => hash32(seed, salt, i) / 4294967296;
+@@ -32,6 +32,13 @@ export function makeHumanBot(salt, p) {
+         if (sim.tick >= m.until) { m.aim = sim.boss.x + bell(seed, salt, sim.tick) * p.bossSdPx; m.until = sim.tick + p.holdTicks; }
+         return encodeX(m.aim);
+       }
++      // Fences (prototype C): read where the gap will be, with a timing error, once it is close enough to matter.
++      for (const h of sim.hazards ?? []) {
++        const d = h.y - sim.dist;
++        if (d <= 0 || d > Math.min(p.noticePx, 260)) continue;
++        const t = sim.tick + Math.ceil(d / RULES.runSpeed) - 1 + Math.round(bell(seed, salt + 50, h.id) * p.fenceSdTicks);
++        return encodeX(gapX(h, Math.max(0, t)) + bell(seed, salt + 51, h.id) * p.steerSdPx);
++      }
+       // Barrels: decide once per barrel when it comes into view: missed it / will break it / must dodge.
+       const k = Math.min(sim.troops, 2 + sim.weapon, RULES.maxBullets);
+       for (const br of sim.barrels) {
+@@ -90,7 +97,7 @@ export function makeHumanBot(salt, p) {
+ 
+ // Three people, not three skill levels of one machine: a first-time casual player, a regular, a skilled player.
+ export const HUMANS = {
+-  casual: makeHumanBot(1100, { noticePx: 420, steerSdPx: 45, holdTicks: 24, gateErrPm: 120, closeCallPm: 150, negNoveltyPm: 300, barrelMissPm: 300, judgeSd: 0.6, pumpAware: false, bossSdPx: 70, densityK: 0.3, fatigueK: 0.15 }),
+-  regular: makeHumanBot(1200, { noticePx: 600, steerSdPx: 25, holdTicks: 15, gateErrPm: 40, closeCallPm: 80, negNoveltyPm: 150, barrelMissPm: 100, judgeSd: 0.35, pumpAware: false, bossSdPx: 40, densityK: 0.2, fatigueK: 0.08 }),
+-  skilled: makeHumanBot(1300, { noticePx: 800, steerSdPx: 12, holdTicks: 8, gateErrPm: 10, closeCallPm: 30, negNoveltyPm: 40, barrelMissPm: 25, judgeSd: 0.15, pumpAware: true, bossSdPx: 15, densityK: 0.1, fatigueK: 0.04 }),
++  casual: makeHumanBot(1100, { noticePx: 420, steerSdPx: 45, holdTicks: 24, gateErrPm: 120, closeCallPm: 150, negNoveltyPm: 300, barrelMissPm: 300, judgeSd: 0.6, pumpAware: false, fenceSdTicks: 18, bossSdPx: 70, densityK: 0.3, fatigueK: 0.15 }),
++  regular: makeHumanBot(1200, { noticePx: 600, steerSdPx: 25, holdTicks: 15, gateErrPm: 40, closeCallPm: 80, negNoveltyPm: 150, barrelMissPm: 100, judgeSd: 0.35, pumpAware: false, fenceSdTicks: 9, bossSdPx: 40, densityK: 0.2, fatigueK: 0.08 }),
++  skilled: makeHumanBot(1300, { noticePx: 800, steerSdPx: 12, holdTicks: 8, gateErrPm: 10, closeCallPm: 30, negNoveltyPm: 40, barrelMissPm: 25, judgeSd: 0.15, pumpAware: true, fenceSdTicks: 4, bossSdPx: 15, densityK: 0.1, fatigueK: 0.04 }),
+ };

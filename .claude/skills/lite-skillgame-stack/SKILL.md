@@ -25,7 +25,7 @@ description: 輕量化 HTML5 單機 Skill Game 技術規範（包體 5～10 MB�
 | 3D 渲染 | `ogl` 優先；需要生態（GLTFLoader 等）才用 `three` | **一個專案只選一個渲染器**，不同時載 Pixi + three |
 | 補間 / UI 動畫 / 打擊回饋 | `gsap` 3.x | 只在 render / UI 層 |
 | 骨骼 | `@esotericsoftware/spine-pixi-v8`（Pixi 8 用這個，不是 `spine-pixi`） | runtime 版本 major.minor 必須等於 Spine 編輯器匯出版本 |
-| 音效 | 原生 Web Audio（SFX 程式合成 = 0 bytes）；需要大量音檔管理才加 `howler`（core ≈ 28 KB min） | 音樂用 Opus/WebM，延遲載入 |
+| 音效 | 原生 Web Audio（SFX 程式合成 = 0 bytes）；需要大量音檔管理才加 `howler`（core ≈ 28 KB min） | 音樂檔只出貨循環段：`shared/tools/music-pack.mjs`（`RULE-MUSIC-ENCODE`、`RULE-MUSIC-LOOP`） |
 | UI | 純 HTML + CSS 疊在 canvas 上 | 計分板、彈窗、選單一律 DOM |
 | 建置 | Vite，`assetsInlineLimit: 0`，每個資產帶 hash | 加 `npm run size` 包體檢查並在 CI 擋 |
 
@@ -94,7 +94,8 @@ description: 輕量化 HTML5 單機 Skill Game 技術規範（包體 5～10 MB�
 - **品類配方**（`knowledge-base/12`）：`core/timing.js`（子 tick 判定、種子譜面、capped combo）、`core/physics.js`（確定性圓形物理、球袋、防穿透），範例 `examples/rhythm`、`examples/billiards`（各含三級 bot）。
 - **輸入公平**（`knowledge-base/13`）：`core/input.js` 的 `InputClock` / `TapQueue` 以事件時間戳決定 tick 與子 tick 相位（幀率無關），`calibrate()` 延遲校正寫進 `rec.meta`；範本 `main.js` 已接上。
 - **音效**（`knowledge-base/14`）：`src/audio/sfx.js` Web Audio 合成配方，首次手勢 `unlock()`。
-- **技巧證據（結果表）**：`tools/strategies.mjs`（強、隨機、簡單三種角色的策略，各寫明能看到什麼與能力限制）+ `npm run evidence`（調校用題目）／`npm run evidence:confirm`（確認用題目，寫入 `docs/skill_evidence_ledger.json`），同題配對的勝平敗、精確符號檢定、簡單策略的接近程度；適用於由種子抽題、每題一局、分數越高越好的遊戲（回合制與即時制皆可），回合制範例 `examples/ends`。量法見 repo `knowledge-base/decisions/2026-11-11-skill-evidence.md` §9。規則：`RULE-SKILL-EVIDENCE`、`RULE-SKILL-NOT-LUCK`、`RULE-SKILL-BEATS-SIMPLE`（必過）與 `RULE-SKILL-CLOSENESS`（人工判定）；門檻只在 rules.json，指令列不能自訂。第一次確認要在策略凍結後由人下指令（關卡跑的是 `--require-recorded`：只重跑已記錄的批次，沒有紀錄就拒絕，不會自動開批）；確認用題目用過就只能原樣重跑，改過策略或規則要換下一批（`--generation`）。N4 產出策略檔，N5 由這三條必過規則擋關（三張測試卡各對應一條）；接近程度的人工核准在 N5 接上前（泛用化步驟 4d）先在 N10 生效。
+- **音樂**（`knowledge-base/14` §5）：錄音／生成的 BGM 用 `shared/tools/music-pack.mjs` 切循環段並編碼，播放器是選配：`optional/audio/music.js` 複製到 `game/src/audio/`（不在 templates/ 裡），以 `.loop.json` 的 `samples` 設 `loopEnd`。`game.profile.json` 的 `fileMusic` 決定音樂規則是否適用。
+- **技巧證據（結果表）**：`tools/strategies.mjs`（強、隨機、簡單三種角色的策略，各寫明能看到什麼與能力限制）+ `npm run evidence`（調校用題目）／`npm run evidence:confirm`（確認用題目，寫入 `docs/skill_evidence_ledger.json`），同題配對的勝平敗、精確符號檢定、簡單策略的接近程度；適用於由種子抽題、每題一局、分數越高越好的遊戲（回合制與即時制皆可），回合制範例 `examples/ends`。量法見 repo `knowledge-base/decisions/2026-11-11-skill-evidence.md` §9。規則：`RULE-SKILL-EVIDENCE`、`RULE-SKILL-NOT-LUCK`、`RULE-SKILL-BEATS-SIMPLE`（必過）與 `RULE-SKILL-CLOSENESS`（人工判定）；門檻只在 rules.json，指令列不能自訂。第一次確認要在策略凍結後由人下指令（關卡跑的是 `--require-recorded`：只重跑已記錄的批次，沒有紀錄就拒絕，不會自動開批）；確認用題目用過就只能原樣重跑，改過策略或規則要換下一批（`--generation`）。N4 產出策略檔，N5 由這三條必過規則擋關（三張測試卡各對應一條），接近程度由人審查報告後核准（`log --approve <名字> --note 審查結論`）或退回 N2；改了 sim、`tools/` 底下任何檔案、報告或紀錄，核准就過期。
 - **技巧佔比（舊配方，只用於現有三款）**：`tools/bots.mjs`（≥ 3 級）+ `node tools/skill-dominance.mjs 30`。`RULE-SKILL-DOMINANCE`、`RULE-SKILL-BASELINE` 只套用到 SwarmDuel、TwinStrike、GateLane，而且只是警告；新遊戲不需要分級 bot。新遊戲刪掉 `bots.mjs` 與 `skill-dominance.mjs` 即可：範本的測試、試玩與技巧證據都改用 `tools/strategies.mjs`，只有舊指標的示範測試會自動略過。
 - **難度曲線**（repo `knowledge-base/16_difficulty-curve.md`）：曲線用固定腳本設計（難度級每級只加一件事、上升鋸齒、調息、段末頭目），種子只換同級內容；以人性化試玩 bot 逐單位驗收 D1–D8（門檻見 rules.json `RULE-CURVE-*`）。範本已附 `tools/humanBots.mjs`、`tools/playtest.mjs`（示範遊戲的單位與 DI，每款改寫）與通用的 `tools/lib/curve.mjs`；`npm run playtest` 產生 `docs/playtest_report.md`。節奏類完整範例（含圖表）：`TwinStrike/game/tools/playtest.mjs`。
 

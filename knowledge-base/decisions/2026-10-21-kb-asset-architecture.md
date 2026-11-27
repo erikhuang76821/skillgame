@@ -205,7 +205,7 @@ SKILLGAME/
 | 欄位 | 說明 |
 |---|---|
 | `id` | 跨遊戲唯一：`<game>.<kind>.<name>` |
-| `kind` | `sprite-sheet` / `background` / `fx-sheet` / `key-art` / `ui` / `reference`（身分參考圖，2026-10-22 加入）/ `procedural` / `audio-recipe` |
+| `kind` | `sprite-sheet` / `background` / `fx-sheet` / `key-art` / `ui` / `reference`（身分參考圖，2026-10-22 加入）/ `procedural` / `audio-recipe` / `music`（循環段 BGM，2026-11-26 加入） |
 | `status` | 沿用現行：`shipped` / `raw-only` / `rejected-take` / `placeholder` / `procedural` / `template` |
 | `files` | 相對於 `pathBase` |
 | `provenance` | 生成工具、job、參考圖；AI 生成的商用權利追溯 |

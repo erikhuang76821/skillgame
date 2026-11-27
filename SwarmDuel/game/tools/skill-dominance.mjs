@@ -4,7 +4,7 @@
 import { writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { playMatch } from './bots.mjs';
-import { score, scoreBreakdown, TPS } from '../src/sim/sim.js';
+import { GAME, score, scoreBreakdown, TPS } from '../src/sim/sim.js';
 import { hash32 } from '../src/sim/rng.js';
 
 const N = Number(process.argv[2]) || 30;
@@ -49,7 +49,7 @@ const shares = { skillTier: ssTier / ssTotal, seed: ssSeed / ssTotal, interactio
 
 const pct = v => `${(v * 100).toFixed(1)}%`;
 const md = [
-  '# Skill Dominance Report（自動產生）',
+  `# Skill Dominance Report — ${GAME.id} v${GAME.version}（自動產生）`,
   '',
   `- 產生：\`node tools/skill-dominance.mjs ${N}\`；${N} 個種子 × 3 個技巧等級 bot；模擬耗時 ${(ms / 1000).toFixed(1)} s`,
   '- Bot 只送出與真人相同的輸入（8 向 + Dash + Howl + 選卡），由確定性模擬判分',

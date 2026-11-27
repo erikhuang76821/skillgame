@@ -27,7 +27,8 @@ const list = v => (v === undefined || v === null ? [] : Array.isArray(v) ? v : [
 const COST_ORDER = ['cheap', 'medium', 'heavy', 'human'];
 // Structure flags: booleans about how the game is built. They decide which rules apply; they are not retrieval facets.
 //   scriptedProgression  one match has measurable, pre-scripted sections (waves, song sections) — the difficulty-curve rules need them
-export const PROFILE_FLAGS = ['scriptedProgression'];
+//   fileMusic            the game ships recorded / generated music as looped audio files (not synthesised in code) — the music rules need it
+export const PROFILE_FLAGS = ['scriptedProgression', 'fileMusic'];
 const PROFILE_KEYS = new Set(['schemaVersion', 'game', ...FACET_KEYS, ...PROFILE_FLAGS]);
 // Keys a rule's scope.selector may use: what the rule checks (target) and which games it is for (answered by the profile).
 export const SCOPE_TARGET_KEYS = ['kind', 'path'];

@@ -71,6 +71,22 @@
       "reviewedAt": "2026-10-21"
     },
     {
+      "id": "RULE-NO-FORCED-HIT",
+      "category": "fairness",
+      "level": "must",
+      "scope": { "selector": { "kind": "game-build", "genre": "shmup" } },
+      "constraints": [
+        { "name": "genres", "value": ["shmup"], "unit": "genre", "check": "只套用到 game.profile.json 的 genre 含其中任一項的遊戲：玩家要閃避障礙物或彈幕，被打中會扣血或結束的品類。目前詞彙表裡只有 shmup 符合；之後有跑酷、閃避類的品類值時加進這裡與 scope。回合制、解謎、節奏、塔防、割草類不適用", "overridePolicy": "forbid" },
+        { "name": "testMarker", "value": "no forced hit", "unit": "test-name", "check": "遊戲的 game/test/ 底下要有名稱含這段文字的測試，而且隨 npm test 通過", "overridePolicy": "forbid" }
+      ],
+      "measurement": "不得有「一定會扣血」的設計：打不壞的障礙物、牆、光柱這類由腳本與種子決定的危險，不論單獨或疊在一起，任何時刻都要留一條機體過得去的路（寬度至少是機體判定直徑加上安全邊）。該測試對多個種子逐 tick 推算「只看這些固定危險時，機體還能安全待著的位置」，這個集合不得變成空的；會把路堵死的組合（例如彈牆的缺口落在障礙物裡）要在規則層排除並各有一條測試。跟著玩家位置瞄準的子彈不在這條規則內，由 RULE-SKILL-EVIDENCE 與難度曲線把關",
+      "enforcement": { "type": "script", "ref": "shared/tools/game-audit.mjs（檢查測試存在）＋ <Game>/game/test（測試本身，TEST-UNIT 執行）" },
+      "whyRef": "knowledge-base/01_skill-integrity.md §2（結果只能來自玩家的行為：躲不掉的傷害是運氣或設計強加的，不是技巧）",
+      "howRef": "SkyTalon/game/test/determinism.test.mjs 的「no forced hit」測試（第一個實作）",
+      "source": "使用者指示（2026-11-20）：不要有障蔽完全遮擋導致無法通過、一定會扣血的設計",
+      "reviewedAt": "2026-11-20"
+    },
+    {
       "id": "RULE-SKILL-DOMINANCE",
       "category": "fairness",
       "level": "should",
@@ -272,6 +288,42 @@
       "reviewedAt": "2026-10-21"
     },
     {
+      "id": "RULE-MUSIC-ENCODE",
+      "category": "tech",
+      "level": "should",
+      "scope": { "selector": { "kind": "music", "fileMusic": true } },
+      "constraints": [
+        { "name": "codec", "value": "opus-webm", "unit": "format", "overridePolicy": "forbid" },
+        { "name": "bitrate", "op": "==", "value": 48000, "unit": "bit/s", "overridePolicy": "with-reason" },
+        { "name": "sampleRate", "op": "==", "value": 48000, "unit": "Hz", "overridePolicy": "forbid" },
+        { "name": "channels", "op": "==", "value": 2, "unit": "channel", "overridePolicy": "with-reason" }
+      ],
+      "measurement": "本作 game.profile.json 的 fileMusic 為 true 時適用（錄音或生成的 BGM 檔；程式合成的不算）。music-pack 產出立體聲 Opus 裝 WebM；bitrate 是 VBR 編碼目標，不是逐檔上限。配器密集、試聽聽得出損失的曲子可覆寫 bitrate（附試聽理由）。codec 在打包器支援其他格式前不可覆寫",
+      "enforcement": { "type": "script", "ref": "shared/tools/music-pack.mjs（產出）、shared/tools/game-audit.mjs（出貨成對檢查）" },
+      "whyRef": "knowledge-base/14_audio.md §5",
+      "howRef": "knowledge-base/14_audio.md §5",
+      "source": "音樂壓縮實測（2026-11-26）：ACE-Step 1.5 XL 官方範例 3 首 + SkyTalon 合成曲 2 首",
+      "reviewedAt": "2026-11-26"
+    },
+    {
+      "id": "RULE-MUSIC-LOOP",
+      "category": "tech",
+      "level": "should",
+      "scope": { "selector": { "kind": "music", "fileMusic": true } },
+      "constraints": [
+        { "name": "beats", "op": "==", "value": 32, "unit": "beat", "overridePolicy": "with-reason" },
+        { "name": "loopEndFromSamples", "op": "==", "value": true, "unit": "bool", "overridePolicy": "forbid" },
+        { "name": "decodedCoversLoopEnd", "op": "==", "value": true, "unit": "bool", "overridePolicy": "forbid" },
+        { "name": "minMatch", "op": ">=", "value": 0.8, "unit": "cosine", "overridePolicy": "with-reason" }
+      ],
+      "measurement": "只出貨循環段，不出整首。每首一個 .webm 加一個 .loop.json（samples、sampleRate、webm 的 sha256），兩者登錄在 manifest 同一筆 kind=music 資產。執行期 loopEnd = samples / sampleRate，不用解碼後長度；打包後解碼一次，解碼長度不得短於 samples。matchScore 是頻譜相似度，低於 minMatch 時只警告、要人工試聽接縫。切段參數（交叉淡化、補尾、候選起點、BPM 搜尋範圍）屬打包器設定 shared/tools/audio/music-pack.config.json，不是規則",
+      "enforcement": { "type": "script", "ref": "shared/tools/music-pack.mjs（產出與解碼覆蓋）、shared/tools/game-audit.mjs（成對與雜湊）" },
+      "whyRef": "knowledge-base/14_audio.md §5",
+      "howRef": "knowledge-base/14_audio.md §5",
+      "source": "音樂壓縮實測（2026-11-26）",
+      "reviewedAt": "2026-11-26"
+    },
+    {
       "id": "RULE-LEGAL-EXCLUDE-CHANCE",
       "category": "legal",
       "level": "should",
@@ -291,13 +343,13 @@
       "level": "must",
       "jurisdiction": ["TW"],
       "scope": { "selector": { "kind": "art-asset" } },
-      "constraints": [{ "name": "taboo", "check": "不戴綠色頭飾；不用大面積純白 / 純黑；不用紅金大面積娛樂城視覺；不出現錢幣、骰子、轉盤、「倍」「爆分」；不做神明、招財貓", "overridePolicy": "forbid" }],
+      "constraints": [{ "name": "taboo", "check": "不戴綠色頭飾；不用大面積純白 / 純黑；不用紅金大面積娛樂城視覺；不出現錢幣、骰子、轉盤、「倍」「爆分」；不做神明、招財貓。「神明」指民間信仰與現行宗教的神明（媽祖、財神、佛、基督等）及其神像、廟宇、法器；古典神話（希臘、羅馬、北歐等已無信仰活動者）的名字與特徵可以用，但不畫成神像、不畫成賜福或招財的形象、不用娛樂城式的神祇視覺（金光人像、寶座、撒金幣）", "overridePolicy": "forbid" }],
       "measurement": "每張生成圖人工驗收",
       "enforcement": { "type": "review", "checklist": "美術驗收清單" },
       "whyRef": "SwarmDuel/knowledge/themes/tw-themes.md §4–5",
       "howRef": "TwinStrike/gdd/02_art_spec.md §1",
       "source": "SwarmDuel/knowledge/themes/tw-themes.md",
-      "reviewedAt": "2026-10-21"
+      "reviewedAt": "2026-11-20"
     },
     {
       "id": "RULE-GAME-DOCS",
@@ -421,7 +473,7 @@
       "category": "art",
       "level": "should",
       "scope": { "selector": { "kind": "art-asset" } },
-      "constraints": [{ "name": "registered", "value": [".png", ".webp", ".jpg", ".jpeg", ".ktx2", ".ogg", ".mp3", ".m4a", ".wav"], "unit": "extension", "overridePolicy": "with-reason" }],
+      "constraints": [{ "name": "registered", "value": [".png", ".webp", ".jpg", ".jpeg", ".ktx2", ".ogg", ".mp3", ".m4a", ".wav", ".webm", ".opus"], "unit": "extension", "overridePolicy": "with-reason" }],
       "measurement": "<Game>/game/src/assets/ 與 public/ 內這些副檔名的檔案，都要列在某個 art/manifest.json 的 files（本作的，或 shared/recipes/manifest.json）；未修改的範本複本以內容雜湊相同視為已登錄。中央索引 knowledge-base/index/assets.json 由 node shared/tools/index-build.mjs 從 manifest 產生",
       "enforcement": { "type": "script", "ref": "shared/tools/game-audit.mjs" },
       "whyRef": "knowledge-base/decisions/2026-10-21-kb-asset-architecture.md §5.3（manifest 是資產唯一來源）",

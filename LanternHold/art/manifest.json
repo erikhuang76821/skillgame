@@ -76,7 +76,7 @@
         "夜"
       ],
       "reusePolicy": "reusable",
-      "contentHash": "sha256:fdd947acf52c4cc0e526144b2e798de6c950ec2484ccc73a48541c989e44d01e"
+      "contentHash": "sha256:c50ff1e173eb23d9798090d4de8a981f2ceee34a5db46a3619f93b226ac5e6fa"
     },
     {
       "id": "lanternhold.chr.archer",
@@ -149,7 +149,7 @@
         "夜"
       ],
       "reusePolicy": "reusable",
-      "contentHash": "sha256:fdd947acf52c4cc0e526144b2e798de6c950ec2484ccc73a48541c989e44d01e"
+      "contentHash": "sha256:c50ff1e173eb23d9798090d4de8a981f2ceee34a5db46a3619f93b226ac5e6fa"
     },
     {
       "id": "lanternhold.chr.shield",
@@ -223,7 +223,7 @@
         "夜"
       ],
       "reusePolicy": "reusable",
-      "contentHash": "sha256:fdd947acf52c4cc0e526144b2e798de6c950ec2484ccc73a48541c989e44d01e"
+      "contentHash": "sha256:c50ff1e173eb23d9798090d4de8a981f2ceee34a5db46a3619f93b226ac5e6fa"
     },
     {
       "id": "lanternhold.chr.priest",
@@ -298,7 +298,301 @@
         "夜"
       ],
       "reusePolicy": "reusable",
-      "contentHash": "sha256:fdd947acf52c4cc0e526144b2e798de6c950ec2484ccc73a48541c989e44d01e"
+      "contentHash": "sha256:c50ff1e173eb23d9798090d4de8a981f2ceee34a5db46a3619f93b226ac5e6fa"
+    },
+    {
+      "id": "lanternhold.chr.skeleton",
+      "kind": "sprite-sheet",
+      "status": "shipped",
+      "name": "骷髏兵（友軍召喚物，短劍＋小盾）：idle 2、walk 4、attack 3（朝右，左向鏡像）",
+      "files": {
+        "raw": [
+          "art/raw/unit_skeleton_t1a.png"
+        ],
+        "prompt": [
+          "art/prompts/unit_skeleton.txt"
+        ],
+        "shipped": [
+          "game/src/assets/pixel/units.png",
+          "game/src/assets/pixel/units.json"
+        ]
+      },
+      "technical": {
+        "atlas": "units",
+        "format": "png8",
+        "artPxToWorldPx": 2,
+        "scaleMode": "nearest",
+        "frames": [
+          "skeleton_idle_0",
+          "skeleton_idle_1",
+          "skeleton_walk_0",
+          "skeleton_walk_1",
+          "skeleton_walk_2",
+          "skeleton_walk_3",
+          "skeleton_attack_0",
+          "skeleton_attack_1",
+          "skeleton_attack_2"
+        ],
+        "cell": [
+          30,
+          21
+        ],
+        "anchor": [
+          0.5,
+          0.9524
+        ]
+      },
+      "styleTags": [
+        "pixel",
+        "night",
+        "top-down-3/4",
+        "1px-outline",
+        "palette-32",
+        "side-view-right"
+      ],
+      "provenance": {
+        "tool": "picanywhere",
+        "job": "job_20261118-134634_310#2",
+        "postprocess": "art/tools/build.py（chroma key → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 打包）",
+        "promptBlock": "art/tools/prompts.py STYLE_LOCK"
+      },
+      "keywords": [
+        "skeleton",
+        "bones",
+        "undead",
+        "summon",
+        "minion",
+        "sword",
+        "骷髏",
+        "召喚",
+        "ally",
+        "友軍",
+        "pixel",
+        "像素",
+        "night",
+        "夜"
+      ],
+      "reusePolicy": "reusable",
+      "contentHash": "sha256:c50ff1e173eb23d9798090d4de8a981f2ceee34a5db46a3619f93b226ac5e6fa"
+    },
+    {
+      "id": "lanternhold.chr.spearman",
+      "kind": "sprite-sheet",
+      "status": "shipped",
+      "name": "長槍兵（輕甲）：idle 2、walk 4、attack 3（朝右，左向鏡像）",
+      "files": {
+        "raw": [
+          "art/raw/unit_spearman_t1.png"
+        ],
+        "prompt": [
+          "art/prompts/unit_spearman.txt"
+        ],
+        "shipped": [
+          "game/src/assets/pixel/units.png",
+          "game/src/assets/pixel/units.json"
+        ]
+      },
+      "technical": {
+        "atlas": "units",
+        "format": "png8",
+        "artPxToWorldPx": 2,
+        "scaleMode": "nearest",
+        "frames": [
+          "spearman_idle_0",
+          "spearman_idle_1",
+          "spearman_walk_0",
+          "spearman_walk_1",
+          "spearman_walk_2",
+          "spearman_walk_3",
+          "spearman_attack_0",
+          "spearman_attack_1",
+          "spearman_attack_2"
+        ],
+        "cell": [
+          28,
+          19
+        ],
+        "anchor": [
+          0.5,
+          0.9474
+        ]
+      },
+      "styleTags": [
+        "pixel",
+        "night",
+        "top-down-3/4",
+        "1px-outline",
+        "palette-32",
+        "side-view-right"
+      ],
+      "provenance": {
+        "tool": "picanywhere",
+        "job": "job_20261118-141139_312#0",
+        "postprocess": "art/tools/build.py（chroma key → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 打包）",
+        "promptBlock": "art/tools/prompts.py STYLE_LOCK"
+      },
+      "keywords": [
+        "spearman",
+        "spear",
+        "pike",
+        "lancer",
+        "長槍兵",
+        "槍",
+        "ally",
+        "友軍",
+        "pixel",
+        "像素",
+        "night",
+        "夜"
+      ],
+      "reusePolicy": "reusable",
+      "contentHash": "sha256:c50ff1e173eb23d9798090d4de8a981f2ceee34a5db46a3619f93b226ac5e6fa"
+    },
+    {
+      "id": "lanternhold.chr.crossbow",
+      "kind": "sprite-sheet",
+      "status": "shipped",
+      "name": "弩兵（重弩、頭盔）：idle 2、walk 4、attack 3（朝右，左向鏡像）",
+      "files": {
+        "raw": [
+          "art/raw/unit_crossbow_t1.png"
+        ],
+        "prompt": [
+          "art/prompts/unit_crossbow.txt"
+        ],
+        "shipped": [
+          "game/src/assets/pixel/units.png",
+          "game/src/assets/pixel/units.json"
+        ]
+      },
+      "technical": {
+        "atlas": "units",
+        "format": "png8",
+        "artPxToWorldPx": 2,
+        "scaleMode": "nearest",
+        "frames": [
+          "crossbow_idle_0",
+          "crossbow_idle_1",
+          "crossbow_walk_0",
+          "crossbow_walk_1",
+          "crossbow_walk_2",
+          "crossbow_walk_3",
+          "crossbow_attack_0",
+          "crossbow_attack_1",
+          "crossbow_attack_2"
+        ],
+        "cell": [
+          28,
+          22
+        ],
+        "anchor": [
+          0.5,
+          0.9545
+        ]
+      },
+      "styleTags": [
+        "pixel",
+        "night",
+        "top-down-3/4",
+        "1px-outline",
+        "palette-32",
+        "side-view-right"
+      ],
+      "provenance": {
+        "tool": "picanywhere",
+        "job": "job_20261118-141139_312#1",
+        "postprocess": "art/tools/build.py（chroma key → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 打包）",
+        "promptBlock": "art/tools/prompts.py STYLE_LOCK"
+      },
+      "keywords": [
+        "crossbow",
+        "crossbowman",
+        "ranged",
+        "弩兵",
+        "弩",
+        "ally",
+        "友軍",
+        "pixel",
+        "像素",
+        "night",
+        "夜"
+      ],
+      "reusePolicy": "reusable",
+      "contentHash": "sha256:c50ff1e173eb23d9798090d4de8a981f2ceee34a5db46a3619f93b226ac5e6fa"
+    },
+    {
+      "id": "lanternhold.chr.knight",
+      "kind": "sprite-sheet",
+      "status": "shipped",
+      "name": "騎士（步行，劍＋鳶形盾，無馬）：idle 2、walk 4、attack 3（朝右，左向鏡像）",
+      "files": {
+        "raw": [
+          "art/raw/unit_knight_t1.png"
+        ],
+        "prompt": [
+          "art/prompts/unit_knight.txt"
+        ],
+        "shipped": [
+          "game/src/assets/pixel/units.png",
+          "game/src/assets/pixel/units.json"
+        ]
+      },
+      "technical": {
+        "atlas": "units",
+        "format": "png8",
+        "artPxToWorldPx": 2,
+        "scaleMode": "nearest",
+        "frames": [
+          "knight_idle_0",
+          "knight_idle_1",
+          "knight_walk_0",
+          "knight_walk_1",
+          "knight_walk_2",
+          "knight_walk_3",
+          "knight_attack_0",
+          "knight_attack_1",
+          "knight_attack_2"
+        ],
+        "cell": [
+          32,
+          23
+        ],
+        "anchor": [
+          0.5,
+          0.9565
+        ]
+      },
+      "styleTags": [
+        "pixel",
+        "night",
+        "top-down-3/4",
+        "1px-outline",
+        "palette-32",
+        "side-view-right"
+      ],
+      "provenance": {
+        "tool": "picanywhere",
+        "job": "job_20261118-141139_312#2",
+        "postprocess": "art/tools/build.py（chroma key → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 打包）",
+        "promptBlock": "art/tools/prompts.py STYLE_LOCK"
+      },
+      "keywords": [
+        "knight",
+        "paladin",
+        "armored",
+        "sword",
+        "kite shield",
+        "騎士",
+        "重甲",
+        "ally",
+        "友軍",
+        "pixel",
+        "像素",
+        "night",
+        "夜"
+      ],
+      "reusePolicy": "reusable",
+      "contentHash": "sha256:c50ff1e173eb23d9798090d4de8a981f2ceee34a5db46a3619f93b226ac5e6fa"
     },
     {
       "id": "lanternhold.ref.priest.t1",
@@ -387,6 +681,48 @@
       "contentHash": "sha256:278c2ba279e81d8947bdaaa6665f0b17f5b0e5d34799e27bff34f3a31baaf901"
     },
     {
+      "id": "lanternhold.ref.skeleton.t1b",
+      "kind": "reference",
+      "status": "rejected-take",
+      "name": "骷髏兵 t1b（與 t1a 同 prompt，擇一，未採用）",
+      "files": {
+        "raw": [
+          "art/raw/unit_skeleton_t1b.png"
+        ],
+        "prompt": [
+          "art/prompts/unit_skeleton.txt"
+        ],
+        "shipped": []
+      },
+      "technical": {
+        "atlas": "units",
+        "format": "png8",
+        "artPxToWorldPx": 2,
+        "scaleMode": "nearest",
+        "frames": []
+      },
+      "styleTags": [
+        "pixel",
+        "night",
+        "top-down-3/4",
+        "1px-outline",
+        "palette-32",
+        "side-view-right"
+      ],
+      "provenance": {
+        "tool": "picanywhere",
+        "job": "job_20261118-134634_310#3",
+        "postprocess": "art/tools/build.py（chroma key → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 打包）",
+        "promptBlock": "art/tools/prompts.py STYLE_LOCK"
+      },
+      "keywords": [
+        "skeleton",
+        "rejected"
+      ],
+      "reusePolicy": "game-only",
+      "contentHash": "sha256:57a719d60e36d39677dd0f9779ed74639e62e5c688a1934d3c702d2154fe0333"
+    },
+    {
       "id": "lanternhold.foe.rat",
       "kind": "sprite-sheet",
       "status": "shipped",
@@ -453,7 +789,7 @@
         "像素"
       ],
       "reusePolicy": "reusable",
-      "contentHash": "sha256:495977413ac03e2f9b0218c35a026de30f6355fe6d5b972e705b88513e66fc21"
+      "contentHash": "sha256:5a0adfb6d20fa98c5a698b9b7521943e1a2c045ede2b64ccb89db2fa1c52e9cf"
     },
     {
       "id": "lanternhold.foe.beetle",
@@ -522,7 +858,7 @@
         "像素"
       ],
       "reusePolicy": "reusable",
-      "contentHash": "sha256:495977413ac03e2f9b0218c35a026de30f6355fe6d5b972e705b88513e66fc21"
+      "contentHash": "sha256:5a0adfb6d20fa98c5a698b9b7521943e1a2c045ede2b64ccb89db2fa1c52e9cf"
     },
     {
       "id": "lanternhold.foe.moth",
@@ -591,7 +927,7 @@
         "像素"
       ],
       "reusePolicy": "reusable",
-      "contentHash": "sha256:495977413ac03e2f9b0218c35a026de30f6355fe6d5b972e705b88513e66fc21"
+      "contentHash": "sha256:5a0adfb6d20fa98c5a698b9b7521943e1a2c045ede2b64ccb89db2fa1c52e9cf"
     },
     {
       "id": "lanternhold.foe.shroom",
@@ -663,7 +999,7 @@
         "像素"
       ],
       "reusePolicy": "reusable",
-      "contentHash": "sha256:495977413ac03e2f9b0218c35a026de30f6355fe6d5b972e705b88513e66fc21"
+      "contentHash": "sha256:5a0adfb6d20fa98c5a698b9b7521943e1a2c045ede2b64ccb89db2fa1c52e9cf"
     },
     {
       "id": "lanternhold.foe.snail",
@@ -735,7 +1071,7 @@
         "像素"
       ],
       "reusePolicy": "reusable",
-      "contentHash": "sha256:495977413ac03e2f9b0218c35a026de30f6355fe6d5b972e705b88513e66fc21"
+      "contentHash": "sha256:5a0adfb6d20fa98c5a698b9b7521943e1a2c045ede2b64ccb89db2fa1c52e9cf"
     },
     {
       "id": "lanternhold.foe.wolf",
@@ -807,7 +1143,7 @@
         "像素"
       ],
       "reusePolicy": "reusable",
-      "contentHash": "sha256:495977413ac03e2f9b0218c35a026de30f6355fe6d5b972e705b88513e66fc21"
+      "contentHash": "sha256:5a0adfb6d20fa98c5a698b9b7521943e1a2c045ede2b64ccb89db2fa1c52e9cf"
     },
     {
       "id": "lanternhold.foe.shadowArcher",
@@ -880,7 +1216,299 @@
         "像素"
       ],
       "reusePolicy": "reusable",
-      "contentHash": "sha256:495977413ac03e2f9b0218c35a026de30f6355fe6d5b972e705b88513e66fc21"
+      "contentHash": "sha256:5a0adfb6d20fa98c5a698b9b7521943e1a2c045ede2b64ccb89db2fa1c52e9cf"
+    },
+    {
+      "id": "lanternhold.foe.slime",
+      "kind": "sprite-sheet",
+      "status": "shipped",
+      "name": "暗影史萊姆（死亡分裂成兩隻小的）：walk 4、attack 2",
+      "files": {
+        "raw": [
+          "art/raw/foe_slime_t1.png"
+        ],
+        "prompt": [
+          "art/prompts/foe_slime.txt"
+        ],
+        "shipped": [
+          "game/src/assets/pixel/foes.png",
+          "game/src/assets/pixel/foes.json"
+        ]
+      },
+      "technical": {
+        "atlas": "foes",
+        "format": "png8",
+        "artPxToWorldPx": 2,
+        "scaleMode": "nearest",
+        "frames": [
+          "slime_walk_0",
+          "slime_walk_1",
+          "slime_walk_2",
+          "slime_walk_3",
+          "slime_attack_0",
+          "slime_attack_1"
+        ],
+        "cell": [
+          28,
+          14
+        ],
+        "anchor": [
+          0.5,
+          0.9286
+        ]
+      },
+      "styleTags": [
+        "pixel",
+        "night",
+        "top-down-3/4",
+        "1px-outline",
+        "palette-32",
+        "side-view-right"
+      ],
+      "provenance": {
+        "tool": "picanywhere",
+        "job": "job_20261118-151138_320#0",
+        "postprocess": "art/tools/build.py（chroma key → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 打包）",
+        "promptBlock": "art/tools/prompts.py STYLE_LOCK"
+      },
+      "keywords": [
+        "slime",
+        "blob",
+        "split",
+        "史萊姆",
+        "分裂",
+        "enemy",
+        "敵人",
+        "shadow",
+        "暗影",
+        "violet",
+        "紫",
+        "pixel",
+        "像素"
+      ],
+      "reusePolicy": "reusable",
+      "contentHash": "sha256:5a0adfb6d20fa98c5a698b9b7521943e1a2c045ede2b64ccb89db2fa1c52e9cf"
+    },
+    {
+      "id": "lanternhold.foe.boar",
+      "kind": "sprite-sheet",
+      "status": "shipped",
+      "name": "暗影野豬（衝鋒、首擊三倍）：walk 4、attack 2",
+      "files": {
+        "raw": [
+          "art/raw/foe_boar_t1.png"
+        ],
+        "prompt": [
+          "art/prompts/foe_boar.txt"
+        ],
+        "shipped": [
+          "game/src/assets/pixel/foes.png",
+          "game/src/assets/pixel/foes.json"
+        ]
+      },
+      "technical": {
+        "atlas": "foes",
+        "format": "png8",
+        "artPxToWorldPx": 2,
+        "scaleMode": "nearest",
+        "frames": [
+          "boar_walk_0",
+          "boar_walk_1",
+          "boar_walk_2",
+          "boar_walk_3",
+          "boar_attack_0",
+          "boar_attack_1"
+        ],
+        "cell": [
+          30,
+          15
+        ],
+        "anchor": [
+          0.5,
+          0.9333
+        ]
+      },
+      "styleTags": [
+        "pixel",
+        "night",
+        "top-down-3/4",
+        "1px-outline",
+        "palette-32",
+        "side-view-right"
+      ],
+      "provenance": {
+        "tool": "picanywhere",
+        "job": "job_20261118-151138_320#1",
+        "postprocess": "art/tools/build.py（chroma key → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 打包）",
+        "promptBlock": "art/tools/prompts.py STYLE_LOCK"
+      },
+      "keywords": [
+        "boar",
+        "pig",
+        "charge",
+        "tusk",
+        "野豬",
+        "衝鋒",
+        "enemy",
+        "敵人",
+        "shadow",
+        "暗影",
+        "violet",
+        "紫",
+        "pixel",
+        "像素"
+      ],
+      "reusePolicy": "reusable",
+      "contentHash": "sha256:5a0adfb6d20fa98c5a698b9b7521943e1a2c045ede2b64ccb89db2fa1c52e9cf"
+    },
+    {
+      "id": "lanternhold.foe.shaman",
+      "kind": "sprite-sheet",
+      "status": "shipped",
+      "name": "巫菇（治療周圍的怪）：walk 4、attack 2（施法）",
+      "files": {
+        "raw": [
+          "art/raw/foe_shaman_t1.png"
+        ],
+        "prompt": [
+          "art/prompts/foe_shaman.txt"
+        ],
+        "shipped": [
+          "game/src/assets/pixel/foes.png",
+          "game/src/assets/pixel/foes.json"
+        ]
+      },
+      "technical": {
+        "atlas": "foes",
+        "format": "png8",
+        "artPxToWorldPx": 2,
+        "scaleMode": "nearest",
+        "frames": [
+          "shaman_walk_0",
+          "shaman_walk_1",
+          "shaman_walk_2",
+          "shaman_walk_3",
+          "shaman_attack_0",
+          "shaman_attack_1"
+        ],
+        "cell": [
+          22,
+          18
+        ],
+        "anchor": [
+          0.5,
+          0.9444
+        ]
+      },
+      "styleTags": [
+        "pixel",
+        "night",
+        "top-down-3/4",
+        "1px-outline",
+        "palette-32",
+        "side-view-right"
+      ],
+      "provenance": {
+        "tool": "picanywhere",
+        "job": "job_20261118-151138_320#2",
+        "postprocess": "art/tools/build.py（chroma key → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 打包）",
+        "promptBlock": "art/tools/prompts.py STYLE_LOCK"
+      },
+      "keywords": [
+        "mushroom",
+        "shaman",
+        "healer",
+        "caster",
+        "staff",
+        "巫菇",
+        "治療",
+        "施法",
+        "enemy",
+        "敵人",
+        "shadow",
+        "暗影",
+        "violet",
+        "紫",
+        "pixel",
+        "像素"
+      ],
+      "reusePolicy": "reusable",
+      "contentHash": "sha256:5a0adfb6d20fa98c5a698b9b7521943e1a2c045ede2b64ccb89db2fa1c52e9cf"
+    },
+    {
+      "id": "lanternhold.foe.mole",
+      "kind": "sprite-sheet",
+      "status": "shipped",
+      "name": "暗影鼴鼠（鑽地穿牆）：walk 4、burrow 4（土堆）",
+      "files": {
+        "raw": [
+          "art/raw/foe_mole_t1.png"
+        ],
+        "prompt": [
+          "art/prompts/foe_mole.txt"
+        ],
+        "shipped": [
+          "game/src/assets/pixel/foes.png",
+          "game/src/assets/pixel/foes.json"
+        ]
+      },
+      "technical": {
+        "atlas": "foes",
+        "format": "png8",
+        "artPxToWorldPx": 2,
+        "scaleMode": "nearest",
+        "frames": [
+          "mole_walk_0",
+          "mole_walk_1",
+          "mole_walk_2",
+          "mole_walk_3",
+          "mole_burrow_0",
+          "mole_burrow_1",
+          "mole_burrow_2",
+          "mole_burrow_3"
+        ],
+        "cell": [
+          22,
+          13
+        ],
+        "anchor": [
+          0.5,
+          0.9231
+        ]
+      },
+      "styleTags": [
+        "pixel",
+        "night",
+        "top-down-3/4",
+        "1px-outline",
+        "palette-32",
+        "side-view-right"
+      ],
+      "provenance": {
+        "tool": "picanywhere",
+        "job": "job_20261118-151138_320#3",
+        "postprocess": "art/tools/build.py（chroma key → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 打包）",
+        "promptBlock": "art/tools/prompts.py STYLE_LOCK"
+      },
+      "keywords": [
+        "mole",
+        "burrow",
+        "dig",
+        "tunnel",
+        "鼴鼠",
+        "鑽地",
+        "土堆",
+        "enemy",
+        "敵人",
+        "shadow",
+        "暗影",
+        "violet",
+        "紫",
+        "pixel",
+        "像素"
+      ],
+      "reusePolicy": "reusable",
+      "contentHash": "sha256:5a0adfb6d20fa98c5a698b9b7521943e1a2c045ede2b64ccb89db2fa1c52e9cf"
     },
     {
       "id": "lanternhold.foe.boss",
@@ -955,7 +1583,7 @@
         "像素"
       ],
       "reusePolicy": "reusable",
-      "contentHash": "sha256:495977413ac03e2f9b0218c35a026de30f6355fe6d5b972e705b88513e66fc21"
+      "contentHash": "sha256:5a0adfb6d20fa98c5a698b9b7521943e1a2c045ede2b64ccb89db2fa1c52e9cf"
     },
     {
       "id": "lanternhold.bld.castle",
@@ -1017,7 +1645,7 @@
         "燈"
       ],
       "reusePolicy": "reusable",
-      "contentHash": "sha256:34d4731dfa62d50f51ed306d8c75c6a85b4e029db767d2150360b74f62be0948"
+      "contentHash": "sha256:f30b59b0924359cfb050cfb048d728dbdb95d599a0d32dc62143402b7eb443d5"
     },
     {
       "id": "lanternhold.bld.barracks",
@@ -1080,7 +1708,7 @@
         "升級"
       ],
       "reusePolicy": "reusable",
-      "contentHash": "sha256:34d4731dfa62d50f51ed306d8c75c6a85b4e029db767d2150360b74f62be0948"
+      "contentHash": "sha256:f30b59b0924359cfb050cfb048d728dbdb95d599a0d32dc62143402b7eb443d5"
     },
     {
       "id": "lanternhold.bld.walls",
@@ -1154,7 +1782,7 @@
         "破損"
       ],
       "reusePolicy": "reusable",
-      "contentHash": "sha256:34d4731dfa62d50f51ed306d8c75c6a85b4e029db767d2150360b74f62be0948"
+      "contentHash": "sha256:f30b59b0924359cfb050cfb048d728dbdb95d599a0d32dc62143402b7eb443d5"
     },
     {
       "id": "lanternhold.prop.forest",
@@ -1231,7 +1859,163 @@
         "森林"
       ],
       "reusePolicy": "reusable",
-      "contentHash": "sha256:34d4731dfa62d50f51ed306d8c75c6a85b4e029db767d2150360b74f62be0948"
+      "contentHash": "sha256:f30b59b0924359cfb050cfb048d728dbdb95d599a0d32dc62143402b7eb443d5"
+    },
+    {
+      "id": "lanternhold.bld.towers",
+      "kind": "sprite-sheet",
+      "status": "shipped",
+      "name": "法術塔 5 種（基本紫晶／冰晶／毒綠晶＋藤蔓／戰旗金晶／骨飾白晶）",
+      "files": {
+        "raw": [
+          "art/raw/bld_towers_t1.png",
+          "art/raw/bld_tower_poison_t1.png"
+        ],
+        "prompt": [
+          "art/prompts/bld_towers.txt",
+          "art/prompts/bld_tower_poison.txt"
+        ],
+        "shipped": [
+          "game/src/assets/pixel/buildings.png",
+          "game/src/assets/pixel/buildings.json"
+        ]
+      },
+      "technical": {
+        "atlas": "buildings",
+        "format": "png8",
+        "artPxToWorldPx": 2,
+        "scaleMode": "nearest",
+        "frames": [
+          "tower_basic",
+          "tower_frost",
+          "tower_poison",
+          "tower_banner",
+          "tower_bone"
+        ],
+        "cell": [
+          26,
+          46
+        ],
+        "anchor": [
+          0.5,
+          0.9783
+        ]
+      },
+      "styleTags": [
+        "pixel",
+        "night",
+        "top-down-3/4",
+        "1px-outline",
+        "palette-32",
+        "side-view-right"
+      ],
+      "provenance": {
+        "tool": "picanywhere",
+        "job": "job_20261118-134634_310#0",
+        "postprocess": "art/tools/build.py（chroma key → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 打包）",
+        "promptBlock": "art/tools/prompts.py STYLE_LOCK"
+      },
+      "keywords": [
+        "tower",
+        "mage tower",
+        "arcane",
+        "crystal",
+        "frost",
+        "poison",
+        "banner",
+        "bone",
+        "塔",
+        "法術塔",
+        "水晶",
+        "冰",
+        "毒",
+        "戰旗",
+        "骨"
+      ],
+      "reusePolicy": "reusable",
+      "contentHash": "sha256:f30b59b0924359cfb050cfb048d728dbdb95d599a0d32dc62143402b7eb443d5",
+      "note": "tower_poison 在洋紅底單獨生成（主體是綠色），縮放到與其他塔同高"
+    },
+    {
+      "id": "lanternhold.fx.status",
+      "kind": "fx-sheet",
+      "status": "shipped",
+      "name": "毒雲、光環脈衝、召喚骨塵 各 4 格（洋紅底生成）",
+      "files": {
+        "raw": [
+          "art/raw/fx_new_t1.png"
+        ],
+        "prompt": [
+          "art/prompts/fx_new.txt"
+        ],
+        "shipped": [
+          "game/src/assets/pixel/fx.png",
+          "game/src/assets/pixel/fx.json"
+        ]
+      },
+      "technical": {
+        "atlas": "fx",
+        "format": "png8",
+        "artPxToWorldPx": 2,
+        "scaleMode": "nearest",
+        "frames": [
+          "poison_0",
+          "poison_1",
+          "poison_2",
+          "poison_3",
+          "aura_0",
+          "aura_1",
+          "aura_2",
+          "aura_3",
+          "summon_0",
+          "summon_1",
+          "summon_2",
+          "summon_3"
+        ],
+        "cell": [
+          16,
+          16
+        ],
+        "anchor": [
+          0.5,
+          0.5
+        ]
+      },
+      "styleTags": [
+        "pixel",
+        "night",
+        "top-down-3/4",
+        "1px-outline",
+        "palette-32",
+        "side-view-right"
+      ],
+      "provenance": {
+        "tool": "picanywhere",
+        "job": "job_20261118-134634_310#4",
+        "postprocess": "art/tools/build.py（chroma key → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 打包）",
+        "promptBlock": "art/tools/prompts.py STYLE_LOCK"
+      },
+      "keywords": [
+        "poison",
+        "toxic",
+        "gas",
+        "aura",
+        "ring",
+        "pulse",
+        "buff",
+        "summon",
+        "dust",
+        "bones",
+        "毒",
+        "毒雲",
+        "光環",
+        "增益",
+        "召喚",
+        "骨塵",
+        "特效"
+      ],
+      "reusePolicy": "reusable",
+      "contentHash": "sha256:2235ff7de12ff830f5ff80af60ad72b0dafdea16bcb4ab4f2c65ad550f757a92"
     },
     {
       "id": "lanternhold.fx.bursts",
@@ -1311,7 +2095,7 @@
         "特效"
       ],
       "reusePolicy": "reusable",
-      "contentHash": "sha256:33eea3fad64376bcdfa1f7d65e50412a9c2f758872bb7d4a1aeb068dfba37455"
+      "contentHash": "sha256:2235ff7de12ff830f5ff80af60ad72b0dafdea16bcb4ab4f2c65ad550f757a92"
     },
     {
       "id": "lanternhold.fx.misc",
@@ -1396,23 +2180,27 @@
         "螢火蟲"
       ],
       "reusePolicy": "reusable",
-      "contentHash": "sha256:33eea3fad64376bcdfa1f7d65e50412a9c2f758872bb7d4a1aeb068dfba37455"
+      "contentHash": "sha256:2235ff7de12ff830f5ff80af60ad72b0dafdea16bcb4ab4f2c65ad550f757a92"
     },
     {
       "id": "lanternhold.ui.icons",
       "kind": "ui",
       "status": "shipped",
-      "name": "卡片圖示 18、進化 4、資源 3（24×24）",
+      "name": "卡片圖示 25、進化 4、資源 3、塔 1（24×24）",
       "files": {
         "raw": [
           "art/raw/icons_cards_a_t1.png",
           "art/raw/icons_cards_b_t1.png",
-          "art/raw/icons_evo_res_t1.png"
+          "art/raw/icons_evo_res_t1.png",
+          "art/raw/icons_new_a_t1.png",
+          "art/raw/icons_new_b_t1.png"
         ],
         "prompt": [
           "art/prompts/icons_cards_a.txt",
           "art/prompts/icons_cards_b.txt",
-          "art/prompts/icons_evo_res.txt"
+          "art/prompts/icons_evo_res.txt",
+          "art/prompts/icons_new_a.txt",
+          "art/prompts/icons_new_b.txt"
         ],
         "shipped": [
           "game/src/assets/pixel/icons.png",
@@ -1449,7 +2237,50 @@
           "icon_winter",
           "icon_gold",
           "icon_population",
-          "icon_star"
+          "icon_star",
+          "icon_tower",
+          "icon_arcaneRange",
+          "icon_arcanePower",
+          "icon_arcaneHaste",
+          "icon_artisan",
+          "icon_longbow",
+          "icon_sturdy",
+          "icon_charge",
+          "icon_cleave",
+          "icon_chant",
+          "icon_blessing",
+          "icon_t_walls",
+          "icon_t_castle",
+          "icon_t_repair",
+          "icon_t_palisade",
+          "icon_t_gold",
+          "icon_t_train",
+          "icon_t_veteran",
+          "icon_t_horn",
+          "icon_t_reroll",
+          "icon_t_ignore",
+          "icon_t_lock",
+          "icon_t_bounty",
+          "icon_diamond",
+          "icon_talent",
+          "icon_achievement",
+          "icon_campaign",
+          "icon_loadout",
+          "icon_u_archer",
+          "icon_u_shield",
+          "icon_u_priest",
+          "icon_u_spearman",
+          "icon_u_crossbow",
+          "icon_u_knight",
+          "icon_heavyBow",
+          "icon_heavyBlow",
+          "icon_groupHeal",
+          "icon_vitality",
+          "icon_sledge",
+          "icon_swiftFeet",
+          "icon_bonePact",
+          "icon_atkUp",
+          "icon_atkSpeed"
         ],
         "cell": [
           24,
@@ -1499,7 +2330,7 @@
         "星"
       ],
       "reusePolicy": "reusable",
-      "contentHash": "sha256:d3f5b1d0a83fb3176e5e79ee50241b0449b1e1b6935980b59368f95554b14029"
+      "contentHash": "sha256:8764ebdf6ecf385043516760efeadcfa84245a0ee8370d41b52f784f64f6561a"
     },
     {
       "id": "lanternhold.bg.ground",
@@ -1575,13 +2406,563 @@
         "無縫"
       ],
       "reusePolicy": "reusable",
-      "contentHash": "sha256:79b6263a02fa227e4b73cc1dc0cb95a79804a8e0da76e57a49b2d19e62f1b05d"
+      "contentHash": "sha256:fe4df0607a155d3b141cd28fc104cd6e21b9306468762967948b0a535e63bf8c"
+    },
+    {
+      "id": "lanternhold.prop.themes",
+      "kind": "sprite-sheet",
+      "status": "shipped",
+      "name": "場景主題道具：沙漠／高地／平原／春／秋／冬（腳底錨點）",
+      "files": {
+        "raw": [
+          "art/raw/props_dry_t1.png",
+          "art/raw/props_season_t1.png"
+        ],
+        "prompt": [
+          "art/prompts/props_dry.txt",
+          "art/prompts/props_season.txt"
+        ],
+        "shipped": [
+          "game/src/assets/pixel/buildings.png",
+          "game/src/assets/pixel/buildings.json"
+        ]
+      },
+      "technical": {
+        "atlas": "buildings",
+        "format": "png8",
+        "artPxToWorldPx": 2,
+        "scaleMode": "nearest",
+        "frames": [
+          "cactus_0",
+          "cactus_1",
+          "dry_bush",
+          "desert_rock",
+          "crag_0",
+          "crag_1",
+          "alpine_pine",
+          "bush_0",
+          "haystack",
+          "blossom_tree",
+          "flower_patch",
+          "maple_tree",
+          "maple_tree_1",
+          "leaf_pile",
+          "snow_pine",
+          "snow_pine_1",
+          "snow_rock"
+        ],
+        "cell": [
+          22,
+          28
+        ],
+        "anchor": [
+          0.5,
+          0.9643
+        ]
+      },
+      "styleTags": [
+        "pixel",
+        "night",
+        "top-down-3/4",
+        "1px-outline",
+        "palette-32",
+        "side-view-right"
+      ],
+      "provenance": {
+        "tool": "picanywhere",
+        "job": "job_20261118-140930_311#12",
+        "postprocess": "art/tools/build.py（chroma key → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 打包）",
+        "promptBlock": "art/tools/prompts.py STYLE_LOCK"
+      },
+      "keywords": [
+        "cactus",
+        "desert",
+        "rock",
+        "crag",
+        "mountain",
+        "pine",
+        "bush",
+        "haystack",
+        "blossom",
+        "cherry",
+        "flower",
+        "maple",
+        "autumn",
+        "leaves",
+        "snow",
+        "winter",
+        "仙人掌",
+        "沙漠",
+        "岩石",
+        "高地",
+        "灌木",
+        "乾草堆",
+        "花樹",
+        "花叢",
+        "楓樹",
+        "落葉",
+        "雪松",
+        "雪",
+        "prop",
+        "道具"
+      ],
+      "reusePolicy": "reusable",
+      "contentHash": "sha256:f30b59b0924359cfb050cfb048d728dbdb95d599a0d32dc62143402b7eb443d5",
+      "note": "props_dry 在洋紅底生成（綠色植物）"
+    },
+    {
+      "id": "lanternhold.bld.pads",
+      "kind": "sprite-sheet",
+      "status": "shipped",
+      "name": "建造地基：方形石基（軍營）、圓形符文台（法術塔），各附 _selected 燈橘描邊版",
+      "files": {
+        "raw": [
+          "art/raw/pads_t1.png"
+        ],
+        "prompt": [
+          "art/prompts/pads.txt"
+        ],
+        "shipped": [
+          "game/src/assets/pixel/buildings.png",
+          "game/src/assets/pixel/buildings.json"
+        ]
+      },
+      "technical": {
+        "atlas": "buildings",
+        "format": "png8",
+        "artPxToWorldPx": 2,
+        "scaleMode": "nearest",
+        "frames": [
+          "pad_inner",
+          "pad_outer",
+          "pad_inner_selected",
+          "pad_outer_selected"
+        ],
+        "cell": [
+          40,
+          29
+        ],
+        "anchor": [
+          0.5,
+          0.5
+        ],
+        "anchorNote": "center (0.5,0.5); _selected = same art with a 2 px #ffb64a rim generated in build.py"
+      },
+      "styleTags": [
+        "pixel",
+        "night",
+        "top-down-3/4",
+        "1px-outline",
+        "palette-32",
+        "side-view-right"
+      ],
+      "provenance": {
+        "tool": "picanywhere",
+        "job": "job_20261118-140930_311#14",
+        "postprocess": "art/tools/build.py（chroma key → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 打包）",
+        "promptBlock": "art/tools/prompts.py STYLE_LOCK"
+      },
+      "keywords": [
+        "build pad",
+        "foundation",
+        "plinth",
+        "slot",
+        "selected",
+        "highlight",
+        "rune",
+        "地基",
+        "建造點",
+        "選取",
+        "符文"
+      ],
+      "reusePolicy": "reusable",
+      "contentHash": "sha256:f30b59b0924359cfb050cfb048d728dbdb95d599a0d32dc62143402b7eb443d5"
+    },
+    {
+      "id": "lanternhold.ui.meta-icons",
+      "kind": "ui",
+      "status": "shipped",
+      "name": "外圍介面圖示：天賦 12、鑽石、天賦、成就、戰役、配置、兵種頭像 6（24×24）",
+      "files": {
+        "raw": [
+          "art/raw/icons_talents_a_t1.png",
+          "art/raw/icons_meta_t1.png",
+          "art/raw/icons_portraits_t1.png",
+          "art/raw/icon_achievement_v2_t1.png",
+          "art/raw/icon_reroll_v2_t1.png"
+        ],
+        "prompt": [
+          "art/prompts/icons_talents_a.txt",
+          "art/prompts/icons_meta.txt",
+          "art/prompts/icons_portraits.txt",
+          "art/prompts/icon_achievement_v2.txt",
+          "art/prompts/icon_reroll_v2.txt"
+        ],
+        "shipped": [
+          "game/src/assets/pixel/icons.png",
+          "game/src/assets/pixel/icons.json"
+        ]
+      },
+      "technical": {
+        "atlas": "icons",
+        "format": "png8",
+        "artPxToWorldPx": 2,
+        "scaleMode": "nearest",
+        "frames": [
+          "icon_t_walls",
+          "icon_t_castle",
+          "icon_t_repair",
+          "icon_t_palisade",
+          "icon_t_gold",
+          "icon_t_train",
+          "icon_t_veteran",
+          "icon_t_horn",
+          "icon_t_reroll",
+          "icon_t_ignore",
+          "icon_t_lock",
+          "icon_t_bounty",
+          "icon_diamond",
+          "icon_talent",
+          "icon_achievement",
+          "icon_campaign",
+          "icon_loadout",
+          "icon_u_archer",
+          "icon_u_shield",
+          "icon_u_priest",
+          "icon_u_spearman",
+          "icon_u_crossbow",
+          "icon_u_knight"
+        ],
+        "cell": [
+          24,
+          24
+        ],
+        "anchor": [
+          0.5,
+          0.5
+        ]
+      },
+      "styleTags": [
+        "pixel",
+        "night",
+        "top-down-3/4",
+        "1px-outline",
+        "palette-32",
+        "side-view-right"
+      ],
+      "provenance": {
+        "tool": "picanywhere",
+        "job": "job_20261118-141139_312#3",
+        "postprocess": "art/tools/build.py（chroma key → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 打包）",
+        "promptBlock": "art/tools/prompts.py STYLE_LOCK"
+      },
+      "keywords": [
+        "icon",
+        "talent",
+        "meta",
+        "diamond",
+        "gem",
+        "achievement",
+        "medal",
+        "campaign",
+        "loadout",
+        "portrait",
+        "avatar",
+        "padlock",
+        "reroll",
+        "天賦",
+        "鑽石",
+        "寶石",
+        "成就",
+        "戰役",
+        "配置",
+        "頭像",
+        "鎖",
+        "重抽"
+      ],
+      "reusePolicy": "reusable",
+      "contentHash": "sha256:8764ebdf6ecf385043516760efeadcfa84245a0ee8370d41b52f784f64f6561a",
+      "note": "icon_achievement、icon_t_reroll 用單張重生版（第一版成就像金幣、重抽箭頭在 24 px 消失）"
+    },
+    {
+      "id": "lanternhold.ui.trait-icons",
+      "kind": "ui",
+      "status": "shipped",
+      "name": "兵種特性卡圖示：強弓、重擊、群療、體魄、鐵鎚、快腳、亡骨契約、攻擊、攻速（24×24）",
+      "files": {
+        "raw": [
+          "art/raw/icons_traits_t1.png"
+        ],
+        "prompt": [
+          "art/prompts/icons_traits.txt"
+        ],
+        "shipped": [
+          "game/src/assets/pixel/icons.png",
+          "game/src/assets/pixel/icons.json"
+        ]
+      },
+      "technical": {
+        "atlas": "icons",
+        "format": "png8",
+        "artPxToWorldPx": 2,
+        "scaleMode": "nearest",
+        "frames": [
+          "icon_heavyBow",
+          "icon_heavyBlow",
+          "icon_groupHeal",
+          "icon_vitality",
+          "icon_sledge",
+          "icon_swiftFeet",
+          "icon_bonePact",
+          "icon_atkUp",
+          "icon_atkSpeed"
+        ],
+        "cell": [
+          24,
+          24
+        ],
+        "anchor": [
+          0.5,
+          0.5
+        ]
+      },
+      "styleTags": [
+        "pixel",
+        "night",
+        "top-down-3/4",
+        "1px-outline",
+        "palette-32",
+        "side-view-right"
+      ],
+      "provenance": {
+        "tool": "picanywhere",
+        "job": "job_20261118-150714_319#0",
+        "postprocess": "art/tools/build.py（chroma key → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 打包）",
+        "promptBlock": "art/tools/prompts.py STYLE_LOCK"
+      },
+      "keywords": [
+        "icon",
+        "trait",
+        "card",
+        "bow",
+        "hammer",
+        "heal",
+        "lantern",
+        "vest",
+        "boot",
+        "bones",
+        "sword",
+        "attack",
+        "speed",
+        "特性",
+        "卡片",
+        "強弓",
+        "重擊",
+        "群療",
+        "體魄",
+        "快腳",
+        "攻擊",
+        "攻速"
+      ],
+      "reusePolicy": "reusable",
+      "contentHash": "sha256:8764ebdf6ecf385043516760efeadcfa84245a0ee8370d41b52f784f64f6561a",
+      "note": "其他特性卡沿用既有卡片／天賦圖示（main.js TRAIT_ICON）"
+    },
+    {
+      "id": "lanternhold.bg.themes",
+      "kind": "background",
+      "status": "shipped",
+      "name": "場景主題地表：平原／沙漠／高地／春／秋／冬 各一張地面＋一張道路（64×64 無縫）",
+      "files": {
+        "raw": [
+          "art/raw/tile_ground_plains_t1.png",
+          "art/raw/tile_path_plains_t1.png",
+          "art/raw/tile_ground_desert_t1.png",
+          "art/raw/tile_path_desert_t1.png",
+          "art/raw/tile_ground_highland_t1.png",
+          "art/raw/tile_path_highland_t1.png",
+          "art/raw/tile_ground_spring_t1.png",
+          "art/raw/tile_path_spring_t1.png",
+          "art/raw/tile_ground_autumn_t1.png",
+          "art/raw/tile_path_autumn_t1.png",
+          "art/raw/tile_ground_winter_t1.png",
+          "art/raw/tile_path_winter_t1.png"
+        ],
+        "prompt": [
+          "art/prompts/tile_ground_plains.txt",
+          "art/prompts/tile_path_plains.txt",
+          "art/prompts/tile_ground_desert.txt",
+          "art/prompts/tile_path_desert.txt",
+          "art/prompts/tile_ground_highland.txt",
+          "art/prompts/tile_path_highland.txt",
+          "art/prompts/tile_ground_spring.txt",
+          "art/prompts/tile_path_spring.txt",
+          "art/prompts/tile_ground_autumn.txt",
+          "art/prompts/tile_path_autumn.txt",
+          "art/prompts/tile_ground_winter.txt",
+          "art/prompts/tile_path_winter.txt"
+        ],
+        "shipped": [
+          "game/src/assets/pixel/ground_plains.png",
+          "game/src/assets/pixel/path_plains.png",
+          "game/src/assets/pixel/ground_desert.png",
+          "game/src/assets/pixel/path_desert.png",
+          "game/src/assets/pixel/ground_highland.png",
+          "game/src/assets/pixel/path_highland.png",
+          "game/src/assets/pixel/ground_spring.png",
+          "game/src/assets/pixel/path_spring.png",
+          "game/src/assets/pixel/ground_autumn.png",
+          "game/src/assets/pixel/path_autumn.png",
+          "game/src/assets/pixel/ground_winter.png",
+          "game/src/assets/pixel/path_winter.png"
+        ]
+      },
+      "technical": {
+        "tile": [
+          64,
+          64
+        ],
+        "format": "png8",
+        "palette": "16 colours per tile (own palette, not the sprite palette)",
+        "artPxToWorldPx": 2,
+        "scaleMode": "nearest",
+        "use": "TilingSprite"
+      },
+      "styleTags": [
+        "pixel",
+        "night",
+        "top-down-3/4",
+        "1px-outline",
+        "palette-32",
+        "side-view-right"
+      ],
+      "provenance": {
+        "tool": "picanywhere",
+        "job": "job_20261118-140930_311#0-11",
+        "postprocess": "art/tools/build.py theme_tile（BOX 64×64 → 交疊淡化無縫 → 16 色）"
+      },
+      "keywords": [
+        "ground",
+        "tile",
+        "seamless",
+        "path",
+        "road",
+        "meadow",
+        "grass",
+        "desert",
+        "sand",
+        "highland",
+        "gravel",
+        "spring",
+        "flowers",
+        "autumn",
+        "leaves",
+        "winter",
+        "snow",
+        "地表",
+        "道路",
+        "草地",
+        "沙漠",
+        "高地",
+        "春",
+        "秋",
+        "冬",
+        "雪",
+        "無縫"
+      ],
+      "reusePolicy": "reusable",
+      "contentHash": "sha256:6445224e02c4c69e8d3bb40d5899804f8dd75988ea7652d82ffb692a79e06a51"
+    },
+    {
+      "id": "lanternhold.keyart.cover",
+      "kind": "key-art",
+      "status": "shipped",
+      "name": "首頁封面：燈塔主城被暗影群圍城（像素，270×200）",
+      "files": {
+        "raw": [
+          "art/raw/key_cover_t1b.png"
+        ],
+        "prompt": [
+          "art/prompts/key_cover.txt"
+        ],
+        "shipped": [
+          "game/src/assets/pixel/cover.png"
+        ]
+      },
+      "technical": {
+        "size": [
+          270,
+          200
+        ],
+        "format": "png8",
+        "palette": "64 colours (own palette)",
+        "alpha": "opaque",
+        "scaleMode": "nearest",
+        "titleSafe": "top ~15% is sky; the keep's lantern rises into the top-centre"
+      },
+      "styleTags": [
+        "pixel",
+        "night",
+        "top-down-3/4",
+        "1px-outline",
+        "palette-32",
+        "side-view-right"
+      ],
+      "provenance": {
+        "tool": "picanywhere",
+        "job": "job_20261118-141938_315#1",
+        "postprocess": "art/tools/build.py cover（裁 270:200 → BOX → 64 色）"
+      },
+      "keywords": [
+        "key art",
+        "cover",
+        "title",
+        "siege",
+        "castle",
+        "lantern",
+        "night",
+        "horde",
+        "封面",
+        "主視覺",
+        "標題",
+        "圍城",
+        "主城",
+        "燈塔"
+      ],
+      "reusePolicy": "reusable",
+      "contentHash": "sha256:0a2e4a694d4a0c87336e9e729ac011ec29ba95598f0b1bbc1ec86c62521807e4"
+    },
+    {
+      "id": "lanternhold.ref.cover.t1a",
+      "kind": "reference",
+      "status": "rejected-take",
+      "name": "封面 t1a（Boss 較清楚，但天空較雜，未採用）",
+      "files": {
+        "raw": [
+          "art/raw/key_cover_t1a.png"
+        ],
+        "prompt": [
+          "art/prompts/key_cover.txt"
+        ],
+        "shipped": []
+      },
+      "provenance": {
+        "tool": "picanywhere",
+        "job": "job_20261118-141938_315#0"
+      },
+      "keywords": [
+        "key art",
+        "cover",
+        "rejected"
+      ],
+      "reusePolicy": "game-only",
+      "contentHash": "sha256:b920e74c42e29452d07fd243575d93833bda4284a81c27bd404555a8e916fa73"
     },
     {
       "id": "lanternhold.ref.palette",
       "kind": "reference",
       "status": "shipped",
-      "name": "像素組共用 32 色調色盤",
+      "name": "像素組共用 48 色調色盤",
       "files": {
         "raw": [],
         "prompt": [],
@@ -1590,7 +2971,7 @@
         ]
       },
       "technical": {
-        "colors": 32,
+        "colors": 48,
         "outlineIndex": 0,
         "fixed": [
           "#1b1530",
@@ -1599,8 +2980,13 @@
           "#6fd3c4",
           "#c4c8d6",
           "#848aa0",
-          "#54586e"
-        ]
+          "#54586e",
+          "#96d654",
+          "#4a8c3e",
+          "#f2aac4",
+          "#4e96e8"
+        ],
+        "note": "48 colours since batch 3 (32 before)"
       },
       "styleTags": [
         "pixel",
@@ -1622,7 +3008,7 @@
         "pixel"
       ],
       "reusePolicy": "reusable",
-      "contentHash": "sha256:5caa0899c1830aa780bac30716f09aa24f3f147e9595545f8e6edb1719234582"
+      "contentHash": "sha256:566e2799fb155ed9088ff274305d275ad2fb84653d4e93a2d0a876280bd6674f"
     }
   ]
 }

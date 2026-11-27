@@ -5,6 +5,7 @@
   "skillAxis": ["aim", "planning"],
   "renderer": ["2d"],
   "scriptedProgression": true,
+  "fileMusic": false,
   "source": ["af-gate-lane-shooter"],
   "jurisdiction": ["TW", "US-*"],
   "artStyle": ["procedural"]

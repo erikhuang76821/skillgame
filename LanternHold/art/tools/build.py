@@ -22,15 +22,18 @@ OUT = ART.parent / "game" / "src" / "assets" / "pixel"
 PREV = ART / "preview"
 OUTLINE = (27, 21, 48)          # #1b1530 deep indigo, never pure black
 FIXED = [OUTLINE, (255, 182, 74), (198, 168, 255), (111, 211, 196),  # outline, lamp, foe-rim, ally
-         (196, 200, 214), (132, 138, 160), (84, 88, 110)]                # steel / stone greys (else greys snap to lilac)
-N_COLORS = 32
+         (196, 200, 214), (132, 138, 160), (84, 88, 110),               # steel / stone greys (else greys snap to lilac)
+         (150, 214, 84), (74, 140, 62),
+         (242, 170, 196), (78, 150, 232)]                               # blossom pink, gem blue (batch 3)                                 # poison greens (else poison snaps to teal / yellow)
+N_COLORS = 48   # 32 until batch 3; theme props (meadow green, sand, snow, blossom) need the extra room
 
 
-KEPT = {"unit_priest": "unit_priest_v2_t2a"}   # name -> kept take (default <name>_t1); see art/raw/LOG.md
+KEPT = {"unit_priest": "unit_priest_v2_t2a", "unit_skeleton": "unit_skeleton_t1a"}   # name -> kept take (default <name>_t1); see art/raw/LOG.md
+MAGENTA = {"bld_tower_poison", "fx_new", "props_dry"}       # generated on #FF00FF (green subjects)
 
 
 def raw(name):
-    return key(Image.open(RAW / f"{KEPT.get(name, name + '_t1')}.png"))
+    return key(Image.open(RAW / f"{KEPT.get(name, name + '_t1')}.png"), "magenta" if name in MAGENTA else "green")
 
 
 # ---------------------------------------------------------------- reduce
@@ -122,14 +125,14 @@ def add_anim(atlas, base, groups, target, align="feet", scale_rows=None, outline
     return s
 
 
-def add_static(atlas, name, crop, s, align="feet", outline=True, k=12):
+def add_static(atlas, name, crop, s, align="feet", outline=True, k=12, pad=None):
     (rgb, m), = localq([shrink(crop, s)], k)
-    (placed,), anchor = place([(rgb, m)], 1 if outline else 0, align)
+    (placed,), anchor = place([(rgb, m)], pad if pad is not None else (1 if outline else 0), align)
     FRAMES[atlas].append(Frame(name, *placed, anchor, outline))
 
 
 def build_defs():
-    for n in ("worker", "archer", "shield", "priest"):
+    for n in ("worker", "archer", "shield", "priest", "skeleton", "spearman", "crossbow", "knight"):
         idle, walk, atk = cells(raw(f"unit_{n}"), [2, 4, 3])
         add_anim("units", n, {"idle": idle, "walk": walk, "attack": atk}, (18, 20), scale_rows=["idle", "walk"])
 
@@ -142,6 +145,10 @@ def build_defs():
         "wolf": ("foe_wolf", [4, 2], ["walk", "attack"], (22, 16)),
         "shadowArcher": ("foe_shadow_archer", [4, 2], ["walk", "attack"], (14, 18)),
         "boss": ("foe_boss_maw", [4, 3], ["walk", "attack"], (56, 48)),
+        "slime": ("foe_slime", [4, 2], ["walk", "attack"], (14, 12)),
+        "boar": ("foe_boar", [4, 2], ["walk", "attack"], (20, 14)),
+        "shaman": ("foe_shaman", [4, 2], ["walk", "attack"], (14, 18)),
+        "mole": ("foe_mole", [4, 4], ["walk", "burrow"], (16, 12)),
     }
     for n, (r, lay, names, t) in foes.items():
         rows = cells(raw(r), lay)
@@ -165,6 +172,25 @@ def build_defs():
     for n, c in (("rock_0", rock0), ("rock_1", rock1), ("lamppost_0", lamp0), ("lamppost_1", lamp1)):
         add_static("buildings", n, c, s)
     add_static("buildings", "rubble", rubble, 30 / rubble.width, align="center")
+    # batch 2: towers (one shared scale for the 4-up sheet; the poison tower came alone so it is scaled to the same height)
+    towers, = cells(raw("bld_towers"), [4])
+    s = 44 / max(c.height for c in towers)
+    for n, c in zip(("tower_basic", "tower_frost", "tower_banner", "tower_bone"), towers): add_static("buildings", n, c, s)
+    (poison,), = cells(raw("bld_tower_poison"), [1])
+    add_static("buildings", "tower_poison", poison, 44 / poison.height)
+    # batch 3: theme props (one scale per sheet, tallest prop = 30 art px) and build pads (+ lamp-outlined _selected copies)
+    for r, lay, names in (("props_dry", [4, 3, 2], ["cactus_0", "cactus_1", "dry_bush", "desert_rock", "crag_0", "crag_1",
+                                                     "alpine_pine", "bush_0", "haystack"]),
+                          ("props_season", [2, 3, 3], ["blossom_tree", "flower_patch", "maple_tree", "maple_tree_1", "leaf_pile",
+                                                        "snow_pine", "snow_pine_1", "snow_rock"])):
+        crops = [c for row in cells(raw(r), lay) for c in row]
+        s = 30 / max(c.height for c in crops)
+        for n, c in zip(names, crops): add_static("buildings", n, c, s)
+    pads, = cells(raw("pads"), [2])
+    s = 36 / max(c.width for c in pads)
+    for n, c in zip(("pad_inner", "pad_outer"), pads):
+        add_static("buildings", n, c, s, align="center", pad=2)
+        add_static("buildings", n + "_selected", c, s, align="center", pad=2)
 
     # fx (no added outline: the generated art already carries its own dark edge where wanted)
     bursts = cells(raw("fx_bursts"), [4, 4, 4, 4])
@@ -181,6 +207,8 @@ def build_defs():
     spark, sparkle = r2[:3], r2[3:]
     add_anim("fx", "spark", {"": spark}, None, align="center", outline=False, s=10 / max(max(c.size) for c in spark))
     add_anim("fx", "sparkle", {"": sparkle}, None, align="center", outline=False, s=14 / max(max(c.size) for c in sparkle))
+    for n, row in zip(("poison", "aura", "summon"), cells(raw("fx_new"), [4, 4, 4])):
+        add_anim("fx", n, {"": row}, None, align="center", outline=False, s=16 / max(max(c.size) for c in row))
     nug, chest_c, chest_o = r3
     add_static("fx", "nugget", nug, 8 / max(nug.size), align="center", outline=False)
     s = 20 / max(chest_c.width, chest_o.width)
@@ -192,15 +220,57 @@ def build_defs():
     names_b = ["thunder", "chain", "rod", "shieldWall", "prayer", "stoneWall", "beacon", "bounty", "ranch"]
     names_c = ["arrowStorm", "inferno", "tempest", "winter", "gold", "population", "star"]
     for r, lay, names in (("icons_cards_a", [3, 3, 3], names_a), ("icons_cards_b", [3, 3, 3], names_b),
-                          ("icons_evo_res", [4, 3], names_c)):
+                          ("icons_evo_res", [4, 3], names_c),
+                          ("icons_new_a", [3, 3], ["tower", "arcaneRange", "arcanePower", "arcaneHaste", "artisan", "longbow"]),
+                          ("icons_new_b", [3, 2], ["sturdy", "charge", "cleave", "chant", "blessing"]),
+                          ("icons_talents_a", [3, 3, 3], ["t_walls", "t_castle", "t_repair", "t_palisade", "t_gold", "t_train",
+                                                          "t_veteran", "t_horn", "t_reroll"]),
+                          ("icons_meta", [4, 4], ["t_ignore", "t_lock", "t_bounty", "diamond", "talent", "achievement", "campaign",
+                                                  "loadout"]),
+                          ("icons_portraits", [3, 3], ["u_archer", "u_shield", "u_priest", "u_spearman", "u_crossbow", "u_knight"]),
+                          ("icons_traits", [3, 3, 3], ["heavyBow", "heavyBlow", "groupHeal", "vitality", "sledge", "swiftFeet",
+                                                       "bonePact", "atkUp", "atkSpeed"])):
         crops = [c for row in cells(raw(r), lay) for c in row]
         for n, c in zip(names, crops):
+            if n in ICON_RETAKE: (c,), = cells(raw(ICON_RETAKE[n]), [1])
             (rgb, m), = localq([shrink(c, 22 / max(c.size))], 8)
             R, M = _paste(rgb, m, 24, 24, (24 - m.shape[1]) // 2, (24 - m.shape[0]) // 2)
             FRAMES["icons"].append(Frame(f"icon_{n}", R, M, (0.5, 0.5), True))
 
 
 # ---------------------------------------------------------------- ground
+ICON_RETAKE = {"achievement": "icon_achievement_v2", "t_reroll": "icon_reroll_v2"}   # single-icon retakes replace the grid cell
+THEMES = ["plains", "desert", "highland", "spring", "autumn", "winter"]
+
+
+def theme_tile(raw_name, out_name, colors=16):
+    """Batch 3 scene themes: seamless 64x64 tile with its own 16-colour palette (kept off the sprite palette)."""
+    rgb, _ = ground_tile(raw_name)
+    rgb = rgb.clip(0, 255)
+    hi = rgb.min(axis=2) > 236
+    rgb[hi] = 236                                                       # no pure white snow
+    im = Image.fromarray(rgb.astype(np.uint8), "RGB").quantize(colors, method=Image.Quantize.MEDIANCUT, kmeans=4)
+    im.save(OUT / f"{out_name}.png", optimize=True)
+
+
+COVER = "key_cover_t1b"   # kept take (t1a: boss clearer but sky busier); see art/raw/LOG.md
+
+
+def cover(colors=64, size=(270, 200)):
+    """Home-screen key art: crop to 270:200, BOX downscale to native, own 64-colour palette (no pure black / white), opaque."""
+    im = Image.open(RAW / f"{COVER}.png").convert("RGB")
+    h = round(im.width * size[1] / size[0])
+    top = max(0, (im.height - h) // 2)
+    a = np.asarray(im.crop((0, top, im.width, top + h)).resize(size, Image.Resampling.BOX)).astype(np.int16)
+    a = np.clip(a, 0, 255)
+    a[a.min(axis=2) > 236] = 236
+    dark = a.max(axis=2) < 24
+    a[dark] = (a[dark] + np.array(OUTLINE)) // 2
+    q = Image.fromarray(a.astype(np.uint8), "RGB").quantize(colors, method=Image.Quantize.MEDIANCUT, kmeans=4)
+    q.save(OUT / "cover.png", optimize=True)
+    q.convert("RGB").resize((size[0] * 4, size[1] * 4), Image.Resampling.NEAREST).save(PREV / "cover_x4.png")
+
+
 def ground_tile(name, grade=None):
     im = Image.open(RAW / f"{name}_t1.png").convert("RGB")
     a = np.asarray(im.resize((64, 64), Image.Resampling.BOX)).astype(np.float32)
@@ -254,6 +324,13 @@ def finalize(f, pal):
         pl = np.pad(light_edge, 1)
         grow = ~m & (pl[:-2, 1:-1] | pl[2:, 1:-1] | pl[1:-1, :-2] | pl[1:-1, 2:])
         idx[grow] = 0; m = m | grow
+    if f.name.endswith("_selected"):   # build-pad highlight: 2 px lamp-orange (#ffb64a, index 1) rim instead of the indigo outline
+        for _ in range(2):
+            pm = np.pad(m, 1)
+            ring = ~m & (pm[:-2, 1:-1] | pm[2:, 1:-1] | pm[1:-1, :-2] | pm[1:-1, 2:])
+            idx[ring] = 1; m = m | ring
+        pm = np.pad(m, 1)
+        idx[m & (~pm[:-2, 1:-1] | ~pm[2:, 1:-1] | ~pm[1:-1, :-2] | ~pm[1:-1, 2:])] = 1
     return idx, m
 
 
@@ -326,6 +403,11 @@ def main():
         im.save(OUT / f"{n}.png", optimize=True)
     W, H = write_atlas("ground", gfin, {}, pal, maxw=130)
     report["ground"] = {"size": [W, H], "frames": 2}
+    for t in THEMES:
+        theme_tile(f"tile_ground_{t}", f"ground_{t}"); theme_tile(f"tile_path_{t}", f"path_{t}")
+    cover()
+    report["cover"] = "cover.png 270x200"
+    report["themeTiles"] = [f"{k}_{t}.png" for t in THEMES for k in ("ground", "path")]
     (OUT / "palette.json").write_text(json.dumps({"about": "LanternHold pixel set shared palette (index 0 = outline #1b1530)",
                                                    "colors": ["#%02x%02x%02x" % tuple(int(v) for v in c) for c in pal]}, indent=1) + "\n",
                                       encoding="utf-8")

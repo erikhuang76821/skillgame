@@ -11,6 +11,9 @@ export const TPS = 60;
 export const MATCH_TICKS = 180 * TPS;
 export const IN_DASH = 16;
 export const IN_HOWL = 32;
+// Match identity for reports and the audit (knowledge-base/index/rules.json RULE-REPORT-FRESH). Bump version whenever a
+// change alters results, together with the golden match in test/sim.test.mjs.
+export const GAME = Object.freeze({ id: 'swarm-duel', version: 2, maxTicks: MATCH_TICKS });
 
 const u = v => trunc(v * SUB);
 const BEAMS = EVENTS.find(e => e.type === 'beams');

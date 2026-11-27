@@ -5,6 +5,7 @@
   "skillAxis": ["timing", "reaction"],
   "renderer": ["2d"],
   "scriptedProgression": true,
+  "fileMusic": false,
   "source": ["original"],
   "jurisdiction": ["TW", "US-*"],
   "artStyle": ["chibi", "sticker"]

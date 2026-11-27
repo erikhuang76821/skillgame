@@ -9,13 +9,23 @@ import numpy as np
 from PIL import Image
 
 
-def key(img):
+def key(img, bg="green"):
     a = np.asarray(img.convert("RGB")).astype(np.int16)
     r, g, b = a[..., 0], a[..., 1], a[..., 2]
-    bg = (g > 140) & (g > r + 50) & (g > b + 50)
+    if bg == "magenta":   # for sheets whose subject is green (poison): #FF00FF background
+        lo = np.minimum(r, b)
+        hit = ((lo > 140) & (g < lo - 60)) | ((lo > 110) & (g < lo - 40) & (np.abs(r - b) < 70))
+        alpha = np.where(hit, 0, 255).astype(np.uint8)
+        # despill: magenta-hued kept pixels (pink fringe) become their grey
+        spill = (alpha > 0) & (r > g + 40) & (b > g + 40) & (np.abs(r - b) < 40)
+        grey = (r + g + b) // 3
+        r = np.where(spill, grey, r); b = np.where(spill, grey, b)
+        out = np.dstack([r, g, b, alpha]).clip(0, 255).astype(np.uint8)
+        return Image.fromarray(out, "RGBA")
+    bgm = (g > 140) & (g > r + 50) & (g > b + 50)
     # soft edge: partly green pixels (anti-aliased fringe) are also background when green clearly dominates
     fringe = (g > r + 30) & (g > b + 30) & (g > 110)
-    alpha = np.where(bg | fringe, 0, 255).astype(np.uint8)
+    alpha = np.where(bgm | fringe, 0, 255).astype(np.uint8)
     # despill: clamp green to max(r, b) + small margin on kept pixels that lean green
     lim = np.maximum(r, b) + 24
     g2 = np.where((alpha > 0) & (g > lim), lim, g)

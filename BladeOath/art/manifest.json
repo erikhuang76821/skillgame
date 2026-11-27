@@ -1,0 +1,1553 @@
+{
+  "schemaVersion": 1,
+  "game": "BladeOath",
+  "pathBase": "BladeOath/",
+  "about": "BladeOath 資產的唯一來源（knowledge-base/decisions/2026-10-21-kb-asset-architecture.md §5.3）。分件剪紙由 art/tools/prompts.py → picanywhere → art/tools/build.py 產生，掛在 render/rig.js 的程式骨架上（gdd/02、gdd/12 §7）；本檔由 art/tools/manifest.py 寫出，生成紀錄見 art/raw/LOG.md。",
+  "assets": [
+    {
+      "id": "bladeoath.chr.player",
+      "kind": "sprite-sheet",
+      "status": "shipped",
+      "reusePolicy": "reusable",
+      "name": "玩家・劍客：頭／軀幹 正側背、直劍 16 角",
+      "files": {
+        "raw": [
+          "art/raw/chr_player_t1.png"
+        ],
+        "prompt": [
+          "art/prompts/chr_player.txt"
+        ],
+        "shipped": [
+          "game/src/assets/pixel/actors.png",
+          "game/src/assets/pixel/actors.json",
+          "game/src/assets/pixel/palette.json"
+        ]
+      },
+      "technical": {
+        "atlas": "actors",
+        "format": "png8",
+        "artPxToWorldPx": 1,
+        "scaleMode": "nearest",
+        "frames": [
+          "player/head_front",
+          "player/head_side",
+          "player/head_back",
+          "player/torso_front",
+          "player/torso_side",
+          "player/torso_back",
+          "player/weapon_00",
+          "player/weapon_01",
+          "player/weapon_02",
+          "player/weapon_03",
+          "player/weapon_04",
+          "player/weapon_05",
+          "player/weapon_06",
+          "player/weapon_07",
+          "player/weapon_08",
+          "player/weapon_09",
+          "player/weapon_10",
+          "player/weapon_11",
+          "player/weapon_12",
+          "player/weapon_13",
+          "player/weapon_14",
+          "player/weapon_15"
+        ],
+        "anchors": "per frame in actors.json（頭＝頸點、軀幹＝中心、武器＝握柄、道具＝底部中央）"
+      },
+      "provenance": {
+        "generator": "picanywhere (gpt-image-2)",
+        "job": "job_20261125-204617_322",
+        "pipeline": "art/tools/build.py（chroma key → 第 2 列切件 → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 武器預轉 16 角 → 打包）",
+        "log": "art/raw/LOG.md"
+      },
+      "style": [
+        "pixel",
+        "ink-indigo",
+        "dark-xianxia",
+        "top-down-3/4",
+        "1px-outline",
+        "palette-32",
+        "cutout-rig"
+      ],
+      "tags": [
+        "swordsman",
+        "jian",
+        "player",
+        "劍客"
+      ],
+      "reusable": "換題材時沿用 prompts.py 的 STYLE_LOCK、版面與 build.py 重生；骨架契約見 gdd/02 §2",
+      "contentHash": "sha256:7422324a8b3c0577b2e848e0993a28c1dcd1350ffdc7659baaeccc111f7f64a0"
+    },
+    {
+      "id": "bladeoath.chr.soldier",
+      "kind": "sprite-sheet",
+      "status": "shipped",
+      "reusePolicy": "reusable",
+      "name": "屍兵：頭／軀幹 正側背、斷刀 16 角",
+      "files": {
+        "raw": [
+          "art/raw/chr_soldier_t1.png"
+        ],
+        "prompt": [
+          "art/prompts/chr_soldier.txt"
+        ],
+        "shipped": [
+          "game/src/assets/pixel/actors.png",
+          "game/src/assets/pixel/actors.json",
+          "game/src/assets/pixel/palette.json"
+        ]
+      },
+      "technical": {
+        "atlas": "actors",
+        "format": "png8",
+        "artPxToWorldPx": 1,
+        "scaleMode": "nearest",
+        "frames": [
+          "soldier/head_front",
+          "soldier/head_side",
+          "soldier/head_back",
+          "soldier/torso_front",
+          "soldier/torso_side",
+          "soldier/torso_back",
+          "soldier/weapon_00",
+          "soldier/weapon_01",
+          "soldier/weapon_02",
+          "soldier/weapon_03",
+          "soldier/weapon_04",
+          "soldier/weapon_05",
+          "soldier/weapon_06",
+          "soldier/weapon_07",
+          "soldier/weapon_08",
+          "soldier/weapon_09",
+          "soldier/weapon_10",
+          "soldier/weapon_11",
+          "soldier/weapon_12",
+          "soldier/weapon_13",
+          "soldier/weapon_14",
+          "soldier/weapon_15"
+        ],
+        "anchors": "per frame in actors.json（頭＝頸點、軀幹＝中心、武器＝握柄、道具＝底部中央）"
+      },
+      "provenance": {
+        "generator": "picanywhere (gpt-image-2)",
+        "job": "job_20261125-204617_322",
+        "pipeline": "art/tools/build.py（chroma key → 第 2 列切件 → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 武器預轉 16 角 → 打包）",
+        "log": "art/raw/LOG.md"
+      },
+      "style": [
+        "pixel",
+        "ink-indigo",
+        "dark-xianxia",
+        "top-down-3/4",
+        "1px-outline",
+        "palette-32",
+        "cutout-rig"
+      ],
+      "tags": [
+        "undead",
+        "corpse",
+        "soldier",
+        "saber",
+        "屍兵"
+      ],
+      "reusable": "換題材時沿用 prompts.py 的 STYLE_LOCK、版面與 build.py 重生；骨架契約見 gdd/02 §2",
+      "contentHash": "sha256:7422324a8b3c0577b2e848e0993a28c1dcd1350ffdc7659baaeccc111f7f64a0"
+    },
+    {
+      "id": "bladeoath.chr.bug",
+      "kind": "sprite-sheet",
+      "status": "shipped",
+      "reusePolicy": "reusable",
+      "name": "蠱蟲：甲殼 正側背、口器 16 角（無頭、無手）",
+      "files": {
+        "raw": [
+          "art/raw/chr_bug_t1.png"
+        ],
+        "prompt": [
+          "art/prompts/chr_bug.txt"
+        ],
+        "shipped": [
+          "game/src/assets/pixel/actors.png",
+          "game/src/assets/pixel/actors.json",
+          "game/src/assets/pixel/palette.json"
+        ]
+      },
+      "technical": {
+        "atlas": "actors",
+        "format": "png8",
+        "artPxToWorldPx": 1,
+        "scaleMode": "nearest",
+        "frames": [
+          "bug/torso_front",
+          "bug/torso_side",
+          "bug/torso_back",
+          "bug/weapon_00",
+          "bug/weapon_01",
+          "bug/weapon_02",
+          "bug/weapon_03",
+          "bug/weapon_04",
+          "bug/weapon_05",
+          "bug/weapon_06",
+          "bug/weapon_07",
+          "bug/weapon_08",
+          "bug/weapon_09",
+          "bug/weapon_10",
+          "bug/weapon_11",
+          "bug/weapon_12",
+          "bug/weapon_13",
+          "bug/weapon_14",
+          "bug/weapon_15"
+        ],
+        "anchors": "per frame in actors.json（頭＝頸點、軀幹＝中心、武器＝握柄、道具＝底部中央）"
+      },
+      "provenance": {
+        "generator": "picanywhere (gpt-image-2)",
+        "job": "job_20261125-204617_322",
+        "pipeline": "art/tools/build.py（chroma key → 第 2 列切件 → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 武器預轉 16 角 → 打包）",
+        "log": "art/raw/LOG.md"
+      },
+      "style": [
+        "pixel",
+        "ink-indigo",
+        "dark-xianxia",
+        "top-down-3/4",
+        "1px-outline",
+        "palette-32",
+        "cutout-rig"
+      ],
+      "tags": [
+        "insect",
+        "beetle",
+        "gu",
+        "蠱蟲"
+      ],
+      "reusable": "換題材時沿用 prompts.py 的 STYLE_LOCK、版面與 build.py 重生；骨架契約見 gdd/02 §2",
+      "contentHash": "sha256:7422324a8b3c0577b2e848e0993a28c1dcd1350ffdc7659baaeccc111f7f64a0"
+    },
+    {
+      "id": "bladeoath.chr.caster",
+      "kind": "sprite-sheet",
+      "status": "shipped",
+      "reusePolicy": "reusable",
+      "name": "蠱師：頭／軀幹 正側背、蠱杖 16 角",
+      "files": {
+        "raw": [
+          "art/raw/chr_caster_t1.png"
+        ],
+        "prompt": [
+          "art/prompts/chr_caster.txt"
+        ],
+        "shipped": [
+          "game/src/assets/pixel/actors.png",
+          "game/src/assets/pixel/actors.json",
+          "game/src/assets/pixel/palette.json"
+        ]
+      },
+      "technical": {
+        "atlas": "actors",
+        "format": "png8",
+        "artPxToWorldPx": 1,
+        "scaleMode": "nearest",
+        "frames": [
+          "caster/head_front",
+          "caster/head_side",
+          "caster/head_back",
+          "caster/torso_front",
+          "caster/torso_side",
+          "caster/torso_back",
+          "caster/weapon_00",
+          "caster/weapon_01",
+          "caster/weapon_02",
+          "caster/weapon_03",
+          "caster/weapon_04",
+          "caster/weapon_05",
+          "caster/weapon_06",
+          "caster/weapon_07",
+          "caster/weapon_08",
+          "caster/weapon_09",
+          "caster/weapon_10",
+          "caster/weapon_11",
+          "caster/weapon_12",
+          "caster/weapon_13",
+          "caster/weapon_14",
+          "caster/weapon_15"
+        ],
+        "anchors": "per frame in actors.json（頭＝頸點、軀幹＝中心、武器＝握柄、道具＝底部中央）"
+      },
+      "provenance": {
+        "generator": "picanywhere (gpt-image-2)",
+        "job": "job_20261125-204617_322",
+        "pipeline": "art/tools/build.py（chroma key → 第 2 列切件 → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 武器預轉 16 角 → 打包）",
+        "log": "art/raw/LOG.md"
+      },
+      "style": [
+        "pixel",
+        "ink-indigo",
+        "dark-xianxia",
+        "top-down-3/4",
+        "1px-outline",
+        "palette-32",
+        "cutout-rig"
+      ],
+      "tags": [
+        "sorcerer",
+        "gu",
+        "staff",
+        "jar",
+        "蠱師"
+      ],
+      "reusable": "換題材時沿用 prompts.py 的 STYLE_LOCK、版面與 build.py 重生；骨架契約見 gdd/02 §2",
+      "contentHash": "sha256:7422324a8b3c0577b2e848e0993a28c1dcd1350ffdc7659baaeccc111f7f64a0"
+    },
+    {
+      "id": "bladeoath.chr.brute",
+      "kind": "sprite-sheet",
+      "status": "shipped",
+      "reusePolicy": "reusable",
+      "name": "屍傀力士：頭／軀幹 正側背、鐵錘 16 角",
+      "files": {
+        "raw": [
+          "art/raw/chr_brute_t1.png"
+        ],
+        "prompt": [
+          "art/prompts/chr_brute.txt"
+        ],
+        "shipped": [
+          "game/src/assets/pixel/actors.png",
+          "game/src/assets/pixel/actors.json",
+          "game/src/assets/pixel/palette.json"
+        ]
+      },
+      "technical": {
+        "atlas": "actors",
+        "format": "png8",
+        "artPxToWorldPx": 1,
+        "scaleMode": "nearest",
+        "frames": [
+          "brute/head_front",
+          "brute/head_side",
+          "brute/head_back",
+          "brute/torso_front",
+          "brute/torso_side",
+          "brute/torso_back",
+          "brute/weapon_00",
+          "brute/weapon_01",
+          "brute/weapon_02",
+          "brute/weapon_03",
+          "brute/weapon_04",
+          "brute/weapon_05",
+          "brute/weapon_06",
+          "brute/weapon_07",
+          "brute/weapon_08",
+          "brute/weapon_09",
+          "brute/weapon_10",
+          "brute/weapon_11",
+          "brute/weapon_12",
+          "brute/weapon_13",
+          "brute/weapon_14",
+          "brute/weapon_15"
+        ],
+        "anchors": "per frame in actors.json（頭＝頸點、軀幹＝中心、武器＝握柄、道具＝底部中央）"
+      },
+      "provenance": {
+        "generator": "picanywhere (gpt-image-2)",
+        "job": "job_20261125-204617_322",
+        "pipeline": "art/tools/build.py（chroma key → 第 2 列切件 → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 武器預轉 16 角 → 打包）",
+        "log": "art/raw/LOG.md"
+      },
+      "style": [
+        "pixel",
+        "ink-indigo",
+        "dark-xianxia",
+        "top-down-3/4",
+        "1px-outline",
+        "palette-32",
+        "cutout-rig"
+      ],
+      "tags": [
+        "undead",
+        "brute",
+        "hammer",
+        "chains",
+        "力士"
+      ],
+      "reusable": "換題材時沿用 prompts.py 的 STYLE_LOCK、版面與 build.py 重生；骨架契約見 gdd/02 §2",
+      "contentHash": "sha256:7422324a8b3c0577b2e848e0993a28c1dcd1350ffdc7659baaeccc111f7f64a0"
+    },
+    {
+      "id": "bladeoath.chr.mother",
+      "kind": "sprite-sheet",
+      "status": "shipped",
+      "reusePolicy": "reusable",
+      "name": "蠱母（精英）：頭／軀幹 正側背、骨爪 16 角",
+      "files": {
+        "raw": [
+          "art/raw/chr_mother_t1.png"
+        ],
+        "prompt": [
+          "art/prompts/chr_mother.txt"
+        ],
+        "shipped": [
+          "game/src/assets/pixel/actors.png",
+          "game/src/assets/pixel/actors.json",
+          "game/src/assets/pixel/palette.json"
+        ]
+      },
+      "technical": {
+        "atlas": "actors",
+        "format": "png8",
+        "artPxToWorldPx": 1,
+        "scaleMode": "nearest",
+        "frames": [
+          "mother/head_front",
+          "mother/head_side",
+          "mother/head_back",
+          "mother/torso_front",
+          "mother/torso_side",
+          "mother/torso_back",
+          "mother/weapon_00",
+          "mother/weapon_01",
+          "mother/weapon_02",
+          "mother/weapon_03",
+          "mother/weapon_04",
+          "mother/weapon_05",
+          "mother/weapon_06",
+          "mother/weapon_07",
+          "mother/weapon_08",
+          "mother/weapon_09",
+          "mother/weapon_10",
+          "mother/weapon_11",
+          "mother/weapon_12",
+          "mother/weapon_13",
+          "mother/weapon_14",
+          "mother/weapon_15"
+        ],
+        "anchors": "per frame in actors.json（頭＝頸點、軀幹＝中心、武器＝握柄、道具＝底部中央）"
+      },
+      "provenance": {
+        "generator": "picanywhere (gpt-image-2)",
+        "job": "job_20261125-204617_322",
+        "pipeline": "art/tools/build.py（chroma key → 第 2 列切件 → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 武器預轉 16 角 → 打包）",
+        "log": "art/raw/LOG.md"
+      },
+      "style": [
+        "pixel",
+        "ink-indigo",
+        "dark-xianxia",
+        "top-down-3/4",
+        "1px-outline",
+        "palette-32",
+        "cutout-rig"
+      ],
+      "tags": [
+        "elite",
+        "gu",
+        "matriarch",
+        "claws",
+        "蠱母"
+      ],
+      "reusable": "換題材時沿用 prompts.py 的 STYLE_LOCK、版面與 build.py 重生；骨架契約見 gdd/02 §2",
+      "contentHash": "sha256:7422324a8b3c0577b2e848e0993a28c1dcd1350ffdc7659baaeccc111f7f64a0"
+    },
+    {
+      "id": "bladeoath.chr.general",
+      "kind": "sprite-sheet",
+      "status": "shipped",
+      "reusePolicy": "reusable",
+      "name": "屍傀將（中頭目）：頭／軀幹 正側背、偃月刀 16 角",
+      "files": {
+        "raw": [
+          "art/raw/chr_general_t1.png"
+        ],
+        "prompt": [
+          "art/prompts/chr_general.txt"
+        ],
+        "shipped": [
+          "game/src/assets/pixel/actors.png",
+          "game/src/assets/pixel/actors.json",
+          "game/src/assets/pixel/palette.json"
+        ]
+      },
+      "technical": {
+        "atlas": "actors",
+        "format": "png8",
+        "artPxToWorldPx": 1,
+        "scaleMode": "nearest",
+        "frames": [
+          "general/head_front",
+          "general/head_side",
+          "general/head_back",
+          "general/torso_front",
+          "general/torso_side",
+          "general/torso_back",
+          "general/weapon_00",
+          "general/weapon_01",
+          "general/weapon_02",
+          "general/weapon_03",
+          "general/weapon_04",
+          "general/weapon_05",
+          "general/weapon_06",
+          "general/weapon_07",
+          "general/weapon_08",
+          "general/weapon_09",
+          "general/weapon_10",
+          "general/weapon_11",
+          "general/weapon_12",
+          "general/weapon_13",
+          "general/weapon_14",
+          "general/weapon_15"
+        ],
+        "anchors": "per frame in actors.json（頭＝頸點、軀幹＝中心、武器＝握柄、道具＝底部中央）"
+      },
+      "provenance": {
+        "generator": "picanywhere (gpt-image-2)",
+        "job": "job_20261125-204617_322",
+        "pipeline": "art/tools/build.py（chroma key → 第 2 列切件 → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 武器預轉 16 角 → 打包）",
+        "log": "art/raw/LOG.md"
+      },
+      "style": [
+        "pixel",
+        "ink-indigo",
+        "dark-xianxia",
+        "top-down-3/4",
+        "1px-outline",
+        "palette-32",
+        "cutout-rig"
+      ],
+      "tags": [
+        "boss",
+        "undead",
+        "general",
+        "guandao",
+        "屍傀將"
+      ],
+      "reusable": "換題材時沿用 prompts.py 的 STYLE_LOCK、版面與 build.py 重生；骨架契約見 gdd/02 §2",
+      "contentHash": "sha256:7422324a8b3c0577b2e848e0993a28c1dcd1350ffdc7659baaeccc111f7f64a0"
+    },
+    {
+      "id": "bladeoath.chr.fallen",
+      "kind": "sprite-sheet",
+      "status": "shipped",
+      "reusePolicy": "reusable",
+      "name": "墮仙（終頭目）：頭／軀幹 正側背、長劍 16 角",
+      "files": {
+        "raw": [
+          "art/raw/chr_fallen_t1.png"
+        ],
+        "prompt": [
+          "art/prompts/chr_fallen.txt"
+        ],
+        "shipped": [
+          "game/src/assets/pixel/actors.png",
+          "game/src/assets/pixel/actors.json",
+          "game/src/assets/pixel/palette.json"
+        ]
+      },
+      "technical": {
+        "atlas": "actors",
+        "format": "png8",
+        "artPxToWorldPx": 1,
+        "scaleMode": "nearest",
+        "frames": [
+          "fallen/head_front",
+          "fallen/head_side",
+          "fallen/head_back",
+          "fallen/torso_front",
+          "fallen/torso_side",
+          "fallen/torso_back",
+          "fallen/weapon_00",
+          "fallen/weapon_01",
+          "fallen/weapon_02",
+          "fallen/weapon_03",
+          "fallen/weapon_04",
+          "fallen/weapon_05",
+          "fallen/weapon_06",
+          "fallen/weapon_07",
+          "fallen/weapon_08",
+          "fallen/weapon_09",
+          "fallen/weapon_10",
+          "fallen/weapon_11",
+          "fallen/weapon_12",
+          "fallen/weapon_13",
+          "fallen/weapon_14",
+          "fallen/weapon_15"
+        ],
+        "anchors": "per frame in actors.json（頭＝頸點、軀幹＝中心、武器＝握柄、道具＝底部中央）"
+      },
+      "provenance": {
+        "generator": "picanywhere (gpt-image-2)",
+        "job": "job_20261125-204617_322",
+        "pipeline": "art/tools/build.py（chroma key → 第 2 列切件 → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 武器預轉 16 角 → 打包）",
+        "log": "art/raw/LOG.md"
+      },
+      "style": [
+        "pixel",
+        "ink-indigo",
+        "dark-xianxia",
+        "top-down-3/4",
+        "1px-outline",
+        "palette-32",
+        "cutout-rig"
+      ],
+      "tags": [
+        "boss",
+        "fallen",
+        "cultivator",
+        "sword",
+        "墮仙"
+      ],
+      "reusable": "換題材時沿用 prompts.py 的 STYLE_LOCK、版面與 build.py 重生；骨架契約見 gdd/02 §2",
+      "contentHash": "sha256:7422324a8b3c0577b2e848e0993a28c1dcd1350ffdc7659baaeccc111f7f64a0"
+    },
+    {
+      "id": "bladeoath.prop.mound-chest",
+      "kind": "sprite-sheet",
+      "status": "shipped",
+      "reusePolicy": "reusable",
+      "name": "劍塚（石堆＋斷劍＋石燈）、寶箱 關／開",
+      "files": {
+        "raw": [
+          "art/raw/props_t1.png"
+        ],
+        "prompt": [
+          "art/prompts/props.txt"
+        ],
+        "shipped": [
+          "game/src/assets/pixel/actors.png",
+          "game/src/assets/pixel/actors.json",
+          "game/src/assets/pixel/palette.json"
+        ]
+      },
+      "technical": {
+        "atlas": "actors",
+        "format": "png8",
+        "artPxToWorldPx": 1,
+        "scaleMode": "nearest",
+        "frames": [
+          "props/mound",
+          "props/chest",
+          "props/chest_open"
+        ],
+        "anchors": "per frame in actors.json（頭＝頸點、軀幹＝中心、武器＝握柄、道具＝底部中央）"
+      },
+      "provenance": {
+        "generator": "picanywhere (gpt-image-2)",
+        "job": "job_20261125-204617_322",
+        "pipeline": "art/tools/build.py（chroma key → 第 2 列切件 → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 武器預轉 16 角 → 打包）",
+        "log": "art/raw/LOG.md"
+      },
+      "style": [
+        "pixel",
+        "ink-indigo",
+        "dark-xianxia",
+        "top-down-3/4",
+        "1px-outline",
+        "palette-32",
+        "cutout-rig"
+      ],
+      "tags": [
+        "checkpoint",
+        "sword",
+        "chest",
+        "劍塚",
+        "寶箱"
+      ],
+      "reusable": "換題材時沿用 prompts.py 的 STYLE_LOCK、版面與 build.py 重生；骨架契約見 gdd/02 §2",
+      "contentHash": "sha256:7422324a8b3c0577b2e848e0993a28c1dcd1350ffdc7659baaeccc111f7f64a0"
+    },
+    {
+      "id": "bladeoath.cel.player",
+      "kind": "sprite-sheet",
+      "status": "shipped",
+      "reusePolicy": "reusable",
+      "name": "玩家・劍客：賽璐璐 12 姿勢（待機、走路 4 格、起手、出招、格擋、閃避、受擊、跳、倒地）",
+      "files": {
+        "raw": [
+          "art/raw/cel_chr_player_t2.png"
+        ],
+        "prompt": [
+          "art/prompts/cel_chr_player.txt"
+        ],
+        "shipped": [
+          "game/src/assets/cel/actors.png",
+          "game/src/assets/cel/actors.json"
+        ]
+      },
+      "technical": {
+        "atlas": "cel-actors",
+        "format": "png-256-rgba",
+        "textureResolution": 2,
+        "scaleMode": "linear",
+        "frames": [
+          "player/idle",
+          "player/walk1",
+          "player/walk2",
+          "player/walk3",
+          "player/walk4",
+          "player/windup",
+          "player/strike",
+          "player/guard",
+          "player/dodge",
+          "player/hurt",
+          "player/jump",
+          "player/down"
+        ],
+        "heightPx": 40,
+        "anchors": "腳底中央（底部五分之一的不透明像素重心）"
+      },
+      "provenance": {
+        "generator": "picanywhere (gpt-image-2)",
+        "job": "job_20261127-084803_658（角色 12 姿勢 t2）；job_20261126-174921_609（場景、道具；角色 t1 已被 t2 取代）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
+        "pipeline": "art/tools/cel_build.py（去背與去溢色 → 先切上下兩列、再以每欄密度找 6 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
+        "log": "art/raw/LOG.md"
+      },
+      "style": [
+        "cel-shaded",
+        "cartoon",
+        "ink-indigo",
+        "dark-xianxia",
+        "side-scroller",
+        "bold-outline"
+      ],
+      "tags": [
+        "player",
+        "玩家・劍客",
+        "character",
+        "pose-sheet"
+      ],
+      "reusable": "換角色時改 cel_prompts.py 的 CHARS 描述重生；12 姿勢順序與 render/cel.js 的 POSES／celPose 對應",
+      "contentHash": "sha256:f51459a84d05f1f8dadbfe8c39b259115a2f0ec2091d30868575a2a2f3e4f529"
+    },
+    {
+      "id": "bladeoath.cel.soldier",
+      "kind": "sprite-sheet",
+      "status": "shipped",
+      "reusePolicy": "reusable",
+      "name": "屍兵：賽璐璐 12 姿勢（待機、走路 4 格、起手、出招、格擋、閃避、受擊、跳、倒地）",
+      "files": {
+        "raw": [
+          "art/raw/cel_chr_soldier_t2.png"
+        ],
+        "prompt": [
+          "art/prompts/cel_chr_soldier.txt"
+        ],
+        "shipped": [
+          "game/src/assets/cel/actors.png",
+          "game/src/assets/cel/actors.json"
+        ]
+      },
+      "technical": {
+        "atlas": "cel-actors",
+        "format": "png-256-rgba",
+        "textureResolution": 2,
+        "scaleMode": "linear",
+        "frames": [
+          "soldier/idle",
+          "soldier/walk1",
+          "soldier/walk2",
+          "soldier/walk3",
+          "soldier/walk4",
+          "soldier/windup",
+          "soldier/strike",
+          "soldier/guard",
+          "soldier/dodge",
+          "soldier/hurt",
+          "soldier/jump",
+          "soldier/down"
+        ],
+        "heightPx": 40,
+        "anchors": "腳底中央（底部五分之一的不透明像素重心）"
+      },
+      "provenance": {
+        "generator": "picanywhere (gpt-image-2)",
+        "job": "job_20261127-084803_658（角色 12 姿勢 t2）；job_20261126-174921_609（場景、道具；角色 t1 已被 t2 取代）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
+        "pipeline": "art/tools/cel_build.py（去背與去溢色 → 先切上下兩列、再以每欄密度找 6 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
+        "log": "art/raw/LOG.md"
+      },
+      "style": [
+        "cel-shaded",
+        "cartoon",
+        "ink-indigo",
+        "dark-xianxia",
+        "side-scroller",
+        "bold-outline"
+      ],
+      "tags": [
+        "soldier",
+        "屍兵",
+        "character",
+        "pose-sheet"
+      ],
+      "reusable": "換角色時改 cel_prompts.py 的 CHARS 描述重生；12 姿勢順序與 render/cel.js 的 POSES／celPose 對應",
+      "contentHash": "sha256:f51459a84d05f1f8dadbfe8c39b259115a2f0ec2091d30868575a2a2f3e4f529"
+    },
+    {
+      "id": "bladeoath.cel.bug",
+      "kind": "sprite-sheet",
+      "status": "shipped",
+      "reusePolicy": "reusable",
+      "name": "蠱蟲：賽璐璐 12 姿勢（待機、走路 4 格、起手、出招、格擋、閃避、受擊、跳、倒地）",
+      "files": {
+        "raw": [
+          "art/raw/cel_chr_bug_t2.png"
+        ],
+        "prompt": [
+          "art/prompts/cel_chr_bug.txt"
+        ],
+        "shipped": [
+          "game/src/assets/cel/actors.png",
+          "game/src/assets/cel/actors.json"
+        ]
+      },
+      "technical": {
+        "atlas": "cel-actors",
+        "format": "png-256-rgba",
+        "textureResolution": 2,
+        "scaleMode": "linear",
+        "frames": [
+          "bug/idle",
+          "bug/walk1",
+          "bug/walk2",
+          "bug/walk3",
+          "bug/walk4",
+          "bug/windup",
+          "bug/strike",
+          "bug/guard",
+          "bug/dodge",
+          "bug/hurt",
+          "bug/jump",
+          "bug/down"
+        ],
+        "heightPx": 15,
+        "anchors": "腳底中央（底部五分之一的不透明像素重心）"
+      },
+      "provenance": {
+        "generator": "picanywhere (gpt-image-2)",
+        "job": "job_20261127-084803_658（角色 12 姿勢 t2）；job_20261126-174921_609（場景、道具；角色 t1 已被 t2 取代）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
+        "pipeline": "art/tools/cel_build.py（去背與去溢色 → 先切上下兩列、再以每欄密度找 6 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
+        "log": "art/raw/LOG.md"
+      },
+      "style": [
+        "cel-shaded",
+        "cartoon",
+        "ink-indigo",
+        "dark-xianxia",
+        "side-scroller",
+        "bold-outline"
+      ],
+      "tags": [
+        "bug",
+        "蠱蟲",
+        "character",
+        "pose-sheet"
+      ],
+      "reusable": "換角色時改 cel_prompts.py 的 CHARS 描述重生；12 姿勢順序與 render/cel.js 的 POSES／celPose 對應",
+      "contentHash": "sha256:f51459a84d05f1f8dadbfe8c39b259115a2f0ec2091d30868575a2a2f3e4f529"
+    },
+    {
+      "id": "bladeoath.cel.caster",
+      "kind": "sprite-sheet",
+      "status": "shipped",
+      "reusePolicy": "reusable",
+      "name": "蠱師：賽璐璐 12 姿勢（待機、走路 4 格、起手、出招、格擋、閃避、受擊、跳、倒地）",
+      "files": {
+        "raw": [
+          "art/raw/cel_chr_caster_t2.png"
+        ],
+        "prompt": [
+          "art/prompts/cel_chr_caster.txt"
+        ],
+        "shipped": [
+          "game/src/assets/cel/actors.png",
+          "game/src/assets/cel/actors.json"
+        ]
+      },
+      "technical": {
+        "atlas": "cel-actors",
+        "format": "png-256-rgba",
+        "textureResolution": 2,
+        "scaleMode": "linear",
+        "frames": [
+          "caster/idle",
+          "caster/walk1",
+          "caster/walk2",
+          "caster/walk3",
+          "caster/walk4",
+          "caster/windup",
+          "caster/strike",
+          "caster/guard",
+          "caster/dodge",
+          "caster/hurt",
+          "caster/jump",
+          "caster/down"
+        ],
+        "heightPx": 40,
+        "anchors": "腳底中央（底部五分之一的不透明像素重心）"
+      },
+      "provenance": {
+        "generator": "picanywhere (gpt-image-2)",
+        "job": "job_20261127-084803_658（角色 12 姿勢 t2）；job_20261126-174921_609（場景、道具；角色 t1 已被 t2 取代）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
+        "pipeline": "art/tools/cel_build.py（去背與去溢色 → 先切上下兩列、再以每欄密度找 6 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
+        "log": "art/raw/LOG.md"
+      },
+      "style": [
+        "cel-shaded",
+        "cartoon",
+        "ink-indigo",
+        "dark-xianxia",
+        "side-scroller",
+        "bold-outline"
+      ],
+      "tags": [
+        "caster",
+        "蠱師",
+        "character",
+        "pose-sheet"
+      ],
+      "reusable": "換角色時改 cel_prompts.py 的 CHARS 描述重生；12 姿勢順序與 render/cel.js 的 POSES／celPose 對應",
+      "contentHash": "sha256:f51459a84d05f1f8dadbfe8c39b259115a2f0ec2091d30868575a2a2f3e4f529"
+    },
+    {
+      "id": "bladeoath.cel.brute",
+      "kind": "sprite-sheet",
+      "status": "shipped",
+      "reusePolicy": "reusable",
+      "name": "屍傀力士：賽璐璐 12 姿勢（待機、走路 4 格、起手、出招、格擋、閃避、受擊、跳、倒地）",
+      "files": {
+        "raw": [
+          "art/raw/cel_chr_brute_t2.png"
+        ],
+        "prompt": [
+          "art/prompts/cel_chr_brute.txt"
+        ],
+        "shipped": [
+          "game/src/assets/cel/actors.png",
+          "game/src/assets/cel/actors.json"
+        ]
+      },
+      "technical": {
+        "atlas": "cel-actors",
+        "format": "png-256-rgba",
+        "textureResolution": 2,
+        "scaleMode": "linear",
+        "frames": [
+          "brute/idle",
+          "brute/walk1",
+          "brute/walk2",
+          "brute/walk3",
+          "brute/walk4",
+          "brute/windup",
+          "brute/strike",
+          "brute/guard",
+          "brute/dodge",
+          "brute/hurt",
+          "brute/jump",
+          "brute/down"
+        ],
+        "heightPx": 56,
+        "anchors": "腳底中央（底部五分之一的不透明像素重心）"
+      },
+      "provenance": {
+        "generator": "picanywhere (gpt-image-2)",
+        "job": "job_20261127-084803_658（角色 12 姿勢 t2）；job_20261126-174921_609（場景、道具；角色 t1 已被 t2 取代）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
+        "pipeline": "art/tools/cel_build.py（去背與去溢色 → 先切上下兩列、再以每欄密度找 6 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
+        "log": "art/raw/LOG.md"
+      },
+      "style": [
+        "cel-shaded",
+        "cartoon",
+        "ink-indigo",
+        "dark-xianxia",
+        "side-scroller",
+        "bold-outline"
+      ],
+      "tags": [
+        "brute",
+        "屍傀力士",
+        "character",
+        "pose-sheet"
+      ],
+      "reusable": "換角色時改 cel_prompts.py 的 CHARS 描述重生；12 姿勢順序與 render/cel.js 的 POSES／celPose 對應",
+      "contentHash": "sha256:f51459a84d05f1f8dadbfe8c39b259115a2f0ec2091d30868575a2a2f3e4f529"
+    },
+    {
+      "id": "bladeoath.cel.mother",
+      "kind": "sprite-sheet",
+      "status": "shipped",
+      "reusePolicy": "reusable",
+      "name": "蠱母（精英）：賽璐璐 12 姿勢（待機、走路 4 格、起手、出招、格擋、閃避、受擊、跳、倒地）",
+      "files": {
+        "raw": [
+          "art/raw/cel_chr_mother_t2.png"
+        ],
+        "prompt": [
+          "art/prompts/cel_chr_mother.txt"
+        ],
+        "shipped": [
+          "game/src/assets/cel/actors.png",
+          "game/src/assets/cel/actors.json"
+        ]
+      },
+      "technical": {
+        "atlas": "cel-actors",
+        "format": "png-256-rgba",
+        "textureResolution": 2,
+        "scaleMode": "linear",
+        "frames": [
+          "mother/idle",
+          "mother/walk1",
+          "mother/walk2",
+          "mother/walk3",
+          "mother/walk4",
+          "mother/windup",
+          "mother/strike",
+          "mother/guard",
+          "mother/dodge",
+          "mother/hurt",
+          "mother/jump",
+          "mother/down"
+        ],
+        "heightPx": 56,
+        "anchors": "腳底中央（底部五分之一的不透明像素重心）"
+      },
+      "provenance": {
+        "generator": "picanywhere (gpt-image-2)",
+        "job": "job_20261127-084803_658（角色 12 姿勢 t2）；job_20261126-174921_609（場景、道具；角色 t1 已被 t2 取代）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
+        "pipeline": "art/tools/cel_build.py（去背與去溢色 → 先切上下兩列、再以每欄密度找 6 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
+        "log": "art/raw/LOG.md"
+      },
+      "style": [
+        "cel-shaded",
+        "cartoon",
+        "ink-indigo",
+        "dark-xianxia",
+        "side-scroller",
+        "bold-outline"
+      ],
+      "tags": [
+        "mother",
+        "蠱母（精英）",
+        "character",
+        "pose-sheet"
+      ],
+      "reusable": "換角色時改 cel_prompts.py 的 CHARS 描述重生；12 姿勢順序與 render/cel.js 的 POSES／celPose 對應",
+      "contentHash": "sha256:f51459a84d05f1f8dadbfe8c39b259115a2f0ec2091d30868575a2a2f3e4f529"
+    },
+    {
+      "id": "bladeoath.cel.general",
+      "kind": "sprite-sheet",
+      "status": "shipped",
+      "reusePolicy": "reusable",
+      "name": "屍傀將（中頭目）：賽璐璐 12 姿勢（待機、走路 4 格、起手、出招、格擋、閃避、受擊、跳、倒地）",
+      "files": {
+        "raw": [
+          "art/raw/cel_chr_general_t2.png"
+        ],
+        "prompt": [
+          "art/prompts/cel_chr_general.txt"
+        ],
+        "shipped": [
+          "game/src/assets/cel/actors.png",
+          "game/src/assets/cel/actors.json"
+        ]
+      },
+      "technical": {
+        "atlas": "cel-actors",
+        "format": "png-256-rgba",
+        "textureResolution": 2,
+        "scaleMode": "linear",
+        "frames": [
+          "general/idle",
+          "general/walk1",
+          "general/walk2",
+          "general/walk3",
+          "general/walk4",
+          "general/windup",
+          "general/strike",
+          "general/guard",
+          "general/dodge",
+          "general/hurt",
+          "general/jump",
+          "general/down"
+        ],
+        "heightPx": 64,
+        "anchors": "腳底中央（底部五分之一的不透明像素重心）"
+      },
+      "provenance": {
+        "generator": "picanywhere (gpt-image-2)",
+        "job": "job_20261127-084803_658（角色 12 姿勢 t2）；job_20261126-174921_609（場景、道具；角色 t1 已被 t2 取代）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
+        "pipeline": "art/tools/cel_build.py（去背與去溢色 → 先切上下兩列、再以每欄密度找 6 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
+        "log": "art/raw/LOG.md"
+      },
+      "style": [
+        "cel-shaded",
+        "cartoon",
+        "ink-indigo",
+        "dark-xianxia",
+        "side-scroller",
+        "bold-outline"
+      ],
+      "tags": [
+        "general",
+        "屍傀將（中頭目）",
+        "character",
+        "pose-sheet"
+      ],
+      "reusable": "換角色時改 cel_prompts.py 的 CHARS 描述重生；12 姿勢順序與 render/cel.js 的 POSES／celPose 對應",
+      "contentHash": "sha256:f51459a84d05f1f8dadbfe8c39b259115a2f0ec2091d30868575a2a2f3e4f529"
+    },
+    {
+      "id": "bladeoath.cel.fallen",
+      "kind": "sprite-sheet",
+      "status": "shipped",
+      "reusePolicy": "reusable",
+      "name": "墮仙（終頭目）：賽璐璐 12 姿勢（待機、走路 4 格、起手、出招、格擋、閃避、受擊、跳、倒地）",
+      "files": {
+        "raw": [
+          "art/raw/cel_chr_fallen_t2.png"
+        ],
+        "prompt": [
+          "art/prompts/cel_chr_fallen.txt"
+        ],
+        "shipped": [
+          "game/src/assets/cel/actors.png",
+          "game/src/assets/cel/actors.json"
+        ]
+      },
+      "technical": {
+        "atlas": "cel-actors",
+        "format": "png-256-rgba",
+        "textureResolution": 2,
+        "scaleMode": "linear",
+        "frames": [
+          "fallen/idle",
+          "fallen/walk1",
+          "fallen/walk2",
+          "fallen/walk3",
+          "fallen/walk4",
+          "fallen/windup",
+          "fallen/strike",
+          "fallen/guard",
+          "fallen/dodge",
+          "fallen/hurt",
+          "fallen/jump",
+          "fallen/down"
+        ],
+        "heightPx": 66,
+        "anchors": "腳底中央（底部五分之一的不透明像素重心）"
+      },
+      "provenance": {
+        "generator": "picanywhere (gpt-image-2)",
+        "job": "job_20261127-084803_658（角色 12 姿勢 t2）；job_20261126-174921_609（場景、道具；角色 t1 已被 t2 取代）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
+        "pipeline": "art/tools/cel_build.py（去背與去溢色 → 先切上下兩列、再以每欄密度找 6 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
+        "log": "art/raw/LOG.md"
+      },
+      "style": [
+        "cel-shaded",
+        "cartoon",
+        "ink-indigo",
+        "dark-xianxia",
+        "side-scroller",
+        "bold-outline"
+      ],
+      "tags": [
+        "fallen",
+        "墮仙（終頭目）",
+        "character",
+        "pose-sheet"
+      ],
+      "reusable": "換角色時改 cel_prompts.py 的 CHARS 描述重生；12 姿勢順序與 render/cel.js 的 POSES／celPose 對應",
+      "contentHash": "sha256:f51459a84d05f1f8dadbfe8c39b259115a2f0ec2091d30868575a2a2f3e4f529"
+    },
+    {
+      "id": "bladeoath.cel.scene.gate",
+      "kind": "background",
+      "status": "shipped",
+      "reusePolicy": "reusable",
+      "name": "山門：賽璐璐遠景＋近景地面帶（橫向卷軸）",
+      "files": {
+        "raw": [
+          "art/raw/cel_far_gate_t1.png",
+          "art/raw/cel_near_gate_t1.png"
+        ],
+        "prompt": [
+          "art/prompts/cel_far_gate.txt",
+          "art/prompts/cel_near_gate.txt"
+        ],
+        "shipped": [
+          "game/src/assets/cel/far_gate.png",
+          "game/src/assets/cel/near_gate.png"
+        ]
+      },
+      "technical": {
+        "format": "png8-128",
+        "textureResolution": 2,
+        "layers": {
+          "far": "150 px 高、視差 0.45",
+          "near": "154 px 高（牆 34＋地面 120）"
+        },
+        "tiling": "mirror"
+      },
+      "provenance": {
+        "generator": "picanywhere (gpt-image-2) / Codex CLI",
+        "job": "job_20261127-084803_658（角色 12 姿勢 t2）；job_20261126-174921_609（場景、道具；角色 t1 已被 t2 取代）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
+        "pipeline": "art/tools/cel_build.py（去背與去溢色 → 先切上下兩列、再以每欄密度找 6 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
+        "log": "art/raw/LOG.md"
+      },
+      "style": [
+        "cel-shaded",
+        "cartoon",
+        "ink-indigo",
+        "dark-xianxia",
+        "side-scroller",
+        "bold-outline",
+        "parallax"
+      ],
+      "tags": [
+        "mountain-pass",
+        "cliff",
+        "flagstone",
+        "background",
+        "山門"
+      ],
+      "reusable": "改 cel_prompts.py 的 SCENES 描述重生；NEAR_CUT 依新圖重量牆與地面的分界",
+      "contentHash": "sha256:122cf035bb16bc13c24ff83f481b255b945d13a24c0efc0bde76c14c237e5c23"
+    },
+    {
+      "id": "bladeoath.cel.scene.forest",
+      "kind": "background",
+      "status": "shipped",
+      "reusePolicy": "reusable",
+      "name": "蠱林：賽璐璐遠景＋近景地面帶（橫向卷軸）",
+      "files": {
+        "raw": [
+          "art/raw/cel_far_forest_t1.png",
+          "art/raw/cel_near_forest_t1.png"
+        ],
+        "prompt": [
+          "art/prompts/cel_far_forest.txt",
+          "art/prompts/cel_near_forest.txt"
+        ],
+        "shipped": [
+          "game/src/assets/cel/far_forest.png",
+          "game/src/assets/cel/near_forest.png"
+        ]
+      },
+      "technical": {
+        "format": "png8-128",
+        "textureResolution": 2,
+        "layers": {
+          "far": "150 px 高、視差 0.45",
+          "near": "154 px 高（牆 34＋地面 120）"
+        },
+        "tiling": "mirror"
+      },
+      "provenance": {
+        "generator": "picanywhere (gpt-image-2) / Codex CLI",
+        "job": "job_20261127-084803_658（角色 12 姿勢 t2）；job_20261126-174921_609（場景、道具；角色 t1 已被 t2 取代）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
+        "pipeline": "art/tools/cel_build.py（去背與去溢色 → 先切上下兩列、再以每欄密度找 6 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
+        "log": "art/raw/LOG.md"
+      },
+      "style": [
+        "cel-shaded",
+        "cartoon",
+        "ink-indigo",
+        "dark-xianxia",
+        "side-scroller",
+        "bold-outline",
+        "parallax"
+      ],
+      "tags": [
+        "forest",
+        "cocoon",
+        "earth",
+        "background",
+        "蠱林"
+      ],
+      "reusable": "改 cel_prompts.py 的 SCENES 描述重生；NEAR_CUT 依新圖重量牆與地面的分界",
+      "contentHash": "sha256:36253fb22f61a0b54508ff6513d6b07276d1e1528ce2297a0c1e4b104d23f384"
+    },
+    {
+      "id": "bladeoath.cel.scene.well",
+      "kind": "background",
+      "status": "shipped",
+      "reusePolicy": "reusable",
+      "name": "枯井：賽璐璐遠景＋近景地面帶（橫向卷軸）",
+      "files": {
+        "raw": [
+          "art/raw/cel_far_well_t1.png",
+          "art/raw/cel_near_well_t1.png"
+        ],
+        "prompt": [
+          "art/prompts/cel_far_well.txt",
+          "art/prompts/cel_near_well.txt"
+        ],
+        "shipped": [
+          "game/src/assets/cel/far_well.png",
+          "game/src/assets/cel/near_well.png"
+        ]
+      },
+      "technical": {
+        "format": "png8-128",
+        "textureResolution": 2,
+        "layers": {
+          "far": "150 px 高、視差 0.45",
+          "near": "154 px 高（牆 34＋地面 120）"
+        },
+        "tiling": "mirror"
+      },
+      "provenance": {
+        "generator": "picanywhere (gpt-image-2) / Codex CLI",
+        "job": "job_20261127-084803_658（角色 12 姿勢 t2）；job_20261126-174921_609（場景、道具；角色 t1 已被 t2 取代）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
+        "pipeline": "art/tools/cel_build.py（去背與去溢色 → 先切上下兩列、再以每欄密度找 6 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
+        "log": "art/raw/LOG.md"
+      },
+      "style": [
+        "cel-shaded",
+        "cartoon",
+        "ink-indigo",
+        "dark-xianxia",
+        "side-scroller",
+        "bold-outline",
+        "parallax"
+      ],
+      "tags": [
+        "village",
+        "courtyard",
+        "paving",
+        "background",
+        "枯井"
+      ],
+      "reusable": "改 cel_prompts.py 的 SCENES 描述重生；NEAR_CUT 依新圖重量牆與地面的分界",
+      "contentHash": "sha256:13c44e7c3ed4670648f9f0ae616cf1b95ea4eb8da92d1ffa809b19ff7fc69a0f"
+    },
+    {
+      "id": "bladeoath.cel.scene.hall",
+      "kind": "background",
+      "status": "shipped",
+      "reusePolicy": "reusable",
+      "name": "屍傀將殿：賽璐璐遠景＋近景地面帶（橫向卷軸）",
+      "files": {
+        "raw": [
+          "art/raw/cel_far_hall_t1.png",
+          "art/raw/cel_near_hall_t1.png"
+        ],
+        "prompt": [
+          "art/prompts/cel_far_hall.txt",
+          "art/prompts/cel_near_hall.txt"
+        ],
+        "shipped": [
+          "game/src/assets/cel/far_hall.png",
+          "game/src/assets/cel/near_hall.png"
+        ]
+      },
+      "technical": {
+        "format": "png8-128",
+        "textureResolution": 2,
+        "layers": {
+          "far": "150 px 高、視差 0.45",
+          "near": "154 px 高（牆 34＋地面 120）"
+        },
+        "tiling": "mirror"
+      },
+      "provenance": {
+        "generator": "picanywhere (gpt-image-2) / Codex CLI",
+        "job": "job_20261127-084803_658（角色 12 姿勢 t2）；job_20261126-174921_609（場景、道具；角色 t1 已被 t2 取代）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
+        "pipeline": "art/tools/cel_build.py（去背與去溢色 → 先切上下兩列、再以每欄密度找 6 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
+        "log": "art/raw/LOG.md"
+      },
+      "style": [
+        "cel-shaded",
+        "cartoon",
+        "ink-indigo",
+        "dark-xianxia",
+        "side-scroller",
+        "bold-outline",
+        "parallax"
+      ],
+      "tags": [
+        "fortress",
+        "hall",
+        "tile",
+        "background",
+        "屍傀將殿"
+      ],
+      "reusable": "改 cel_prompts.py 的 SCENES 描述重生；NEAR_CUT 依新圖重量牆與地面的分界",
+      "contentHash": "sha256:febec2b231d92398220a2491a2a530276ccc15dac2d0d3cd0aa7ff1ea817de8c"
+    },
+    {
+      "id": "bladeoath.cel.scene.cloister",
+      "kind": "background",
+      "status": "shipped",
+      "reusePolicy": "reusable",
+      "name": "殿後迴廊：賽璐璐遠景＋近景地面帶（橫向卷軸）",
+      "files": {
+        "raw": [
+          "art/raw/cel_far_cloister_t1.png",
+          "art/raw/cel_near_cloister_t1.png"
+        ],
+        "prompt": [
+          "art/prompts/cel_far_cloister.txt",
+          "art/prompts/cel_near_cloister.txt"
+        ],
+        "shipped": [
+          "game/src/assets/cel/far_cloister.png",
+          "game/src/assets/cel/near_cloister.png"
+        ]
+      },
+      "technical": {
+        "format": "png8-128",
+        "textureResolution": 2,
+        "layers": {
+          "far": "150 px 高、視差 0.45",
+          "near": "154 px 高（牆 34＋地面 120）"
+        },
+        "tiling": "mirror"
+      },
+      "provenance": {
+        "generator": "picanywhere (gpt-image-2) / Codex CLI",
+        "job": "job_20261127-084803_658（角色 12 姿勢 t2）；job_20261126-174921_609（場景、道具；角色 t1 已被 t2 取代）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
+        "pipeline": "art/tools/cel_build.py（去背與去溢色 → 先切上下兩列、再以每欄密度找 6 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
+        "log": "art/raw/LOG.md"
+      },
+      "style": [
+        "cel-shaded",
+        "cartoon",
+        "ink-indigo",
+        "dark-xianxia",
+        "side-scroller",
+        "bold-outline",
+        "parallax"
+      ],
+      "tags": [
+        "corridor",
+        "pillar",
+        "plank",
+        "background",
+        "殿後迴廊"
+      ],
+      "reusable": "改 cel_prompts.py 的 SCENES 描述重生；NEAR_CUT 依新圖重量牆與地面的分界",
+      "contentHash": "sha256:637136485610cde8039f93fe565f784893653471aaa2a881a6a4a710c6ed251a"
+    },
+    {
+      "id": "bladeoath.cel.scene.terrace",
+      "kind": "background",
+      "status": "shipped",
+      "reusePolicy": "reusable",
+      "name": "墮仙台：賽璐璐遠景＋近景地面帶（橫向卷軸）",
+      "files": {
+        "raw": [
+          "art/raw/cel_far_terrace_t1.png",
+          "art/raw/cel_near_terrace_t1.png"
+        ],
+        "prompt": [
+          "art/prompts/cel_far_terrace.txt",
+          "art/prompts/cel_near_terrace.txt"
+        ],
+        "shipped": [
+          "game/src/assets/cel/far_terrace.png",
+          "game/src/assets/cel/near_terrace.png"
+        ]
+      },
+      "technical": {
+        "format": "png8-128",
+        "textureResolution": 2,
+        "layers": {
+          "far": "150 px 高、視差 0.45",
+          "near": "154 px 高（牆 34＋地面 120）"
+        },
+        "tiling": "mirror"
+      },
+      "provenance": {
+        "generator": "picanywhere (gpt-image-2) / Codex CLI",
+        "job": "job_20261127-084803_658（角色 12 姿勢 t2）；job_20261126-174921_609（場景、道具；角色 t1 已被 t2 取代）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
+        "pipeline": "art/tools/cel_build.py（去背與去溢色 → 先切上下兩列、再以每欄密度找 6 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
+        "log": "art/raw/LOG.md"
+      },
+      "style": [
+        "cel-shaded",
+        "cartoon",
+        "ink-indigo",
+        "dark-xianxia",
+        "side-scroller",
+        "bold-outline",
+        "parallax"
+      ],
+      "tags": [
+        "terrace",
+        "clouds",
+        "slab",
+        "background",
+        "墮仙台"
+      ],
+      "reusable": "改 cel_prompts.py 的 SCENES 描述重生；NEAR_CUT 依新圖重量牆與地面的分界",
+      "contentHash": "sha256:38cc2b293feb84dc24e27487e64bf7eca15881cc1acaba354e702eab505442c8"
+    },
+    {
+      "id": "bladeoath.cel.props",
+      "kind": "sprite-sheet",
+      "status": "shipped",
+      "reusePolicy": "reusable",
+      "name": "賽璐璐道具：酒罈、木箱、石燈、斷碑、肉包、丹藥、鍛材、劍塚、寶箱（關／開）",
+      "files": {
+        "raw": [
+          "art/raw/cel_props_t1.png",
+          "art/raw/cel_props2_t1.png"
+        ],
+        "prompt": [
+          "art/prompts/cel_props.txt"
+        ],
+        "shipped": [
+          "game/src/assets/cel/props.png",
+          "game/src/assets/cel/props.json"
+        ]
+      },
+      "technical": {
+        "atlas": "cel-props",
+        "format": "png-256-rgba",
+        "textureResolution": 2,
+        "frames": [
+          "jar",
+          "crate",
+          "lamp",
+          "stele",
+          "bun",
+          "pill",
+          "ore",
+          "mound",
+          "chest",
+          "chestOpen"
+        ],
+        "anchors": "底部中央"
+      },
+      "provenance": {
+        "generator": "picanywhere (gpt-image-2)",
+        "job": "job_20261127-084803_658（角色 12 姿勢 t2）；job_20261126-174921_609（場景、道具；角色 t1 已被 t2 取代）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
+        "pipeline": "art/tools/cel_build.py（去背與去溢色 → 先切上下兩列、再以每欄密度找 6 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
+        "log": "art/raw/LOG.md"
+      },
+      "style": [
+        "cel-shaded",
+        "cartoon",
+        "ink-indigo",
+        "dark-xianxia",
+        "side-scroller",
+        "bold-outline"
+      ],
+      "tags": [
+        "jar",
+        "crate",
+        "lantern",
+        "stele",
+        "bun",
+        "medicine",
+        "ore",
+        "mound",
+        "chest",
+        "breakable"
+      ],
+      "reusable": "沿用 cel_prompts.py 的 PROPS 描述與 cel_build.py 的切件",
+      "contentHash": "sha256:dffd1f68b11ab008f5e686b09ce8d386aa6f5f36a7982ce6b7f6a1109ca3455e"
+    }
+  ]
+}

@@ -8,8 +8,16 @@
    "sha256": "sha256:980b761771d7ee8219b568986aafd7e7f3912d0015d89d821728bef9934fe916"
   },
   {
+   "path": "BladeOath/art/manifest.json",
+   "sha256": "sha256:4b0b82df41ff80532cdea9a7260ee52b35ca3b82ce54a8ee8b4f3790732a2324"
+  },
+  {
    "path": "LanternHold/art/manifest.json",
-   "sha256": "sha256:f6705fd76066b8edacb5c596f0f5b8ab10884859b4351f3235f1ba248edc26b6"
+   "sha256": "sha256:68094969702c5b35c1ebb1d6d0ba866c3d9d3424fc4395e27a3a9fc302cde0f1"
+  },
+  {
+   "path": "SkyTalon/art/manifest.json",
+   "sha256": "sha256:74459425a7c8e7c87042a887259494b22ef2db616b5a8fa3de5713816706ec23"
   },
   {
    "path": "SwarmDuel/art/manifest.json",
@@ -21,29 +29,31 @@
   }
  ],
  "counts": {
-  "total": 108,
+  "total": 176,
   "byGame": {
-   "LanternHold": 23,
+   "BladeOath": 24,
+   "LanternHold": 41,
+   "SkyTalon": 26,
    "SwarmDuel": 63,
    "TwinStrike": 17,
    "shared": 5
   },
   "byKind": {
-   "audio-recipe": 3,
-   "background": 4,
-   "fx-sheet": 7,
-   "key-art": 4,
-   "procedural": 35,
-   "reference": 5,
-   "sprite-sheet": 35,
-   "ui": 15
+   "audio-recipe": 5,
+   "background": 13,
+   "fx-sheet": 8,
+   "key-art": 12,
+   "procedural": 38,
+   "reference": 7,
+   "sprite-sheet": 76,
+   "ui": 17
   },
   "byStatus": {
    "placeholder": 6,
-   "procedural": 35,
-   "raw-only": 5,
-   "rejected-take": 7,
-   "shipped": 49,
+   "procedural": 37,
+   "raw-only": 15,
+   "rejected-take": 9,
+   "shipped": 103,
    "template": 6
   }
  },
@@ -208,6 +218,1575 @@
    "game": "shared"
   },
   {
+   "id": "bladeoath.chr.player",
+   "kind": "sprite-sheet",
+   "status": "shipped",
+   "reusePolicy": "reusable",
+   "name": "玩家・劍客：頭／軀幹 正側背、直劍 16 角",
+   "files": {
+    "raw": [
+     "BladeOath/art/raw/chr_player_t1.png"
+    ],
+    "prompt": [
+     "BladeOath/art/prompts/chr_player.txt"
+    ],
+    "shipped": [
+     "BladeOath/game/src/assets/pixel/actors.png",
+     "BladeOath/game/src/assets/pixel/actors.json",
+     "BladeOath/game/src/assets/pixel/palette.json"
+    ]
+   },
+   "technical": {
+    "atlas": "actors",
+    "format": "png8",
+    "artPxToWorldPx": 1,
+    "scaleMode": "nearest",
+    "frames": [
+     "player/head_front",
+     "player/head_side",
+     "player/head_back",
+     "player/torso_front",
+     "player/torso_side",
+     "player/torso_back",
+     "player/weapon_00",
+     "player/weapon_01",
+     "player/weapon_02",
+     "player/weapon_03",
+     "player/weapon_04",
+     "player/weapon_05",
+     "player/weapon_06",
+     "player/weapon_07",
+     "player/weapon_08",
+     "player/weapon_09",
+     "player/weapon_10",
+     "player/weapon_11",
+     "player/weapon_12",
+     "player/weapon_13",
+     "player/weapon_14",
+     "player/weapon_15"
+    ],
+    "anchors": "per frame in actors.json（頭＝頸點、軀幹＝中心、武器＝握柄、道具＝底部中央）"
+   },
+   "provenance": {
+    "generator": "picanywhere (gpt-image-2)",
+    "job": "job_20261125-204617_322",
+    "pipeline": "art/tools/build.py（chroma key → 第 2 列切件 → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 武器預轉 16 角 → 打包）",
+    "log": "art/raw/LOG.md"
+   },
+   "style": [
+    "pixel",
+    "ink-indigo",
+    "dark-xianxia",
+    "top-down-3/4",
+    "1px-outline",
+    "palette-32",
+    "cutout-rig"
+   ],
+   "tags": [
+    "swordsman",
+    "jian",
+    "player",
+    "劍客"
+   ],
+   "reusable": "換題材時沿用 prompts.py 的 STYLE_LOCK、版面與 build.py 重生；骨架契約見 gdd/02 §2",
+   "contentHash": "sha256:7422324a8b3c0577b2e848e0993a28c1dcd1350ffdc7659baaeccc111f7f64a0",
+   "game": "BladeOath"
+  },
+  {
+   "id": "bladeoath.chr.soldier",
+   "kind": "sprite-sheet",
+   "status": "shipped",
+   "reusePolicy": "reusable",
+   "name": "屍兵：頭／軀幹 正側背、斷刀 16 角",
+   "files": {
+    "raw": [
+     "BladeOath/art/raw/chr_soldier_t1.png"
+    ],
+    "prompt": [
+     "BladeOath/art/prompts/chr_soldier.txt"
+    ],
+    "shipped": [
+     "BladeOath/game/src/assets/pixel/actors.png",
+     "BladeOath/game/src/assets/pixel/actors.json",
+     "BladeOath/game/src/assets/pixel/palette.json"
+    ]
+   },
+   "technical": {
+    "atlas": "actors",
+    "format": "png8",
+    "artPxToWorldPx": 1,
+    "scaleMode": "nearest",
+    "frames": [
+     "soldier/head_front",
+     "soldier/head_side",
+     "soldier/head_back",
+     "soldier/torso_front",
+     "soldier/torso_side",
+     "soldier/torso_back",
+     "soldier/weapon_00",
+     "soldier/weapon_01",
+     "soldier/weapon_02",
+     "soldier/weapon_03",
+     "soldier/weapon_04",
+     "soldier/weapon_05",
+     "soldier/weapon_06",
+     "soldier/weapon_07",
+     "soldier/weapon_08",
+     "soldier/weapon_09",
+     "soldier/weapon_10",
+     "soldier/weapon_11",
+     "soldier/weapon_12",
+     "soldier/weapon_13",
+     "soldier/weapon_14",
+     "soldier/weapon_15"
+    ],
+    "anchors": "per frame in actors.json（頭＝頸點、軀幹＝中心、武器＝握柄、道具＝底部中央）"
+   },
+   "provenance": {
+    "generator": "picanywhere (gpt-image-2)",
+    "job": "job_20261125-204617_322",
+    "pipeline": "art/tools/build.py（chroma key → 第 2 列切件 → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 武器預轉 16 角 → 打包）",
+    "log": "art/raw/LOG.md"
+   },
+   "style": [
+    "pixel",
+    "ink-indigo",
+    "dark-xianxia",
+    "top-down-3/4",
+    "1px-outline",
+    "palette-32",
+    "cutout-rig"
+   ],
+   "tags": [
+    "undead",
+    "corpse",
+    "soldier",
+    "saber",
+    "屍兵"
+   ],
+   "reusable": "換題材時沿用 prompts.py 的 STYLE_LOCK、版面與 build.py 重生；骨架契約見 gdd/02 §2",
+   "contentHash": "sha256:7422324a8b3c0577b2e848e0993a28c1dcd1350ffdc7659baaeccc111f7f64a0",
+   "game": "BladeOath"
+  },
+  {
+   "id": "bladeoath.chr.bug",
+   "kind": "sprite-sheet",
+   "status": "shipped",
+   "reusePolicy": "reusable",
+   "name": "蠱蟲：甲殼 正側背、口器 16 角（無頭、無手）",
+   "files": {
+    "raw": [
+     "BladeOath/art/raw/chr_bug_t1.png"
+    ],
+    "prompt": [
+     "BladeOath/art/prompts/chr_bug.txt"
+    ],
+    "shipped": [
+     "BladeOath/game/src/assets/pixel/actors.png",
+     "BladeOath/game/src/assets/pixel/actors.json",
+     "BladeOath/game/src/assets/pixel/palette.json"
+    ]
+   },
+   "technical": {
+    "atlas": "actors",
+    "format": "png8",
+    "artPxToWorldPx": 1,
+    "scaleMode": "nearest",
+    "frames": [
+     "bug/torso_front",
+     "bug/torso_side",
+     "bug/torso_back",
+     "bug/weapon_00",
+     "bug/weapon_01",
+     "bug/weapon_02",
+     "bug/weapon_03",
+     "bug/weapon_04",
+     "bug/weapon_05",
+     "bug/weapon_06",
+     "bug/weapon_07",
+     "bug/weapon_08",
+     "bug/weapon_09",
+     "bug/weapon_10",
+     "bug/weapon_11",
+     "bug/weapon_12",
+     "bug/weapon_13",
+     "bug/weapon_14",
+     "bug/weapon_15"
+    ],
+    "anchors": "per frame in actors.json（頭＝頸點、軀幹＝中心、武器＝握柄、道具＝底部中央）"
+   },
+   "provenance": {
+    "generator": "picanywhere (gpt-image-2)",
+    "job": "job_20261125-204617_322",
+    "pipeline": "art/tools/build.py（chroma key → 第 2 列切件 → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 武器預轉 16 角 → 打包）",
+    "log": "art/raw/LOG.md"
+   },
+   "style": [
+    "pixel",
+    "ink-indigo",
+    "dark-xianxia",
+    "top-down-3/4",
+    "1px-outline",
+    "palette-32",
+    "cutout-rig"
+   ],
+   "tags": [
+    "insect",
+    "beetle",
+    "gu",
+    "蠱蟲"
+   ],
+   "reusable": "換題材時沿用 prompts.py 的 STYLE_LOCK、版面與 build.py 重生；骨架契約見 gdd/02 §2",
+   "contentHash": "sha256:7422324a8b3c0577b2e848e0993a28c1dcd1350ffdc7659baaeccc111f7f64a0",
+   "game": "BladeOath"
+  },
+  {
+   "id": "bladeoath.chr.caster",
+   "kind": "sprite-sheet",
+   "status": "shipped",
+   "reusePolicy": "reusable",
+   "name": "蠱師：頭／軀幹 正側背、蠱杖 16 角",
+   "files": {
+    "raw": [
+     "BladeOath/art/raw/chr_caster_t1.png"
+    ],
+    "prompt": [
+     "BladeOath/art/prompts/chr_caster.txt"
+    ],
+    "shipped": [
+     "BladeOath/game/src/assets/pixel/actors.png",
+     "BladeOath/game/src/assets/pixel/actors.json",
+     "BladeOath/game/src/assets/pixel/palette.json"
+    ]
+   },
+   "technical": {
+    "atlas": "actors",
+    "format": "png8",
+    "artPxToWorldPx": 1,
+    "scaleMode": "nearest",
+    "frames": [
+     "caster/head_front",
+     "caster/head_side",
+     "caster/head_back",
+     "caster/torso_front",
+     "caster/torso_side",
+     "caster/torso_back",
+     "caster/weapon_00",
+     "caster/weapon_01",
+     "caster/weapon_02",
+     "caster/weapon_03",
+     "caster/weapon_04",
+     "caster/weapon_05",
+     "caster/weapon_06",
+     "caster/weapon_07",
+     "caster/weapon_08",
+     "caster/weapon_09",
+     "caster/weapon_10",
+     "caster/weapon_11",
+     "caster/weapon_12",
+     "caster/weapon_13",
+     "caster/weapon_14",
+     "caster/weapon_15"
+    ],
+    "anchors": "per frame in actors.json（頭＝頸點、軀幹＝中心、武器＝握柄、道具＝底部中央）"
+   },
+   "provenance": {
+    "generator": "picanywhere (gpt-image-2)",
+    "job": "job_20261125-204617_322",
+    "pipeline": "art/tools/build.py（chroma key → 第 2 列切件 → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 武器預轉 16 角 → 打包）",
+    "log": "art/raw/LOG.md"
+   },
+   "style": [
+    "pixel",
+    "ink-indigo",
+    "dark-xianxia",
+    "top-down-3/4",
+    "1px-outline",
+    "palette-32",
+    "cutout-rig"
+   ],
+   "tags": [
+    "sorcerer",
+    "gu",
+    "staff",
+    "jar",
+    "蠱師"
+   ],
+   "reusable": "換題材時沿用 prompts.py 的 STYLE_LOCK、版面與 build.py 重生；骨架契約見 gdd/02 §2",
+   "contentHash": "sha256:7422324a8b3c0577b2e848e0993a28c1dcd1350ffdc7659baaeccc111f7f64a0",
+   "game": "BladeOath"
+  },
+  {
+   "id": "bladeoath.chr.brute",
+   "kind": "sprite-sheet",
+   "status": "shipped",
+   "reusePolicy": "reusable",
+   "name": "屍傀力士：頭／軀幹 正側背、鐵錘 16 角",
+   "files": {
+    "raw": [
+     "BladeOath/art/raw/chr_brute_t1.png"
+    ],
+    "prompt": [
+     "BladeOath/art/prompts/chr_brute.txt"
+    ],
+    "shipped": [
+     "BladeOath/game/src/assets/pixel/actors.png",
+     "BladeOath/game/src/assets/pixel/actors.json",
+     "BladeOath/game/src/assets/pixel/palette.json"
+    ]
+   },
+   "technical": {
+    "atlas": "actors",
+    "format": "png8",
+    "artPxToWorldPx": 1,
+    "scaleMode": "nearest",
+    "frames": [
+     "brute/head_front",
+     "brute/head_side",
+     "brute/head_back",
+     "brute/torso_front",
+     "brute/torso_side",
+     "brute/torso_back",
+     "brute/weapon_00",
+     "brute/weapon_01",
+     "brute/weapon_02",
+     "brute/weapon_03",
+     "brute/weapon_04",
+     "brute/weapon_05",
+     "brute/weapon_06",
+     "brute/weapon_07",
+     "brute/weapon_08",
+     "brute/weapon_09",
+     "brute/weapon_10",
+     "brute/weapon_11",
+     "brute/weapon_12",
+     "brute/weapon_13",
+     "brute/weapon_14",
+     "brute/weapon_15"
+    ],
+    "anchors": "per frame in actors.json（頭＝頸點、軀幹＝中心、武器＝握柄、道具＝底部中央）"
+   },
+   "provenance": {
+    "generator": "picanywhere (gpt-image-2)",
+    "job": "job_20261125-204617_322",
+    "pipeline": "art/tools/build.py（chroma key → 第 2 列切件 → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 武器預轉 16 角 → 打包）",
+    "log": "art/raw/LOG.md"
+   },
+   "style": [
+    "pixel",
+    "ink-indigo",
+    "dark-xianxia",
+    "top-down-3/4",
+    "1px-outline",
+    "palette-32",
+    "cutout-rig"
+   ],
+   "tags": [
+    "undead",
+    "brute",
+    "hammer",
+    "chains",
+    "力士"
+   ],
+   "reusable": "換題材時沿用 prompts.py 的 STYLE_LOCK、版面與 build.py 重生；骨架契約見 gdd/02 §2",
+   "contentHash": "sha256:7422324a8b3c0577b2e848e0993a28c1dcd1350ffdc7659baaeccc111f7f64a0",
+   "game": "BladeOath"
+  },
+  {
+   "id": "bladeoath.chr.mother",
+   "kind": "sprite-sheet",
+   "status": "shipped",
+   "reusePolicy": "reusable",
+   "name": "蠱母（精英）：頭／軀幹 正側背、骨爪 16 角",
+   "files": {
+    "raw": [
+     "BladeOath/art/raw/chr_mother_t1.png"
+    ],
+    "prompt": [
+     "BladeOath/art/prompts/chr_mother.txt"
+    ],
+    "shipped": [
+     "BladeOath/game/src/assets/pixel/actors.png",
+     "BladeOath/game/src/assets/pixel/actors.json",
+     "BladeOath/game/src/assets/pixel/palette.json"
+    ]
+   },
+   "technical": {
+    "atlas": "actors",
+    "format": "png8",
+    "artPxToWorldPx": 1,
+    "scaleMode": "nearest",
+    "frames": [
+     "mother/head_front",
+     "mother/head_side",
+     "mother/head_back",
+     "mother/torso_front",
+     "mother/torso_side",
+     "mother/torso_back",
+     "mother/weapon_00",
+     "mother/weapon_01",
+     "mother/weapon_02",
+     "mother/weapon_03",
+     "mother/weapon_04",
+     "mother/weapon_05",
+     "mother/weapon_06",
+     "mother/weapon_07",
+     "mother/weapon_08",
+     "mother/weapon_09",
+     "mother/weapon_10",
+     "mother/weapon_11",
+     "mother/weapon_12",
+     "mother/weapon_13",
+     "mother/weapon_14",
+     "mother/weapon_15"
+    ],
+    "anchors": "per frame in actors.json（頭＝頸點、軀幹＝中心、武器＝握柄、道具＝底部中央）"
+   },
+   "provenance": {
+    "generator": "picanywhere (gpt-image-2)",
+    "job": "job_20261125-204617_322",
+    "pipeline": "art/tools/build.py（chroma key → 第 2 列切件 → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 武器預轉 16 角 → 打包）",
+    "log": "art/raw/LOG.md"
+   },
+   "style": [
+    "pixel",
+    "ink-indigo",
+    "dark-xianxia",
+    "top-down-3/4",
+    "1px-outline",
+    "palette-32",
+    "cutout-rig"
+   ],
+   "tags": [
+    "elite",
+    "gu",
+    "matriarch",
+    "claws",
+    "蠱母"
+   ],
+   "reusable": "換題材時沿用 prompts.py 的 STYLE_LOCK、版面與 build.py 重生；骨架契約見 gdd/02 §2",
+   "contentHash": "sha256:7422324a8b3c0577b2e848e0993a28c1dcd1350ffdc7659baaeccc111f7f64a0",
+   "game": "BladeOath"
+  },
+  {
+   "id": "bladeoath.chr.general",
+   "kind": "sprite-sheet",
+   "status": "shipped",
+   "reusePolicy": "reusable",
+   "name": "屍傀將（中頭目）：頭／軀幹 正側背、偃月刀 16 角",
+   "files": {
+    "raw": [
+     "BladeOath/art/raw/chr_general_t1.png"
+    ],
+    "prompt": [
+     "BladeOath/art/prompts/chr_general.txt"
+    ],
+    "shipped": [
+     "BladeOath/game/src/assets/pixel/actors.png",
+     "BladeOath/game/src/assets/pixel/actors.json",
+     "BladeOath/game/src/assets/pixel/palette.json"
+    ]
+   },
+   "technical": {
+    "atlas": "actors",
+    "format": "png8",
+    "artPxToWorldPx": 1,
+    "scaleMode": "nearest",
+    "frames": [
+     "general/head_front",
+     "general/head_side",
+     "general/head_back",
+     "general/torso_front",
+     "general/torso_side",
+     "general/torso_back",
+     "general/weapon_00",
+     "general/weapon_01",
+     "general/weapon_02",
+     "general/weapon_03",
+     "general/weapon_04",
+     "general/weapon_05",
+     "general/weapon_06",
+     "general/weapon_07",
+     "general/weapon_08",
+     "general/weapon_09",
+     "general/weapon_10",
+     "general/weapon_11",
+     "general/weapon_12",
+     "general/weapon_13",
+     "general/weapon_14",
+     "general/weapon_15"
+    ],
+    "anchors": "per frame in actors.json（頭＝頸點、軀幹＝中心、武器＝握柄、道具＝底部中央）"
+   },
+   "provenance": {
+    "generator": "picanywhere (gpt-image-2)",
+    "job": "job_20261125-204617_322",
+    "pipeline": "art/tools/build.py（chroma key → 第 2 列切件 → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 武器預轉 16 角 → 打包）",
+    "log": "art/raw/LOG.md"
+   },
+   "style": [
+    "pixel",
+    "ink-indigo",
+    "dark-xianxia",
+    "top-down-3/4",
+    "1px-outline",
+    "palette-32",
+    "cutout-rig"
+   ],
+   "tags": [
+    "boss",
+    "undead",
+    "general",
+    "guandao",
+    "屍傀將"
+   ],
+   "reusable": "換題材時沿用 prompts.py 的 STYLE_LOCK、版面與 build.py 重生；骨架契約見 gdd/02 §2",
+   "contentHash": "sha256:7422324a8b3c0577b2e848e0993a28c1dcd1350ffdc7659baaeccc111f7f64a0",
+   "game": "BladeOath"
+  },
+  {
+   "id": "bladeoath.chr.fallen",
+   "kind": "sprite-sheet",
+   "status": "shipped",
+   "reusePolicy": "reusable",
+   "name": "墮仙（終頭目）：頭／軀幹 正側背、長劍 16 角",
+   "files": {
+    "raw": [
+     "BladeOath/art/raw/chr_fallen_t1.png"
+    ],
+    "prompt": [
+     "BladeOath/art/prompts/chr_fallen.txt"
+    ],
+    "shipped": [
+     "BladeOath/game/src/assets/pixel/actors.png",
+     "BladeOath/game/src/assets/pixel/actors.json",
+     "BladeOath/game/src/assets/pixel/palette.json"
+    ]
+   },
+   "technical": {
+    "atlas": "actors",
+    "format": "png8",
+    "artPxToWorldPx": 1,
+    "scaleMode": "nearest",
+    "frames": [
+     "fallen/head_front",
+     "fallen/head_side",
+     "fallen/head_back",
+     "fallen/torso_front",
+     "fallen/torso_side",
+     "fallen/torso_back",
+     "fallen/weapon_00",
+     "fallen/weapon_01",
+     "fallen/weapon_02",
+     "fallen/weapon_03",
+     "fallen/weapon_04",
+     "fallen/weapon_05",
+     "fallen/weapon_06",
+     "fallen/weapon_07",
+     "fallen/weapon_08",
+     "fallen/weapon_09",
+     "fallen/weapon_10",
+     "fallen/weapon_11",
+     "fallen/weapon_12",
+     "fallen/weapon_13",
+     "fallen/weapon_14",
+     "fallen/weapon_15"
+    ],
+    "anchors": "per frame in actors.json（頭＝頸點、軀幹＝中心、武器＝握柄、道具＝底部中央）"
+   },
+   "provenance": {
+    "generator": "picanywhere (gpt-image-2)",
+    "job": "job_20261125-204617_322",
+    "pipeline": "art/tools/build.py（chroma key → 第 2 列切件 → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 武器預轉 16 角 → 打包）",
+    "log": "art/raw/LOG.md"
+   },
+   "style": [
+    "pixel",
+    "ink-indigo",
+    "dark-xianxia",
+    "top-down-3/4",
+    "1px-outline",
+    "palette-32",
+    "cutout-rig"
+   ],
+   "tags": [
+    "boss",
+    "fallen",
+    "cultivator",
+    "sword",
+    "墮仙"
+   ],
+   "reusable": "換題材時沿用 prompts.py 的 STYLE_LOCK、版面與 build.py 重生；骨架契約見 gdd/02 §2",
+   "contentHash": "sha256:7422324a8b3c0577b2e848e0993a28c1dcd1350ffdc7659baaeccc111f7f64a0",
+   "game": "BladeOath"
+  },
+  {
+   "id": "bladeoath.prop.mound-chest",
+   "kind": "sprite-sheet",
+   "status": "shipped",
+   "reusePolicy": "reusable",
+   "name": "劍塚（石堆＋斷劍＋石燈）、寶箱 關／開",
+   "files": {
+    "raw": [
+     "BladeOath/art/raw/props_t1.png"
+    ],
+    "prompt": [
+     "BladeOath/art/prompts/props.txt"
+    ],
+    "shipped": [
+     "BladeOath/game/src/assets/pixel/actors.png",
+     "BladeOath/game/src/assets/pixel/actors.json",
+     "BladeOath/game/src/assets/pixel/palette.json"
+    ]
+   },
+   "technical": {
+    "atlas": "actors",
+    "format": "png8",
+    "artPxToWorldPx": 1,
+    "scaleMode": "nearest",
+    "frames": [
+     "props/mound",
+     "props/chest",
+     "props/chest_open"
+    ],
+    "anchors": "per frame in actors.json（頭＝頸點、軀幹＝中心、武器＝握柄、道具＝底部中央）"
+   },
+   "provenance": {
+    "generator": "picanywhere (gpt-image-2)",
+    "job": "job_20261125-204617_322",
+    "pipeline": "art/tools/build.py（chroma key → 第 2 列切件 → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 武器預轉 16 角 → 打包）",
+    "log": "art/raw/LOG.md"
+   },
+   "style": [
+    "pixel",
+    "ink-indigo",
+    "dark-xianxia",
+    "top-down-3/4",
+    "1px-outline",
+    "palette-32",
+    "cutout-rig"
+   ],
+   "tags": [
+    "checkpoint",
+    "sword",
+    "chest",
+    "劍塚",
+    "寶箱"
+   ],
+   "reusable": "換題材時沿用 prompts.py 的 STYLE_LOCK、版面與 build.py 重生；骨架契約見 gdd/02 §2",
+   "contentHash": "sha256:7422324a8b3c0577b2e848e0993a28c1dcd1350ffdc7659baaeccc111f7f64a0",
+   "game": "BladeOath"
+  },
+  {
+   "id": "bladeoath.cel.player",
+   "kind": "sprite-sheet",
+   "status": "shipped",
+   "reusePolicy": "reusable",
+   "name": "玩家・劍客：賽璐璐 12 姿勢（待機、走路 4 格、起手、出招、格擋、閃避、受擊、跳、倒地）",
+   "files": {
+    "raw": [
+     "BladeOath/art/raw/cel_chr_player_t2.png"
+    ],
+    "prompt": [
+     "BladeOath/art/prompts/cel_chr_player.txt"
+    ],
+    "shipped": [
+     "BladeOath/game/src/assets/cel/actors.png",
+     "BladeOath/game/src/assets/cel/actors.json"
+    ]
+   },
+   "technical": {
+    "atlas": "cel-actors",
+    "format": "png-256-rgba",
+    "textureResolution": 2,
+    "scaleMode": "linear",
+    "frames": [
+     "player/idle",
+     "player/walk1",
+     "player/walk2",
+     "player/walk3",
+     "player/walk4",
+     "player/windup",
+     "player/strike",
+     "player/guard",
+     "player/dodge",
+     "player/hurt",
+     "player/jump",
+     "player/down"
+    ],
+    "heightPx": 40,
+    "anchors": "腳底中央（底部五分之一的不透明像素重心）"
+   },
+   "provenance": {
+    "generator": "picanywhere (gpt-image-2)",
+    "job": "job_20261127-084803_658（角色 12 姿勢 t2）；job_20261126-174921_609（場景、道具；角色 t1 已被 t2 取代）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
+    "pipeline": "art/tools/cel_build.py（去背與去溢色 → 先切上下兩列、再以每欄密度找 6 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
+    "log": "art/raw/LOG.md"
+   },
+   "style": [
+    "cel-shaded",
+    "cartoon",
+    "ink-indigo",
+    "dark-xianxia",
+    "side-scroller",
+    "bold-outline"
+   ],
+   "tags": [
+    "player",
+    "玩家・劍客",
+    "character",
+    "pose-sheet"
+   ],
+   "reusable": "換角色時改 cel_prompts.py 的 CHARS 描述重生；12 姿勢順序與 render/cel.js 的 POSES／celPose 對應",
+   "contentHash": "sha256:f51459a84d05f1f8dadbfe8c39b259115a2f0ec2091d30868575a2a2f3e4f529",
+   "game": "BladeOath"
+  },
+  {
+   "id": "bladeoath.cel.soldier",
+   "kind": "sprite-sheet",
+   "status": "shipped",
+   "reusePolicy": "reusable",
+   "name": "屍兵：賽璐璐 12 姿勢（待機、走路 4 格、起手、出招、格擋、閃避、受擊、跳、倒地）",
+   "files": {
+    "raw": [
+     "BladeOath/art/raw/cel_chr_soldier_t2.png"
+    ],
+    "prompt": [
+     "BladeOath/art/prompts/cel_chr_soldier.txt"
+    ],
+    "shipped": [
+     "BladeOath/game/src/assets/cel/actors.png",
+     "BladeOath/game/src/assets/cel/actors.json"
+    ]
+   },
+   "technical": {
+    "atlas": "cel-actors",
+    "format": "png-256-rgba",
+    "textureResolution": 2,
+    "scaleMode": "linear",
+    "frames": [
+     "soldier/idle",
+     "soldier/walk1",
+     "soldier/walk2",
+     "soldier/walk3",
+     "soldier/walk4",
+     "soldier/windup",
+     "soldier/strike",
+     "soldier/guard",
+     "soldier/dodge",
+     "soldier/hurt",
+     "soldier/jump",
+     "soldier/down"
+    ],
+    "heightPx": 40,
+    "anchors": "腳底中央（底部五分之一的不透明像素重心）"
+   },
+   "provenance": {
+    "generator": "picanywhere (gpt-image-2)",
+    "job": "job_20261127-084803_658（角色 12 姿勢 t2）；job_20261126-174921_609（場景、道具；角色 t1 已被 t2 取代）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
+    "pipeline": "art/tools/cel_build.py（去背與去溢色 → 先切上下兩列、再以每欄密度找 6 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
+    "log": "art/raw/LOG.md"
+   },
+   "style": [
+    "cel-shaded",
+    "cartoon",
+    "ink-indigo",
+    "dark-xianxia",
+    "side-scroller",
+    "bold-outline"
+   ],
+   "tags": [
+    "soldier",
+    "屍兵",
+    "character",
+    "pose-sheet"
+   ],
+   "reusable": "換角色時改 cel_prompts.py 的 CHARS 描述重生；12 姿勢順序與 render/cel.js 的 POSES／celPose 對應",
+   "contentHash": "sha256:f51459a84d05f1f8dadbfe8c39b259115a2f0ec2091d30868575a2a2f3e4f529",
+   "game": "BladeOath"
+  },
+  {
+   "id": "bladeoath.cel.bug",
+   "kind": "sprite-sheet",
+   "status": "shipped",
+   "reusePolicy": "reusable",
+   "name": "蠱蟲：賽璐璐 12 姿勢（待機、走路 4 格、起手、出招、格擋、閃避、受擊、跳、倒地）",
+   "files": {
+    "raw": [
+     "BladeOath/art/raw/cel_chr_bug_t2.png"
+    ],
+    "prompt": [
+     "BladeOath/art/prompts/cel_chr_bug.txt"
+    ],
+    "shipped": [
+     "BladeOath/game/src/assets/cel/actors.png",
+     "BladeOath/game/src/assets/cel/actors.json"
+    ]
+   },
+   "technical": {
+    "atlas": "cel-actors",
+    "format": "png-256-rgba",
+    "textureResolution": 2,
+    "scaleMode": "linear",
+    "frames": [
+     "bug/idle",
+     "bug/walk1",
+     "bug/walk2",
+     "bug/walk3",
+     "bug/walk4",
+     "bug/windup",
+     "bug/strike",
+     "bug/guard",
+     "bug/dodge",
+     "bug/hurt",
+     "bug/jump",
+     "bug/down"
+    ],
+    "heightPx": 15,
+    "anchors": "腳底中央（底部五分之一的不透明像素重心）"
+   },
+   "provenance": {
+    "generator": "picanywhere (gpt-image-2)",
+    "job": "job_20261127-084803_658（角色 12 姿勢 t2）；job_20261126-174921_609（場景、道具；角色 t1 已被 t2 取代）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
+    "pipeline": "art/tools/cel_build.py（去背與去溢色 → 先切上下兩列、再以每欄密度找 6 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
+    "log": "art/raw/LOG.md"
+   },
+   "style": [
+    "cel-shaded",
+    "cartoon",
+    "ink-indigo",
+    "dark-xianxia",
+    "side-scroller",
+    "bold-outline"
+   ],
+   "tags": [
+    "bug",
+    "蠱蟲",
+    "character",
+    "pose-sheet"
+   ],
+   "reusable": "換角色時改 cel_prompts.py 的 CHARS 描述重生；12 姿勢順序與 render/cel.js 的 POSES／celPose 對應",
+   "contentHash": "sha256:f51459a84d05f1f8dadbfe8c39b259115a2f0ec2091d30868575a2a2f3e4f529",
+   "game": "BladeOath"
+  },
+  {
+   "id": "bladeoath.cel.caster",
+   "kind": "sprite-sheet",
+   "status": "shipped",
+   "reusePolicy": "reusable",
+   "name": "蠱師：賽璐璐 12 姿勢（待機、走路 4 格、起手、出招、格擋、閃避、受擊、跳、倒地）",
+   "files": {
+    "raw": [
+     "BladeOath/art/raw/cel_chr_caster_t2.png"
+    ],
+    "prompt": [
+     "BladeOath/art/prompts/cel_chr_caster.txt"
+    ],
+    "shipped": [
+     "BladeOath/game/src/assets/cel/actors.png",
+     "BladeOath/game/src/assets/cel/actors.json"
+    ]
+   },
+   "technical": {
+    "atlas": "cel-actors",
+    "format": "png-256-rgba",
+    "textureResolution": 2,
+    "scaleMode": "linear",
+    "frames": [
+     "caster/idle",
+     "caster/walk1",
+     "caster/walk2",
+     "caster/walk3",
+     "caster/walk4",
+     "caster/windup",
+     "caster/strike",
+     "caster/guard",
+     "caster/dodge",
+     "caster/hurt",
+     "caster/jump",
+     "caster/down"
+    ],
+    "heightPx": 40,
+    "anchors": "腳底中央（底部五分之一的不透明像素重心）"
+   },
+   "provenance": {
+    "generator": "picanywhere (gpt-image-2)",
+    "job": "job_20261127-084803_658（角色 12 姿勢 t2）；job_20261126-174921_609（場景、道具；角色 t1 已被 t2 取代）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
+    "pipeline": "art/tools/cel_build.py（去背與去溢色 → 先切上下兩列、再以每欄密度找 6 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
+    "log": "art/raw/LOG.md"
+   },
+   "style": [
+    "cel-shaded",
+    "cartoon",
+    "ink-indigo",
+    "dark-xianxia",
+    "side-scroller",
+    "bold-outline"
+   ],
+   "tags": [
+    "caster",
+    "蠱師",
+    "character",
+    "pose-sheet"
+   ],
+   "reusable": "換角色時改 cel_prompts.py 的 CHARS 描述重生；12 姿勢順序與 render/cel.js 的 POSES／celPose 對應",
+   "contentHash": "sha256:f51459a84d05f1f8dadbfe8c39b259115a2f0ec2091d30868575a2a2f3e4f529",
+   "game": "BladeOath"
+  },
+  {
+   "id": "bladeoath.cel.brute",
+   "kind": "sprite-sheet",
+   "status": "shipped",
+   "reusePolicy": "reusable",
+   "name": "屍傀力士：賽璐璐 12 姿勢（待機、走路 4 格、起手、出招、格擋、閃避、受擊、跳、倒地）",
+   "files": {
+    "raw": [
+     "BladeOath/art/raw/cel_chr_brute_t2.png"
+    ],
+    "prompt": [
+     "BladeOath/art/prompts/cel_chr_brute.txt"
+    ],
+    "shipped": [
+     "BladeOath/game/src/assets/cel/actors.png",
+     "BladeOath/game/src/assets/cel/actors.json"
+    ]
+   },
+   "technical": {
+    "atlas": "cel-actors",
+    "format": "png-256-rgba",
+    "textureResolution": 2,
+    "scaleMode": "linear",
+    "frames": [
+     "brute/idle",
+     "brute/walk1",
+     "brute/walk2",
+     "brute/walk3",
+     "brute/walk4",
+     "brute/windup",
+     "brute/strike",
+     "brute/guard",
+     "brute/dodge",
+     "brute/hurt",
+     "brute/jump",
+     "brute/down"
+    ],
+    "heightPx": 56,
+    "anchors": "腳底中央（底部五分之一的不透明像素重心）"
+   },
+   "provenance": {
+    "generator": "picanywhere (gpt-image-2)",
+    "job": "job_20261127-084803_658（角色 12 姿勢 t2）；job_20261126-174921_609（場景、道具；角色 t1 已被 t2 取代）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
+    "pipeline": "art/tools/cel_build.py（去背與去溢色 → 先切上下兩列、再以每欄密度找 6 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
+    "log": "art/raw/LOG.md"
+   },
+   "style": [
+    "cel-shaded",
+    "cartoon",
+    "ink-indigo",
+    "dark-xianxia",
+    "side-scroller",
+    "bold-outline"
+   ],
+   "tags": [
+    "brute",
+    "屍傀力士",
+    "character",
+    "pose-sheet"
+   ],
+   "reusable": "換角色時改 cel_prompts.py 的 CHARS 描述重生；12 姿勢順序與 render/cel.js 的 POSES／celPose 對應",
+   "contentHash": "sha256:f51459a84d05f1f8dadbfe8c39b259115a2f0ec2091d30868575a2a2f3e4f529",
+   "game": "BladeOath"
+  },
+  {
+   "id": "bladeoath.cel.mother",
+   "kind": "sprite-sheet",
+   "status": "shipped",
+   "reusePolicy": "reusable",
+   "name": "蠱母（精英）：賽璐璐 12 姿勢（待機、走路 4 格、起手、出招、格擋、閃避、受擊、跳、倒地）",
+   "files": {
+    "raw": [
+     "BladeOath/art/raw/cel_chr_mother_t2.png"
+    ],
+    "prompt": [
+     "BladeOath/art/prompts/cel_chr_mother.txt"
+    ],
+    "shipped": [
+     "BladeOath/game/src/assets/cel/actors.png",
+     "BladeOath/game/src/assets/cel/actors.json"
+    ]
+   },
+   "technical": {
+    "atlas": "cel-actors",
+    "format": "png-256-rgba",
+    "textureResolution": 2,
+    "scaleMode": "linear",
+    "frames": [
+     "mother/idle",
+     "mother/walk1",
+     "mother/walk2",
+     "mother/walk3",
+     "mother/walk4",
+     "mother/windup",
+     "mother/strike",
+     "mother/guard",
+     "mother/dodge",
+     "mother/hurt",
+     "mother/jump",
+     "mother/down"
+    ],
+    "heightPx": 56,
+    "anchors": "腳底中央（底部五分之一的不透明像素重心）"
+   },
+   "provenance": {
+    "generator": "picanywhere (gpt-image-2)",
+    "job": "job_20261127-084803_658（角色 12 姿勢 t2）；job_20261126-174921_609（場景、道具；角色 t1 已被 t2 取代）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
+    "pipeline": "art/tools/cel_build.py（去背與去溢色 → 先切上下兩列、再以每欄密度找 6 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
+    "log": "art/raw/LOG.md"
+   },
+   "style": [
+    "cel-shaded",
+    "cartoon",
+    "ink-indigo",
+    "dark-xianxia",
+    "side-scroller",
+    "bold-outline"
+   ],
+   "tags": [
+    "mother",
+    "蠱母（精英）",
+    "character",
+    "pose-sheet"
+   ],
+   "reusable": "換角色時改 cel_prompts.py 的 CHARS 描述重生；12 姿勢順序與 render/cel.js 的 POSES／celPose 對應",
+   "contentHash": "sha256:f51459a84d05f1f8dadbfe8c39b259115a2f0ec2091d30868575a2a2f3e4f529",
+   "game": "BladeOath"
+  },
+  {
+   "id": "bladeoath.cel.general",
+   "kind": "sprite-sheet",
+   "status": "shipped",
+   "reusePolicy": "reusable",
+   "name": "屍傀將（中頭目）：賽璐璐 12 姿勢（待機、走路 4 格、起手、出招、格擋、閃避、受擊、跳、倒地）",
+   "files": {
+    "raw": [
+     "BladeOath/art/raw/cel_chr_general_t2.png"
+    ],
+    "prompt": [
+     "BladeOath/art/prompts/cel_chr_general.txt"
+    ],
+    "shipped": [
+     "BladeOath/game/src/assets/cel/actors.png",
+     "BladeOath/game/src/assets/cel/actors.json"
+    ]
+   },
+   "technical": {
+    "atlas": "cel-actors",
+    "format": "png-256-rgba",
+    "textureResolution": 2,
+    "scaleMode": "linear",
+    "frames": [
+     "general/idle",
+     "general/walk1",
+     "general/walk2",
+     "general/walk3",
+     "general/walk4",
+     "general/windup",
+     "general/strike",
+     "general/guard",
+     "general/dodge",
+     "general/hurt",
+     "general/jump",
+     "general/down"
+    ],
+    "heightPx": 64,
+    "anchors": "腳底中央（底部五分之一的不透明像素重心）"
+   },
+   "provenance": {
+    "generator": "picanywhere (gpt-image-2)",
+    "job": "job_20261127-084803_658（角色 12 姿勢 t2）；job_20261126-174921_609（場景、道具；角色 t1 已被 t2 取代）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
+    "pipeline": "art/tools/cel_build.py（去背與去溢色 → 先切上下兩列、再以每欄密度找 6 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
+    "log": "art/raw/LOG.md"
+   },
+   "style": [
+    "cel-shaded",
+    "cartoon",
+    "ink-indigo",
+    "dark-xianxia",
+    "side-scroller",
+    "bold-outline"
+   ],
+   "tags": [
+    "general",
+    "屍傀將（中頭目）",
+    "character",
+    "pose-sheet"
+   ],
+   "reusable": "換角色時改 cel_prompts.py 的 CHARS 描述重生；12 姿勢順序與 render/cel.js 的 POSES／celPose 對應",
+   "contentHash": "sha256:f51459a84d05f1f8dadbfe8c39b259115a2f0ec2091d30868575a2a2f3e4f529",
+   "game": "BladeOath"
+  },
+  {
+   "id": "bladeoath.cel.fallen",
+   "kind": "sprite-sheet",
+   "status": "shipped",
+   "reusePolicy": "reusable",
+   "name": "墮仙（終頭目）：賽璐璐 12 姿勢（待機、走路 4 格、起手、出招、格擋、閃避、受擊、跳、倒地）",
+   "files": {
+    "raw": [
+     "BladeOath/art/raw/cel_chr_fallen_t2.png"
+    ],
+    "prompt": [
+     "BladeOath/art/prompts/cel_chr_fallen.txt"
+    ],
+    "shipped": [
+     "BladeOath/game/src/assets/cel/actors.png",
+     "BladeOath/game/src/assets/cel/actors.json"
+    ]
+   },
+   "technical": {
+    "atlas": "cel-actors",
+    "format": "png-256-rgba",
+    "textureResolution": 2,
+    "scaleMode": "linear",
+    "frames": [
+     "fallen/idle",
+     "fallen/walk1",
+     "fallen/walk2",
+     "fallen/walk3",
+     "fallen/walk4",
+     "fallen/windup",
+     "fallen/strike",
+     "fallen/guard",
+     "fallen/dodge",
+     "fallen/hurt",
+     "fallen/jump",
+     "fallen/down"
+    ],
+    "heightPx": 66,
+    "anchors": "腳底中央（底部五分之一的不透明像素重心）"
+   },
+   "provenance": {
+    "generator": "picanywhere (gpt-image-2)",
+    "job": "job_20261127-084803_658（角色 12 姿勢 t2）；job_20261126-174921_609（場景、道具；角色 t1 已被 t2 取代）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
+    "pipeline": "art/tools/cel_build.py（去背與去溢色 → 先切上下兩列、再以每欄密度找 6 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
+    "log": "art/raw/LOG.md"
+   },
+   "style": [
+    "cel-shaded",
+    "cartoon",
+    "ink-indigo",
+    "dark-xianxia",
+    "side-scroller",
+    "bold-outline"
+   ],
+   "tags": [
+    "fallen",
+    "墮仙（終頭目）",
+    "character",
+    "pose-sheet"
+   ],
+   "reusable": "換角色時改 cel_prompts.py 的 CHARS 描述重生；12 姿勢順序與 render/cel.js 的 POSES／celPose 對應",
+   "contentHash": "sha256:f51459a84d05f1f8dadbfe8c39b259115a2f0ec2091d30868575a2a2f3e4f529",
+   "game": "BladeOath"
+  },
+  {
+   "id": "bladeoath.cel.scene.gate",
+   "kind": "background",
+   "status": "shipped",
+   "reusePolicy": "reusable",
+   "name": "山門：賽璐璐遠景＋近景地面帶（橫向卷軸）",
+   "files": {
+    "raw": [
+     "BladeOath/art/raw/cel_far_gate_t1.png",
+     "BladeOath/art/raw/cel_near_gate_t1.png"
+    ],
+    "prompt": [
+     "BladeOath/art/prompts/cel_far_gate.txt",
+     "BladeOath/art/prompts/cel_near_gate.txt"
+    ],
+    "shipped": [
+     "BladeOath/game/src/assets/cel/far_gate.png",
+     "BladeOath/game/src/assets/cel/near_gate.png"
+    ]
+   },
+   "technical": {
+    "format": "png8-128",
+    "textureResolution": 2,
+    "layers": {
+     "far": "150 px 高、視差 0.45",
+     "near": "154 px 高（牆 34＋地面 120）"
+    },
+    "tiling": "mirror"
+   },
+   "provenance": {
+    "generator": "picanywhere (gpt-image-2) / Codex CLI",
+    "job": "job_20261127-084803_658（角色 12 姿勢 t2）；job_20261126-174921_609（場景、道具；角色 t1 已被 t2 取代）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
+    "pipeline": "art/tools/cel_build.py（去背與去溢色 → 先切上下兩列、再以每欄密度找 6 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
+    "log": "art/raw/LOG.md"
+   },
+   "style": [
+    "cel-shaded",
+    "cartoon",
+    "ink-indigo",
+    "dark-xianxia",
+    "side-scroller",
+    "bold-outline",
+    "parallax"
+   ],
+   "tags": [
+    "mountain-pass",
+    "cliff",
+    "flagstone",
+    "background",
+    "山門"
+   ],
+   "reusable": "改 cel_prompts.py 的 SCENES 描述重生；NEAR_CUT 依新圖重量牆與地面的分界",
+   "contentHash": "sha256:122cf035bb16bc13c24ff83f481b255b945d13a24c0efc0bde76c14c237e5c23",
+   "game": "BladeOath"
+  },
+  {
+   "id": "bladeoath.cel.scene.forest",
+   "kind": "background",
+   "status": "shipped",
+   "reusePolicy": "reusable",
+   "name": "蠱林：賽璐璐遠景＋近景地面帶（橫向卷軸）",
+   "files": {
+    "raw": [
+     "BladeOath/art/raw/cel_far_forest_t1.png",
+     "BladeOath/art/raw/cel_near_forest_t1.png"
+    ],
+    "prompt": [
+     "BladeOath/art/prompts/cel_far_forest.txt",
+     "BladeOath/art/prompts/cel_near_forest.txt"
+    ],
+    "shipped": [
+     "BladeOath/game/src/assets/cel/far_forest.png",
+     "BladeOath/game/src/assets/cel/near_forest.png"
+    ]
+   },
+   "technical": {
+    "format": "png8-128",
+    "textureResolution": 2,
+    "layers": {
+     "far": "150 px 高、視差 0.45",
+     "near": "154 px 高（牆 34＋地面 120）"
+    },
+    "tiling": "mirror"
+   },
+   "provenance": {
+    "generator": "picanywhere (gpt-image-2) / Codex CLI",
+    "job": "job_20261127-084803_658（角色 12 姿勢 t2）；job_20261126-174921_609（場景、道具；角色 t1 已被 t2 取代）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
+    "pipeline": "art/tools/cel_build.py（去背與去溢色 → 先切上下兩列、再以每欄密度找 6 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
+    "log": "art/raw/LOG.md"
+   },
+   "style": [
+    "cel-shaded",
+    "cartoon",
+    "ink-indigo",
+    "dark-xianxia",
+    "side-scroller",
+    "bold-outline",
+    "parallax"
+   ],
+   "tags": [
+    "forest",
+    "cocoon",
+    "earth",
+    "background",
+    "蠱林"
+   ],
+   "reusable": "改 cel_prompts.py 的 SCENES 描述重生；NEAR_CUT 依新圖重量牆與地面的分界",
+   "contentHash": "sha256:36253fb22f61a0b54508ff6513d6b07276d1e1528ce2297a0c1e4b104d23f384",
+   "game": "BladeOath"
+  },
+  {
+   "id": "bladeoath.cel.scene.well",
+   "kind": "background",
+   "status": "shipped",
+   "reusePolicy": "reusable",
+   "name": "枯井：賽璐璐遠景＋近景地面帶（橫向卷軸）",
+   "files": {
+    "raw": [
+     "BladeOath/art/raw/cel_far_well_t1.png",
+     "BladeOath/art/raw/cel_near_well_t1.png"
+    ],
+    "prompt": [
+     "BladeOath/art/prompts/cel_far_well.txt",
+     "BladeOath/art/prompts/cel_near_well.txt"
+    ],
+    "shipped": [
+     "BladeOath/game/src/assets/cel/far_well.png",
+     "BladeOath/game/src/assets/cel/near_well.png"
+    ]
+   },
+   "technical": {
+    "format": "png8-128",
+    "textureResolution": 2,
+    "layers": {
+     "far": "150 px 高、視差 0.45",
+     "near": "154 px 高（牆 34＋地面 120）"
+    },
+    "tiling": "mirror"
+   },
+   "provenance": {
+    "generator": "picanywhere (gpt-image-2) / Codex CLI",
+    "job": "job_20261127-084803_658（角色 12 姿勢 t2）；job_20261126-174921_609（場景、道具；角色 t1 已被 t2 取代）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
+    "pipeline": "art/tools/cel_build.py（去背與去溢色 → 先切上下兩列、再以每欄密度找 6 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
+    "log": "art/raw/LOG.md"
+   },
+   "style": [
+    "cel-shaded",
+    "cartoon",
+    "ink-indigo",
+    "dark-xianxia",
+    "side-scroller",
+    "bold-outline",
+    "parallax"
+   ],
+   "tags": [
+    "village",
+    "courtyard",
+    "paving",
+    "background",
+    "枯井"
+   ],
+   "reusable": "改 cel_prompts.py 的 SCENES 描述重生；NEAR_CUT 依新圖重量牆與地面的分界",
+   "contentHash": "sha256:13c44e7c3ed4670648f9f0ae616cf1b95ea4eb8da92d1ffa809b19ff7fc69a0f",
+   "game": "BladeOath"
+  },
+  {
+   "id": "bladeoath.cel.scene.hall",
+   "kind": "background",
+   "status": "shipped",
+   "reusePolicy": "reusable",
+   "name": "屍傀將殿：賽璐璐遠景＋近景地面帶（橫向卷軸）",
+   "files": {
+    "raw": [
+     "BladeOath/art/raw/cel_far_hall_t1.png",
+     "BladeOath/art/raw/cel_near_hall_t1.png"
+    ],
+    "prompt": [
+     "BladeOath/art/prompts/cel_far_hall.txt",
+     "BladeOath/art/prompts/cel_near_hall.txt"
+    ],
+    "shipped": [
+     "BladeOath/game/src/assets/cel/far_hall.png",
+     "BladeOath/game/src/assets/cel/near_hall.png"
+    ]
+   },
+   "technical": {
+    "format": "png8-128",
+    "textureResolution": 2,
+    "layers": {
+     "far": "150 px 高、視差 0.45",
+     "near": "154 px 高（牆 34＋地面 120）"
+    },
+    "tiling": "mirror"
+   },
+   "provenance": {
+    "generator": "picanywhere (gpt-image-2) / Codex CLI",
+    "job": "job_20261127-084803_658（角色 12 姿勢 t2）；job_20261126-174921_609（場景、道具；角色 t1 已被 t2 取代）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
+    "pipeline": "art/tools/cel_build.py（去背與去溢色 → 先切上下兩列、再以每欄密度找 6 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
+    "log": "art/raw/LOG.md"
+   },
+   "style": [
+    "cel-shaded",
+    "cartoon",
+    "ink-indigo",
+    "dark-xianxia",
+    "side-scroller",
+    "bold-outline",
+    "parallax"
+   ],
+   "tags": [
+    "fortress",
+    "hall",
+    "tile",
+    "background",
+    "屍傀將殿"
+   ],
+   "reusable": "改 cel_prompts.py 的 SCENES 描述重生；NEAR_CUT 依新圖重量牆與地面的分界",
+   "contentHash": "sha256:febec2b231d92398220a2491a2a530276ccc15dac2d0d3cd0aa7ff1ea817de8c",
+   "game": "BladeOath"
+  },
+  {
+   "id": "bladeoath.cel.scene.cloister",
+   "kind": "background",
+   "status": "shipped",
+   "reusePolicy": "reusable",
+   "name": "殿後迴廊：賽璐璐遠景＋近景地面帶（橫向卷軸）",
+   "files": {
+    "raw": [
+     "BladeOath/art/raw/cel_far_cloister_t1.png",
+     "BladeOath/art/raw/cel_near_cloister_t1.png"
+    ],
+    "prompt": [
+     "BladeOath/art/prompts/cel_far_cloister.txt",
+     "BladeOath/art/prompts/cel_near_cloister.txt"
+    ],
+    "shipped": [
+     "BladeOath/game/src/assets/cel/far_cloister.png",
+     "BladeOath/game/src/assets/cel/near_cloister.png"
+    ]
+   },
+   "technical": {
+    "format": "png8-128",
+    "textureResolution": 2,
+    "layers": {
+     "far": "150 px 高、視差 0.45",
+     "near": "154 px 高（牆 34＋地面 120）"
+    },
+    "tiling": "mirror"
+   },
+   "provenance": {
+    "generator": "picanywhere (gpt-image-2) / Codex CLI",
+    "job": "job_20261127-084803_658（角色 12 姿勢 t2）；job_20261126-174921_609（場景、道具；角色 t1 已被 t2 取代）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
+    "pipeline": "art/tools/cel_build.py（去背與去溢色 → 先切上下兩列、再以每欄密度找 6 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
+    "log": "art/raw/LOG.md"
+   },
+   "style": [
+    "cel-shaded",
+    "cartoon",
+    "ink-indigo",
+    "dark-xianxia",
+    "side-scroller",
+    "bold-outline",
+    "parallax"
+   ],
+   "tags": [
+    "corridor",
+    "pillar",
+    "plank",
+    "background",
+    "殿後迴廊"
+   ],
+   "reusable": "改 cel_prompts.py 的 SCENES 描述重生；NEAR_CUT 依新圖重量牆與地面的分界",
+   "contentHash": "sha256:637136485610cde8039f93fe565f784893653471aaa2a881a6a4a710c6ed251a",
+   "game": "BladeOath"
+  },
+  {
+   "id": "bladeoath.cel.scene.terrace",
+   "kind": "background",
+   "status": "shipped",
+   "reusePolicy": "reusable",
+   "name": "墮仙台：賽璐璐遠景＋近景地面帶（橫向卷軸）",
+   "files": {
+    "raw": [
+     "BladeOath/art/raw/cel_far_terrace_t1.png",
+     "BladeOath/art/raw/cel_near_terrace_t1.png"
+    ],
+    "prompt": [
+     "BladeOath/art/prompts/cel_far_terrace.txt",
+     "BladeOath/art/prompts/cel_near_terrace.txt"
+    ],
+    "shipped": [
+     "BladeOath/game/src/assets/cel/far_terrace.png",
+     "BladeOath/game/src/assets/cel/near_terrace.png"
+    ]
+   },
+   "technical": {
+    "format": "png8-128",
+    "textureResolution": 2,
+    "layers": {
+     "far": "150 px 高、視差 0.45",
+     "near": "154 px 高（牆 34＋地面 120）"
+    },
+    "tiling": "mirror"
+   },
+   "provenance": {
+    "generator": "picanywhere (gpt-image-2) / Codex CLI",
+    "job": "job_20261127-084803_658（角色 12 姿勢 t2）；job_20261126-174921_609（場景、道具；角色 t1 已被 t2 取代）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
+    "pipeline": "art/tools/cel_build.py（去背與去溢色 → 先切上下兩列、再以每欄密度找 6 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
+    "log": "art/raw/LOG.md"
+   },
+   "style": [
+    "cel-shaded",
+    "cartoon",
+    "ink-indigo",
+    "dark-xianxia",
+    "side-scroller",
+    "bold-outline",
+    "parallax"
+   ],
+   "tags": [
+    "terrace",
+    "clouds",
+    "slab",
+    "background",
+    "墮仙台"
+   ],
+   "reusable": "改 cel_prompts.py 的 SCENES 描述重生；NEAR_CUT 依新圖重量牆與地面的分界",
+   "contentHash": "sha256:38cc2b293feb84dc24e27487e64bf7eca15881cc1acaba354e702eab505442c8",
+   "game": "BladeOath"
+  },
+  {
+   "id": "bladeoath.cel.props",
+   "kind": "sprite-sheet",
+   "status": "shipped",
+   "reusePolicy": "reusable",
+   "name": "賽璐璐道具：酒罈、木箱、石燈、斷碑、肉包、丹藥、鍛材、劍塚、寶箱（關／開）",
+   "files": {
+    "raw": [
+     "BladeOath/art/raw/cel_props_t1.png",
+     "BladeOath/art/raw/cel_props2_t1.png"
+    ],
+    "prompt": [
+     "BladeOath/art/prompts/cel_props.txt"
+    ],
+    "shipped": [
+     "BladeOath/game/src/assets/cel/props.png",
+     "BladeOath/game/src/assets/cel/props.json"
+    ]
+   },
+   "technical": {
+    "atlas": "cel-props",
+    "format": "png-256-rgba",
+    "textureResolution": 2,
+    "frames": [
+     "jar",
+     "crate",
+     "lamp",
+     "stele",
+     "bun",
+     "pill",
+     "ore",
+     "mound",
+     "chest",
+     "chestOpen"
+    ],
+    "anchors": "底部中央"
+   },
+   "provenance": {
+    "generator": "picanywhere (gpt-image-2)",
+    "job": "job_20261127-084803_658（角色 12 姿勢 t2）；job_20261126-174921_609（場景、道具；角色 t1 已被 t2 取代）；job_20261126-175315_611（劍塚、寶箱）；cel_near_gate 由 Codex CLI 生成",
+    "pipeline": "art/tools/cel_build.py（去背與去溢色 → 先切上下兩列、再以每欄密度找 6 個身體中心切件 → 依待機高度統一縮放、腳底中央錨點 → 2 倍解析度打包 → 256 色含半透明）",
+    "log": "art/raw/LOG.md"
+   },
+   "style": [
+    "cel-shaded",
+    "cartoon",
+    "ink-indigo",
+    "dark-xianxia",
+    "side-scroller",
+    "bold-outline"
+   ],
+   "tags": [
+    "jar",
+    "crate",
+    "lantern",
+    "stele",
+    "bun",
+    "medicine",
+    "ore",
+    "mound",
+    "chest",
+    "breakable"
+   ],
+   "reusable": "沿用 cel_prompts.py 的 PROPS 描述與 cel_build.py 的切件",
+   "contentHash": "sha256:dffd1f68b11ab008f5e686b09ce8d386aa6f5f36a7982ce6b7f6a1109ca3455e",
+   "game": "BladeOath"
+  },
+  {
    "id": "lanternhold.chr.worker",
    "kind": "sprite-sheet",
    "status": "shipped",
@@ -279,7 +1858,7 @@
     "夜"
    ],
    "reusePolicy": "reusable",
-   "contentHash": "sha256:fdd947acf52c4cc0e526144b2e798de6c950ec2484ccc73a48541c989e44d01e",
+   "contentHash": "sha256:c50ff1e173eb23d9798090d4de8a981f2ceee34a5db46a3619f93b226ac5e6fa",
    "game": "LanternHold"
   },
   {
@@ -353,7 +1932,7 @@
     "夜"
    ],
    "reusePolicy": "reusable",
-   "contentHash": "sha256:fdd947acf52c4cc0e526144b2e798de6c950ec2484ccc73a48541c989e44d01e",
+   "contentHash": "sha256:c50ff1e173eb23d9798090d4de8a981f2ceee34a5db46a3619f93b226ac5e6fa",
    "game": "LanternHold"
   },
   {
@@ -428,7 +2007,7 @@
     "夜"
    ],
    "reusePolicy": "reusable",
-   "contentHash": "sha256:fdd947acf52c4cc0e526144b2e798de6c950ec2484ccc73a48541c989e44d01e",
+   "contentHash": "sha256:c50ff1e173eb23d9798090d4de8a981f2ceee34a5db46a3619f93b226ac5e6fa",
    "game": "LanternHold"
   },
   {
@@ -504,7 +2083,305 @@
     "夜"
    ],
    "reusePolicy": "reusable",
-   "contentHash": "sha256:fdd947acf52c4cc0e526144b2e798de6c950ec2484ccc73a48541c989e44d01e",
+   "contentHash": "sha256:c50ff1e173eb23d9798090d4de8a981f2ceee34a5db46a3619f93b226ac5e6fa",
+   "game": "LanternHold"
+  },
+  {
+   "id": "lanternhold.chr.skeleton",
+   "kind": "sprite-sheet",
+   "status": "shipped",
+   "name": "骷髏兵（友軍召喚物，短劍＋小盾）：idle 2、walk 4、attack 3（朝右，左向鏡像）",
+   "files": {
+    "raw": [
+     "LanternHold/art/raw/unit_skeleton_t1a.png"
+    ],
+    "prompt": [
+     "LanternHold/art/prompts/unit_skeleton.txt"
+    ],
+    "shipped": [
+     "LanternHold/game/src/assets/pixel/units.png",
+     "LanternHold/game/src/assets/pixel/units.json"
+    ]
+   },
+   "technical": {
+    "atlas": "units",
+    "format": "png8",
+    "artPxToWorldPx": 2,
+    "scaleMode": "nearest",
+    "frames": [
+     "skeleton_idle_0",
+     "skeleton_idle_1",
+     "skeleton_walk_0",
+     "skeleton_walk_1",
+     "skeleton_walk_2",
+     "skeleton_walk_3",
+     "skeleton_attack_0",
+     "skeleton_attack_1",
+     "skeleton_attack_2"
+    ],
+    "cell": [
+     30,
+     21
+    ],
+    "anchor": [
+     0.5,
+     0.9524
+    ]
+   },
+   "styleTags": [
+    "pixel",
+    "night",
+    "top-down-3/4",
+    "1px-outline",
+    "palette-32",
+    "side-view-right"
+   ],
+   "provenance": {
+    "tool": "picanywhere",
+    "job": "job_20261118-134634_310#2",
+    "postprocess": "art/tools/build.py（chroma key → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 打包）",
+    "promptBlock": "art/tools/prompts.py STYLE_LOCK"
+   },
+   "keywords": [
+    "skeleton",
+    "bones",
+    "undead",
+    "summon",
+    "minion",
+    "sword",
+    "骷髏",
+    "召喚",
+    "ally",
+    "友軍",
+    "pixel",
+    "像素",
+    "night",
+    "夜"
+   ],
+   "reusePolicy": "reusable",
+   "contentHash": "sha256:c50ff1e173eb23d9798090d4de8a981f2ceee34a5db46a3619f93b226ac5e6fa",
+   "game": "LanternHold"
+  },
+  {
+   "id": "lanternhold.chr.spearman",
+   "kind": "sprite-sheet",
+   "status": "shipped",
+   "name": "長槍兵（輕甲）：idle 2、walk 4、attack 3（朝右，左向鏡像）",
+   "files": {
+    "raw": [
+     "LanternHold/art/raw/unit_spearman_t1.png"
+    ],
+    "prompt": [
+     "LanternHold/art/prompts/unit_spearman.txt"
+    ],
+    "shipped": [
+     "LanternHold/game/src/assets/pixel/units.png",
+     "LanternHold/game/src/assets/pixel/units.json"
+    ]
+   },
+   "technical": {
+    "atlas": "units",
+    "format": "png8",
+    "artPxToWorldPx": 2,
+    "scaleMode": "nearest",
+    "frames": [
+     "spearman_idle_0",
+     "spearman_idle_1",
+     "spearman_walk_0",
+     "spearman_walk_1",
+     "spearman_walk_2",
+     "spearman_walk_3",
+     "spearman_attack_0",
+     "spearman_attack_1",
+     "spearman_attack_2"
+    ],
+    "cell": [
+     28,
+     19
+    ],
+    "anchor": [
+     0.5,
+     0.9474
+    ]
+   },
+   "styleTags": [
+    "pixel",
+    "night",
+    "top-down-3/4",
+    "1px-outline",
+    "palette-32",
+    "side-view-right"
+   ],
+   "provenance": {
+    "tool": "picanywhere",
+    "job": "job_20261118-141139_312#0",
+    "postprocess": "art/tools/build.py（chroma key → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 打包）",
+    "promptBlock": "art/tools/prompts.py STYLE_LOCK"
+   },
+   "keywords": [
+    "spearman",
+    "spear",
+    "pike",
+    "lancer",
+    "長槍兵",
+    "槍",
+    "ally",
+    "友軍",
+    "pixel",
+    "像素",
+    "night",
+    "夜"
+   ],
+   "reusePolicy": "reusable",
+   "contentHash": "sha256:c50ff1e173eb23d9798090d4de8a981f2ceee34a5db46a3619f93b226ac5e6fa",
+   "game": "LanternHold"
+  },
+  {
+   "id": "lanternhold.chr.crossbow",
+   "kind": "sprite-sheet",
+   "status": "shipped",
+   "name": "弩兵（重弩、頭盔）：idle 2、walk 4、attack 3（朝右，左向鏡像）",
+   "files": {
+    "raw": [
+     "LanternHold/art/raw/unit_crossbow_t1.png"
+    ],
+    "prompt": [
+     "LanternHold/art/prompts/unit_crossbow.txt"
+    ],
+    "shipped": [
+     "LanternHold/game/src/assets/pixel/units.png",
+     "LanternHold/game/src/assets/pixel/units.json"
+    ]
+   },
+   "technical": {
+    "atlas": "units",
+    "format": "png8",
+    "artPxToWorldPx": 2,
+    "scaleMode": "nearest",
+    "frames": [
+     "crossbow_idle_0",
+     "crossbow_idle_1",
+     "crossbow_walk_0",
+     "crossbow_walk_1",
+     "crossbow_walk_2",
+     "crossbow_walk_3",
+     "crossbow_attack_0",
+     "crossbow_attack_1",
+     "crossbow_attack_2"
+    ],
+    "cell": [
+     28,
+     22
+    ],
+    "anchor": [
+     0.5,
+     0.9545
+    ]
+   },
+   "styleTags": [
+    "pixel",
+    "night",
+    "top-down-3/4",
+    "1px-outline",
+    "palette-32",
+    "side-view-right"
+   ],
+   "provenance": {
+    "tool": "picanywhere",
+    "job": "job_20261118-141139_312#1",
+    "postprocess": "art/tools/build.py（chroma key → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 打包）",
+    "promptBlock": "art/tools/prompts.py STYLE_LOCK"
+   },
+   "keywords": [
+    "crossbow",
+    "crossbowman",
+    "ranged",
+    "弩兵",
+    "弩",
+    "ally",
+    "友軍",
+    "pixel",
+    "像素",
+    "night",
+    "夜"
+   ],
+   "reusePolicy": "reusable",
+   "contentHash": "sha256:c50ff1e173eb23d9798090d4de8a981f2ceee34a5db46a3619f93b226ac5e6fa",
+   "game": "LanternHold"
+  },
+  {
+   "id": "lanternhold.chr.knight",
+   "kind": "sprite-sheet",
+   "status": "shipped",
+   "name": "騎士（步行，劍＋鳶形盾，無馬）：idle 2、walk 4、attack 3（朝右，左向鏡像）",
+   "files": {
+    "raw": [
+     "LanternHold/art/raw/unit_knight_t1.png"
+    ],
+    "prompt": [
+     "LanternHold/art/prompts/unit_knight.txt"
+    ],
+    "shipped": [
+     "LanternHold/game/src/assets/pixel/units.png",
+     "LanternHold/game/src/assets/pixel/units.json"
+    ]
+   },
+   "technical": {
+    "atlas": "units",
+    "format": "png8",
+    "artPxToWorldPx": 2,
+    "scaleMode": "nearest",
+    "frames": [
+     "knight_idle_0",
+     "knight_idle_1",
+     "knight_walk_0",
+     "knight_walk_1",
+     "knight_walk_2",
+     "knight_walk_3",
+     "knight_attack_0",
+     "knight_attack_1",
+     "knight_attack_2"
+    ],
+    "cell": [
+     32,
+     23
+    ],
+    "anchor": [
+     0.5,
+     0.9565
+    ]
+   },
+   "styleTags": [
+    "pixel",
+    "night",
+    "top-down-3/4",
+    "1px-outline",
+    "palette-32",
+    "side-view-right"
+   ],
+   "provenance": {
+    "tool": "picanywhere",
+    "job": "job_20261118-141139_312#2",
+    "postprocess": "art/tools/build.py（chroma key → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 打包）",
+    "promptBlock": "art/tools/prompts.py STYLE_LOCK"
+   },
+   "keywords": [
+    "knight",
+    "paladin",
+    "armored",
+    "sword",
+    "kite shield",
+    "騎士",
+    "重甲",
+    "ally",
+    "友軍",
+    "pixel",
+    "像素",
+    "night",
+    "夜"
+   ],
+   "reusePolicy": "reusable",
+   "contentHash": "sha256:c50ff1e173eb23d9798090d4de8a981f2ceee34a5db46a3619f93b226ac5e6fa",
    "game": "LanternHold"
   },
   {
@@ -596,6 +2473,49 @@
    "game": "LanternHold"
   },
   {
+   "id": "lanternhold.ref.skeleton.t1b",
+   "kind": "reference",
+   "status": "rejected-take",
+   "name": "骷髏兵 t1b（與 t1a 同 prompt，擇一，未採用）",
+   "files": {
+    "raw": [
+     "LanternHold/art/raw/unit_skeleton_t1b.png"
+    ],
+    "prompt": [
+     "LanternHold/art/prompts/unit_skeleton.txt"
+    ],
+    "shipped": []
+   },
+   "technical": {
+    "atlas": "units",
+    "format": "png8",
+    "artPxToWorldPx": 2,
+    "scaleMode": "nearest",
+    "frames": []
+   },
+   "styleTags": [
+    "pixel",
+    "night",
+    "top-down-3/4",
+    "1px-outline",
+    "palette-32",
+    "side-view-right"
+   ],
+   "provenance": {
+    "tool": "picanywhere",
+    "job": "job_20261118-134634_310#3",
+    "postprocess": "art/tools/build.py（chroma key → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 打包）",
+    "promptBlock": "art/tools/prompts.py STYLE_LOCK"
+   },
+   "keywords": [
+    "skeleton",
+    "rejected"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:57a719d60e36d39677dd0f9779ed74639e62e5c688a1934d3c702d2154fe0333",
+   "game": "LanternHold"
+  },
+  {
    "id": "lanternhold.foe.rat",
    "kind": "sprite-sheet",
    "status": "shipped",
@@ -662,7 +2582,7 @@
     "像素"
    ],
    "reusePolicy": "reusable",
-   "contentHash": "sha256:495977413ac03e2f9b0218c35a026de30f6355fe6d5b972e705b88513e66fc21",
+   "contentHash": "sha256:5a0adfb6d20fa98c5a698b9b7521943e1a2c045ede2b64ccb89db2fa1c52e9cf",
    "game": "LanternHold"
   },
   {
@@ -732,7 +2652,7 @@
     "像素"
    ],
    "reusePolicy": "reusable",
-   "contentHash": "sha256:495977413ac03e2f9b0218c35a026de30f6355fe6d5b972e705b88513e66fc21",
+   "contentHash": "sha256:5a0adfb6d20fa98c5a698b9b7521943e1a2c045ede2b64ccb89db2fa1c52e9cf",
    "game": "LanternHold"
   },
   {
@@ -802,7 +2722,7 @@
     "像素"
    ],
    "reusePolicy": "reusable",
-   "contentHash": "sha256:495977413ac03e2f9b0218c35a026de30f6355fe6d5b972e705b88513e66fc21",
+   "contentHash": "sha256:5a0adfb6d20fa98c5a698b9b7521943e1a2c045ede2b64ccb89db2fa1c52e9cf",
    "game": "LanternHold"
   },
   {
@@ -875,7 +2795,7 @@
     "像素"
    ],
    "reusePolicy": "reusable",
-   "contentHash": "sha256:495977413ac03e2f9b0218c35a026de30f6355fe6d5b972e705b88513e66fc21",
+   "contentHash": "sha256:5a0adfb6d20fa98c5a698b9b7521943e1a2c045ede2b64ccb89db2fa1c52e9cf",
    "game": "LanternHold"
   },
   {
@@ -948,7 +2868,7 @@
     "像素"
    ],
    "reusePolicy": "reusable",
-   "contentHash": "sha256:495977413ac03e2f9b0218c35a026de30f6355fe6d5b972e705b88513e66fc21",
+   "contentHash": "sha256:5a0adfb6d20fa98c5a698b9b7521943e1a2c045ede2b64ccb89db2fa1c52e9cf",
    "game": "LanternHold"
   },
   {
@@ -1021,7 +2941,7 @@
     "像素"
    ],
    "reusePolicy": "reusable",
-   "contentHash": "sha256:495977413ac03e2f9b0218c35a026de30f6355fe6d5b972e705b88513e66fc21",
+   "contentHash": "sha256:5a0adfb6d20fa98c5a698b9b7521943e1a2c045ede2b64ccb89db2fa1c52e9cf",
    "game": "LanternHold"
   },
   {
@@ -1095,7 +3015,303 @@
     "像素"
    ],
    "reusePolicy": "reusable",
-   "contentHash": "sha256:495977413ac03e2f9b0218c35a026de30f6355fe6d5b972e705b88513e66fc21",
+   "contentHash": "sha256:5a0adfb6d20fa98c5a698b9b7521943e1a2c045ede2b64ccb89db2fa1c52e9cf",
+   "game": "LanternHold"
+  },
+  {
+   "id": "lanternhold.foe.slime",
+   "kind": "sprite-sheet",
+   "status": "shipped",
+   "name": "暗影史萊姆（死亡分裂成兩隻小的）：walk 4、attack 2",
+   "files": {
+    "raw": [
+     "LanternHold/art/raw/foe_slime_t1.png"
+    ],
+    "prompt": [
+     "LanternHold/art/prompts/foe_slime.txt"
+    ],
+    "shipped": [
+     "LanternHold/game/src/assets/pixel/foes.png",
+     "LanternHold/game/src/assets/pixel/foes.json"
+    ]
+   },
+   "technical": {
+    "atlas": "foes",
+    "format": "png8",
+    "artPxToWorldPx": 2,
+    "scaleMode": "nearest",
+    "frames": [
+     "slime_walk_0",
+     "slime_walk_1",
+     "slime_walk_2",
+     "slime_walk_3",
+     "slime_attack_0",
+     "slime_attack_1"
+    ],
+    "cell": [
+     28,
+     14
+    ],
+    "anchor": [
+     0.5,
+     0.9286
+    ]
+   },
+   "styleTags": [
+    "pixel",
+    "night",
+    "top-down-3/4",
+    "1px-outline",
+    "palette-32",
+    "side-view-right"
+   ],
+   "provenance": {
+    "tool": "picanywhere",
+    "job": "job_20261118-151138_320#0",
+    "postprocess": "art/tools/build.py（chroma key → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 打包）",
+    "promptBlock": "art/tools/prompts.py STYLE_LOCK"
+   },
+   "keywords": [
+    "slime",
+    "blob",
+    "split",
+    "史萊姆",
+    "分裂",
+    "enemy",
+    "敵人",
+    "shadow",
+    "暗影",
+    "violet",
+    "紫",
+    "pixel",
+    "像素"
+   ],
+   "reusePolicy": "reusable",
+   "contentHash": "sha256:5a0adfb6d20fa98c5a698b9b7521943e1a2c045ede2b64ccb89db2fa1c52e9cf",
+   "game": "LanternHold"
+  },
+  {
+   "id": "lanternhold.foe.boar",
+   "kind": "sprite-sheet",
+   "status": "shipped",
+   "name": "暗影野豬（衝鋒、首擊三倍）：walk 4、attack 2",
+   "files": {
+    "raw": [
+     "LanternHold/art/raw/foe_boar_t1.png"
+    ],
+    "prompt": [
+     "LanternHold/art/prompts/foe_boar.txt"
+    ],
+    "shipped": [
+     "LanternHold/game/src/assets/pixel/foes.png",
+     "LanternHold/game/src/assets/pixel/foes.json"
+    ]
+   },
+   "technical": {
+    "atlas": "foes",
+    "format": "png8",
+    "artPxToWorldPx": 2,
+    "scaleMode": "nearest",
+    "frames": [
+     "boar_walk_0",
+     "boar_walk_1",
+     "boar_walk_2",
+     "boar_walk_3",
+     "boar_attack_0",
+     "boar_attack_1"
+    ],
+    "cell": [
+     30,
+     15
+    ],
+    "anchor": [
+     0.5,
+     0.9333
+    ]
+   },
+   "styleTags": [
+    "pixel",
+    "night",
+    "top-down-3/4",
+    "1px-outline",
+    "palette-32",
+    "side-view-right"
+   ],
+   "provenance": {
+    "tool": "picanywhere",
+    "job": "job_20261118-151138_320#1",
+    "postprocess": "art/tools/build.py（chroma key → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 打包）",
+    "promptBlock": "art/tools/prompts.py STYLE_LOCK"
+   },
+   "keywords": [
+    "boar",
+    "pig",
+    "charge",
+    "tusk",
+    "野豬",
+    "衝鋒",
+    "enemy",
+    "敵人",
+    "shadow",
+    "暗影",
+    "violet",
+    "紫",
+    "pixel",
+    "像素"
+   ],
+   "reusePolicy": "reusable",
+   "contentHash": "sha256:5a0adfb6d20fa98c5a698b9b7521943e1a2c045ede2b64ccb89db2fa1c52e9cf",
+   "game": "LanternHold"
+  },
+  {
+   "id": "lanternhold.foe.shaman",
+   "kind": "sprite-sheet",
+   "status": "shipped",
+   "name": "巫菇（治療周圍的怪）：walk 4、attack 2（施法）",
+   "files": {
+    "raw": [
+     "LanternHold/art/raw/foe_shaman_t1.png"
+    ],
+    "prompt": [
+     "LanternHold/art/prompts/foe_shaman.txt"
+    ],
+    "shipped": [
+     "LanternHold/game/src/assets/pixel/foes.png",
+     "LanternHold/game/src/assets/pixel/foes.json"
+    ]
+   },
+   "technical": {
+    "atlas": "foes",
+    "format": "png8",
+    "artPxToWorldPx": 2,
+    "scaleMode": "nearest",
+    "frames": [
+     "shaman_walk_0",
+     "shaman_walk_1",
+     "shaman_walk_2",
+     "shaman_walk_3",
+     "shaman_attack_0",
+     "shaman_attack_1"
+    ],
+    "cell": [
+     22,
+     18
+    ],
+    "anchor": [
+     0.5,
+     0.9444
+    ]
+   },
+   "styleTags": [
+    "pixel",
+    "night",
+    "top-down-3/4",
+    "1px-outline",
+    "palette-32",
+    "side-view-right"
+   ],
+   "provenance": {
+    "tool": "picanywhere",
+    "job": "job_20261118-151138_320#2",
+    "postprocess": "art/tools/build.py（chroma key → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 打包）",
+    "promptBlock": "art/tools/prompts.py STYLE_LOCK"
+   },
+   "keywords": [
+    "mushroom",
+    "shaman",
+    "healer",
+    "caster",
+    "staff",
+    "巫菇",
+    "治療",
+    "施法",
+    "enemy",
+    "敵人",
+    "shadow",
+    "暗影",
+    "violet",
+    "紫",
+    "pixel",
+    "像素"
+   ],
+   "reusePolicy": "reusable",
+   "contentHash": "sha256:5a0adfb6d20fa98c5a698b9b7521943e1a2c045ede2b64ccb89db2fa1c52e9cf",
+   "game": "LanternHold"
+  },
+  {
+   "id": "lanternhold.foe.mole",
+   "kind": "sprite-sheet",
+   "status": "shipped",
+   "name": "暗影鼴鼠（鑽地穿牆）：walk 4、burrow 4（土堆）",
+   "files": {
+    "raw": [
+     "LanternHold/art/raw/foe_mole_t1.png"
+    ],
+    "prompt": [
+     "LanternHold/art/prompts/foe_mole.txt"
+    ],
+    "shipped": [
+     "LanternHold/game/src/assets/pixel/foes.png",
+     "LanternHold/game/src/assets/pixel/foes.json"
+    ]
+   },
+   "technical": {
+    "atlas": "foes",
+    "format": "png8",
+    "artPxToWorldPx": 2,
+    "scaleMode": "nearest",
+    "frames": [
+     "mole_walk_0",
+     "mole_walk_1",
+     "mole_walk_2",
+     "mole_walk_3",
+     "mole_burrow_0",
+     "mole_burrow_1",
+     "mole_burrow_2",
+     "mole_burrow_3"
+    ],
+    "cell": [
+     22,
+     13
+    ],
+    "anchor": [
+     0.5,
+     0.9231
+    ]
+   },
+   "styleTags": [
+    "pixel",
+    "night",
+    "top-down-3/4",
+    "1px-outline",
+    "palette-32",
+    "side-view-right"
+   ],
+   "provenance": {
+    "tool": "picanywhere",
+    "job": "job_20261118-151138_320#3",
+    "postprocess": "art/tools/build.py（chroma key → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 打包）",
+    "promptBlock": "art/tools/prompts.py STYLE_LOCK"
+   },
+   "keywords": [
+    "mole",
+    "burrow",
+    "dig",
+    "tunnel",
+    "鼴鼠",
+    "鑽地",
+    "土堆",
+    "enemy",
+    "敵人",
+    "shadow",
+    "暗影",
+    "violet",
+    "紫",
+    "pixel",
+    "像素"
+   ],
+   "reusePolicy": "reusable",
+   "contentHash": "sha256:5a0adfb6d20fa98c5a698b9b7521943e1a2c045ede2b64ccb89db2fa1c52e9cf",
    "game": "LanternHold"
   },
   {
@@ -1171,7 +3387,7 @@
     "像素"
    ],
    "reusePolicy": "reusable",
-   "contentHash": "sha256:495977413ac03e2f9b0218c35a026de30f6355fe6d5b972e705b88513e66fc21",
+   "contentHash": "sha256:5a0adfb6d20fa98c5a698b9b7521943e1a2c045ede2b64ccb89db2fa1c52e9cf",
    "game": "LanternHold"
   },
   {
@@ -1234,7 +3450,7 @@
     "燈"
    ],
    "reusePolicy": "reusable",
-   "contentHash": "sha256:34d4731dfa62d50f51ed306d8c75c6a85b4e029db767d2150360b74f62be0948",
+   "contentHash": "sha256:f30b59b0924359cfb050cfb048d728dbdb95d599a0d32dc62143402b7eb443d5",
    "game": "LanternHold"
   },
   {
@@ -1298,7 +3514,7 @@
     "升級"
    ],
    "reusePolicy": "reusable",
-   "contentHash": "sha256:34d4731dfa62d50f51ed306d8c75c6a85b4e029db767d2150360b74f62be0948",
+   "contentHash": "sha256:f30b59b0924359cfb050cfb048d728dbdb95d599a0d32dc62143402b7eb443d5",
    "game": "LanternHold"
   },
   {
@@ -1373,7 +3589,7 @@
     "破損"
    ],
    "reusePolicy": "reusable",
-   "contentHash": "sha256:34d4731dfa62d50f51ed306d8c75c6a85b4e029db767d2150360b74f62be0948",
+   "contentHash": "sha256:f30b59b0924359cfb050cfb048d728dbdb95d599a0d32dc62143402b7eb443d5",
    "game": "LanternHold"
   },
   {
@@ -1451,7 +3667,165 @@
     "森林"
    ],
    "reusePolicy": "reusable",
-   "contentHash": "sha256:34d4731dfa62d50f51ed306d8c75c6a85b4e029db767d2150360b74f62be0948",
+   "contentHash": "sha256:f30b59b0924359cfb050cfb048d728dbdb95d599a0d32dc62143402b7eb443d5",
+   "game": "LanternHold"
+  },
+  {
+   "id": "lanternhold.bld.towers",
+   "kind": "sprite-sheet",
+   "status": "shipped",
+   "name": "法術塔 5 種（基本紫晶／冰晶／毒綠晶＋藤蔓／戰旗金晶／骨飾白晶）",
+   "files": {
+    "raw": [
+     "LanternHold/art/raw/bld_towers_t1.png",
+     "LanternHold/art/raw/bld_tower_poison_t1.png"
+    ],
+    "prompt": [
+     "LanternHold/art/prompts/bld_towers.txt",
+     "LanternHold/art/prompts/bld_tower_poison.txt"
+    ],
+    "shipped": [
+     "LanternHold/game/src/assets/pixel/buildings.png",
+     "LanternHold/game/src/assets/pixel/buildings.json"
+    ]
+   },
+   "technical": {
+    "atlas": "buildings",
+    "format": "png8",
+    "artPxToWorldPx": 2,
+    "scaleMode": "nearest",
+    "frames": [
+     "tower_basic",
+     "tower_frost",
+     "tower_poison",
+     "tower_banner",
+     "tower_bone"
+    ],
+    "cell": [
+     26,
+     46
+    ],
+    "anchor": [
+     0.5,
+     0.9783
+    ]
+   },
+   "styleTags": [
+    "pixel",
+    "night",
+    "top-down-3/4",
+    "1px-outline",
+    "palette-32",
+    "side-view-right"
+   ],
+   "provenance": {
+    "tool": "picanywhere",
+    "job": "job_20261118-134634_310#0",
+    "postprocess": "art/tools/build.py（chroma key → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 打包）",
+    "promptBlock": "art/tools/prompts.py STYLE_LOCK"
+   },
+   "keywords": [
+    "tower",
+    "mage tower",
+    "arcane",
+    "crystal",
+    "frost",
+    "poison",
+    "banner",
+    "bone",
+    "塔",
+    "法術塔",
+    "水晶",
+    "冰",
+    "毒",
+    "戰旗",
+    "骨"
+   ],
+   "reusePolicy": "reusable",
+   "contentHash": "sha256:f30b59b0924359cfb050cfb048d728dbdb95d599a0d32dc62143402b7eb443d5",
+   "note": "tower_poison 在洋紅底單獨生成（主體是綠色），縮放到與其他塔同高",
+   "game": "LanternHold"
+  },
+  {
+   "id": "lanternhold.fx.status",
+   "kind": "fx-sheet",
+   "status": "shipped",
+   "name": "毒雲、光環脈衝、召喚骨塵 各 4 格（洋紅底生成）",
+   "files": {
+    "raw": [
+     "LanternHold/art/raw/fx_new_t1.png"
+    ],
+    "prompt": [
+     "LanternHold/art/prompts/fx_new.txt"
+    ],
+    "shipped": [
+     "LanternHold/game/src/assets/pixel/fx.png",
+     "LanternHold/game/src/assets/pixel/fx.json"
+    ]
+   },
+   "technical": {
+    "atlas": "fx",
+    "format": "png8",
+    "artPxToWorldPx": 2,
+    "scaleMode": "nearest",
+    "frames": [
+     "poison_0",
+     "poison_1",
+     "poison_2",
+     "poison_3",
+     "aura_0",
+     "aura_1",
+     "aura_2",
+     "aura_3",
+     "summon_0",
+     "summon_1",
+     "summon_2",
+     "summon_3"
+    ],
+    "cell": [
+     16,
+     16
+    ],
+    "anchor": [
+     0.5,
+     0.5
+    ]
+   },
+   "styleTags": [
+    "pixel",
+    "night",
+    "top-down-3/4",
+    "1px-outline",
+    "palette-32",
+    "side-view-right"
+   ],
+   "provenance": {
+    "tool": "picanywhere",
+    "job": "job_20261118-134634_310#4",
+    "postprocess": "art/tools/build.py（chroma key → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 打包）",
+    "promptBlock": "art/tools/prompts.py STYLE_LOCK"
+   },
+   "keywords": [
+    "poison",
+    "toxic",
+    "gas",
+    "aura",
+    "ring",
+    "pulse",
+    "buff",
+    "summon",
+    "dust",
+    "bones",
+    "毒",
+    "毒雲",
+    "光環",
+    "增益",
+    "召喚",
+    "骨塵",
+    "特效"
+   ],
+   "reusePolicy": "reusable",
+   "contentHash": "sha256:2235ff7de12ff830f5ff80af60ad72b0dafdea16bcb4ab4f2c65ad550f757a92",
    "game": "LanternHold"
   },
   {
@@ -1532,7 +3906,7 @@
     "特效"
    ],
    "reusePolicy": "reusable",
-   "contentHash": "sha256:33eea3fad64376bcdfa1f7d65e50412a9c2f758872bb7d4a1aeb068dfba37455",
+   "contentHash": "sha256:2235ff7de12ff830f5ff80af60ad72b0dafdea16bcb4ab4f2c65ad550f757a92",
    "game": "LanternHold"
   },
   {
@@ -1618,24 +3992,28 @@
     "螢火蟲"
    ],
    "reusePolicy": "reusable",
-   "contentHash": "sha256:33eea3fad64376bcdfa1f7d65e50412a9c2f758872bb7d4a1aeb068dfba37455",
+   "contentHash": "sha256:2235ff7de12ff830f5ff80af60ad72b0dafdea16bcb4ab4f2c65ad550f757a92",
    "game": "LanternHold"
   },
   {
    "id": "lanternhold.ui.icons",
    "kind": "ui",
    "status": "shipped",
-   "name": "卡片圖示 18、進化 4、資源 3（24×24）",
+   "name": "卡片圖示 25、進化 4、資源 3、塔 1（24×24）",
    "files": {
     "raw": [
      "LanternHold/art/raw/icons_cards_a_t1.png",
      "LanternHold/art/raw/icons_cards_b_t1.png",
-     "LanternHold/art/raw/icons_evo_res_t1.png"
+     "LanternHold/art/raw/icons_evo_res_t1.png",
+     "LanternHold/art/raw/icons_new_a_t1.png",
+     "LanternHold/art/raw/icons_new_b_t1.png"
     ],
     "prompt": [
      "LanternHold/art/prompts/icons_cards_a.txt",
      "LanternHold/art/prompts/icons_cards_b.txt",
-     "LanternHold/art/prompts/icons_evo_res.txt"
+     "LanternHold/art/prompts/icons_evo_res.txt",
+     "LanternHold/art/prompts/icons_new_a.txt",
+     "LanternHold/art/prompts/icons_new_b.txt"
     ],
     "shipped": [
      "LanternHold/game/src/assets/pixel/icons.png",
@@ -1672,7 +4050,50 @@
      "icon_winter",
      "icon_gold",
      "icon_population",
-     "icon_star"
+     "icon_star",
+     "icon_tower",
+     "icon_arcaneRange",
+     "icon_arcanePower",
+     "icon_arcaneHaste",
+     "icon_artisan",
+     "icon_longbow",
+     "icon_sturdy",
+     "icon_charge",
+     "icon_cleave",
+     "icon_chant",
+     "icon_blessing",
+     "icon_t_walls",
+     "icon_t_castle",
+     "icon_t_repair",
+     "icon_t_palisade",
+     "icon_t_gold",
+     "icon_t_train",
+     "icon_t_veteran",
+     "icon_t_horn",
+     "icon_t_reroll",
+     "icon_t_ignore",
+     "icon_t_lock",
+     "icon_t_bounty",
+     "icon_diamond",
+     "icon_talent",
+     "icon_achievement",
+     "icon_campaign",
+     "icon_loadout",
+     "icon_u_archer",
+     "icon_u_shield",
+     "icon_u_priest",
+     "icon_u_spearman",
+     "icon_u_crossbow",
+     "icon_u_knight",
+     "icon_heavyBow",
+     "icon_heavyBlow",
+     "icon_groupHeal",
+     "icon_vitality",
+     "icon_sledge",
+     "icon_swiftFeet",
+     "icon_bonePact",
+     "icon_atkUp",
+     "icon_atkSpeed"
     ],
     "cell": [
      24,
@@ -1722,7 +4143,7 @@
     "星"
    ],
    "reusePolicy": "reusable",
-   "contentHash": "sha256:d3f5b1d0a83fb3176e5e79ee50241b0449b1e1b6935980b59368f95554b14029",
+   "contentHash": "sha256:8764ebdf6ecf385043516760efeadcfa84245a0ee8370d41b52f784f64f6561a",
    "game": "LanternHold"
   },
   {
@@ -1799,14 +4220,571 @@
     "無縫"
    ],
    "reusePolicy": "reusable",
-   "contentHash": "sha256:79b6263a02fa227e4b73cc1dc0cb95a79804a8e0da76e57a49b2d19e62f1b05d",
+   "contentHash": "sha256:fe4df0607a155d3b141cd28fc104cd6e21b9306468762967948b0a535e63bf8c",
+   "game": "LanternHold"
+  },
+  {
+   "id": "lanternhold.prop.themes",
+   "kind": "sprite-sheet",
+   "status": "shipped",
+   "name": "場景主題道具：沙漠／高地／平原／春／秋／冬（腳底錨點）",
+   "files": {
+    "raw": [
+     "LanternHold/art/raw/props_dry_t1.png",
+     "LanternHold/art/raw/props_season_t1.png"
+    ],
+    "prompt": [
+     "LanternHold/art/prompts/props_dry.txt",
+     "LanternHold/art/prompts/props_season.txt"
+    ],
+    "shipped": [
+     "LanternHold/game/src/assets/pixel/buildings.png",
+     "LanternHold/game/src/assets/pixel/buildings.json"
+    ]
+   },
+   "technical": {
+    "atlas": "buildings",
+    "format": "png8",
+    "artPxToWorldPx": 2,
+    "scaleMode": "nearest",
+    "frames": [
+     "cactus_0",
+     "cactus_1",
+     "dry_bush",
+     "desert_rock",
+     "crag_0",
+     "crag_1",
+     "alpine_pine",
+     "bush_0",
+     "haystack",
+     "blossom_tree",
+     "flower_patch",
+     "maple_tree",
+     "maple_tree_1",
+     "leaf_pile",
+     "snow_pine",
+     "snow_pine_1",
+     "snow_rock"
+    ],
+    "cell": [
+     22,
+     28
+    ],
+    "anchor": [
+     0.5,
+     0.9643
+    ]
+   },
+   "styleTags": [
+    "pixel",
+    "night",
+    "top-down-3/4",
+    "1px-outline",
+    "palette-32",
+    "side-view-right"
+   ],
+   "provenance": {
+    "tool": "picanywhere",
+    "job": "job_20261118-140930_311#12",
+    "postprocess": "art/tools/build.py（chroma key → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 打包）",
+    "promptBlock": "art/tools/prompts.py STYLE_LOCK"
+   },
+   "keywords": [
+    "cactus",
+    "desert",
+    "rock",
+    "crag",
+    "mountain",
+    "pine",
+    "bush",
+    "haystack",
+    "blossom",
+    "cherry",
+    "flower",
+    "maple",
+    "autumn",
+    "leaves",
+    "snow",
+    "winter",
+    "仙人掌",
+    "沙漠",
+    "岩石",
+    "高地",
+    "灌木",
+    "乾草堆",
+    "花樹",
+    "花叢",
+    "楓樹",
+    "落葉",
+    "雪松",
+    "雪",
+    "prop",
+    "道具"
+   ],
+   "reusePolicy": "reusable",
+   "contentHash": "sha256:f30b59b0924359cfb050cfb048d728dbdb95d599a0d32dc62143402b7eb443d5",
+   "note": "props_dry 在洋紅底生成（綠色植物）",
+   "game": "LanternHold"
+  },
+  {
+   "id": "lanternhold.bld.pads",
+   "kind": "sprite-sheet",
+   "status": "shipped",
+   "name": "建造地基：方形石基（軍營）、圓形符文台（法術塔），各附 _selected 燈橘描邊版",
+   "files": {
+    "raw": [
+     "LanternHold/art/raw/pads_t1.png"
+    ],
+    "prompt": [
+     "LanternHold/art/prompts/pads.txt"
+    ],
+    "shipped": [
+     "LanternHold/game/src/assets/pixel/buildings.png",
+     "LanternHold/game/src/assets/pixel/buildings.json"
+    ]
+   },
+   "technical": {
+    "atlas": "buildings",
+    "format": "png8",
+    "artPxToWorldPx": 2,
+    "scaleMode": "nearest",
+    "frames": [
+     "pad_inner",
+     "pad_outer",
+     "pad_inner_selected",
+     "pad_outer_selected"
+    ],
+    "cell": [
+     40,
+     29
+    ],
+    "anchor": [
+     0.5,
+     0.5
+    ],
+    "anchorNote": "center (0.5,0.5); _selected = same art with a 2 px #ffb64a rim generated in build.py"
+   },
+   "styleTags": [
+    "pixel",
+    "night",
+    "top-down-3/4",
+    "1px-outline",
+    "palette-32",
+    "side-view-right"
+   ],
+   "provenance": {
+    "tool": "picanywhere",
+    "job": "job_20261118-140930_311#14",
+    "postprocess": "art/tools/build.py（chroma key → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 打包）",
+    "promptBlock": "art/tools/prompts.py STYLE_LOCK"
+   },
+   "keywords": [
+    "build pad",
+    "foundation",
+    "plinth",
+    "slot",
+    "selected",
+    "highlight",
+    "rune",
+    "地基",
+    "建造點",
+    "選取",
+    "符文"
+   ],
+   "reusePolicy": "reusable",
+   "contentHash": "sha256:f30b59b0924359cfb050cfb048d728dbdb95d599a0d32dc62143402b7eb443d5",
+   "game": "LanternHold"
+  },
+  {
+   "id": "lanternhold.ui.meta-icons",
+   "kind": "ui",
+   "status": "shipped",
+   "name": "外圍介面圖示：天賦 12、鑽石、天賦、成就、戰役、配置、兵種頭像 6（24×24）",
+   "files": {
+    "raw": [
+     "LanternHold/art/raw/icons_talents_a_t1.png",
+     "LanternHold/art/raw/icons_meta_t1.png",
+     "LanternHold/art/raw/icons_portraits_t1.png",
+     "LanternHold/art/raw/icon_achievement_v2_t1.png",
+     "LanternHold/art/raw/icon_reroll_v2_t1.png"
+    ],
+    "prompt": [
+     "LanternHold/art/prompts/icons_talents_a.txt",
+     "LanternHold/art/prompts/icons_meta.txt",
+     "LanternHold/art/prompts/icons_portraits.txt",
+     "LanternHold/art/prompts/icon_achievement_v2.txt",
+     "LanternHold/art/prompts/icon_reroll_v2.txt"
+    ],
+    "shipped": [
+     "LanternHold/game/src/assets/pixel/icons.png",
+     "LanternHold/game/src/assets/pixel/icons.json"
+    ]
+   },
+   "technical": {
+    "atlas": "icons",
+    "format": "png8",
+    "artPxToWorldPx": 2,
+    "scaleMode": "nearest",
+    "frames": [
+     "icon_t_walls",
+     "icon_t_castle",
+     "icon_t_repair",
+     "icon_t_palisade",
+     "icon_t_gold",
+     "icon_t_train",
+     "icon_t_veteran",
+     "icon_t_horn",
+     "icon_t_reroll",
+     "icon_t_ignore",
+     "icon_t_lock",
+     "icon_t_bounty",
+     "icon_diamond",
+     "icon_talent",
+     "icon_achievement",
+     "icon_campaign",
+     "icon_loadout",
+     "icon_u_archer",
+     "icon_u_shield",
+     "icon_u_priest",
+     "icon_u_spearman",
+     "icon_u_crossbow",
+     "icon_u_knight"
+    ],
+    "cell": [
+     24,
+     24
+    ],
+    "anchor": [
+     0.5,
+     0.5
+    ]
+   },
+   "styleTags": [
+    "pixel",
+    "night",
+    "top-down-3/4",
+    "1px-outline",
+    "palette-32",
+    "side-view-right"
+   ],
+   "provenance": {
+    "tool": "picanywhere",
+    "job": "job_20261118-141139_312#3",
+    "postprocess": "art/tools/build.py（chroma key → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 打包）",
+    "promptBlock": "art/tools/prompts.py STYLE_LOCK"
+   },
+   "keywords": [
+    "icon",
+    "talent",
+    "meta",
+    "diamond",
+    "gem",
+    "achievement",
+    "medal",
+    "campaign",
+    "loadout",
+    "portrait",
+    "avatar",
+    "padlock",
+    "reroll",
+    "天賦",
+    "鑽石",
+    "寶石",
+    "成就",
+    "戰役",
+    "配置",
+    "頭像",
+    "鎖",
+    "重抽"
+   ],
+   "reusePolicy": "reusable",
+   "contentHash": "sha256:8764ebdf6ecf385043516760efeadcfa84245a0ee8370d41b52f784f64f6561a",
+   "note": "icon_achievement、icon_t_reroll 用單張重生版（第一版成就像金幣、重抽箭頭在 24 px 消失）",
+   "game": "LanternHold"
+  },
+  {
+   "id": "lanternhold.ui.trait-icons",
+   "kind": "ui",
+   "status": "shipped",
+   "name": "兵種特性卡圖示：強弓、重擊、群療、體魄、鐵鎚、快腳、亡骨契約、攻擊、攻速（24×24）",
+   "files": {
+    "raw": [
+     "LanternHold/art/raw/icons_traits_t1.png"
+    ],
+    "prompt": [
+     "LanternHold/art/prompts/icons_traits.txt"
+    ],
+    "shipped": [
+     "LanternHold/game/src/assets/pixel/icons.png",
+     "LanternHold/game/src/assets/pixel/icons.json"
+    ]
+   },
+   "technical": {
+    "atlas": "icons",
+    "format": "png8",
+    "artPxToWorldPx": 2,
+    "scaleMode": "nearest",
+    "frames": [
+     "icon_heavyBow",
+     "icon_heavyBlow",
+     "icon_groupHeal",
+     "icon_vitality",
+     "icon_sledge",
+     "icon_swiftFeet",
+     "icon_bonePact",
+     "icon_atkUp",
+     "icon_atkSpeed"
+    ],
+    "cell": [
+     24,
+     24
+    ],
+    "anchor": [
+     0.5,
+     0.5
+    ]
+   },
+   "styleTags": [
+    "pixel",
+    "night",
+    "top-down-3/4",
+    "1px-outline",
+    "palette-32",
+    "side-view-right"
+   ],
+   "provenance": {
+    "tool": "picanywhere",
+    "job": "job_20261118-150714_319#0",
+    "postprocess": "art/tools/build.py（chroma key → BOX 縮圖 → 局部量化 → 共用 32 色 → 1 px 外框 → 打包）",
+    "promptBlock": "art/tools/prompts.py STYLE_LOCK"
+   },
+   "keywords": [
+    "icon",
+    "trait",
+    "card",
+    "bow",
+    "hammer",
+    "heal",
+    "lantern",
+    "vest",
+    "boot",
+    "bones",
+    "sword",
+    "attack",
+    "speed",
+    "特性",
+    "卡片",
+    "強弓",
+    "重擊",
+    "群療",
+    "體魄",
+    "快腳",
+    "攻擊",
+    "攻速"
+   ],
+   "reusePolicy": "reusable",
+   "contentHash": "sha256:8764ebdf6ecf385043516760efeadcfa84245a0ee8370d41b52f784f64f6561a",
+   "note": "其他特性卡沿用既有卡片／天賦圖示（main.js TRAIT_ICON）",
+   "game": "LanternHold"
+  },
+  {
+   "id": "lanternhold.bg.themes",
+   "kind": "background",
+   "status": "shipped",
+   "name": "場景主題地表：平原／沙漠／高地／春／秋／冬 各一張地面＋一張道路（64×64 無縫）",
+   "files": {
+    "raw": [
+     "LanternHold/art/raw/tile_ground_plains_t1.png",
+     "LanternHold/art/raw/tile_path_plains_t1.png",
+     "LanternHold/art/raw/tile_ground_desert_t1.png",
+     "LanternHold/art/raw/tile_path_desert_t1.png",
+     "LanternHold/art/raw/tile_ground_highland_t1.png",
+     "LanternHold/art/raw/tile_path_highland_t1.png",
+     "LanternHold/art/raw/tile_ground_spring_t1.png",
+     "LanternHold/art/raw/tile_path_spring_t1.png",
+     "LanternHold/art/raw/tile_ground_autumn_t1.png",
+     "LanternHold/art/raw/tile_path_autumn_t1.png",
+     "LanternHold/art/raw/tile_ground_winter_t1.png",
+     "LanternHold/art/raw/tile_path_winter_t1.png"
+    ],
+    "prompt": [
+     "LanternHold/art/prompts/tile_ground_plains.txt",
+     "LanternHold/art/prompts/tile_path_plains.txt",
+     "LanternHold/art/prompts/tile_ground_desert.txt",
+     "LanternHold/art/prompts/tile_path_desert.txt",
+     "LanternHold/art/prompts/tile_ground_highland.txt",
+     "LanternHold/art/prompts/tile_path_highland.txt",
+     "LanternHold/art/prompts/tile_ground_spring.txt",
+     "LanternHold/art/prompts/tile_path_spring.txt",
+     "LanternHold/art/prompts/tile_ground_autumn.txt",
+     "LanternHold/art/prompts/tile_path_autumn.txt",
+     "LanternHold/art/prompts/tile_ground_winter.txt",
+     "LanternHold/art/prompts/tile_path_winter.txt"
+    ],
+    "shipped": [
+     "LanternHold/game/src/assets/pixel/ground_plains.png",
+     "LanternHold/game/src/assets/pixel/path_plains.png",
+     "LanternHold/game/src/assets/pixel/ground_desert.png",
+     "LanternHold/game/src/assets/pixel/path_desert.png",
+     "LanternHold/game/src/assets/pixel/ground_highland.png",
+     "LanternHold/game/src/assets/pixel/path_highland.png",
+     "LanternHold/game/src/assets/pixel/ground_spring.png",
+     "LanternHold/game/src/assets/pixel/path_spring.png",
+     "LanternHold/game/src/assets/pixel/ground_autumn.png",
+     "LanternHold/game/src/assets/pixel/path_autumn.png",
+     "LanternHold/game/src/assets/pixel/ground_winter.png",
+     "LanternHold/game/src/assets/pixel/path_winter.png"
+    ]
+   },
+   "technical": {
+    "tile": [
+     64,
+     64
+    ],
+    "format": "png8",
+    "palette": "16 colours per tile (own palette, not the sprite palette)",
+    "artPxToWorldPx": 2,
+    "scaleMode": "nearest",
+    "use": "TilingSprite"
+   },
+   "styleTags": [
+    "pixel",
+    "night",
+    "top-down-3/4",
+    "1px-outline",
+    "palette-32",
+    "side-view-right"
+   ],
+   "provenance": {
+    "tool": "picanywhere",
+    "job": "job_20261118-140930_311#0-11",
+    "postprocess": "art/tools/build.py theme_tile（BOX 64×64 → 交疊淡化無縫 → 16 色）"
+   },
+   "keywords": [
+    "ground",
+    "tile",
+    "seamless",
+    "path",
+    "road",
+    "meadow",
+    "grass",
+    "desert",
+    "sand",
+    "highland",
+    "gravel",
+    "spring",
+    "flowers",
+    "autumn",
+    "leaves",
+    "winter",
+    "snow",
+    "地表",
+    "道路",
+    "草地",
+    "沙漠",
+    "高地",
+    "春",
+    "秋",
+    "冬",
+    "雪",
+    "無縫"
+   ],
+   "reusePolicy": "reusable",
+   "contentHash": "sha256:6445224e02c4c69e8d3bb40d5899804f8dd75988ea7652d82ffb692a79e06a51",
+   "game": "LanternHold"
+  },
+  {
+   "id": "lanternhold.keyart.cover",
+   "kind": "key-art",
+   "status": "shipped",
+   "name": "首頁封面：燈塔主城被暗影群圍城（像素，270×200）",
+   "files": {
+    "raw": [
+     "LanternHold/art/raw/key_cover_t1b.png"
+    ],
+    "prompt": [
+     "LanternHold/art/prompts/key_cover.txt"
+    ],
+    "shipped": [
+     "LanternHold/game/src/assets/pixel/cover.png"
+    ]
+   },
+   "technical": {
+    "size": [
+     270,
+     200
+    ],
+    "format": "png8",
+    "palette": "64 colours (own palette)",
+    "alpha": "opaque",
+    "scaleMode": "nearest",
+    "titleSafe": "top ~15% is sky; the keep's lantern rises into the top-centre"
+   },
+   "styleTags": [
+    "pixel",
+    "night",
+    "top-down-3/4",
+    "1px-outline",
+    "palette-32",
+    "side-view-right"
+   ],
+   "provenance": {
+    "tool": "picanywhere",
+    "job": "job_20261118-141938_315#1",
+    "postprocess": "art/tools/build.py cover（裁 270:200 → BOX → 64 色）"
+   },
+   "keywords": [
+    "key art",
+    "cover",
+    "title",
+    "siege",
+    "castle",
+    "lantern",
+    "night",
+    "horde",
+    "封面",
+    "主視覺",
+    "標題",
+    "圍城",
+    "主城",
+    "燈塔"
+   ],
+   "reusePolicy": "reusable",
+   "contentHash": "sha256:0a2e4a694d4a0c87336e9e729ac011ec29ba95598f0b1bbc1ec86c62521807e4",
+   "game": "LanternHold"
+  },
+  {
+   "id": "lanternhold.ref.cover.t1a",
+   "kind": "reference",
+   "status": "rejected-take",
+   "name": "封面 t1a（Boss 較清楚，但天空較雜，未採用）",
+   "files": {
+    "raw": [
+     "LanternHold/art/raw/key_cover_t1a.png"
+    ],
+    "prompt": [
+     "LanternHold/art/prompts/key_cover.txt"
+    ],
+    "shipped": []
+   },
+   "provenance": {
+    "tool": "picanywhere",
+    "job": "job_20261118-141938_315#0"
+   },
+   "keywords": [
+    "key art",
+    "cover",
+    "rejected"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:b920e74c42e29452d07fd243575d93833bda4284a81c27bd404555a8e916fa73",
    "game": "LanternHold"
   },
   {
    "id": "lanternhold.ref.palette",
    "kind": "reference",
    "status": "shipped",
-   "name": "像素組共用 32 色調色盤",
+   "name": "像素組共用 48 色調色盤",
    "files": {
     "raw": [],
     "prompt": [],
@@ -1815,7 +4793,7 @@
     ]
    },
    "technical": {
-    "colors": 32,
+    "colors": 48,
     "outlineIndex": 0,
     "fixed": [
      "#1b1530",
@@ -1824,8 +4802,13 @@
      "#6fd3c4",
      "#c4c8d6",
      "#848aa0",
-     "#54586e"
-    ]
+     "#54586e",
+     "#96d654",
+     "#4a8c3e",
+     "#f2aac4",
+     "#4e96e8"
+    ],
+    "note": "48 colours since batch 3 (32 before)"
    },
    "styleTags": [
     "pixel",
@@ -1847,8 +4830,1406 @@
     "pixel"
    ],
    "reusePolicy": "reusable",
-   "contentHash": "sha256:5caa0899c1830aa780bac30716f09aa24f3f147e9595545f8e6edb1719234582",
+   "contentHash": "sha256:566e2799fb155ed9088ff274305d275ad2fb84653d4e93a2d0a876280bd6674f",
    "game": "LanternHold"
+  },
+  {
+   "id": "skytalon.prc.ground",
+   "kind": "procedural",
+   "status": "procedural",
+   "name": "俯視地表 shader（島嶼、海岸、秋色林地、雲與雲影，0 bytes）",
+   "files": {
+    "raw": [],
+    "prompt": [],
+    "shipped": [
+     "SkyTalon/game/src/render/ground.js"
+    ]
+   },
+   "recipe": "一支片段 shader 畫進低解析 render texture（1 格 = 3 世界像素），最近鄰放大。fbm 高度場分色帶（深海、淺海、潟湖、浪花、沙、松、苔、金、琥珀、鏽、岩、奶油）；向陽面與背陽面三階明暗；上遠下近的透視壓縮；雲層捲動比地表快 1.7 倍並在右下投影；4×4 抖色；遠處暖色霧；uRush（0–1）加深透視並在機體下方畫細長霧絲速度線（3.4 倍捲動）。低特效：fbm 3 階、不畫雲影",
+   "styleTags": [
+    "pixel",
+    "procedural",
+    "top-down",
+    "sunset"
+   ],
+   "keywords": [
+    "terrain",
+    "地表",
+    "shader",
+    "procedural",
+    "程式繪製",
+    "island",
+    "島嶼",
+    "cloud",
+    "雲",
+    "parallax",
+    "視差",
+    "fake 3d",
+    "假 3D",
+    "shmup"
+   ],
+   "reusePolicy": "reusable",
+   "contentHash": "sha256:3c89cb2e240b93a3a2abd33b96cf2c4b37de53b383a94a36e18cd6dd0e35c765",
+   "game": "SkyTalon"
+  },
+  {
+   "id": "skytalon.prc.atlas",
+   "kind": "procedural",
+   "status": "procedural",
+   "name": "機體、裝備掛件、敵機、子彈、特效 atlas（多邊形手工光柵化，256×466，0 bytes）",
+   "files": {
+    "raw": [],
+    "prompt": [],
+    "shipped": [
+     "SkyTalon/game/src/render/atlas.js"
+    ]
+   },
+   "recipe": "每個 sprite 用多邊形在美術像素中心取樣填色（不靠 canvas 反鋸齒），再做左上亮、右下暗的倒角與深色描邊。玩家機 5 格側傾：機翼橫向壓縮 1／0.86／0.68，左右明暗差 9%／格。陰影用棋盤格邊緣代替模糊。全部進同一張 canvas，一個貼圖一個批次 v8：玩家機改用兩倍美術解析度（44×48，以 PIXEL 的一半顯示），加上面板線、進氣口、雙垂尾、機鼻罩與翼尖條紋；裝備是疊在機體上的獨立小圖（連射砲管、重彈莢艙、散射鴨翼、推進器噴口各三級，穿透長槍、電漿線圈與發射器、護盾發射點各一張），顯示時跟著側傾橫向壓縮；第四章起加太空套件（側推進器、散熱鰭、金色護目）。四個小王各有造型（涅柔斯三叉艦首、玻瑞阿斯風標長翼、安泰俄斯岩板重裝、伊里斯彩虹帶機翼），都是艦艇而不是人形。運輸機是甲板上三個貨櫃的貨船；預覽圖由 art/tools/atlas-preview.mjs 產生。 像素特效：護盾（綠、青、金三套色階各 8 格）、敵機甲殼（六角板 2 格）、衝擊環（6 格）、碎片 3 種，都是逐格畫的像素幀，不是放大的平滑圓環。做法照 knowledge-base/18_pixel-vfx-codex.md 的規則用程式重做（每種材質四階色階、暗階偏藍亮階收在暖白、柔邊用 4×4 Bayer 抖色、出現時回彈、消失時碎裂而不是淡出、擴張環越擴越細），沒有複製該專案的程式或匯出它的圖。 四個頭目依神祇在古典圖像裡的特徵物重畫成戰艦：俄刻阿諾斯（蟹螯、角、水環）、倪克斯（星幕大翼、新月）、厄俄斯（玫瑰與番紅花色光芒、車輪核心）、阿特拉斯（青銅雙臂托天球）。太空型態（第四章起）照使用者提供的範例圖堆疊：側身裝甲板、翼上推進莢艙與火焰、雙聯裝砲管、微飛彈掛架；燈與火焰另一張不做倒角的小圖。 v9：小王與頭目不再由這張圖集畫，改用 skytalon.chr.boss-forms。",
+   "styleTags": [
+    "pixel",
+    "procedural",
+    "outline",
+    "bevel"
+   ],
+   "keywords": [
+    "atlas",
+    "sprite",
+    "jet",
+    "戰鬥機",
+    "enemy",
+    "敵機",
+    "bullet",
+    "子彈",
+    "procedural",
+    "程式繪製",
+    "bank",
+    "側傾",
+    "shmup"
+   ],
+   "reusePolicy": "reusable",
+   "contentHash": "sha256:f103de5065146789ea3b96d6287dc17321fd3ef1560138fea468bf0968383927",
+   "game": "SkyTalon"
+  },
+  {
+   "id": "skytalon.chr.ship-forms",
+   "kind": "sprite-sheet",
+   "status": "shipped",
+   "name": "主角機的三種升級型態（展翼型、重裝型、軌道砲型），各 5 格側傾",
+   "files": {
+    "raw": [
+     "SkyTalon/art/raw/ship_wing.jpg",
+     "SkyTalon/art/raw/ship_heavy.jpg",
+     "SkyTalon/art/raw/ship_rail.jpg",
+     "SkyTalon/art/raw/ship_space_ref.webp"
+    ],
+    "prompt": [],
+    "shipped": [
+     "SkyTalon/game/src/render/shipForms.js"
+    ]
+   },
+   "technical": {
+    "format": "palette data in a JS module (no image file ships)",
+    "artPxToWorldPx": 1,
+    "scaleMode": "linear",
+    "frames": [
+     "wing0-4",
+     "heavy0-4",
+     "rail0-4"
+    ],
+    "palette": 40
+   },
+   "styleTags": [
+    "pixel",
+    "top-down",
+    "1px-outline",
+    "mecha"
+   ],
+   "provenance": {
+    "tool": "Gemini（使用者自行生成並提供，2026-11-20）",
+    "job": "無（提示詞沒有留存）",
+    "postprocess": "art/tools/ship_forms.py（找出美術像素大小 10.24 px → 每格取一個顏色 → 去掉純色背景 → 三張共用 40 色 → 輸出成色盤索引資料）；側傾格在開機時由 atlas.js 橫向壓縮與左右明暗產生"
+   },
+   "keywords": [
+    "player",
+    "ship",
+    "jet",
+    "主角機",
+    "機體",
+    "升級型態",
+    "mecha",
+    "機甲",
+    "pixel",
+    "像素",
+    "shmup"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:48a56236b128e084e8658ba4ce7342236ec9904d231b5c74977e6fc3ade07372",
+   "game": "SkyTalon"
+  },
+  {
+   "id": "skytalon.chr.boss-forms",
+   "kind": "sprite-sheet",
+   "status": "shipped",
+   "name": "四個頭目（各三階段：外甲、骨架、核心）與四個小王",
+   "files": {
+    "raw": [
+     "SkyTalon/art/raw/boss/big_oceanus.png",
+     "SkyTalon/art/raw/boss/big_nyx.png",
+     "SkyTalon/art/raw/boss/big_eos.png",
+     "SkyTalon/art/raw/boss/big_atlas.png",
+     "SkyTalon/art/raw/boss/mids.png"
+    ],
+    "prompt": [
+     "SkyTalon/art/boss_brief.md",
+     "SkyTalon/art/raw/boss/prompt_big.sh",
+     "SkyTalon/art/raw/boss/prompt_mids_round1.sh"
+    ],
+    "shipped": [
+     "SkyTalon/game/src/render/bossForms.js",
+     "SkyTalon/game/src/render/bossForms.forms.webp"
+    ]
+   },
+   "technical": {
+    "format": "palette data in a JS module, pixels in an 8-bit gray PNG sheet (value = the row character)",
+    "artPxToWorldPx": "頭目 3、小王 2",
+    "scaleMode": "nearest",
+    "frames": [
+     "boss, boss_1, boss_2",
+     "boss2, boss2_1, boss2_2",
+     "boss3, boss3_1, boss3_2",
+     "boss4, boss4_1, boss4_2",
+     "mid1-4"
+    ],
+    "palette": "每艘 44 色"
+   },
+   "styleTags": [
+    "pixel",
+    "top-down",
+    "1px-outline",
+    "mecha",
+    "warship"
+   ],
+   "provenance": {
+    "tool": "Codex CLI 的圖片生成（2026-11-20，由 Claude 依 art/boss_brief.md 下指令）",
+    "job": "提示詞全文在 art/raw/boss/prompt_big.sh（頭目）與 prompt_mids_round1.sh（小王）；風格參考圖是 art/raw/ship_heavy.jpg",
+    "postprocess": "art/tools/boss_forms.py（去掉綠幕 → 依欄位空隙切成三個階段 → 三個階段用同一個倍率縮到遊戲格數 → 每艘 44 色 → 輸出成色盤索引資料，並記下核心在圖上的位置）；python art/tools/forms_png.py（像素移到 PNG 表，執行期由 render/formsSheets.js 還原）"
+   },
+   "keywords": [
+    "boss",
+    "mid-boss",
+    "頭目",
+    "小王",
+    "warship",
+    "戰艦",
+    "巨艦",
+    "三階段",
+    "pixel",
+    "像素",
+    "shmup"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:7da5472a2a9125e5348d8c90a8ef8d4639b5f7354740971bc1c43f1e5ffa126f",
+   "game": "SkyTalon"
+  },
+  {
+   "id": "skytalon.chr.leg6-forms",
+   "kind": "sprite-sheet",
+   "status": "raw-only",
+   "name": "航段六（中生代）四個頭目（各三階段）與四個小王：板龍、梁龍、滄龍、暴龍；波斯特鱷、異特龍、風神翼龍、棘龍",
+   "files": {
+    "raw": [
+     "SkyTalon/art/raw/leg6/boss1_plateosaurus.png",
+     "SkyTalon/art/raw/leg6/boss2_diplodocus.png",
+     "SkyTalon/art/raw/leg6/boss3_mosasaurus.png",
+     "SkyTalon/art/raw/leg6/boss4_tyrannosaurus.png",
+     "SkyTalon/art/raw/leg6/mid1_postosuchus.png",
+     "SkyTalon/art/raw/leg6/mid2_allosaurus.png",
+     "SkyTalon/art/raw/leg6/mid3_quetzalcoatlus.png",
+     "SkyTalon/art/raw/leg6/mid4_spinosaurus.png"
+    ],
+    "prompt": [
+     "SkyTalon/gdd/12_leg6_mesozoic.md",
+     "SkyTalon/art/raw/leg6/prompts/round2_bosses.sh",
+     "SkyTalon/art/raw/leg6/prompts/round1_bosses_rejected_and_mids.sh",
+     "SkyTalon/art/raw/leg6/prompts/sample_C.sh",
+     "SkyTalon/art/raw/leg6/prompts/round3_creatures_and_mids.sh"
+    ],
+    "shipped": [
+     "SkyTalon/game/src/render/leg6Forms.js",
+     "SkyTalon/game/src/render/leg6Forms.forms.webp"
+    ]
+   },
+   "technical": {
+    "format": "palette data in a JS module, pixels in an 8-bit gray PNG sheet (value = the row character)",
+    "artPxToWorldPx": "頭目 3、小王 2",
+    "scaleMode": "nearest",
+    "frames": [
+     "boss, boss_1, boss_2",
+     "boss2, boss2_1, boss2_2",
+     "boss3, boss3_1, boss3_2",
+     "boss4, boss4_1, boss4_2",
+     "mid1-4"
+    ],
+    "palette": "每艘 44 色"
+   },
+   "styleTags": [
+    "pixel",
+    "top-down",
+    "1px-outline",
+    "creature",
+    "dinosaur"
+   ],
+   "provenance": {
+    "tool": "Codex CLI 的圖片生成（2026-11-20，由 Claude 依 gdd/12_leg6_mesozoic.md 下指令）",
+    "job": "提示詞全文在 art/raw/leg6/prompts/；構圖範例是使用者選定的 art/raw/leg6_samples/C_topdown_roar_2.png；配色參考是使用者提供的素材包 shmup-bosses-3phase（在 repo 外，沒有複製進來）；2026-11-20 第三輪重畫波斯特鱷、異特龍（碎片移到額頭正面）與風神翼龍（改成亮色），舊圖在 art/raw/leg6/alt/*_round1.png",
+    "postprocess": "art/tools/boss_forms.py leg6（去綠幕 → 切三階段 → 同倍率縮到遊戲格數 → 每隻 44 色 → 色盤索引資料；核心位置取頭部最飽和像素的中心）；python art/tools/forms_png.py（像素移到 PNG 表，執行期由 render/formsSheets.js 還原）"
+   },
+   "keywords": [
+    "boss",
+    "mid-boss",
+    "頭目",
+    "小王",
+    "dinosaur",
+    "恐龍",
+    "中生代",
+    "航段六",
+    "三階段",
+    "pixel",
+    "像素",
+    "shmup"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:b66d91a06621867242ff07f2e6aa0b9ea3e95a440c2c57059d8dba4a58ce859b",
+   "game": "SkyTalon"
+  },
+  {
+   "id": "skytalon.chr.leg6-creatures",
+   "kind": "sprite-sheet",
+   "status": "raw-only",
+   "name": "航段六（中生代）十六種小怪與巨木：真雙型齒翼龍、派克鳥龍、艾雷拉龍、腔骨龍、劍龍、嗜鳥龍、雙脊龍、喙嘴翼龍、無齒翼龍、薄板龍、古巨龜、魚鳥、三角龍、甲龍、馳龍、厚頭龍",
+   "files": {
+    "raw": [
+     "SkyTalon/art/raw/leg6/round3/creatures_ch1.png",
+     "SkyTalon/art/raw/leg6/round3/creatures_ch2.png",
+     "SkyTalon/art/raw/leg6/round3/creatures_ch3.png",
+     "SkyTalon/art/raw/leg6/round3/creatures_ch4.png",
+     "SkyTalon/art/raw/leg6/round3/tree.png"
+    ],
+    "prompt": [
+     "SkyTalon/art/raw/leg6/prompts/round3_creatures_and_mids.sh"
+    ],
+    "shipped": [
+     "SkyTalon/game/src/render/leg6Creatures.js",
+     "SkyTalon/game/src/render/leg6Creatures.forms.webp"
+    ]
+   },
+   "technical": {
+    "format": "palette data in a JS module, pixels in an 8-bit gray PNG sheet (value = the row character)",
+    "artPxToWorldPx": "1",
+    "scaleMode": "nearest",
+    "frames": [
+     "eudi, peteino, herrera, coelo",
+     "stego, orni, dilopho, rham",
+     "ptera, elasmo, archelon, ichthy",
+     "trike, anky, dromaeo, pachy",
+     "tree"
+    ],
+    "palette": "每隻 24 色"
+   },
+   "styleTags": [
+    "pixel",
+    "top-down",
+    "1px-outline",
+    "creature",
+    "dinosaur"
+   ],
+   "provenance": {
+    "tool": "Codex CLI 的圖片生成（2026-11-20，由 Claude 依使用者指示「先補美術」下指令）",
+    "job": "提示詞全文在 art/raw/leg6/prompts/round3_creatures_and_mids.sh；筆觸參考是 art/raw/leg6/mid4_spinosaurus.png；黑底的多餘版本在 art/raw/leg6/round3/rejected/",
+    "postprocess": "art/tools/creature_forms.py（去綠幕 → 以相連區塊切出四隻 → 各自縮到遊戲尺寸 → 每隻 24 色 → 色盤索引資料）；python art/tools/forms_png.py（像素移到 PNG 表，執行期由 render/formsSheets.js 還原）"
+   },
+   "keywords": [
+    "enemy",
+    "creature",
+    "小怪",
+    "dinosaur",
+    "恐龍",
+    "翼龍",
+    "中生代",
+    "航段六",
+    "tree",
+    "巨木",
+    "pixel",
+    "像素",
+    "shmup"
+   ],
+   "reusePolicy": "game-only",
+   "contentHash": "sha256:62d4038573a4d909b7d86ad3e1a40da69c9d75b970566180bbabf54f9fd5eb86",
+   "game": "SkyTalon"
+  },
+  {
+   "status": "raw-only",
+   "reusePolicy": "game-only",
+   "styleTags": [
+    "pixel",
+    "top-down",
+    "1px-outline",
+    "mech"
+   ],
+   "id": "skytalon.chr.leg2-forms",
+   "kind": "sprite-sheet",
+   "name": "航段二（反攻內圈）頭目與小王：塞勒涅、潘、晨星、昏星、涅墨西斯（各三階段）；恩底彌翁、阿耳戈斯、厄洛斯、厄里斯",
+   "files": {
+    "raw": [
+     "SkyTalon/art/raw/leg2/boss1_selene.png",
+     "SkyTalon/art/raw/leg2/boss2_pan.png",
+     "SkyTalon/art/raw/leg2/boss3_morning.png",
+     "SkyTalon/art/raw/leg2/boss3_evening.png",
+     "SkyTalon/art/raw/leg2/boss4_nemesis.png",
+     "SkyTalon/art/raw/leg2/mids.png"
+    ],
+    "prompt": [
+     "SkyTalon/gdd/13_legs2to5.md",
+     "SkyTalon/art/raw/leg2/prompts/round1.sh"
+    ],
+    "shipped": [
+     "SkyTalon/game/src/render/leg2Forms.js",
+     "SkyTalon/game/src/render/leg2Forms.forms.webp"
+    ]
+   },
+   "technical": {
+    "format": "palette data in a JS module, pixels in an 8-bit gray PNG sheet (value = the row character)",
+    "artPxToWorldPx": "頭目 3、小王 2",
+    "scaleMode": "nearest",
+    "frames": [
+     "boss, boss2, boss3m, boss3e, boss4（各 _1、_2）",
+     "mid1, mid2, mid3, mid4"
+    ],
+    "palette": "每隻 44 色"
+   },
+   "provenance": {
+    "tool": "Codex CLI 的圖片生成（2026-11-22，由 Claude 依使用者指示「好，做畫面」下指令）",
+    "job": "提示詞全文在 art/raw/leg2/prompts/round1.sh；筆觸參考是 art/raw/boss/big_oceanus.png 與 art/raw/boss/mids.png；造型概念參考是素材包 shmup-bosses-3phase/demo_assets_arc2（只當概念，不照抄）；深色背景與多餘的版本在 art/raw/leg2/alt/",
+    "postprocess": "python art/tools/boss_forms.py leg2（去綠幕 → 切三階段 → 縮到遊戲尺寸 → 每隻 44 色 → 色盤索引資料）；python art/tools/forms_png.py（像素移到 PNG 表，執行期由 render/formsSheets.js 還原）"
+   },
+   "keywords": [
+    "boss",
+    "頭目",
+    "小王",
+    "mech",
+    "航段二",
+    "希臘神話",
+    "pixel",
+    "像素",
+    "shmup"
+   ],
+   "contentHash": "sha256:10f17d25023bc7cb86029b6c4f8f5fc053f7114ced2014181f75e830afcb835a",
+   "game": "SkyTalon"
+  },
+  {
+   "status": "raw-only",
+   "reusePolicy": "game-only",
+   "styleTags": [
+    "pixel",
+    "top-down",
+    "1px-outline",
+    "mech"
+   ],
+   "id": "skytalon.chr.leg2-machines",
+   "kind": "sprite-sheet",
+   "name": "航段二（反攻內圈）新小怪：月塵護衛機、鏡面砲艇（關殼、開殼）、雙極追擊機、爭端自爆艇",
+   "files": {
+    "raw": [
+     "SkyTalon/art/raw/leg2/minions.png"
+    ],
+    "prompt": [
+     "SkyTalon/art/raw/leg2/prompts/round1.sh"
+    ],
+    "shipped": [
+     "SkyTalon/game/src/render/leg2Machines.js",
+     "SkyTalon/game/src/render/leg2Machines.forms.webp"
+    ]
+   },
+   "technical": {
+    "format": "palette data in a JS module, pixels in an 8-bit gray PNG sheet (value = the row character)",
+    "artPxToWorldPx": "1",
+    "scaleMode": "nearest",
+    "frames": [
+     "orbiter, shut, open, twinvec, rammer"
+    ],
+    "palette": "每隻 24 色"
+   },
+   "provenance": {
+    "tool": "Codex CLI 的圖片生成（2026-11-22，由 Claude 依使用者指示「好，做畫面」下指令）",
+    "job": "提示詞全文在 art/raw/leg2/prompts/round1.sh；筆觸參考是 art/raw/boss/big_oceanus.png；深色背景的版本在 art/raw/leg2/alt/",
+    "postprocess": "python art/tools/creature_forms.py leg2（去綠幕 → 以相連區塊切出五個 → 各自縮到遊戲尺寸 → 每個 24 色 → 色盤索引資料）；python art/tools/forms_png.py（像素移到 PNG 表，執行期由 render/formsSheets.js 還原）"
+   },
+   "keywords": [
+    "enemy",
+    "小怪",
+    "mech",
+    "航段二",
+    "pixel",
+    "像素",
+    "shmup"
+   ],
+   "contentHash": "sha256:2e5d3a04cf5afa63681e9468a867e9308a971f8d7942ba8fee028dad85ebedf8",
+   "game": "SkyTalon"
+  },
+  {
+   "status": "raw-only",
+   "reusePolicy": "game-only",
+   "styleTags": [
+    "pixel",
+    "top-down",
+    "1px-outline",
+    "mech"
+   ],
+   "id": "skytalon.chr.leg3-forms",
+   "kind": "sprite-sheet",
+   "name": "航段三（外圈巨神）頭目與小王：厄倪俄、阿瑪爾忒亞、普羅米修斯、雅努斯（各三階段）；福波斯、得摩斯、伽倪墨得斯、潘朵拉、厄庇墨透斯",
+   "files": {
+    "raw": [
+     "SkyTalon/art/raw/leg3/boss1_enyo.png",
+     "SkyTalon/art/raw/leg3/boss2_amalthea.png",
+     "SkyTalon/art/raw/leg3/boss3_prometheus.png",
+     "SkyTalon/art/raw/leg3/boss4_janus.png",
+     "SkyTalon/art/raw/leg3/mids.png"
+    ],
+    "prompt": [
+     "SkyTalon/gdd/13_legs2to5.md",
+     "SkyTalon/art/raw/leg3/prompts/round1.sh"
+    ],
+    "shipped": [
+     "SkyTalon/game/src/render/leg3Forms.js",
+     "SkyTalon/game/src/render/leg3Forms.forms.webp"
+    ]
+   },
+   "technical": {
+    "format": "palette data in a JS module, pixels in an 8-bit gray PNG sheet (value = the row character)",
+    "artPxToWorldPx": "頭目 3、小王 2",
+    "scaleMode": "nearest",
+    "frames": [
+     "boss, boss2, boss3, boss4（各 _1、_2）",
+     "mid1, deimos, mid2, mid3, mid4"
+    ],
+    "palette": "每隻 44 色"
+   },
+   "provenance": {
+    "tool": "Codex CLI 的圖片生成（2026-11-22，由 Claude 依使用者指示「開始航段三」下指令）",
+    "job": "提示詞全文在 art/raw/leg3/prompts/round1.sh；筆觸參考是 art/raw/boss/big_oceanus.png 與 art/raw/boss/mids.png；造型概念參考是素材包 shmup-bosses-3phase/demo_assets_arc3（只當概念）；深色背景的版本在 art/raw/leg3/alt/",
+    "postprocess": "python art/tools/boss_forms.py leg3；python art/tools/forms_png.py（像素移到 PNG 表，執行期由 render/formsSheets.js 還原）"
+   },
+   "keywords": [
+    "boss",
+    "頭目",
+    "小王",
+    "mech",
+    "航段三",
+    "希臘神話",
+    "pixel",
+    "像素",
+    "shmup"
+   ],
+   "contentHash": "sha256:fbf64473705283efe19d1978b315e14c6de747788618067a05d2c8809c441831",
+   "game": "SkyTalon"
+  },
+  {
+   "status": "raw-only",
+   "reusePolicy": "game-only",
+   "styleTags": [
+    "pixel",
+    "top-down",
+    "1px-outline",
+    "mech"
+   ],
+   "id": "skytalon.chr.leg3-machines",
+   "kind": "sprite-sheet",
+   "name": "航段三（外圈巨神）新小怪與頭目附屬物：攻城迫擊艇、神盾護衛艇、災厄晶簇機、時序殘影機、鎖鏈錨、巨鷹",
+   "files": {
+    "raw": [
+     "SkyTalon/art/raw/leg3/minions.png"
+    ],
+    "prompt": [
+     "SkyTalon/art/raw/leg3/prompts/round1.sh"
+    ],
+    "shipped": [
+     "SkyTalon/game/src/render/leg3Machines.js",
+     "SkyTalon/game/src/render/leg3Machines.forms.webp"
+    ]
+   },
+   "technical": {
+    "format": "palette data in a JS module, pixels in an 8-bit gray PNG sheet (value = the row character)",
+    "artPxToWorldPx": "1",
+    "scaleMode": "nearest",
+    "frames": [
+     "mortar, aegis, crystal, echo, anchor, eagle"
+    ],
+    "palette": "每個 24 色"
+   },
+   "provenance": {
+    "tool": "Codex CLI 的圖片生成（2026-11-22，由 Claude 依使用者指示「開始航段三」下指令）",
+    "job": "提示詞全文在 art/raw/leg3/prompts/round1.sh；深色背景的版本在 art/raw/leg3/alt/",
+    "postprocess": "python art/tools/creature_forms.py leg3；python art/tools/forms_png.py（像素移到 PNG 表，執行期由 render/formsSheets.js 還原）"
+   },
+   "keywords": [
+    "enemy",
+    "小怪",
+    "mech",
+    "航段三",
+    "pixel",
+    "像素",
+    "shmup"
+   ],
+   "contentHash": "sha256:7ee1bca1bed8fb23cc93bf1f8f454a9fbc4d348e9e869877cb4694346d615d24",
+   "game": "SkyTalon"
+  },
+  {
+   "status": "raw-only",
+   "reusePolicy": "game-only",
+   "styleTags": [
+    "pixel",
+    "top-down",
+    "1px-outline",
+    "mech"
+   ],
+   "id": "skytalon.chr.leg4-forms",
+   "kind": "sprite-sheet",
+   "name": "航段四（冥界邊境）頭目與小王：布里阿瑞俄斯、謨涅摩緒涅、普羅透斯、斯堤克斯（各三階段）；布戎忒斯、喀耳刻、特里同、卡戎",
+   "files": {
+    "raw": [
+     "SkyTalon/art/raw/leg4/boss1_briareus.png",
+     "SkyTalon/art/raw/leg4/boss2_mnemosyne.png",
+     "SkyTalon/art/raw/leg4/boss3_proteus.png",
+     "SkyTalon/art/raw/leg4/boss4_styx.png",
+     "SkyTalon/art/raw/leg4/mids.png"
+    ],
+    "prompt": [
+     "SkyTalon/gdd/13_legs2to5.md",
+     "SkyTalon/art/raw/leg4/prompts/round1.sh"
+    ],
+    "shipped": [
+     "SkyTalon/game/src/render/leg4Forms.js",
+     "SkyTalon/game/src/render/leg4Forms.forms.webp"
+    ]
+   },
+   "technical": {
+    "format": "palette data in a JS module, pixels in an 8-bit gray PNG sheet (value = the row character)",
+    "artPxToWorldPx": "頭目 3、小王 2",
+    "scaleMode": "nearest",
+    "frames": [
+     "boss, boss2, boss3, boss4（各 _1、_2）",
+     "mid1, mid2, mid3, mid4"
+    ],
+    "palette": "每隻 44 色"
+   },
+   "provenance": {
+    "tool": "Codex CLI 的圖片生成（2026-11-22，由 Claude 依使用者指示「開始航段四」下指令）",
+    "job": "提示詞全文在 art/raw/leg4/prompts/round1.sh；筆觸參考是 art/raw/boss/big_oceanus.png 與 art/raw/boss/mids.png；造型概念參考是素材包 shmup-bosses-3phase/demo_assets_arc4（只當概念）；深色背景的版本在 art/raw/leg4/alt/",
+    "postprocess": "python art/tools/boss_forms.py leg4；python art/tools/forms_png.py（像素移到 PNG 表，執行期由 render/formsSheets.js 還原）"
+   },
+   "keywords": [
+    "boss",
+    "頭目",
+    "小王",
+    "mech",
+    "航段四",
+    "希臘神話",
+    "pixel",
+    "像素",
+    "shmup"
+   ],
+   "contentHash": "sha256:d9105f7f783dbcf100e914bd8bfc31aca2b6b61693b098f73d24c8a444014cfe",
+   "game": "SkyTalon"
+  },
+  {
+   "status": "raw-only",
+   "reusePolicy": "game-only",
+   "styleTags": [
+    "pixel",
+    "top-down",
+    "1px-outline",
+    "mech"
+   ],
+   "id": "skytalon.chr.leg4-machines",
+   "kind": "sprite-sheet",
+   "name": "航段四（冥界邊境）新小怪與頭目附屬物：節拍砲艇、微弱斥候、重裝獸機、深淵聲納浮標、殘骸再起機與殘骸、機械臂、擺渡船、腳踵",
+   "files": {
+    "raw": [
+     "SkyTalon/art/raw/leg4/minions.png",
+     "SkyTalon/art/raw/leg4/parts.png"
+    ],
+    "prompt": [
+     "SkyTalon/art/raw/leg4/prompts/round1.sh"
+    ],
+    "shipped": [
+     "SkyTalon/game/src/render/leg4Machines.js",
+     "SkyTalon/game/src/render/leg4Machines.forms.webp"
+    ]
+   },
+   "technical": {
+    "format": "palette data in a JS module, pixels in an 8-bit gray PNG sheet (value = the row character)",
+    "artPxToWorldPx": "1",
+    "scaleMode": "nearest",
+    "frames": [
+     "metronome, scout, beast, buoy, revenant, husk",
+     "arm, ferry, heel"
+    ],
+    "palette": "每個 24 色"
+   },
+   "provenance": {
+    "tool": "Codex CLI 的圖片生成（2026-11-22，由 Claude 依使用者指示「開始航段四」下指令）",
+    "job": "提示詞全文在 art/raw/leg4/prompts/round1.sh；深色背景的版本在 art/raw/leg4/alt/",
+    "postprocess": "python art/tools/creature_forms.py leg4；python art/tools/forms_png.py（像素移到 PNG 表，執行期由 render/formsSheets.js 還原）"
+   },
+   "keywords": [
+    "enemy",
+    "小怪",
+    "mech",
+    "航段四",
+    "pixel",
+    "像素",
+    "shmup"
+   ],
+   "contentHash": "sha256:4c2bbbde1d600fa83bff9a8f2ee09a6815fe038b6f008757c4a701bee2ec1be3",
+   "game": "SkyTalon"
+  },
+  {
+   "status": "raw-only",
+   "reusePolicy": "game-only",
+   "styleTags": [
+    "pixel",
+    "top-down",
+    "1px-outline",
+    "mech"
+   ],
+   "id": "skytalon.chr.leg5-forms",
+   "kind": "sprite-sheet",
+   "name": "航段五（太陽與黑洞）頭目與小王：赫利俄斯、許珀里翁、混沌、黃泉鳥居（各三階段）；法厄同、赫利阿得斯、燭陰、八咫鏡",
+   "files": {
+    "raw": [
+     "SkyTalon/art/raw/leg5/boss1_helios.png",
+     "SkyTalon/art/raw/leg5/boss2_hyperion.png",
+     "SkyTalon/art/raw/leg5/boss3_hundun.png",
+     "SkyTalon/art/raw/leg5/boss4_torii.png",
+     "SkyTalon/art/raw/leg5/mids.png"
+    ],
+    "prompt": [
+     "SkyTalon/gdd/13_legs2to5.md",
+     "SkyTalon/art/raw/leg5/prompts/round1.sh"
+    ],
+    "shipped": [
+     "SkyTalon/game/src/render/leg5Forms.js",
+     "SkyTalon/game/src/render/leg5Forms.forms.webp"
+    ]
+   },
+   "technical": {
+    "format": "palette data in a JS module, pixels in an 8-bit gray PNG sheet (value = the row character)",
+    "artPxToWorldPx": "頭目 3、小王 2",
+    "scaleMode": "nearest",
+    "frames": [
+     "boss, boss2, boss3, boss4（各 _1、_2）",
+     "mid1, mid2, mid3, mid4"
+    ],
+    "palette": "每隻 44 色"
+   },
+   "provenance": {
+    "tool": "Codex CLI 的圖片生成（2026-11-22，由 Claude 依使用者指示「開始航段五」下指令）",
+    "job": "提示詞全文在 art/raw/leg5/prompts/round1.sh；筆觸參考是 art/raw/boss/big_oceanus.png 與 art/raw/boss/mids.png；造型概念參考是素材包 shmup-bosses-3phase/demo_assets_arc5（只當概念）；黑洞兩章的題材由使用者決定維持（gdd/13 §7 第 2 點），造型全部自創、不含宗教符號或文字；深色背景的版本在 art/raw/leg5/alt/",
+    "postprocess": "python art/tools/boss_forms.py leg5；python art/tools/forms_png.py（像素移到 PNG 表，執行期由 render/formsSheets.js 還原）"
+   },
+   "keywords": [
+    "boss",
+    "頭目",
+    "小王",
+    "mech",
+    "航段五",
+    "希臘神話",
+    "pixel",
+    "像素",
+    "shmup"
+   ],
+   "contentHash": "sha256:94db9420239d8364cb5e2be5e7d8d9be753a4144156aa14d40cf098b1c323bd0",
+   "game": "SkyTalon"
+  },
+  {
+   "status": "raw-only",
+   "reusePolicy": "game-only",
+   "styleTags": [
+    "pixel",
+    "top-down",
+    "1px-outline",
+    "mech"
+   ],
+   "id": "skytalon.chr.leg5-machines",
+   "kind": "sprite-sheet",
+   "name": "航段五（太陽與黑洞）新小怪、混沌的陣眼與生門、靈魂體小人（主角在黑洞兩章的樣子，三格側傾）",
+   "files": {
+    "raw": [
+     "SkyTalon/art/raw/leg5/minions.png",
+     "SkyTalon/art/raw/leg5/soul.png"
+    ],
+    "prompt": [
+     "SkyTalon/art/raw/leg5/prompts/round1.sh"
+    ],
+    "shipped": [
+     "SkyTalon/game/src/render/leg5Machines.js",
+     "SkyTalon/game/src/render/leg5Machines.forms.webp"
+    ]
+   },
+   "technical": {
+    "format": "palette data in a JS module, pixels in an 8-bit gray PNG sheet (value = the row character)",
+    "artPxToWorldPx": "1",
+    "scaleMode": "nearest",
+    "frames": [
+     "promskiff, flareskiff, slowship, talisman, eye, gate",
+     "soul0, soul1, soul2"
+    ],
+    "palette": "每個 24 色"
+   },
+   "provenance": {
+    "tool": "Codex CLI 的圖片生成（2026-11-22，由 Claude 依使用者指示「開始航段五」下指令）",
+    "job": "提示詞全文在 art/raw/leg5/prompts/round1.sh；靈魂體小人的筆觸參考是 art/raw/ship_wing.jpg；深色背景的版本在 art/raw/leg5/alt/",
+    "postprocess": "python art/tools/creature_forms.py leg5；python art/tools/forms_png.py（像素移到 PNG 表，執行期由 render/formsSheets.js 還原）"
+   },
+   "keywords": [
+    "enemy",
+    "小怪",
+    "mech",
+    "航段五",
+    "pixel",
+    "像素",
+    "shmup",
+    "靈魂體"
+   ],
+   "contentHash": "sha256:c548f0d621cbd159eeae8ca06865c3752de2ad52f884939fcc2dde45f631eeb6",
+   "game": "SkyTalon"
+  },
+  {
+   "status": "shipped",
+   "reusePolicy": "game-only",
+   "styleTags": [
+    "pixel",
+    "top-down",
+    "painted",
+    "background"
+   ],
+   "id": "skytalon.bg.leg6-ground",
+   "kind": "background",
+   "name": "航段六（失落的中生代）四章地面：三疊紀裂谷、侏羅紀巨木林、白堊紀內海、白堊紀末日",
+   "files": {
+    "raw": [
+     "SkyTalon/art/raw/leg6/bg/ch1.jpg",
+     "SkyTalon/art/raw/leg6/bg/ch2.jpg",
+     "SkyTalon/art/raw/leg6/bg/ch3.jpg",
+     "SkyTalon/art/raw/leg6/bg/ch4.jpg"
+    ],
+    "prompt": [],
+    "shipped": [
+     "SkyTalon/game/src/assets/leg6/ground_ch1.webp",
+     "SkyTalon/game/src/assets/leg6/ground_ch2.webp",
+     "SkyTalon/game/src/assets/leg6/ground_ch3.webp",
+     "SkyTalon/game/src/assets/leg6/ground_ch4.webp"
+    ]
+   },
+   "technical": {
+    "format": "WebP q80（由 raw JPG 540×1920 等比縮成 405×1440，避免檔案過大）",
+    "size": "405 × 1440，上下無縫",
+    "artPxToWorldPx": "720 / 405（場地寬對齊圖寬）",
+    "scaleMode": "linear",
+    "drawCalls": "1（換章交叉淡入時 2）",
+    "use": "；素材包原圖（raw）只留本機，遊戲用的 WebP 隨遊戲發布"
+   },
+   "provenance": {
+    "tool": "素材包 shmup-bosses-3phase 的 demo_assets/backgrounds（使用者指定可用的素材包）",
+    "job": "使用者在對話中指示航段六場景參考 all_arcs_demo.html#arc6（2026-11-23）；原圖未改，只轉 WebP",
+    "postprocess": "PIL：LANCZOS 等比縮成 405×1440，WebP quality 80"
+   },
+   "keywords": [
+    "background",
+    "地面",
+    "航段六",
+    "史前",
+    "pixel",
+    "像素",
+    "shmup"
+   ],
+   "contentHash": "sha256:1e54059ba431b5c92693e31c1598767dac00b81e67b50935d41ba20430a41c23",
+   "localOnly": true,
+   "game": "SkyTalon"
+  },
+  {
+   "status": "shipped",
+   "reusePolicy": "game-only",
+   "styleTags": [
+    "pixel",
+    "top-down",
+    "painted",
+    "background"
+   ],
+   "id": "skytalon.bg.leg5-ground",
+   "kind": "background",
+   "name": "航段五（太陽與黑洞）四章地面：日冕、日面深處、黑洞（一）、黑洞（二）",
+   "files": {
+    "raw": [
+     "SkyTalon/art/raw/leg5/bg/bg_corona.jpg",
+     "SkyTalon/art/raw/leg5/bg/bg_photosphere.jpg",
+     "SkyTalon/art/raw/leg5/bg/bg_bh_eastern.jpg",
+     "SkyTalon/art/raw/leg5/bg/bg_bh_japanese.jpg"
+    ],
+    "prompt": [],
+    "shipped": [
+     "SkyTalon/game/src/assets/leg5/ground_ch1.webp",
+     "SkyTalon/game/src/assets/leg5/ground_ch2.webp",
+     "SkyTalon/game/src/assets/leg5/ground_ch3.webp",
+     "SkyTalon/game/src/assets/leg5/ground_ch4.webp"
+    ]
+   },
+   "technical": {
+    "format": "WebP q80（由 raw JPG 960×2560 縮成 540×1440，避免檔案過大）",
+    "size": "540 × 1440，上下無縫",
+    "artPxToWorldPx": "960 / 540（圖寬對應 960 世界像素，比場地寬，隨視角左右滑動 0.65）",
+    "scaleMode": "linear",
+    "drawCalls": "1（換章交叉淡入時 2）",
+    "use": "；素材包原圖（raw）只留本機，遊戲用的 WebP 隨遊戲發布"
+   },
+   "provenance": {
+    "tool": "素材包 shmup-bosses-3phase 的 demo_assets_arc5（使用者指定可用的素材包）",
+    "job": "使用者在對話中指示航段五背景參考 all_arcs_demo.html#arc5，並同意降低解析度（2026-11-23）",
+    "postprocess": "PIL：LANCZOS 縮成 540×1440，WebP quality 80"
+   },
+   "keywords": [
+    "background",
+    "地面",
+    "航段五",
+    "太陽",
+    "黑洞",
+    "pixel",
+    "像素",
+    "shmup"
+   ],
+   "contentHash": "sha256:8c03cbef3a9ff51beeef710e4d156a268b69f079d48d54d5e0ebace46668cba3",
+   "localOnly": true,
+   "game": "SkyTalon"
+  },
+  {
+   "status": "shipped",
+   "reusePolicy": "game-only",
+   "styleTags": [
+    "pixel",
+    "cinematic",
+    "cutscene"
+   ],
+   "id": "skytalon.cut.prologue",
+   "kind": "key-art",
+   "name": "遊戲開場動畫：星門甦醒、眾神艦隊、最後的燈火、標題",
+   "files": {
+    "raw": [
+     "SkyTalon/art/raw/intro0/p1_gate_wakes.png",
+     "SkyTalon/art/raw/intro0/p2_armada.png",
+     "SkyTalon/art/raw/intro0/p3_last_light.png",
+     "SkyTalon/art/raw/intro0/p4_title.png"
+    ],
+    "prompt": [
+     "SkyTalon/art/raw/intro0/prompts/round1.sh",
+     "SkyTalon/game/src/ui/intro.js"
+    ],
+    "shipped": [
+     "SkyTalon/game/src/assets/intro0/p1_gate_wakes.avif",
+     "SkyTalon/game/src/assets/intro0/p1_gate_wakes.lo.webp",
+     "SkyTalon/game/src/assets/intro0/p2_armada.avif",
+     "SkyTalon/game/src/assets/intro0/p2_armada.lo.webp",
+     "SkyTalon/game/src/assets/intro0/p3_last_light.avif",
+     "SkyTalon/game/src/assets/intro0/p3_last_light.lo.webp",
+     "SkyTalon/game/src/assets/intro0/p4_title.avif",
+     "SkyTalon/game/src/assets/intro0/p4_title.lo.webp"
+    ]
+   },
+   "technical": {
+    "format": "AVIF q50，540 × 960（9:16）；另附 270 × 480 WebP q50 備用（不支援 AVIF 的瀏覽器）",
+    "use": "ui/intro.js（INTROS[0]）：每次啟動先播，「點擊畫面開始」後播放並響起開場音樂，可跳過，最後一張疊 DOM 標題，淡入航段地圖",
+    "drawCalls": "0（DOM，在畫布之上）"
+   },
+   "provenance": {
+    "tool": "Codex CLI 的圖片生成（2026-11-23，由 Claude 依使用者指示「新增一段動畫開場，才進到關卡選單」下指令）",
+    "job": "劇情依 gdd/05 v8 §5 世界觀，接在航段一出征之前；風格沿用航段一過場的提詞",
+    "postprocess": "python art/tools/intro_images.py（置中裁 9:16，LANCZOS 縮成 540×960 AVIF q50 與 270×480 WebP q50）"
+   },
+   "keywords": [
+    "cutscene",
+    "過場",
+    "開場",
+    "標題",
+    "prologue",
+    "pixel",
+    "像素"
+   ],
+   "contentHash": "sha256:b687dc6977055074157d577d44304120dc2587914bb64f1aff242b3add30f06f",
+   "game": "SkyTalon"
+  },
+  {
+   "status": "shipped",
+   "reusePolicy": "game-only",
+   "styleTags": [
+    "pixel",
+    "cinematic",
+    "cutscene"
+   ],
+   "id": "skytalon.cut.leg1-intro",
+   "kind": "key-art",
+   "name": "航段一出征過場：眾神艦隊降臨、最後的壁壘、地下機庫、出擊",
+   "files": {
+    "raw": [
+     "SkyTalon/art/raw/intro/s1_gods_descend.png",
+     "SkyTalon/art/raw/intro/s2_last_bastion.png",
+     "SkyTalon/art/raw/intro/s3_hangar.png",
+     "SkyTalon/art/raw/intro/s4_launch.png"
+    ],
+    "prompt": [
+     "SkyTalon/art/raw/intro/prompts/round1.sh",
+     "SkyTalon/art/raw/intro/prompts/round2_s1.sh",
+     "SkyTalon/game/src/ui/intro.js"
+    ],
+    "shipped": [
+     "SkyTalon/game/src/assets/intro/s1_gods_descend.avif",
+     "SkyTalon/game/src/assets/intro/s1_gods_descend.lo.webp",
+     "SkyTalon/game/src/assets/intro/s2_last_bastion.avif",
+     "SkyTalon/game/src/assets/intro/s2_last_bastion.lo.webp",
+     "SkyTalon/game/src/assets/intro/s3_hangar.avif",
+     "SkyTalon/game/src/assets/intro/s3_hangar.lo.webp",
+     "SkyTalon/game/src/assets/intro/s4_launch.avif",
+     "SkyTalon/game/src/assets/intro/s4_launch.lo.webp"
+    ]
+   },
+   "technical": {
+    "format": "AVIF q50，540 × 960（9:16）；另附 270 × 480 WebP q50 備用（不支援 AVIF 的瀏覽器）",
+    "use": "ui/intro.js：DOM + GSAP 演出（推拉鏡頭、交叉淡入、火星、震動、閃光與速度線），不是影片檔",
+    "drawCalls": "0（DOM，在畫布之上）"
+   },
+   "provenance": {
+    "tool": "Codex CLI 的圖片生成（2026-11-23，由 Claude 依使用者指示「重新生成一段出征的動畫」下指令）",
+    "job": "參考素材包 shmup-bosses-3phase 的 intro_cutscene_pixi（只當結構參考）；劇情依 gdd/05 v8 §5 世界觀；第一張第一輪的戰艦帶神殿，違反 art/README.md 的「不畫廟宇」，已重生（舊圖在 art/raw/intro/alt/）",
+    "postprocess": "python art/tools/intro_images.py（置中裁 9:16，LANCZOS 縮成 540×960 AVIF q50 與 270×480 WebP q50）"
+   },
+   "keywords": [
+    "cutscene",
+    "過場",
+    "開場",
+    "航段一",
+    "出征",
+    "pixel",
+    "像素"
+   ],
+   "contentHash": "sha256:68fb2768eb1f6c6430dd06f544b148959ca226ef1dfef7cce36e3b199c04c08d",
+   "game": "SkyTalon"
+  },
+  {
+   "status": "shipped",
+   "reusePolicy": "game-only",
+   "styleTags": [
+    "pixel",
+    "cinematic",
+    "cutscene"
+   ],
+   "id": "skytalon.cut.leg2-intro",
+   "kind": "key-art",
+   "name": "航段二出征過場：阿特拉斯倒下、月面前進基地、地球艦隊集結、飛向月球",
+   "files": {
+    "raw": [
+     "SkyTalon/art/raw/intro2/s1_atlas_falls.png",
+     "SkyTalon/art/raw/intro2/s2_moon_base.png",
+     "SkyTalon/art/raw/intro2/s3_fleet_gathers.png",
+     "SkyTalon/art/raw/intro2/s4_to_the_moon.png"
+    ],
+    "prompt": [
+     "SkyTalon/art/raw/intro2/prompts/round1.sh",
+     "SkyTalon/game/src/ui/intro.js",
+     "SkyTalon/art/raw/intro2/prompts/round2_s3.sh"
+    ],
+    "shipped": [
+     "SkyTalon/game/src/assets/intro2/s1_atlas_falls.avif",
+     "SkyTalon/game/src/assets/intro2/s1_atlas_falls.lo.webp",
+     "SkyTalon/game/src/assets/intro2/s2_moon_base.avif",
+     "SkyTalon/game/src/assets/intro2/s2_moon_base.lo.webp",
+     "SkyTalon/game/src/assets/intro2/s3_fleet_gathers.avif",
+     "SkyTalon/game/src/assets/intro2/s3_fleet_gathers.lo.webp",
+     "SkyTalon/game/src/assets/intro2/s4_to_the_moon.avif",
+     "SkyTalon/game/src/assets/intro2/s4_to_the_moon.lo.webp"
+    ]
+   },
+   "technical": {
+    "format": "AVIF q50，540 × 960（9:16）；另附 270 × 480 WebP q50 備用（不支援 AVIF 的瀏覽器）",
+    "use": "ui/intro.js：DOM + GSAP 演出，不是影片檔",
+    "drawCalls": "0（DOM，在畫布之上）"
+   },
+   "provenance": {
+    "tool": "Codex CLI 的圖片生成（2026-11-23，由 Claude 依使用者指示「依照故事劇本設計航段二動畫」下指令）",
+    "job": "劇情銜接航段一結尾（阿特拉斯在軌道倒下）與航段二「反攻內圈」（gdd/05 v8 §5 路線圖、gdd/13 §4.1）；第三張第一輪的戰機看起來是飛進母艦，已重生成飛離母艦（舊圖在 art/raw/intro2/alt/），新圖裁成 9:16",
+    "postprocess": "PIL：LANCZOS 縮成 540×960，WebP quality 70"
+   },
+   "keywords": [
+    "cutscene",
+    "過場",
+    "航段二",
+    "月球",
+    "出征",
+    "pixel",
+    "像素"
+   ],
+   "contentHash": "sha256:827220431bd21cd22683f51a424a75d9aa160fa0ef7bfa6a2f735e4f3ffcaf04",
+   "game": "SkyTalon"
+  },
+  {
+   "status": "shipped",
+   "reusePolicy": "game-only",
+   "styleTags": [
+    "pixel",
+    "cinematic",
+    "cutscene"
+   ],
+   "id": "skytalon.cut.leg3-intro",
+   "kind": "key-art",
+   "name": "航段三（外圈巨神）出征過場：涅墨西斯倒下、火星雙子艦隊、木星雷雲巨神、穿越小行星帶",
+   "files": {
+    "raw": [
+     "SkyTalon/art/raw/intro3/s1_inner_retaken.png",
+     "SkyTalon/art/raw/intro3/s2_mars_twins.png",
+     "SkyTalon/art/raw/intro3/s3_jupiter_storm.png",
+     "SkyTalon/art/raw/intro3/s4_outer_giants.png"
+    ],
+    "prompt": [
+     "SkyTalon/art/raw/intro_gen_legs3to6.sh",
+     "SkyTalon/game/src/ui/intro.js"
+    ],
+    "shipped": [
+     "SkyTalon/game/src/assets/intro3/s1_inner_retaken.avif",
+     "SkyTalon/game/src/assets/intro3/s1_inner_retaken.lo.webp",
+     "SkyTalon/game/src/assets/intro3/s2_mars_twins.avif",
+     "SkyTalon/game/src/assets/intro3/s2_mars_twins.lo.webp",
+     "SkyTalon/game/src/assets/intro3/s3_jupiter_storm.avif",
+     "SkyTalon/game/src/assets/intro3/s3_jupiter_storm.lo.webp",
+     "SkyTalon/game/src/assets/intro3/s4_outer_giants.avif",
+     "SkyTalon/game/src/assets/intro3/s4_outer_giants.lo.webp"
+    ]
+   },
+   "technical": {
+    "format": "AVIF q50，540 × 960（9:16，非 9:16 的原圖從中間裁切）；另附 270 × 480 WebP q50 備用（不支援 AVIF 的瀏覽器）",
+    "use": "ui/intro.js：DOM + GSAP 演出，不是影片檔",
+    "drawCalls": "0（DOM，在畫布之上）"
+   },
+   "provenance": {
+    "tool": "Codex CLI 的圖片生成（2026-11-23，由 Claude 依使用者指示「開始做後面動畫」下指令）",
+    "job": "每段接上前一段的結尾（gdd/05 v8 §5 路線圖、gdd/13、gdd/12 §2）",
+    "postprocess": "PIL：裁成 9:16、LANCZOS 縮成 540×960、WebP quality 70"
+   },
+   "keywords": [
+    "cutscene",
+    "過場",
+    "航段三",
+    "出征",
+    "pixel",
+    "像素"
+   ],
+   "contentHash": "sha256:92df9a68a46db0a8c4722a0cab965ca0ac158ff89e0547b96d25260979d662b0",
+   "game": "SkyTalon"
+  },
+  {
+   "status": "shipped",
+   "reusePolicy": "game-only",
+   "styleTags": [
+    "pixel",
+    "cinematic",
+    "cutscene"
+   ],
+   "id": "skytalon.cut.leg4-intro",
+   "kind": "key-art",
+   "name": "航段四（冥界邊境）出征過場：雅努斯沉入土星環、艦隊逃往邊緣、冥河與渡船、衝進冥界霧氣",
+   "files": {
+    "raw": [
+     "SkyTalon/art/raw/intro4/s1_rings_fall.png",
+     "SkyTalon/art/raw/intro4/s2_flee_to_edge.png",
+     "SkyTalon/art/raw/intro4/s3_styx.png",
+     "SkyTalon/art/raw/intro4/s4_into_the_dark.png"
+    ],
+    "prompt": [
+     "SkyTalon/art/raw/intro_gen_legs3to6.sh",
+     "SkyTalon/game/src/ui/intro.js"
+    ],
+    "shipped": [
+     "SkyTalon/game/src/assets/intro4/s1_rings_fall.avif",
+     "SkyTalon/game/src/assets/intro4/s1_rings_fall.lo.webp",
+     "SkyTalon/game/src/assets/intro4/s2_flee_to_edge.avif",
+     "SkyTalon/game/src/assets/intro4/s2_flee_to_edge.lo.webp",
+     "SkyTalon/game/src/assets/intro4/s3_styx.avif",
+     "SkyTalon/game/src/assets/intro4/s3_styx.lo.webp",
+     "SkyTalon/game/src/assets/intro4/s4_into_the_dark.avif",
+     "SkyTalon/game/src/assets/intro4/s4_into_the_dark.lo.webp"
+    ]
+   },
+   "technical": {
+    "format": "AVIF q50，540 × 960（9:16，非 9:16 的原圖從中間裁切）；另附 270 × 480 WebP q50 備用（不支援 AVIF 的瀏覽器）",
+    "use": "ui/intro.js：DOM + GSAP 演出，不是影片檔",
+    "drawCalls": "0（DOM，在畫布之上）"
+   },
+   "provenance": {
+    "tool": "Codex CLI 的圖片生成（2026-11-23，由 Claude 依使用者指示「開始做後面動畫」下指令）",
+    "job": "每段接上前一段的結尾（gdd/05 v8 §5 路線圖、gdd/13、gdd/12 §2）",
+    "postprocess": "PIL：裁成 9:16、LANCZOS 縮成 540×960、WebP quality 70"
+   },
+   "keywords": [
+    "cutscene",
+    "過場",
+    "航段四",
+    "出征",
+    "pixel",
+    "像素"
+   ],
+   "contentHash": "sha256:b977d55a90a540223df6ed23eb0a92caf3ba8eac2ea749bd32aca88b3ea1f885",
+   "game": "SkyTalon"
+  },
+  {
+   "status": "shipped",
+   "reusePolicy": "game-only",
+   "styleTags": [
+    "pixel",
+    "cinematic",
+    "cutscene"
+   ],
+   "id": "skytalon.cut.leg5-intro",
+   "kind": "key-art",
+   "name": "航段五（太陽與黑洞）出征過場：冥河斷流、日冕火海、太陽背後的黑洞、迎著強光出擊",
+   "files": {
+    "raw": [
+     "SkyTalon/art/raw/intro5/s1_styx_breaks.png",
+     "SkyTalon/art/raw/intro5/s2_sun_fire.png",
+     "SkyTalon/art/raw/intro5/s3_black_hole.png",
+     "SkyTalon/art/raw/intro5/s4_into_the_glare.png"
+    ],
+    "prompt": [
+     "SkyTalon/art/raw/intro_gen_legs3to6.sh",
+     "SkyTalon/game/src/ui/intro.js"
+    ],
+    "shipped": [
+     "SkyTalon/game/src/assets/intro5/s1_styx_breaks.avif",
+     "SkyTalon/game/src/assets/intro5/s1_styx_breaks.lo.webp",
+     "SkyTalon/game/src/assets/intro5/s2_sun_fire.avif",
+     "SkyTalon/game/src/assets/intro5/s2_sun_fire.lo.webp",
+     "SkyTalon/game/src/assets/intro5/s3_black_hole.avif",
+     "SkyTalon/game/src/assets/intro5/s3_black_hole.lo.webp",
+     "SkyTalon/game/src/assets/intro5/s4_into_the_glare.avif",
+     "SkyTalon/game/src/assets/intro5/s4_into_the_glare.lo.webp"
+    ]
+   },
+   "technical": {
+    "format": "AVIF q50，540 × 960（9:16，非 9:16 的原圖從中間裁切）；另附 270 × 480 WebP q50 備用（不支援 AVIF 的瀏覽器）",
+    "use": "ui/intro.js：DOM + GSAP 演出，不是影片檔",
+    "drawCalls": "0（DOM，在畫布之上）"
+   },
+   "provenance": {
+    "tool": "Codex CLI 的圖片生成（2026-11-23，由 Claude 依使用者指示「開始做後面動畫」下指令）",
+    "job": "每段接上前一段的結尾（gdd/05 v8 §5 路線圖、gdd/13、gdd/12 §2）",
+    "postprocess": "PIL：裁成 9:16、LANCZOS 縮成 540×960、WebP quality 70"
+   },
+   "keywords": [
+    "cutscene",
+    "過場",
+    "航段五",
+    "出征",
+    "pixel",
+    "像素"
+   ],
+   "contentHash": "sha256:1d7f46f95cfd6a1835755020a756a5adf971b9e9fe95337f5214742cc7f351e1",
+   "game": "SkyTalon"
+  },
+  {
+   "status": "shipped",
+   "reusePolicy": "game-only",
+   "styleTags": [
+    "pixel",
+    "cinematic",
+    "cutscene"
+   ],
+   "id": "skytalon.cut.leg6-intro",
+   "kind": "key-art",
+   "name": "航段六（失落的中生代）出征過場：混沌碎裂、時空隧道、一億年前的地球、衝向三疊紀裂谷",
+   "files": {
+    "raw": [
+     "SkyTalon/art/raw/intro6/s1_chaos_breaks.png",
+     "SkyTalon/art/raw/intro6/s2_time_warp.png",
+     "SkyTalon/art/raw/intro6/s3_mesozoic.png",
+     "SkyTalon/art/raw/intro6/s4_prehistoric_sortie.png"
+    ],
+    "prompt": [
+     "SkyTalon/art/raw/intro_gen_legs3to6.sh",
+     "SkyTalon/game/src/ui/intro.js"
+    ],
+    "shipped": [
+     "SkyTalon/game/src/assets/intro6/s1_chaos_breaks.avif",
+     "SkyTalon/game/src/assets/intro6/s1_chaos_breaks.lo.webp",
+     "SkyTalon/game/src/assets/intro6/s2_time_warp.avif",
+     "SkyTalon/game/src/assets/intro6/s2_time_warp.lo.webp",
+     "SkyTalon/game/src/assets/intro6/s3_mesozoic.avif",
+     "SkyTalon/game/src/assets/intro6/s3_mesozoic.lo.webp",
+     "SkyTalon/game/src/assets/intro6/s4_prehistoric_sortie.avif",
+     "SkyTalon/game/src/assets/intro6/s4_prehistoric_sortie.lo.webp"
+    ]
+   },
+   "technical": {
+    "format": "AVIF q50，540 × 960（9:16，非 9:16 的原圖從中間裁切）；另附 270 × 480 WebP q50 備用（不支援 AVIF 的瀏覽器）",
+    "use": "ui/intro.js：DOM + GSAP 演出，不是影片檔",
+    "drawCalls": "0（DOM，在畫布之上）"
+   },
+   "provenance": {
+    "tool": "Codex CLI 的圖片生成（2026-11-23，由 Claude 依使用者指示「開始做後面動畫」下指令）",
+    "job": "每段接上前一段的結尾（gdd/05 v8 §5 路線圖、gdd/13、gdd/12 §2）",
+    "postprocess": "PIL：裁成 9:16、LANCZOS 縮成 540×960、WebP quality 70"
+   },
+   "keywords": [
+    "cutscene",
+    "過場",
+    "航段六",
+    "出征",
+    "pixel",
+    "像素"
+   ],
+   "contentHash": "sha256:f36b753557080854eb52bf6105cd578c2a4cb536f43a09ae00780ecc3b0c9a2b",
+   "game": "SkyTalon"
+  },
+  {
+   "status": "shipped",
+   "reusePolicy": "game-only",
+   "styleTags": [
+    "audio",
+    "music",
+    "procedural"
+   ],
+   "id": "skytalon.audio.music",
+   "kind": "procedural",
+   "name": "戰鬥音樂（程式即時合成）：每個航段一首飛行主題與一首頭目變奏",
+   "files": {
+    "raw": [],
+    "prompt": [],
+    "shipped": [
+     "SkyTalon/game/src/audio/music.js"
+    ]
+   },
+   "technical": {
+    "format": "Web Audio 步進音序器（管弦式合成：弦樂、銅管、圓號、撥弦、木槌、合唱、太鼓），0 bytes 音檔",
+    "use": "點選航段時隨開場動畫播該航段主題並接續進戰鬥，頭目進場切該航段的頭目變奏，擊破後切回，結算淡出；走音效的總音量，靜音鍵一併靜音"
+   },
+   "provenance": {
+    "tool": "Claude 自寫（參考 GitHub topic game-audio 中 uilianks/chirp 的「音樂寫成程式」概念，未使用其程式碼）",
+    "job": "使用者指示「如果沒有可以參考這裡」（UI Audio Collection 沒有音樂）"
+   },
+   "keywords": [
+    "music",
+    "音樂",
+    "bgm",
+    "procedural"
+   ],
+   "contentHash": "sha256:105ca7b0886f8b97160734357dac8933cb663fadce41ec2530546452304bb67b",
+   "game": "SkyTalon"
+  },
+  {
+   "status": "shipped",
+   "reusePolicy": "game-only",
+   "styleTags": [
+    "audio",
+    "sfx"
+   ],
+   "id": "skytalon.audio.ui-clips",
+   "kind": "audio-recipe",
+   "name": "介面與道具音效：通關、拾取、選裝備、推進、頭目進場",
+   "files": {
+    "raw": [
+     "SkyTalon/art/raw/audio/Success_2.mp3",
+     "SkyTalon/art/raw/audio/Fillup_Coin_2G.wav",
+     "SkyTalon/art/raw/audio/Powerup_Crystal_1.wav",
+     "SkyTalon/art/raw/audio/Swoosh_3.wav",
+     "SkyTalon/art/raw/audio/Appear_1.wav",
+     "SkyTalon/art/raw/audio/LICENSE-Unity-UI-Audio-Collection.txt"
+    ],
+    "prompt": [],
+    "shipped": [
+     "SkyTalon/game/src/assets/sfx/clear.mp3",
+     "SkyTalon/game/src/assets/sfx/pickup.mp3",
+     "SkyTalon/game/src/assets/sfx/powerup.mp3",
+     "SkyTalon/game/src/assets/sfx/boost.mp3",
+     "SkyTalon/game/src/assets/sfx/appear.mp3",
+     "SkyTalon/game/src/audio/clips.js"
+    ]
+   },
+   "technical": {
+    "format": "MP3 單聲道 22.05 kHz 48 kbps，裁切去頭尾、淡出、響度正規化（-16 LUFS）",
+    "size": "5 個合計約 26 KB",
+    "use": "audio/clips.js → Sfx.loadClips：同名的程式合成音效在解碼後被取代，解碼失敗時退回合成音效"
+   },
+   "provenance": {
+    "tool": "GitHub DevsDaddy/Unity-UI-Audio-Collection（MIT，Copyright (c) 2024 Elijah Brown）",
+    "job": "使用者指示「將戰鬥相關的音效或音樂追加，注意檔案大小」（2026-11-23）；授權檔在 art/raw/audio/，遊戲內「玩法說明」有出處",
+    "postprocess": "ffmpeg：silenceremove、atrim、afade、loudnorm，-ac 1 -ar 22050 -b:a 48k，去除中繼資料"
+   },
+   "keywords": [
+    "audio",
+    "音效",
+    "sfx",
+    "combat",
+    "戰鬥"
+   ],
+   "contentHash": "sha256:958956b1ee12d62085657203813ebf42ca780e1f89171e81d6c852ca7199b285",
+   "game": "SkyTalon"
+  },
+  {
+   "status": "shipped",
+   "reusePolicy": "game-only",
+   "styleTags": [
+    "audio",
+    "sfx"
+   ],
+   "id": "skytalon.audio.battle-clips",
+   "kind": "audio-recipe",
+   "name": "戰鬥音效：射擊、命中、擊毀（轟轟轟）、爆炸、頭目擊破、主角被擊中",
+   "files": {
+    "raw": [
+     "SkyTalon/art/raw/audio/selab/shot1.mp3",
+     "SkyTalon/art/raw/audio/selab/shot-struck1.mp3",
+     "SkyTalon/art/raw/audio/selab/bomb3.mp3",
+     "SkyTalon/art/raw/audio/selab/bomb1.mp3",
+     "SkyTalon/art/raw/audio/selab/big-explosion1.mp3"
+    ],
+    "prompt": [
+     "SkyTalon/art/tools/make_battle_sfx.py"
+    ],
+    "shipped": [
+     "SkyTalon/game/src/assets/sfx/shot.mp3",
+     "SkyTalon/game/src/assets/sfx/hit.mp3",
+     "SkyTalon/game/src/assets/sfx/kill.mp3",
+     "SkyTalon/game/src/assets/sfx/boom.mp3",
+     "SkyTalon/game/src/assets/sfx/bossdown.mp3",
+     "SkyTalon/game/src/assets/sfx/hurt.mp3"
+    ]
+   },
+   "technical": {
+    "format": "MP3 單聲道 22.05 kHz 48 kbps；每段從最響處前 8 ms 開始（無前導）；擊毀放慢到 85% 並疊兩聲回響；射擊放慢到 80% 並低通 2.2 kHz（不尖）；主角被擊中為立體聲 64 kbps，大爆炸放慢到 72%、低通 900 Hz、開頭疊金屬碎裂聲、長尾 2.1 秒",
+    "size": "6 個合計約 56 KB",
+    "use": "audio/clips.js；音效檔不以單獨檔案公開（只留本機），發布用的單檔遊戲 release/index.html 內嵌這些音效；原始碼裡沒有檔案時改播 audio/sfx.js 的合成音效"
+   },
+   "provenance": {
+    "tool": "効果音ラボ https://soundeffect-lab.info/sound/battle/battle2.html（免費、可商用、可加工；禁止再配布，故不放進公開 repo）",
+    "job": "使用者指示「從這邊找尋更好的替代音效」（2026-11-23），取代小森平的音效",
+    "postprocess": "python art/tools/make_battle_sfx.py"
+   },
+   "keywords": [
+    "audio",
+    "音效",
+    "sfx",
+    "combat",
+    "戰鬥",
+    "爆炸"
+   ],
+   "contentHash": "sha256:6f126bcf598e2cf4d0317e124825028402294c32a29ac5d5601a9953f50e3dfb",
+   "localOnly": true,
+   "game": "SkyTalon"
   },
   {
    "id": "swarmduel.chr.sasq.identity_v01",

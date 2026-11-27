@@ -7,5 +7,6 @@ export default defineConfig({
     assetsInlineLimit: 0,      // every asset stays a hashed file (cacheable, visible to size-check)
     reportCompressedSize: true,
     sourcemap: false,
+    rollupOptions: { input: { main: 'index.html', pixel: 'pixel.html' } },
   },
 });

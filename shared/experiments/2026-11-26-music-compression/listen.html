@@ -1,0 +1,64 @@
+<!doctype html>
+<meta charset="utf-8"><title>音樂壓縮試聽</title>
+<style>
+  body { font: 14px/1.5 system-ui, sans-serif; margin: 16px; background: #111; color: #ddd }
+  table { border-collapse: collapse; margin-bottom: 10px } td, th { padding: 4px 8px; border-bottom: 1px solid #333; text-align: left }
+  button { background: #2a2a2a; color: #eee; border: 1px solid #555; padding: 4px 10px; border-radius: 4px; cursor: pointer; margin: 2px }
+  button.on { background: #3a6; border-color: #3a6 }
+  .note { color: #999; max-width: 820px }
+  h3 { margin-top: 26px }
+</style>
+<h2>音樂壓縮試聽</h2>
+<p class="note">按鈕切換格式時會從同一時間點接著播。建議戴耳機。ACE-Step 三首的「原檔」本身就是官方 MP3 128k 解碼，所以比較的是「再壓一次」的損失。</p>
+<h3>格式比較（ACE-Step 1.5 XL 官方範例 + SkyTalon 合成曲）</h3>
+<div id="app"></div>
+<h3>循環接縫</h3>
+<p class="note">從接縫前 4 秒開始播，聽接回開頭那一下。「直接切 32 拍」是只照節拍硬切、沒對齊也沒交叉淡化的對照組。</p>
+<div id="loops"></div>
+<p><button id="stop">停止</button></p>
+<script>
+const V = [['wav16', 'wav', '原檔'], ['opus_s96', 'webm', 'Opus 96k'], ['opus_s64', 'webm', 'Opus 64k'], ['opus_s48', 'webm', 'Opus 48k'], ['opus_s32', 'webm', 'Opus 32k'], ['opus_s24', 'webm', 'Opus 24k'], ['aac_s96', 'm4a', 'AAC 96k'], ['vorbis_q0', 'ogg', 'Vorbis q0']];
+const TRACKS = [['inst_orchestral', 'ACE 管弦'], ['inst_synthwave', 'ACE 合成器'], ['inst_tango', 'ACE 探戈'], ['leg1', 'SkyTalon leg1'], ['leg4boss', 'SkyTalon leg4boss']];
+const LOOPS = { inst_orchestral: [28.128, 80.06, 1152002], inst_synthwave: [52.736, 124.15, 743231], inst_tango: [64.352, 116.57, 791549] };
+const ctx = new AudioContext(), cache = {};
+let cur = null, t0 = 0, off = 0, curTrack = null, curDur = 1;
+async function buf(u) { if (!cache[u]) cache[u] = await ctx.decodeAudioData(await (await fetch(u)).arrayBuffer()); return cache[u]; }
+function stop() { if (cur) { off = (ctx.currentTime - t0 + off) % curDur; cur.stop(); cur = null; } document.querySelectorAll('button.on').forEach(x => x.classList.remove('on')); }
+async function play(u, btn, { track, at, loopStart = 0, loopEnd } = {}) {
+  await ctx.resume(); const b = await buf(u);
+  const keep = track && track === curTrack ? (ctx.currentTime - t0 + off) : 0;
+  if (cur) { cur.stop(); cur = null; }
+  document.querySelectorAll('button.on').forEach(x => x.classList.remove('on'));
+  const src = ctx.createBufferSource(); src.buffer = b; src.loop = true;
+  src.loopStart = loopStart; src.loopEnd = loopEnd ?? b.duration; curDur = (loopEnd ?? b.duration) - loopStart;
+  off = at ?? (keep % b.duration); src.connect(ctx.destination); src.start(0, off); t0 = ctx.currentTime; cur = src; curTrack = track; btn?.classList.add('on');
+}
+const app = document.getElementById('app');
+for (const [s, label] of TRACKS) {
+  const t = document.createElement('table'); const tr = document.createElement('tr');
+  tr.innerHTML = `<th style="width:140px">${label}</th>`;
+  for (const [v, e, name] of V) {
+    const td = document.createElement('td'), b = document.createElement('button'); b.textContent = name;
+    b.onclick = () => play(v === 'wav16' ? `${s}.wav` : `out/${s}.${v}.${e}`, b, { track: s }); td.append(b); tr.append(td);
+  }
+  const td = document.createElement('td'), blind = document.createElement('button'), rev = document.createElement('button'), ans = document.createElement('span');
+  blind.textContent = '盲測'; rev.textContent = '揭曉'; rev.hidden = true;
+  blind.onclick = () => { const [v, e, name] = V[Math.floor(Math.random() * V.length)]; play(v === 'wav16' ? `${s}.wav` : `out/${s}.${v}.${e}`, blind, { track: s }); ans.textContent = ''; ans.dataset.v = name; rev.hidden = false; };
+  rev.onclick = () => ans.textContent = ' ' + ans.dataset.v;
+  td.append(blind, rev, ans); tr.append(td); t.append(tr); app.append(t);
+}
+const L = document.getElementById('loops');
+for (const [n, [st, bpm, N]] of Object.entries(LOOPS)) {
+  const t = document.createElement('table'), tr = document.createElement('tr'); tr.innerHTML = `<th style="width:140px">${n.replace('inst_', 'ACE ')}</th>`;
+  const end = N / 48000, naiveEnd = st + 32 * 60 / bpm;
+  const opts = [
+    ['直接切 32 拍', () => [`${n}.wav`, { at: naiveEnd - 4, loopStart: st, loopEnd: naiveEnd }]],
+    ['處理後 WAV', () => [`${n}_loop.wav`, { at: end - 4, loopEnd: end }]],
+    ['處理後 Opus 48k', () => [`out/${n}_looppad.opus_s48.webm`, { at: end - 4, loopEnd: end }]],
+    ['處理後 Opus 32k', () => [`out/${n}_looppad.opus_s32.webm`, { at: end - 4, loopEnd: end }]],
+  ];
+  for (const [label, f] of opts) { const td = document.createElement('td'), b = document.createElement('button'); b.textContent = label; b.onclick = () => { const [u, o] = f(); play(u, b, o); }; td.append(b); tr.append(td); }
+  t.append(tr); L.append(t);
+}
+document.getElementById('stop').onclick = stop;
+</script>
