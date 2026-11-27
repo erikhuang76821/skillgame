@@ -2,7 +2,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { fileURLToPath } from 'node:url';
-import { auditGame } from './game-audit.mjs';
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { createHash } from 'node:crypto';
+import { auditGame, musicChecks } from './game-audit.mjs';
 import { findRoot } from './rules.mjs';
 
 const root = findRoot(fileURLToPath(import.meta.url));
@@ -87,4 +91,46 @@ test('RULE-GAME-DOCS: scripted games must have the curve document and the playte
 test('a report that exists is still checked even when the game is not asked to have it', async () => {
   const all = await auditGame(root, 'shared/tools/fixtures/audit-bad', { profile: { scriptedProgression: false } });
   assert.equal(all.find(x => x.rule === 'RULE-GAME-REPORTS' && x.item.includes('playtest')).ok, false);
+});
+
+test('a game with documents but no game/ yet (the N2 spec gate): document rules are judged, sim rules fail explicitly', async () => {
+  const d = await auditGame(root, 'shared/tools/fixtures/audit-docs-only');
+  const one = rule => d.filter(x => x.rule === rule);
+  assert.ok(one('RULE-SPEC-FAIRNESS').every(x => x.ok));
+  assert.ok(one('RULE-GAME-DOCS').some(x => x.item.includes('涵蓋規格範本每一節') && x.ok));
+  const c = one('RULE-SPEC-CONSTANTS')[0];
+  assert.equal(c.ok, false); assert.match(c.detail, /無法載入 sim\.js/);
+  const p = one('RULE-SIM-PURITY')[0];
+  assert.equal(p.ok, false); assert.match(p.detail, /沒有 game\/src\/sim\//);   // nothing to check never counts as pure
+});
+
+test('the audit card runs on documents alone, so the N2 gate is not blocked by a file N4 produces', () => {
+  const card = JSON.parse(readFileSync(join(root, 'shared', 'tests', 'registry.json'), 'utf8')).tests.find(t => t.id === 'TEST-AUDIT');
+  assert.ok(card.needs.every(n => !n.startsWith('game/')), `TEST-AUDIT needs ${card.needs.join(', ')}`);
+});
+
+test('file-based music: a .webm and its sidecar must ship as one kind=music asset, with matching hash and fileMusic', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'audit-music-'));
+  try {
+    mkdirSync(join(dir, 'G', 'music'), { recursive: true });
+    const webm = Buffer.from('not really opus');
+    writeFileSync(join(dir, 'G', 'music', 'battle.webm'), webm);
+    const sha = createHash('sha256').update(webm).digest('hex');
+    const side = s => writeFileSync(join(dir, 'G', 'music', 'battle.loop.json'), JSON.stringify(s));
+    const asset = shipped => ({ m: { game: 'G', pathBase: 'G/', assets: [{ id: 'G.music.battle', kind: 'music', files: { shipped } }] } });
+    const run = (profile, shipped = ['music/battle.webm', 'music/battle.loop.json']) => musicChecks(dir, 'G', profile, [asset(shipped)]);
+    const bad = rows => rows.filter(r => !r[2]).map(r => r[4]).join(' | ');
+
+    side({ file: 'battle.webm', samples: 768000, sampleRate: 48000, sha256: sha });
+    assert.equal(bad(run({ fileMusic: true })), '');
+    assert.match(bad(run({ fileMusic: false })), /fileMusic 不是 true/);
+    assert.match(bad(run({ fileMusic: true }, ['music/battle.webm'])), /同時有 \.webm 與 \.loop\.json/);
+    assert.match(bad(run({ fileMusic: true }, ['music/battle.loop.json', 'music/battle.webm'])), /第一個/);
+    side({ file: 'battle.webm', samples: 768000, sampleRate: 48000, sha256: 'x' });
+    assert.match(bad(run({ fileMusic: true })), /sha256 與 \.webm 不符/);
+    side({ file: 'other.webm', samples: 0, sampleRate: 48000, sha256: sha });
+    assert.match(bad(run({ fileMusic: true })), /正整數.*other\.webm/);
+    assert.match(bad(musicChecks(dir, 'G', { fileMusic: true }, [])), /沒有 kind=music/);
+    assert.deepEqual(musicChecks(dir, 'G', { fileMusic: false }, []), []);
+  } finally { rmSync(dir, { recursive: true, force: true }); }
 });

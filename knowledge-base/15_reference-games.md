@@ -146,12 +146,20 @@ reviewedAt: 2026-10-21
 | 匯流排 | **沒有**：每個 gain 都直接接 `ctx.destination` | bgm 0.55 / sfx 0.75 → master → **DynamicsCompressor**（threshold -14、knee 18、ratio 6、attack 0.004、release 0.16）→ 輸出 |
 | 節流 | `_throttle`：揮擊 45 ms、重擊 55 ms、拾取 32 ms | 每個 key 各自限制：射擊 48 ms、含 hit 的 38 ms、其他 25 ms；音高隨機 0.96–1.04 |
 | 空間感 | 無 | 只有射擊音有 stereo pan：`(x/w-0.5)*1.4`，限制在 ±0.85 |
+
+> 和 [14 音效](14_audio.md) 對照：TK 證明「全合成」也能撐出有題材感的 BGM 和 SFX（0 bytes），但沒有 master bus 和 compressor，大量同時發聲時容易爆音；95 的 bus 加 compressor 結構值得照抄，BGM 用整首解碼則要避開。
+
+### 3.1 解鎖、背景與觸發時機
+<!-- card: KB-reference-games.audio-triggers; topic=audio -->
+
+| 項目 | TK | 95 |
+|---|---|---|
 | 靜音 | 只翻 `enabled` 旗標，ctx 不 suspend | master 設 0 |
 | 解鎖 | 6 種首次互動事件都呼叫 `init()`：resume、播 1 frame 靜音 buffer、啟動 BGM | 第一次 pointerdown/keydown 時 `unlock()`，同時才開始預載 SFX（buffer 還沒好之前只播合成音） |
 | 背景 | 切到背景時 `suspendAudio`；**一般暫停不停 BGM** | visibilitychange、pagehide、blur 都會 suspend；靜音中不 resume |
 | 出處 | TK L1626–1996、L8798–8829 | 95 `audio.js` L14–281、`game.js` L336–366 |
 
-**觸發時機對照**
+**觸發時機**
 
 | 事件 | TK | 95 |
 |---|---|---|
@@ -164,8 +172,6 @@ reviewedAt: 2026-10-21
 | 大招 | `playCutInFanfare`：三連鼓加 6 音和弦 | `bomb_a/b/c`，音量 1.0，1.2–1.4 s |
 | BOSS | 出場 `playWarDrum`；擊破 `playBossSlainFanfare`：四鼓加 7 音和弦 | `boss_warning` 0.95；`shell_break`；`boss_destroy` |
 | UI | 無 | `ui_click`（合成） |
-
-> 和 [14 音效](14_audio.md) 對照：TK 證明「全合成」也能撐出有題材感的 BGM 和 SFX（0 bytes），但沒有 master bus 和 compressor，大量同時發聲時容易爆音；95 的 bus 加 compressor 結構值得照抄，BGM 用整首解碼則要避開。
 
 ---
 

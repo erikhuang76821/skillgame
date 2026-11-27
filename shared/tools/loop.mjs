@@ -259,8 +259,9 @@ export async function runGate(root, game, node, opts = {}) {
   let audit = null, stopped = false;
   for (const t of planGate(wanted)) {
     const row = { id: t.id, cost: t.cost };
-    if (t.kind === 'review') { tests.push({ ...row, status: 'review', detail: '人工審查（log --approve）' }); continue; }
-    if (!t.runnable) { tests.push({ ...row, status: 'blocked', detail: `缺 ${t.missing.join('、')}` }); continue; }
+    // A review card without its material cannot be reviewed: blocked like any other card, never "awaiting review".
+    if (t.kind === 'review' && t.runnable) { tests.push({ ...row, status: 'review', detail: '人工審查（log --approve）' }); continue; }
+    if (!t.runnable) { tests.push({ ...row, status: 'blocked', detail: `${t.kind === 'review' ? '無法審查：' : ''}缺 ${t.missing.join('、')}` }); continue; }
     if (stopped && t.cost !== 'cheap') { tests.push({ ...row, status: 'not-run', detail: '前一個 medium / heavy 測試失敗，未跑（不算通過）' }); continue; }
     if (t.kind === 'audit') {
       audit = await auditor(root, game, { profile: opts.profile });   // the audit judges the same profile as the context and the produces check
@@ -305,6 +306,18 @@ export async function runGate(root, game, node, opts = {}) {
       : mustRules.some(r => r.result === 'not-run') || extraBlocked ? 'blocked' : 'pass';
   const needsApproval = Boolean(node.checkpoint) || rules.some(r => r.result === 'review');
   return { result, needsApproval, rules, tests, missing, errors };
+}
+
+/**
+ * Why a `log` request must be refused, or null. Pure. lastGate is the node's latest gate event: when it had review
+ * rules, the approval is the review's verdict and has to say what was reviewed (--note), like a waiver.
+ */
+export function approvalError({ approve, waive, note, status, lastGate }) {
+  if (approve && !waive && status !== 'awaiting-approval') return { code: 1, msg: `目前是「${STATUS_LABEL[status]}」，沒有待核准的關卡結果（要核准略過請加 --waive 並寫 --note 理由）` };
+  if (waive && !note) return { code: 2, msg: '--waive 必須附 --note 寫明理由' };
+  const reviewed = (lastGate?.rules ?? []).filter(r => r.result === 'review').map(r => r.id);
+  if (approve && !waive && reviewed.length && !note) return { code: 2, msg: `關卡含人工審查規則（${reviewed.join('、')}），核准必須附 --note 寫明審查結論` };
+  return null;
 }
 
 /** Where to go after a gate: next nodes on pass; most upstream onFail target on failure; a person past maxIterations. */
@@ -452,9 +465,9 @@ async function main() {
     if (!approve && !rollback && !note) usage();
     if (rollback && !doc.nodes.some(n => n.id === rollback)) { console.error(`沒有節點 ${rollback}`); process.exit(2); }
     const waive = rest.includes('--waive');
-    if (approve && !waive && s.status !== 'awaiting-approval') { console.error(`${node.id} 目前是「${STATUS_LABEL[s.status]}」，沒有待核准的關卡結果（要核准略過請加 --waive 並寫 --note 理由）`); process.exit(1); }
-    if (waive && !note) { console.error('--waive 必須附 --note 寫明理由'); process.exit(2); }
     const events = readEvents(root, game);
+    const refused = approvalError({ approve, waive, note, status: s.status, lastGate: events.find(e => e.eventId === s.last) });
+    if (refused) { console.error(`${node.id} ${refused.msg}`); process.exit(refused.code); }
     const ev = writeEvent(root, game, {
       parent: events.at(-1)?.eventId ?? null, type: approve ? 'approval' : rollback ? 'rollback' : 'note', node: node.id,
       inputHash: s.inputHash, outputHash: s.outputHash, rollback: rollback ?? null,

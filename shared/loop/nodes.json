@@ -3,10 +3,11 @@
   "about": "迴圈節點圖（knowledge-base/decisions/2026-11-10-libraries-and-loop.md §4.2、§8）。節點只寫 facet 查詢與規則 id，不寫知識庫檔名；路徑一律相對於 <Game>/。由 shared/tools/loop.mjs 執行、index-build 驗證並產生 bootstrap.md §0 必讀表。",
   "fields": {
     "after": "上游節點；本節點的 inputHash = 上游（遞移）produces ＋ requires 的內容雜湊",
+    "requires": "本節點不改、但關卡結果依賴的路徑（可為目錄）；內容變了核准就過期（併入 inputHash）",
     "produces": "本節點只改這些路徑；outputHash 由它們算出，關卡通過後內容變了就是「需重驗」",
     "producesWhen": "{ <profile 旗標>: [路徑] }：只有該旗標不是 false 的遊戲才有這些產出（沒填時照樣要，關卡另由「資料待補」擋下）。算缺檔與雜湊時併入 produces",
     "pull": "取用宣告，語意同 shared/tools/context.mjs（$profile.* 代入；kb 可為選擇器陣列＝聯集）",
-    "gate.must": "關卡規則（id 或 RULE-X-*；\"*\" = 全部有效規則）。script 規則跑測試卡，review 規則與 checkpoint 要人工核准（綁 outputHash）",
+    "gate.must": "關卡規則（id 或 RULE-X-*；\"*\" = 全部有效規則）。script 規則跑測試卡，review 規則與 checkpoint 要人工核准（綁 inputHash 與 outputHash）；關卡含 review 規則時，核准必須附 --note 寫明審查結論",
     "gate.tests": "不實作任何規則、但本節點要跑的測試卡（例如 TEST-UNIT）",
     "onFail": "rule 對到的失敗自動路由到 goto；多個失敗取最上游。when 只是給人的提示，不自動路由。沒對到 → 本節點下一輪",
     "maxIterations": "同一 (node, inputHash) 的關卡失敗次數上限；達到就停下來交給人，不得改門檻"
@@ -95,13 +96,15 @@
       "after": ["N4-sim"],
       "pull": { "kb": { "topic": ["difficulty"], "genre": ["$profile.genre"], "kind": ["method", "principle", "lesson"] } },
       "budget": { "kbTokens": 6000 },
+      "requires": ["game/src/sim/", "game/tools/"],
       "produces": ["docs/skill_evidence_report.md", "docs/skill_evidence_ledger.json"],
       "producesWhen": { "scriptedProgression": ["docs/playtest_report.md", "gdd/07_difficulty_curve.md"] },
-      "gate": { "must": ["RULE-SKILL-EVIDENCE", "RULE-SKILL-NOT-LUCK", "RULE-SKILL-BEATS-SIMPLE", "RULE-SKILL-DOMINANCE", "RULE-SKILL-BASELINE", "RULE-CURVE-*"] },
+      "gate": { "must": ["RULE-SKILL-EVIDENCE", "RULE-SKILL-NOT-LUCK", "RULE-SKILL-BEATS-SIMPLE", "RULE-SKILL-CLOSENESS", "RULE-SKILL-DOMINANCE", "RULE-SKILL-BASELINE", "RULE-CURVE-*"] },
       "onFail": [
         { "rule": "RULE-SKILL-EVIDENCE", "goto": "N4-sim", "hint": "策略檔不完整或題數不足：補 tools/strategies.mjs（強、隨機、簡單，各寫明看得到什麼與能力限制），不動門檻" },
         { "rule": "RULE-SKILL-NOT-LUCK", "goto": "N2-spec", "hint": "強策略贏不了隨機策略＝結果主要由運氣決定：回規格改機制（改規格要 GAME.version+1）。改完要用下一批確認題" },
         { "rule": "RULE-SKILL-BEATS-SIMPLE", "goto": "N2-spec", "hint": "先確認強策略已經盡力（N4）；若一句話規則真的追得上，機制太淺，回規格加需要判斷的取捨（改規格要 GAME.version+1）。改完要用下一批確認題" },
+        { "when": "人工審查認為接近程度不足（強策略與簡單策略的差距不像技巧主導）", "goto": "N2-spec", "hint": "log --rollback N2-spec --note 寫明理由；改規格要 GAME.version+1" },
         { "rule": "RULE-CURVE-*", "goto": "N4-sim", "hint": "調難度腳本與段落表；結構問題回 N2" },
         { "when": "結構性問題", "goto": "N2-spec", "hint": "改規格要 GAME.version+1" }
       ],
@@ -162,13 +165,14 @@
     {
       "id": "N10-release", "name": "發布關卡（全量）",
       "after": ["N9-human"],
+      "requires": ["game/src/", "game/tools/"],
       "pull": { "rules": { "id": ["*"] } },
       "budget": { "kbTokens": 6000 },
       "produces": [],
       "gate": { "must": ["*"], "tests": ["TEST-UNIT"] },
       "onFail": [],
       "maxIterations": 3,
-      "checkpoint": "上線核准"
+      "checkpoint": "上線核准（N5 的接近程度未核准或標為無法判定時，不得對外主張技巧深度）"
     },
     {
       "id": "N11-feedback", "name": "回饋到三庫",

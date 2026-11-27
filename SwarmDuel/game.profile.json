@@ -5,6 +5,7 @@
   "skillAxis": ["aim", "routing"],
   "renderer": ["2d"],
   "scriptedProgression": true,
+  "fileMusic": false,
   "source": ["original"],
   "jurisdiction": ["TW", "US-*"],
   "artStyle": ["pixel"]

@@ -94,7 +94,7 @@ input 佇列 ─▶ sim.step()（固定 1/60 s，可一幀多步）─▶ sim.ev
 | 手繪大圖、3D 貼圖 ≥ 512² | KTX2（ETC1S；細節用 UASTC），transcoder 自架並計入包體 |
 | 主視覺 | WebP q78 / AVIF（只在 DOM） |
 | glTF | Meshopt 優先，Draco 只在模型量大時 |
-| 音樂 | Opus 48–64 kbps 單聲道循環，延遲載入 |
+| 音樂 | 立體聲 Opus／WebM 循環段，`shared/tools/music-pack.mjs` 產出（`RULE-MUSIC-ENCODE`、`RULE-MUSIC-LOOP`，見 [14 §5](14_audio.md)） |
 
 量測：`templates/src/debug/drawCalls.js`（包 `gl.draw*` 計數）、Spector.js。
 

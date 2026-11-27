@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "game": "audit-docs-only",
+  "genre": ["arena"],
+  "skillAxis": ["timing"],
+  "renderer": ["2d"],
+  "scriptedProgression": false,
+  "source": ["original"],
+  "jurisdiction": ["TW"],
+  "artStyle": ["procedural"]
+}

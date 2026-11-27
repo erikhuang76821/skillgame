@@ -1,0 +1,8 @@
+{
+  "about": "music-pack 的切段參數（工具設定，不是規則；出貨契約見 rules.json 的 RULE-MUSIC-ENCODE / RULE-MUSIC-LOOP）。改值會改變切法，請同時遞增 version，打包報告會記下用的是哪一版。",
+  "version": 1,
+  "crossfadeMs": 25,
+  "padMs": 100,
+  "startCandidates": [0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6],
+  "bpmRange": [70, 180]
+}

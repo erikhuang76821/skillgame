@@ -3,35 +3,35 @@
  "schemaVersion": 1,
  "about": "產生物，禁止手改。來源：knowledge-base/ 各頁的 front-matter 與 <!-- card: … --> 標記，詞彙 shared/index/facets.json；重建：node shared/tools/index-build.mjs。",
  "counts": {
-  "pages": 18,
-  "cards": 112,
+  "pages": 20,
+  "cards": 134,
   "unindexed": 27,
   "byKind": {
    "gap": 4,
    "lesson": 6,
-   "method": 51,
+   "method": 67,
    "principle": 14,
    "recipe": 9,
-   "research": 28
+   "research": 34
   },
   "byTopic": {
-   "art": 20,
-   "audio": 8,
-   "budget": 5,
+   "art": 28,
+   "audio": 11,
+   "budget": 8,
    "design": 24,
    "difficulty": 9,
-   "fairness": 16,
-   "input": 5,
-   "juice": 9,
-   "legal": 8,
+   "fairness": 18,
+   "input": 6,
+   "juice": 13,
+   "legal": 10,
    "liveops": 2,
    "market": 18,
    "monetization": 1,
-   "process": 6,
+   "process": 11,
    "scoring": 4,
-   "tech": 15,
+   "tech": 19,
    "theme": 4,
-   "ux": 7
+   "ux": 8
   }
  },
  "pages": [
@@ -144,7 +144,7 @@
    },
    "rules": [],
    "reviewedAt": "2026-10-21",
-   "cards": 5,
+   "cards": 6,
    "skipped": 0
   },
   {
@@ -252,8 +252,8 @@
     ]
    },
    "rules": [],
-   "reviewedAt": "2026-10-21",
-   "cards": 5,
+   "reviewedAt": "2026-11-24",
+   "cards": 6,
    "skipped": 0
   },
   {
@@ -270,8 +270,8 @@
     ]
    },
    "rules": [],
-   "reviewedAt": "2026-10-21",
-   "cards": 5,
+   "reviewedAt": "2026-11-26",
+   "cards": 8,
    "skipped": 0
   },
   {
@@ -291,7 +291,7 @@
    },
    "rules": [],
    "reviewedAt": "2026-10-21",
-   "cards": 9,
+   "cards": 10,
    "skipped": 0
   },
   {
@@ -348,6 +348,43 @@
    "reviewedAt": "2026-11-19",
    "cards": 9,
    "skipped": 1
+  },
+  {
+   "id": "KB-pixel-vfx-codex",
+   "path": "knowledge-base/18_pixel-vfx-codex.md",
+   "title": "18 外部特效庫：Pixel VFX Codex（像素特效圖鑑）",
+   "kind": "research",
+   "facets": {
+    "topic": [
+     "juice",
+     "art"
+    ],
+    "genre": [
+     "*"
+    ]
+   },
+   "rules": [],
+   "reviewedAt": "2026-11-20",
+   "cards": 10,
+   "skipped": 0
+  },
+  {
+   "id": "KB-vfx-spec",
+   "path": "knowledge-base/19_vfx-spec-templates.md",
+   "title": "19 特效規格：從畫面與企劃到 PixiJS 特效",
+   "kind": "method",
+   "facets": {
+    "topic": [
+     "art"
+    ],
+    "genre": [
+     "*"
+    ]
+   },
+   "rules": [],
+   "reviewedAt": "2026-11-20",
+   "cards": 6,
+   "skipped": 0
   },
   {
    "id": "KB-af-gate-lane-shooter",
@@ -979,8 +1016,8 @@
     "RULE-DRAWCALL-3D"
    ],
    "reviewedAt": "2026-10-21",
-   "tokens": 287,
-   "hash": "sha256:88e8a79eb79de191"
+   "tokens": 312,
+   "hash": "sha256:5fa4bae3b9398ae8"
   },
   {
    "id": "KB-tech-stack.bundle-budget",
@@ -1033,8 +1070,8 @@
    },
    "rules": [],
    "reviewedAt": "2026-10-21",
-   "tokens": 178,
-   "hash": "sha256:7575bbf085d1cb37"
+   "tokens": 187,
+   "hash": "sha256:5871193e78154a5f"
   },
   {
    "id": "KB-tech-stack.template",
@@ -1092,8 +1129,8 @@
    "id": "KB-juice-feel.effects-cost",
    "page": "KB-juice-feel",
    "path": "knowledge-base/05_juice-and-feel.md",
-   "line": 14,
-   "end": 30,
+   "line": 15,
+   "end": 31,
    "heading": [
     "1. 效果做法與成本"
    ],
@@ -1117,8 +1154,8 @@
    "id": "KB-juice-feel.gsap",
    "page": "KB-juice-feel",
    "path": "knowledge-base/05_juice-and-feel.md",
-   "line": 32,
-   "end": 62,
+   "line": 33,
+   "end": 63,
    "heading": [
     "2. GSAP 必設參數"
    ],
@@ -1140,8 +1177,8 @@
    "id": "KB-juice-feel.fallback-a11y",
    "page": "KB-juice-feel",
    "path": "knowledge-base/05_juice-and-feel.md",
-   "line": 64,
-   "end": 73,
+   "line": 65,
+   "end": 74,
    "heading": [
     "3. 降級與無障礙"
    ],
@@ -1164,8 +1201,8 @@
    "id": "KB-juice-feel.spine",
    "page": "KB-juice-feel",
    "path": "knowledge-base/05_juice-and-feel.md",
-   "line": 75,
-   "end": 83,
+   "line": 76,
+   "end": 84,
    "heading": [
     "4. Spine 要點（4.3）"
    ],
@@ -1188,8 +1225,8 @@
    "id": "KB-juice-feel.tuning",
    "page": "KB-juice-feel",
    "path": "knowledge-base/05_juice-and-feel.md",
-   "line": 85,
-   "end": 90,
+   "line": 86,
+   "end": 91,
    "heading": [
     "5. 調手感流程"
    ],
@@ -1307,7 +1344,7 @@
    "page": "KB-art-pipeline",
    "path": "knowledge-base/06_art-pipeline.md",
    "line": 61,
-   "end": 65,
+   "end": 66,
    "heading": [
     "5. 授權"
    ],
@@ -1323,8 +1360,32 @@
    },
    "rules": [],
    "reviewedAt": "2026-10-21",
-   "tokens": 69,
-   "hash": "sha256:49463e985d07bc74"
+   "tokens": 139,
+   "hash": "sha256:4545d02803c8dbc7"
+  },
+  {
+   "id": "KB-art-pipeline.stock-pixabay",
+   "page": "KB-art-pipeline",
+   "path": "knowledge-base/06_art-pipeline.md",
+   "line": 68,
+   "end": 103,
+   "heading": [
+    "6. 外部圖庫備案：Pixabay"
+   ],
+   "kind": "method",
+   "facets": {
+    "topic": [
+     "art",
+     "legal"
+    ],
+    "genre": [
+     "*"
+    ]
+   },
+   "rules": [],
+   "reviewedAt": "2026-10-21",
+   "tokens": 830,
+   "hash": "sha256:322d0575b29ab50f"
   },
   {
    "id": "KB-themes-liveops.skin-selection",
@@ -1369,8 +1430,8 @@
    },
    "rules": [],
    "reviewedAt": "2026-10-21",
-   "tokens": 237,
-   "hash": "sha256:5877b84ec79affe3"
+   "tokens": 266,
+   "hash": "sha256:785110894ded40d7"
   },
   {
    "id": "KB-themes-liveops.calendar",
@@ -1868,7 +1929,7 @@
     ]
    },
    "rules": [],
-   "reviewedAt": "2026-10-21",
+   "reviewedAt": "2026-11-24",
    "tokens": 449,
    "hash": "sha256:2f604b474b06287d"
   },
@@ -1892,7 +1953,7 @@
     ]
    },
    "rules": [],
-   "reviewedAt": "2026-10-21",
+   "reviewedAt": "2026-11-24",
    "tokens": 131,
    "hash": "sha256:649fe5f098c75d9a"
   },
@@ -1916,7 +1977,7 @@
     ]
    },
    "rules": [],
-   "reviewedAt": "2026-10-21",
+   "reviewedAt": "2026-11-24",
    "tokens": 201,
    "hash": "sha256:36847917f760a783"
   },
@@ -1940,18 +2001,48 @@
     ]
    },
    "rules": [],
-   "reviewedAt": "2026-10-21",
+   "reviewedAt": "2026-11-24",
    "tokens": 175,
    "hash": "sha256:2a41e6b773e4ff5f"
+  },
+  {
+   "id": "KB-input-fairness.drag-to-aim",
+   "page": "KB-input-fairness",
+   "path": "knowledge-base/13_input-fairness.md",
+   "line": 65,
+   "end": 88,
+   "heading": [
+    "5. 自由移動的觸控：相對拖曳追點"
+   ],
+   "kind": "method",
+   "facets": {
+    "topic": [
+     "input",
+     "ux"
+    ],
+    "genre": [
+     "shmup",
+     "survivor",
+     "arena"
+    ],
+    "skillAxis": [
+     "aim",
+     "reaction"
+    ]
+   },
+   "rules": [],
+   "reviewedAt": "2026-11-24",
+   "tokens": 663,
+   "hash": "sha256:c3d5073a2e402672"
   },
   {
    "id": "KB-input-fairness.todo",
    "page": "KB-input-fairness",
    "path": "knowledge-base/13_input-fairness.md",
-   "line": 65,
-   "end": 70,
+   "line": 90,
+   "end": 95,
    "heading": [
-    "5. 還沒做到的"
+    "6. 還沒做到的"
    ],
    "kind": "gap",
    "facets": {
@@ -1964,7 +2055,7 @@
     ]
    },
    "rules": [],
-   "reviewedAt": "2026-10-21",
+   "reviewedAt": "2026-11-24",
    "tokens": 170,
    "hash": "sha256:2f32f5b6ce95a217"
   },
@@ -1987,7 +2078,7 @@
     ]
    },
    "rules": [],
-   "reviewedAt": "2026-10-21",
+   "reviewedAt": "2026-11-26",
    "tokens": 210,
    "hash": "sha256:d0c1e07536b81178"
   },
@@ -2010,7 +2101,7 @@
     ]
    },
    "rules": [],
-   "reviewedAt": "2026-10-21",
+   "reviewedAt": "2026-11-26",
    "tokens": 236,
    "hash": "sha256:721f1c3ff75a311e"
   },
@@ -2033,9 +2124,9 @@
     ]
    },
    "rules": [],
-   "reviewedAt": "2026-10-21",
-   "tokens": 162,
-   "hash": "sha256:54ca5da63fbceb51"
+   "reviewedAt": "2026-11-26",
+   "tokens": 157,
+   "hash": "sha256:75503f2b7b213dff"
   },
   {
    "id": "KB-audio.rhythm-clock",
@@ -2056,18 +2147,95 @@
     ]
    },
    "rules": [],
-   "reviewedAt": "2026-10-21",
+   "reviewedAt": "2026-11-26",
    "tokens": 210,
    "hash": "sha256:d8cd1d818a960c29"
+  },
+  {
+   "id": "KB-audio.music-loop",
+   "page": "KB-audio",
+   "path": "knowledge-base/14_audio.md",
+   "line": 61,
+   "end": 70,
+   "heading": [
+    "5. 音樂檔：只出貨循環段，Opus／WebM"
+   ],
+   "kind": "method",
+   "facets": {
+    "topic": [
+     "audio",
+     "budget"
+    ],
+    "genre": [
+     "*"
+    ]
+   },
+   "rules": [
+    "RULE-MUSIC-ENCODE",
+    "RULE-MUSIC-LOOP"
+   ],
+   "reviewedAt": "2026-11-26",
+   "tokens": 270,
+   "hash": "sha256:ca0270cddb824f16"
+  },
+  {
+   "id": "KB-audio.music-rhythm",
+   "page": "KB-audio",
+   "path": "knowledge-base/14_audio.md",
+   "line": 72,
+   "end": 75,
+   "heading": [
+    "5. 音樂檔：只出貨循環段，Opus／WebM",
+    "5.1 節奏遊戲的音樂檔"
+   ],
+   "parent": "KB-audio.music-loop",
+   "kind": "method",
+   "facets": {
+    "topic": [
+     "audio"
+    ],
+    "genre": [
+     "rhythm"
+    ]
+   },
+   "rules": [],
+   "reviewedAt": "2026-11-26",
+   "tokens": 46,
+   "hash": "sha256:a439d9a4bd2569fe"
+  },
+  {
+   "id": "KB-audio.music-evidence",
+   "page": "KB-audio",
+   "path": "knowledge-base/14_audio.md",
+   "line": 77,
+   "end": 86,
+   "heading": [
+    "5. 音樂檔：只出貨循環段，Opus／WebM",
+    "5.2 實測依據"
+   ],
+   "parent": "KB-audio.music-loop",
+   "kind": "research",
+   "facets": {
+    "topic": [
+     "budget"
+    ],
+    "genre": [
+     "*"
+    ]
+   },
+   "rules": [],
+   "reviewedAt": "2026-11-26",
+   "tokens": 251,
+   "hash": "sha256:6b50d3267fb94db7"
   },
   {
    "id": "KB-audio.todo",
    "page": "KB-audio",
    "path": "knowledge-base/14_audio.md",
-   "line": 61,
-   "end": 66,
+   "line": 88,
+   "end": 94,
    "heading": [
-    "5. 還沒做到的"
+    "6. 還沒做到的"
    ],
    "kind": "gap",
    "facets": {
@@ -2079,9 +2247,9 @@
     ]
    },
    "rules": [],
-   "reviewedAt": "2026-10-21",
-   "tokens": 79,
-   "hash": "sha256:9b67feda747b9446"
+   "reviewedAt": "2026-11-26",
+   "tokens": 176,
+   "hash": "sha256:b0db8eac35823231"
   },
   {
    "id": "KB-reference-games.summary",
@@ -2158,7 +2326,7 @@
    "page": "KB-reference-games",
    "path": "knowledge-base/15_reference-games.md",
    "line": 139,
-   "end": 170,
+   "end": 150,
    "heading": [
     "3. 音效應用"
    ],
@@ -2173,15 +2341,40 @@
    },
    "rules": [],
    "reviewedAt": "2026-10-21",
-   "tokens": 888,
-   "hash": "sha256:8f630a5cd358166f"
+   "tokens": 444,
+   "hash": "sha256:2447167c9f6b1fcf"
+  },
+  {
+   "id": "KB-reference-games.audio-triggers",
+   "page": "KB-reference-games",
+   "path": "knowledge-base/15_reference-games.md",
+   "line": 152,
+   "end": 176,
+   "heading": [
+    "3. 音效應用",
+    "3.1 解鎖、背景與觸發時機"
+   ],
+   "parent": "KB-reference-games.audio",
+   "kind": "research",
+   "facets": {
+    "topic": [
+     "audio"
+    ],
+    "genre": [
+     "*"
+    ]
+   },
+   "rules": [],
+   "reviewedAt": "2026-10-21",
+   "tokens": 451,
+   "hash": "sha256:92d2a62f57ceeffa"
   },
   {
    "id": "KB-reference-games.cutscenes",
    "page": "KB-reference-games",
    "path": "knowledge-base/15_reference-games.md",
-   "line": 172,
-   "end": 212,
+   "line": 178,
+   "end": 218,
    "heading": [
     "4. 過場與演出"
    ],
@@ -2204,8 +2397,8 @@
    "id": "KB-reference-games.ui-ux",
    "page": "KB-reference-games",
    "path": "knowledge-base/15_reference-games.md",
-   "line": 214,
-   "end": 233,
+   "line": 220,
+   "end": 239,
    "heading": [
     "5. UI/UX"
    ],
@@ -2227,8 +2420,8 @@
    "id": "KB-reference-games.borrow-avoid",
    "page": "KB-reference-games",
    "path": "knowledge-base/15_reference-games.md",
-   "line": 235,
-   "end": 274,
+   "line": 241,
+   "end": 280,
    "heading": [
     "6. 可借用 / 要避開"
    ],
@@ -2252,8 +2445,8 @@
    "id": "KB-reference-games.fairness-check",
    "page": "KB-reference-games",
    "path": "knowledge-base/15_reference-games.md",
-   "line": 276,
-   "end": 290,
+   "line": 282,
+   "end": 296,
    "heading": [
     "7. 對照 skill game 公平性原則"
    ],
@@ -2275,8 +2468,8 @@
    "id": "KB-reference-games.unverified",
    "page": "KB-reference-games",
    "path": "knowledge-base/15_reference-games.md",
-   "line": 292,
-   "end": 304,
+   "line": 298,
+   "end": 310,
    "heading": [
     "8. 拿不到 / 未驗證"
    ],
@@ -2829,6 +3022,394 @@
    "reviewedAt": "2026-11-19",
    "tokens": 151,
    "hash": "sha256:9af8621d1c2ecbe1"
+  },
+  {
+   "id": "KB-pixel-vfx-codex.overview",
+   "page": "KB-pixel-vfx-codex",
+   "path": "knowledge-base/18_pixel-vfx-codex.md",
+   "line": 13,
+   "end": 21,
+   "heading": [
+    "1. 它是什麼、授權"
+   ],
+   "kind": "research",
+   "facets": {
+    "topic": [
+     "art",
+     "legal"
+    ],
+    "genre": [
+     "*"
+    ],
+    "artStyle": [
+     "pixel"
+    ]
+   },
+   "rules": [],
+   "reviewedAt": "2026-11-20",
+   "tokens": 475,
+   "hash": "sha256:e974e6030fe994ed"
+  },
+  {
+   "id": "KB-pixel-vfx-codex.catalog",
+   "page": "KB-pixel-vfx-codex",
+   "path": "knowledge-base/18_pixel-vfx-codex.md",
+   "line": 23,
+   "end": 35,
+   "heading": [
+    "2. 目錄：六個包與分類"
+   ],
+   "kind": "research",
+   "facets": {
+    "topic": [
+     "art"
+    ],
+    "genre": [
+     "*"
+    ],
+    "artStyle": [
+     "pixel"
+    ]
+   },
+   "rules": [],
+   "reviewedAt": "2026-11-20",
+   "tokens": 562,
+   "hash": "sha256:b45cf2a1445d27dc"
+  },
+  {
+   "id": "KB-pixel-vfx-codex.motion-rules",
+   "page": "KB-pixel-vfx-codex",
+   "path": "knowledge-base/18_pixel-vfx-codex.md",
+   "line": 37,
+   "end": 51,
+   "heading": [
+    "3. 動態規則：不要等速"
+   ],
+   "kind": "method",
+   "facets": {
+    "topic": [
+     "juice"
+    ],
+    "genre": [
+     "*"
+    ]
+   },
+   "rules": [],
+   "reviewedAt": "2026-11-20",
+   "tokens": 433,
+   "hash": "sha256:ebc73c9da032b360"
+  },
+  {
+   "id": "KB-pixel-vfx-codex.beats",
+   "page": "KB-pixel-vfx-codex",
+   "path": "knowledge-base/18_pixel-vfx-codex.md",
+   "line": 53,
+   "end": 67,
+   "heading": [
+    "4. 節拍時間軸：頓幀、震動、閃光的參數化"
+   ],
+   "kind": "method",
+   "facets": {
+    "topic": [
+     "juice"
+    ],
+    "genre": [
+     "*"
+    ]
+   },
+   "rules": [],
+   "reviewedAt": "2026-11-20",
+   "tokens": 462,
+   "hash": "sha256:7e5d3495bfa8bdf9"
+  },
+  {
+   "id": "KB-pixel-vfx-codex.skill-fit",
+   "page": "KB-pixel-vfx-codex",
+   "path": "knowledge-base/18_pixel-vfx-codex.md",
+   "line": 69,
+   "end": 79,
+   "heading": [
+    "5. 對 skill game 最有價值的三個設計"
+   ],
+   "kind": "method",
+   "facets": {
+    "topic": [
+     "juice",
+     "fairness",
+     "tech"
+    ],
+    "genre": [
+     "*"
+    ]
+   },
+   "rules": [],
+   "reviewedAt": "2026-11-20",
+   "tokens": 658,
+   "hash": "sha256:8c00c5ad97f301b0"
+  },
+  {
+   "id": "KB-pixel-vfx-codex.limits",
+   "page": "KB-pixel-vfx-codex",
+   "path": "knowledge-base/18_pixel-vfx-codex.md",
+   "line": 81,
+   "end": 89,
+   "heading": [
+    "6. 不能直接用的地方"
+   ],
+   "kind": "research",
+   "facets": {
+    "topic": [
+     "juice",
+     "budget",
+     "tech"
+    ],
+    "genre": [
+     "*"
+    ]
+   },
+   "rules": [],
+   "reviewedAt": "2026-11-20",
+   "tokens": 552,
+   "hash": "sha256:734d15b4c99b943f"
+  },
+  {
+   "id": "KB-pixel-vfx-codex.palette",
+   "page": "KB-pixel-vfx-codex",
+   "path": "knowledge-base/18_pixel-vfx-codex.md",
+   "line": 91,
+   "end": 112,
+   "heading": [
+    "7. 像素風規格（只在像素風專案記錄）"
+   ],
+   "kind": "research",
+   "facets": {
+    "topic": [
+     "art"
+    ],
+    "genre": [
+     "*"
+    ],
+    "artStyle": [
+     "pixel"
+    ]
+   },
+   "rules": [],
+   "reviewedAt": "2026-11-20",
+   "tokens": 556,
+   "hash": "sha256:6adc9a908e3abbff"
+  },
+  {
+   "id": "KB-pixel-vfx-codex.workflow",
+   "page": "KB-pixel-vfx-codex",
+   "path": "knowledge-base/18_pixel-vfx-codex.md",
+   "line": 114,
+   "end": 123,
+   "heading": [
+    "8. 取用流程"
+   ],
+   "kind": "method",
+   "facets": {
+    "topic": [
+     "art",
+     "process"
+    ],
+    "genre": [
+     "*"
+    ],
+    "artStyle": [
+     "pixel"
+    ]
+   },
+   "rules": [],
+   "reviewedAt": "2026-11-20",
+   "tokens": 286,
+   "hash": "sha256:2fef26fc10a88e64"
+  },
+  {
+   "id": "KB-pixel-vfx-codex.storyboard",
+   "page": "KB-pixel-vfx-codex",
+   "path": "knowledge-base/18_pixel-vfx-codex.md",
+   "line": 125,
+   "end": 141,
+   "heading": [
+    "9. 分鏡與路徑"
+   ],
+   "kind": "method",
+   "facets": {
+    "topic": [
+     "art"
+    ],
+    "genre": [
+     "*"
+    ]
+   },
+   "rules": [],
+   "reviewedAt": "2026-11-20",
+   "tokens": 516,
+   "hash": "sha256:e8330e9755cf801b"
+  },
+  {
+   "id": "KB-pixel-vfx-codex.deliverables",
+   "page": "KB-pixel-vfx-codex",
+   "path": "knowledge-base/18_pixel-vfx-codex.md",
+   "line": 143,
+   "end": 154,
+   "heading": [
+    "10. 交付與驗收素材"
+   ],
+   "kind": "method",
+   "facets": {
+    "topic": [
+     "art",
+     "process"
+    ],
+    "genre": [
+     "*"
+    ]
+   },
+   "rules": [],
+   "reviewedAt": "2026-11-20",
+   "tokens": 458,
+   "hash": "sha256:5d6ae9e6d293972e"
+  },
+  {
+   "id": "KB-vfx-spec.workflow",
+   "page": "KB-vfx-spec",
+   "path": "knowledge-base/19_vfx-spec-templates.md",
+   "line": 14,
+   "end": 21,
+   "heading": [
+    "1. 流程：先規格、再程式"
+   ],
+   "kind": "method",
+   "facets": {
+    "topic": [
+     "process"
+    ],
+    "genre": [
+     "*"
+    ]
+   },
+   "rules": [],
+   "reviewedAt": "2026-11-20",
+   "tokens": 302,
+   "hash": "sha256:a7437f5872315283"
+  },
+  {
+   "id": "KB-vfx-spec.templates",
+   "page": "KB-vfx-spec",
+   "path": "knowledge-base/19_vfx-spec-templates.md",
+   "line": 23,
+   "end": 50,
+   "heading": [
+    "2. 模板與模組"
+   ],
+   "kind": "method",
+   "facets": {
+    "topic": [
+     "art"
+    ],
+    "genre": [
+     "*"
+    ]
+   },
+   "rules": [],
+   "reviewedAt": "2026-11-20",
+   "tokens": 914,
+   "hash": "sha256:7b49f6bf1bcc0920"
+  },
+  {
+   "id": "KB-vfx-spec.skill-fit",
+   "page": "KB-vfx-spec",
+   "path": "knowledge-base/19_vfx-spec-templates.md",
+   "line": 52,
+   "end": 60,
+   "heading": [
+    "3. 跟 skill game 架構的接法"
+   ],
+   "kind": "method",
+   "facets": {
+    "topic": [
+     "fairness",
+     "tech"
+    ],
+    "genre": [
+     "*"
+    ]
+   },
+   "rules": [],
+   "reviewedAt": "2026-11-20",
+   "tokens": 384,
+   "hash": "sha256:b15e5de869784be2"
+  },
+  {
+   "id": "KB-vfx-spec.contract",
+   "page": "KB-vfx-spec",
+   "path": "knowledge-base/19_vfx-spec-templates.md",
+   "line": 62,
+   "end": 70,
+   "heading": [
+    "4. 規格格式與實作契約"
+   ],
+   "kind": "method",
+   "facets": {
+    "topic": [
+     "tech"
+    ],
+    "genre": [
+     "*"
+    ]
+   },
+   "rules": [],
+   "reviewedAt": "2026-11-20",
+   "tokens": 399,
+   "hash": "sha256:f7b2437fa8fa52e7"
+  },
+  {
+   "id": "KB-vfx-spec.examples",
+   "page": "KB-vfx-spec",
+   "path": "knowledge-base/19_vfx-spec-templates.md",
+   "line": 72,
+   "end": 80,
+   "heading": [
+    "5. 兩筆樣本與驗收順序"
+   ],
+   "kind": "method",
+   "facets": {
+    "topic": [
+     "process"
+    ],
+    "genre": [
+     "*"
+    ]
+   },
+   "rules": [],
+   "reviewedAt": "2026-11-20",
+   "tokens": 387,
+   "hash": "sha256:3a5f59ba03f08195"
+  },
+  {
+   "id": "KB-vfx-spec.prompt",
+   "page": "KB-vfx-spec",
+   "path": "knowledge-base/19_vfx-spec-templates.md",
+   "line": 82,
+   "end": 93,
+   "heading": [
+    "6. 交給 AI 的提示詞（已改成本 repo 版）"
+   ],
+   "kind": "method",
+   "facets": {
+    "topic": [
+     "process"
+    ],
+    "genre": [
+     "*"
+    ]
+   },
+   "rules": [],
+   "reviewedAt": "2026-11-20",
+   "tokens": 383,
+   "hash": "sha256:8b67f9b91b9f9ad0"
   },
   {
    "id": "KB-af-gate-lane-shooter.pitch",

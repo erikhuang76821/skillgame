@@ -1,12 +1,13 @@
 // Game completeness audit: is a game folder done the way knowledge-base/08 says, not just "tests pass"?
 // Must: RULE-GAME-DOCS, RULE-GAME-REPORTS, RULE-REPORT-FRESH, RULE-SPEC-CONSTANTS, RULE-SPEC-FAIRNESS,
-//       RULE-AF-ADAPTATION, RULE-SIM-PURITY.  Should (warnings): RULE-TEMPLATE-LEFTOVER, RULE-KB-CITED, RULE-ASSET-REGISTER.
+//       RULE-AF-ADAPTATION, RULE-SIM-PURITY, RULE-NO-FORCED-HIT (dodging genres only).  Should (warnings): RULE-TEMPLATE-LEFTOVER, RULE-KB-CITED, RULE-ASSET-REGISTER.
 // Everything it requires comes from knowledge-base/index/rules.json via rules.mjs; never list files or names here.
 //
 //   node shared/tools/game-audit.mjs <Game> [<Game>…]   one or more game folders
 //   node shared/tools/game-audit.mjs --all              every folder with a game/ subfolder
 //   cd <Game>/game && npm run audit                     the game this folder belongs to
 // Exit 1 when a must-level check fails; should-level findings are printed as warnings.
+import { createHash } from 'node:crypto';
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { extname, join, relative } from 'node:path';
 import { pathToFileURL } from 'node:url';
@@ -155,11 +156,21 @@ export async function auditGame(root, game, opts = {}) {
   // RULE-SIM-PURITY: forbidden identifiers in sim/ code (comments do not count)
   const forbidden = rules.value('RULE-SIM-PURITY', 'forbidden');
   const re = new RegExp(`(?<![\\w.$])(${forbidden.map(escapeRe).join('|')})(?![\\w$])`, 'g');
-  const hits = [];
-  for (const f of walk(join(dir, 'game', 'src', 'sim')).filter(f => /\.m?js$/.test(f))) {
+  const hits = [], simFiles = walk(join(dir, 'game', 'src', 'sim')).filter(f => /\.m?js$/.test(f));
+  for (const f of simFiles) {
     stripComments(read(f)).split('\n').forEach((l, i) => { for (const m of l.matchAll(re)) hits.push(`${relative(join(dir, 'game'), f).replace(/\\/g, '/')}:${i + 1} ${m[1]}`); });
   }
-  add('RULE-SIM-PURITY', 'must', !hits.length, 'sim/ 沒有 DOM / 渲染 / 時鐘 / 未播種亂數', hits.slice(0, 6).join('；') + (hits.length > 6 ? `…共 ${hits.length} 處` : ''));
+  // No sim code yet (a game before N4) is not "pure": there is nothing to check, so the rule fails rather than passing empty.
+  add('RULE-SIM-PURITY', 'must', simFiles.length > 0 && !hits.length, 'sim/ 沒有 DOM / 渲染 / 時鐘 / 未播種亂數',
+    !simFiles.length ? '沒有 game/src/sim/ 程式可檢查' : hits.slice(0, 6).join('；') + (hits.length > 6 ? `…共 ${hits.length} 處` : ''));
+
+  // RULE-NO-FORCED-HIT: a game of a dodging genre carries a test, by name, that no fixed hazard closes every way through
+  const dodging = rules.value('RULE-NO-FORCED-HIT', 'genres').filter(g => (profile?.genre ?? []).includes(g));
+  if (dodging.length) {
+    const marker = rules.value('RULE-NO-FORCED-HIT', 'testMarker');
+    const has = walk(join(dir, 'game', 'test')).filter(f => /.m?js$/.test(f)).some(f => (read(f) ?? '').includes(marker));
+    add('RULE-NO-FORCED-HIT', 'must', has, `game/test 有「${marker}」測試（品類 ${dodging.join('、')}）`, has ? '' : '沒有證明「固定的危險永遠留一條路」的測試');
+  }
 
   // RULE-TEMPLATE-LEFTOVER (should): files that must become this game's own
   for (const f of rules.value('RULE-TEMPLATE-LEFTOVER', 'rewrite')) {
@@ -188,7 +199,44 @@ export async function auditGame(root, game, opts = {}) {
   const unregistered = media.filter(f => !paths.has(relative(root, f).replace(/\\/g, '/')) && !hashes.has(fileHash(f)));
   if (unregistered.length) add('RULE-ASSET-REGISTER', 'should', false, `資產登錄（${media.length - unregistered.length}/${media.length}）`,
     `未登錄：${unregistered.slice(0, 5).map(f => relative(join(dir, 'game'), f).replace(/\\/g, '/')).join('、')}${unregistered.length > 5 ? '…' : ''}（寫進 ${game}/art/manifest.json 後跑 node shared/tools/index-build.mjs，見 knowledge-base/10_asset-library.md）`);
+
+  for (const x of musicChecks(root, game, profile, manifests)) add(...x);
   return results;
+}
+
+/**
+ * RULE-MUSIC-LOOP (should): file-based BGM ships as one kind=music asset holding a .webm and its .loop.json sidecar
+ * (samples, sampleRate, sha256 of the webm), made by shared/tools/music-pack.mjs. Static checks only: the decode check
+ * runs when the file is packed, the seam is checked by ear (knowledge-base/14 §5).
+ * @returns [rule, level, ok, item, detail] rows (exported for tests)
+ */
+export function musicChecks(root, game, profile, manifests) {
+  const out = [], add = (...x) => out.push(x);
+  const music = manifests.filter(({ m }) => m.game === game).flatMap(({ m }) => m.assets.filter(a => a.kind === 'music').map(a => ({ m, a })));
+  const fileMusic = profile?.fileMusic;
+  if (music.length && fileMusic !== true) add('RULE-MUSIC-LOOP', 'should', false, 'fileMusic', `art/manifest.json 有 ${music.length} 筆 kind=music，但 game.profile.json 的 fileMusic 不是 true`);
+  if (fileMusic === true && !music.length) add('RULE-MUSIC-LOOP', 'should', false, 'fileMusic', 'game.profile.json 的 fileMusic 為 true，但 art/manifest.json 沒有 kind=music 資產');
+  for (const { m, a } of music) {
+    const shipped = a.files?.shipped ?? [], at = `音樂 ${a.id}`;
+    const webm = shipped.find(f => f.endsWith('.webm')), side = shipped.find(f => f.endsWith('.loop.json'));
+    const problems = [];
+    if (!webm || !side) problems.push('files.shipped 要同時有 .webm 與 .loop.json');
+    else {
+      if (shipped[0] !== webm) problems.push('.webm 要排在 files.shipped 第一個（contentHash 以它計算）');
+      let s = null;
+      try { s = JSON.parse(read(join(root, m.pathBase, side))); } catch { /* reported below */ }
+      if (!s || typeof s !== 'object') { s = null; problems.push(`${side} 讀不到或不是 JSON 物件`); }
+      const wpath = join(root, m.pathBase, webm);
+      if (s) {
+        if (!Number.isInteger(s.samples) || s.samples <= 0 || !Number.isInteger(s.sampleRate) || s.sampleRate <= 0) problems.push('sidecar 的 samples / sampleRate 要是正整數');
+        if (s.file !== webm.split('/').pop()) problems.push(`sidecar 的 file（${s.file}）不是 ${webm.split('/').pop()}`);
+        if (!existsSync(wpath)) problems.push(`找不到 ${webm}`);
+        else if (s.sha256 !== createHash('sha256').update(readFileSync(wpath)).digest('hex')) problems.push('sidecar 的 sha256 與 .webm 不符（重新打包或配錯檔）');
+      }
+    }
+    add('RULE-MUSIC-LOOP', 'should', !problems.length, at, problems.join('；'));
+  }
+  return out;
 }
 
 /** Print one game's results as a markdown table; returns true when every must-level check passed. */

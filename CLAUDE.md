@@ -1,12 +1,12 @@
 # SKILLGAME
 
-輕量化 HTML5 單機 Skill Game 作品集。每個遊戲一個資料夾（目前：`SwarmDuel/`、`TwinStrike/`）。
+輕量化 HTML5 單機 Skill Game 作品集。每個遊戲一個資料夾（目前：`SwarmDuel/`、`TwinStrike/`、`GateLane/`（原型））。
 
 跨遊戲的調查與技術框架彙整在 [`knowledge-base/`](knowledge-base/README.md)（市場法規、規則卡索引、技術棧、美術管線、生產流程、知識缺口）。開新遊戲前先讀。
 
 ## 規則（唯一來源）
 
-所有門檻與規範寫在 [`knowledge-base/index/rules.json`](knowledge-base/index/rules.json)，每條有 ID、值、量測方法、把關程式。把關程式（`size-check`、`skill-dominance`、`playtest`）經 [`shared/tools/rules.mjs`](shared/tools/rules.mjs) 取值，**不得在程式或文件裡另寫數字**。架構說明：[`knowledge-base/decisions/2026-10-21-kb-asset-architecture.md`](knowledge-base/decisions/2026-10-21-kb-asset-architecture.md)。
+所有門檻與規範寫在 [`knowledge-base/index/rules.json`](knowledge-base/index/rules.json)，每條有 ID、值、量測方法、把關程式。把關程式（`size-check`、`skill-dominance`、`playtest`）經 [`shared/tools/rules.mjs`](shared/tools/rules.mjs) 取值，**不得在程式或文件裡另寫數字**。這裡的「數字」指規範與驗收門檻；工具自己的做法參數（例如 `shared/tools/audio/music-pack.config.json` 的切段設定）和實驗觀測值，由工具設定檔與 `shared/experiments/` 各自持有，不進 rules.json。架構說明：[`knowledge-base/decisions/2026-10-21-kb-asset-architecture.md`](knowledge-base/decisions/2026-10-21-kb-asset-architecture.md)。
 
 ## 技術規範（必讀）
 

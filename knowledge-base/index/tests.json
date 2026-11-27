@@ -3,22 +3,22 @@
  "schemaVersion": 1,
  "about": "產生物，禁止手改。來源：shared/tests/registry.json（測試卡）對照 knowledge-base/index/rules.json（規則的 enforcement 為準，不回寫）；重建：node shared/tools/index-build.mjs。",
  "counts": {
-  "tests": 17,
+  "tests": 18,
   "byKind": {
    "audit": 1,
    "human-playtest": 1,
    "review": 5,
-   "script": 7,
+   "script": 8,
    "sim-playtest": 2,
    "unit": 1
   },
   "byCost": {
-   "cheap": 3,
+   "cheap": 4,
    "human": 6,
    "medium": 8
   },
-  "rules": 32,
-  "covered": 32
+  "rules": 35,
+  "covered": 35
  },
  "tests": [
   {
@@ -291,6 +291,7 @@
     "RULE-SPEC-FAIRNESS",
     "RULE-AF-ADAPTATION",
     "RULE-SIM-PURITY",
+    "RULE-NO-FORCED-HIT",
     "RULE-TEMPLATE-LEFTOVER",
     "RULE-KB-CITED",
     "RULE-ASSET-REGISTER"
@@ -306,12 +307,11 @@
    "source": "shared/tools/game-audit.mjs",
    "needs": [
     "README.md",
-    "gdd",
-    "game/src/sim/sim.js"
+    "gdd"
    ],
    "cost": "cheap",
    "fresh": null,
-   "note": "pre-commit 會跑；must 未過擋 commit，should 只警告"
+   "note": "pre-commit 會跑；must 未過擋 commit，should 只警告。只需要文件就能跑：N2 規格關卡在 sim.js 寫出來（N4）之前就要用它檢查 RULE-SPEC-FAIRNESS；要 sim 的檢查（RULE-SPEC-CONSTANTS、RULE-SIM-PURITY、RULE-REPORT-FRESH）在 sim 不存在時明確判不通過，N4 的 produces 檢查也會擋"
   },
   {
    "id": "TEST-INDEX",
@@ -438,6 +438,27 @@
      "checklist": "美術驗收清單"
     }
    ]
+  },
+  {
+   "id": "TEST-MUSIC-PACK",
+   "kind": "script",
+   "implements": [
+    "RULE-MUSIC-ENCODE",
+    "RULE-MUSIC-LOOP"
+   ],
+   "facets": {
+    "topic": [
+     "audio",
+     "budget"
+    ]
+   },
+   "run": "node shared/tools/music-pack.mjs --self-test",
+   "cwd": ".",
+   "source": "shared/tools/music-pack.mjs",
+   "needs": [],
+   "cost": "cheap",
+   "fresh": null,
+   "note": "驗證打包工具本身（速度偵測、循環長度、參數取自 rules.json）；沒有 ffmpeg 或 python+scipy 時 exit 2（無法執行，不算通過）。接縫與音質仍要人工試聽（knowledge-base/14 §5）"
   }
  ],
  "coverage": [
@@ -479,6 +500,15 @@
   },
   {
    "rule": "RULE-SIM-PURITY",
+   "level": "must",
+   "enforcement": "script",
+   "tests": [
+    "TEST-AUDIT"
+   ],
+   "covered": true
+  },
+  {
+   "rule": "RULE-NO-FORCED-HIT",
    "level": "must",
    "enforcement": "script",
    "tests": [
@@ -609,6 +639,24 @@
    "enforcement": "review",
    "tests": [
     "TEST-FX-FILTER-REVIEW"
+   ],
+   "covered": true
+  },
+  {
+   "rule": "RULE-MUSIC-ENCODE",
+   "level": "should",
+   "enforcement": "script",
+   "tests": [
+    "TEST-MUSIC-PACK"
+   ],
+   "covered": true
+  },
+  {
+   "rule": "RULE-MUSIC-LOOP",
+   "level": "should",
+   "enforcement": "script",
+   "tests": [
+    "TEST-MUSIC-PACK"
    ],
    "covered": true
   },

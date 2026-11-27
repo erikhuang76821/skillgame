@@ -25,7 +25,7 @@
 | 場景 / 3D 模型 | 1.0 MB |
 | UI 圖示、字型 | 0.4 MB |
 | 主視覺 / 商店圖 | 0.4 MB |
-| 音樂（Opus 循環，首包 1 首） | 2.0 MB |
+| 音樂（Opus 循環段，`RULE-MUSIC-ENCODE`／`RULE-MUSIC-LOOP`） | 2.0 MB |
 | 音效 | 0（Web Audio 合成）～ 0.3 MB |
 | transcoder / decoder | 只算實際用到的 |
 | 預留 | ≥ 1.5 MB |

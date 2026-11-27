@@ -5,6 +5,7 @@
   "skillAxis": ["aim", "reaction", "planning"],
   "renderer": ["2d"],
   "scriptedProgression": true,
+  "fileMusic": false,
   "source": ["original", "af-survivor-skill-pick"],
   "jurisdiction": ["TW", "US-*"],
   "artStyle": ["procedural"]

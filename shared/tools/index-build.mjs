@@ -19,7 +19,7 @@ import { buildTests } from './tests-index.mjs';
 import { applyMustRead, checkNodes, loadNodes } from './loop.mjs';
 import { checkRuleScopes } from './context.mjs';
 
-export const KINDS = ['sprite-sheet', 'background', 'fx-sheet', 'key-art', 'ui', 'reference', 'procedural', 'audio-recipe'];
+export const KINDS = ['sprite-sheet', 'background', 'fx-sheet', 'key-art', 'ui', 'reference', 'procedural', 'audio-recipe', 'music'];
 export const STATUSES = ['shipped', 'raw-only', 'rejected-take', 'placeholder', 'procedural', 'template'];
 export const REUSE = ['game-only', 'reusable', 'template'];
 const OUT_JSON = join('knowledge-base', 'index', 'assets.json');

@@ -131,7 +131,7 @@ test('games without scripted progression do not get the difficulty-curve rules o
     // Skill evidence does not depend on this flag: every new game owes it; the legacy measures are for the three named games only.
     for (const id of ['RULE-SKILL-EVIDENCE', 'RULE-SKILL-NOT-LUCK', 'RULE-SKILL-BEATS-SIMPLE']) assert.ok(pack.rules.some(r => r.id === id), `${name} ${id}: ${id} applies`);
     for (const id of ['RULE-SKILL-DOMINANCE', 'RULE-SKILL-BASELINE']) assert.ok(pack.notApplicable.includes(id), `${name} ${id}: ${id} is not for new games`);
-    if (id === 'N5-tune') assert.deepEqual(pack.tests.filter(t => t.id.startsWith('TEST-SKILL-')).map(t => t.id).sort(), ['TEST-SKILL-BEATS-SIMPLE', 'TEST-SKILL-EVIDENCE', 'TEST-SKILL-NOT-LUCK']);
+    if (id === 'N5-tune') assert.deepEqual(pack.tests.filter(t => t.id.startsWith('TEST-SKILL-')).map(t => t.id).sort(), ['TEST-SKILL-BEATS-SIMPLE', 'TEST-SKILL-CLOSENESS-REVIEW', 'TEST-SKILL-EVIDENCE', 'TEST-SKILL-NOT-LUCK']);
   }
 });
 

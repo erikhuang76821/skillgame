@@ -15,7 +15,7 @@
 | ~~G3~~ ✅ 2026-10-19 | **概念 → 可玩規格的中間格式** → [game-spec-template.md](../.claude/skills/lite-skillgame-stack/references/game-spec-template.md)（§0–§12 對應程式 + AI 提示詞 + Beat Tap 範例） | GDD 是文件；從 GDD 到 sim 靠人工轉譯 | 一份「玩法規格」範本：狀態、輸入編碼（bit 配置）、tick 表、計分公式、隨機 stream 清單、結束條件、bot 策略 → 可直接餵給 AI 生 `sim/` 與 bot |
 | ~~G4~~ ✅ 2026-10-19 | **輸入公平性（跨裝置）** → [13](13_input-fairness.md)；校正畫面 UI 已有實作範例（TwinStrike `ui/calibration.js`，2026-10-21） | 只有「輸入進佇列、慢幀不吞點擊」 | 觸控延遲差異、60/120 Hz 螢幕的輸入取樣、tap/drag 判定閾值、時機型遊戲的延遲校準流程——時機類 skill game 的公平核心，完全沒寫 |
 | ~~G5~~ ✅ 2026-10-21（節奏類） | **難度曲線與數值調校方法** → [16](16_difficulty-curve.md)；真人試玩協議與其他品類的負荷模型仍缺 | 規則卡幾乎沒有難度 / 節奏數值；SwarmDuel 只有一次計分調整經驗 | 品類別難度曲線基準、局長內的張力設計、以 bot 掃參數的調校流程、真人試玩協議（≥ 20 人 × 同種子、記錄欄位） |
-| ~~G6~~ ✅ 2026-10-19（音效） | **音效 / 音樂** → [14](14_audio.md)；音樂來源與授權仍缺 | 規範說「Web Audio 合成 0 bytes、沿用 PokéSurvivor」，但 repo 沒有任何合成程式；SwarmDuel **目前沒有聲音**（UX 落差 #3） | Web Audio SFX 配方庫（打擊、拾取、UI、連擊升調）、iOS 解鎖、音樂來源與授權（AI 音樂？）、Opus 循環製作、節奏遊戲的譜面格式 |
+| ~~G6~~ ✅ 2026-10-19（音效）、2026-11-26（音樂循環段） | **音效 / 音樂** → [14](14_audio.md)；音樂檔走 14 §5 循環段流程；iOS 實機與分軌匯流排仍缺 | 規範說「Web Audio 合成 0 bytes、沿用 PokéSurvivor」，但 repo 沒有任何合成程式；SwarmDuel **目前沒有聲音**（UX 落差 #3） | Web Audio SFX 配方庫（打擊、拾取、UI、連擊升調）、iOS 解鎖、音樂來源與授權（AI 音樂？）、Opus 循環製作、節奏遊戲的譜面格式 |
 
 ## P1 — 部分品類或上線前會卡
 
