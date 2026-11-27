@@ -67,15 +67,26 @@
       padding-top: 3px; box-sizing: border-box; font: 800 11px/1 ui-monospace, monospace; color: #fff; }
     .pad button.cooling .cd { display: flex; }
     .pad button.empty { display: none; }
-    /* Button centres (from the pad's right / bottom) are spaced so every pair has >= 8 px between edges (UX #5). */
-    .pad .attack { width: 78px; height: 78px; right: 10px; bottom: 10px; font-size: 16px; }
-    /* v5 layout (jump added): every pair keeps >= 8 px between edges at 667x375 (UX #5, measured in N7) */
-    .pad .block  { right: 100px; bottom: 2px; } .pad .dodge { right: 12px; bottom: 100px; }
-    .pad .jump   { right: 98px; bottom: 70px; }
-    .pad .escape { right: 12px; bottom: 168px; width: 46px; height: 46px; font-size: 12px; }
-    .pad .s1 { right: 168px; bottom: 10px; } .pad .s2 { right: 166px; bottom: 78px; }
-    .pad .s3 { right: 100px; bottom: 138px; } .pad .s4 { right: 66px; bottom: 206px; width: 46px; height: 46px; font-size: 12px; }
-    .pad .interact { right: 236px; bottom: 150px; width: 64px; height: 44px; border-radius: 10px; display: none; border-color: var(--gold); }
+    /* Thumb arc (N7 v5 redesign): 攻 in the corner; the timing-critical ring 擋 / 閃 / 跳 next to it; the four skills
+       on the outer arc with the two 斷 skills nearest; 脫 smallest and farthest (no accidental escape). Centres are
+       placed so every pair keeps >= 8 px between edges (checked in the browser). */
+    .pad { width: 330px; height: 262px; }
+    .pad .attack { width: 82px; height: 82px; right: 14px; bottom: 14px; font-size: 17px; }
+    .pad .block  { width: 62px; height: 62px; right: 114px; bottom: 9px; font-size: 15px; }
+    .pad .dodge  { width: 62px; height: 62px; right: 14px; bottom: 114px; font-size: 15px; }
+    .pad .jump   { width: 58px; height: 58px; right: 96px; bottom: 93px; }
+    .pad .s1 { width: 54px; height: 54px; right: 203px; bottom: 13px; }
+    .pad .s2 { width: 54px; height: 54px; right: 183px; bottom: 85px; }
+    .pad .s3 { width: 54px; height: 54px; right: 143px; bottom: 153px; font-size: 12px; }
+    .pad .s4 { width: 54px; height: 54px; right: 73px; bottom: 178px; font-size: 12px; }
+    .pad .escape { width: 44px; height: 44px; right: 18px; bottom: 208px; font-size: 12px; }
+    .pad .interact { right: 268px; bottom: 128px; width: 64px; height: 44px; border-radius: 10px; display: none; border-color: var(--gold); }
+    /* 斷 skills carry a corner badge; when a gold read is on and the skill is ready it rings gold (UX review #3). */
+    .pad button .brk { display: none; position: absolute; top: 3px; right: 8px; font: 900 10px/1 inherit; color: var(--gold); z-index: 2; }
+    .pad button.is-brk .brk { display: block; }
+    .pad button.brk-ready { border-color: var(--gold); box-shadow: 0 0 0 2px rgba(227, 179, 74, .35); opacity: 1 !important; }
+    /* Keyboard players: the pad shrinks into the corner and fades (cooldowns stay readable, the fight is not covered). */
+    .pad.kb { transform: scale(.6); transform-origin: right bottom; opacity: .7; }
     @media (pointer: coarse) {
       .pad button kbd { display: none; }                        /* key hints only where there is a keyboard (UX #8) */
       .pad button { opacity: var(--pad-idle, .45); transition: opacity .15s; }

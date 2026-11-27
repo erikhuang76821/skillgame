@@ -154,7 +154,7 @@ export function startPanel(panel, seed, onStart, prefs, onToggle) {
       <li>貼著小兵往前推 = <b>抓</b>，再按攻 = 膝撞，推方向＋攻 = 摔出去撞倒別人；跳起來可以躲過掃地</li>`));
     c.append(h('h2', '', '操作'), h('ul', '', `
       <li>手機：左半邊拖曳＝移動；右下按鈕</li>
-      <li>鍵盤：WASD／方向鍵移動（上下＝往裡、往外）；J 攻、K 擋、Space 跳、Shift 閃、L 脫離、U I O P 招式、E 互動、Esc 暫停（劍塚裡 Esc＝離開）</li>
+      <li>鍵盤：WASD／方向鍵移動（上下＝往裡、往外）；左手 WASD 移動、Space 跳、Shift 閃（往正在按的方向閃）、Q 脫離、E 互動；右手 K 攻、L 擋，上排 U I O P 招式（U、I 是能「斷」的招）；Esc 暫停（劍塚裡 Esc＝離開）</li>
       <li>只用滑鼠：點地面走過去（按住會跟著游標），點畫面上的按鈕出招</li>`));
     c.append(h('h2', '', '計分'), h('div', '', scoringHtml()));
     c.append(h('h2', '', '設定'), settingsRow(prefs, onToggle));

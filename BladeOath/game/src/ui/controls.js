@@ -5,22 +5,27 @@
 // The virtual buttons light up when their key is pressed, so keyboard players see the same feedback.
 import {
   ACT_ATTACK, ACT_BLOCK, ACT_DODGE, ACT_SKILL1, ACT_SKILL2, ACT_SKILL3, ACT_SKILL4, ACT_ESCAPE, ACT_INTERACT, ACT_JUMP,
+  S, SKILLS, foeMove,
 } from '../sim/sim.js';
 
+// Control layout (user's choice, 2026-11-27): the left hand moves (WASD), jumps (Space, thumb) and dodges (Shift,
+// pinky) so a dodge always goes the way the hand is already pushing; the right hand attacks (K) and blocks (L); the
+// four skills are the row above (U I O P; U and I are the two 斷 skills of the opening build); escape (Q) and
+// interact (E) are left-hand reaches.
 export const BUTTONS = [
-  { act: ACT_ATTACK, cls: 'attack', label: '攻', key: 'J' },
-  { act: ACT_BLOCK, cls: 'block', label: '擋', key: 'K' },
+  { act: ACT_ATTACK, cls: 'attack', label: '攻', key: 'K' },
+  { act: ACT_BLOCK, cls: 'block', label: '擋', key: 'L' },
   { act: ACT_DODGE, cls: 'dodge', label: '閃', key: 'Shift' },
   { act: ACT_JUMP, cls: 'jump', label: '跳', key: 'Space' },
-  { act: ACT_ESCAPE, cls: 'escape', label: '脫', key: 'L' },
+  { act: ACT_ESCAPE, cls: 'escape', label: '脫', key: 'Q' },
   { act: ACT_SKILL1, cls: 's1', label: '招一', key: 'U', slot: 0 },
   { act: ACT_SKILL2, cls: 's2', label: '招二', key: 'I', slot: 1 },
   { act: ACT_SKILL3, cls: 's3', label: '招三', key: 'O', slot: 2 },
   { act: ACT_SKILL4, cls: 's4', label: '招四', key: 'P', slot: 3 },
   { act: ACT_INTERACT, cls: 'interact', label: '互動', key: 'E' },
 ];
-const KEY_ACT = { KeyJ: ACT_ATTACK, KeyK: ACT_BLOCK, ShiftLeft: ACT_DODGE, ShiftRight: ACT_DODGE, Space: ACT_JUMP, KeyL: ACT_ESCAPE, KeyU: ACT_SKILL1, KeyI: ACT_SKILL2,
-  KeyO: ACT_SKILL3, KeyP: ACT_SKILL4, KeyE: ACT_INTERACT };
+const KEY_ACT = { KeyK: ACT_ATTACK, KeyL: ACT_BLOCK, ShiftLeft: ACT_DODGE, ShiftRight: ACT_DODGE, Space: ACT_JUMP,
+  KeyQ: ACT_ESCAPE, KeyU: ACT_SKILL1, KeyI: ACT_SKILL2, KeyO: ACT_SKILL3, KeyP: ACT_SKILL4, KeyE: ACT_INTERACT };
 const KEY_DIR = { KeyW: [0, -1], ArrowUp: [0, -1], KeyS: [0, 1], ArrowDown: [0, 1], KeyA: [-1, 0], ArrowLeft: [-1, 0], KeyD: [1, 0], ArrowRight: [1, 0] };
 // DX/DY order in the sim: down, down_right, right, up_right, up, up_left, left, down_left
 const DIRS = [[0, 1], [1, 1], [1, 0], [1, -1], [0, -1], [-1, -1], [-1, 0], [-1, 1]];
@@ -50,7 +55,7 @@ export class Controls {
     for (const b of BUTTONS) {
       const n = el('button', b.cls);
       n.type = 'button'; n.tabIndex = -1; n.setAttribute('aria-label', `${b.label}（${b.key}）`);   // in play Tab = retarget, so pad buttons stay out of the tab order
-      n.innerHTML = `<span>${b.label}</span><kbd>${b.key}</kbd><span class="cd"></span>`;
+      n.innerHTML = `<span>${b.label}</span><kbd>${b.key}</kbd><span class="cd"></span>${b.slot !== undefined ? '<b class="brk">斷</b>' : ''}`;
       n.addEventListener('pointerdown', e => { e.preventDefault(); e.stopPropagation(); this.onGesture?.(); this.press(b.act, e.timeStamp); });
       this.pad.append(n); this.btn.set(b.act, n);
     }
@@ -67,7 +72,11 @@ export class Controls {
     this.pad.classList.add('hot'); clearTimeout(this._hot); this._hot = setTimeout(() => this.pad.classList.remove('hot'), 1500);
   }
 
+  /** Keyboard players get a small, faint pad (cooldowns still readable); any touch brings the full pad back. */
+  setKeyboard(on) { if (this.kb !== on) { this.kb = on; this.pad.classList.toggle('kb', on); } }
+
   bindStick() {
+    addEventListener('pointerdown', e => { if (e.pointerType === 'touch') this.setKeyboard(false); }, { capture: true });
     let id = null, ox = 0, oy = 0;
     const R = 46;
     this.zone.addEventListener('pointerdown', e => {
@@ -94,6 +103,7 @@ export class Controls {
     addEventListener('keydown', e => {
       this.onGesture?.();
       if (this.uiOpen()) return;          // a panel is open: Tab / Space / Enter / arrows belong to its buttons (UX #3)
+      if (KEY_DIR[e.code] || KEY_ACT[e.code]) this.setKeyboard(true);
       if (KEY_DIR[e.code]) { this.keys.add(e.code); this.target = null; e.preventDefault(); return; }
       const act = KEY_ACT[e.code];
       if (act && !e.repeat) { e.preventDefault(); this.press(act, e.timeStamp); }
@@ -137,10 +147,16 @@ export class Controls {
       n.querySelector('.cd').textContent = ticks > 0 ? Math.ceil(ticks / 60) : '';
     };
     cd(ACT_BLOCK, p.st === 5 ? 0 : p.cd[0]); cd(ACT_ESCAPE, p.cd[1]);
+    // A gold read is on and near: the 斷 skill that can answer it right now gets a gold ring (the glyph over the
+    // foe says 斷, the button says which key that is).
+    const gold = sim.foes.some(f => f.alive && f.on && f.st === S.WINDUP && foeMove(f)?.glow === 1 && Math.abs(f.x - p.x) < 160 * 256);
     for (let s = 0; s < 4; s++) {
-      const n = this.btn.get(ACT_SKILL1 + s), name = slotsNames[s];
+      const n = this.btn.get(ACT_SKILL1 + s), name = slotsNames[s], sk = SKILLS[p.slots[s]];
       n.classList.toggle('empty', !name);  // empty slots are hidden until a skill is put there (UX #6)
       n.querySelector('span').textContent = name || '';
+      const brk = !!(sk && sk.brk);
+      n.classList.toggle('is-brk', brk);
+      n.classList.toggle('brk-ready', brk && gold && p.cd[2 + s] === 0 && p.qi >= sk.qi);
       cd(ACT_SKILL1 + s, p.cd[2 + s]);
     }
   }
