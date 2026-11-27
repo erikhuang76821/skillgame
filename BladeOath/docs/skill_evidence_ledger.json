@@ -1,0 +1,202 @@
+[
+ {
+  "schema": 1,
+  "generation": 1,
+  "game": "blade-oath",
+  "version": 2,
+  "strategyHash": "d6ad92f6ce72e70d",
+  "n": 30,
+  "seedBase": 2026,
+  "thresholds": {
+   "alpha": 0.05,
+   "minQuestions": 30
+  },
+  "pass": true,
+  "pairs": [
+   {
+    "other": "random",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "masher",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "blocker",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "dodger",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "grinder",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   }
+  ],
+  "resultHash": "c1f692c135669d63"
+ },
+ {
+  "schema": 1,
+  "generation": 2,
+  "game": "blade-oath",
+  "version": 4,
+  "strategyHash": "76fe526919a1ce9e",
+  "n": 30,
+  "seedBase": 2026,
+  "thresholds": {
+   "alpha": 0.05,
+   "minQuestions": 30
+  },
+  "pass": true,
+  "pairs": [
+   {
+    "other": "random",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "masher",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "blocker",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "dodger",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "grinder",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   }
+  ],
+  "resultHash": "1c789984f09d4d1f"
+ },
+ {
+  "schema": 1,
+  "generation": 3,
+  "game": "blade-oath",
+  "version": 5,
+  "strategyHash": "3dddf554ee588fe5",
+  "n": 30,
+  "seedBase": 2026,
+  "thresholds": {
+   "alpha": 0.05,
+   "minQuestions": 30
+  },
+  "pass": true,
+  "pairs": [
+   {
+    "other": "random",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "masher",
+    "wins": 28,
+    "ties": 0,
+    "losses": 2
+   },
+   {
+    "other": "blocker",
+    "wins": 28,
+    "ties": 0,
+    "losses": 2
+   },
+   {
+    "other": "dodger",
+    "wins": 28,
+    "ties": 0,
+    "losses": 2
+   },
+   {
+    "other": "jumper",
+    "wins": 29,
+    "ties": 0,
+    "losses": 1
+   },
+   {
+    "other": "grabber",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   }
+  ],
+  "resultHash": "795c9f2d0ad7132b"
+ },
+ {
+  "schema": 1,
+  "generation": 4,
+  "game": "blade-oath",
+  "version": 6,
+  "strategyHash": "9f84b60c5278a0d8",
+  "n": 30,
+  "seedBase": 2026,
+  "thresholds": {
+   "alpha": 0.05,
+   "minQuestions": 30
+  },
+  "pass": true,
+  "pairs": [
+   {
+    "other": "random",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "masher",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "blocker",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "dodger",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "jumper",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   },
+   {
+    "other": "grabber",
+    "wins": 30,
+    "ties": 0,
+    "losses": 0
+   }
+  ],
+  "resultHash": "ec64b0d325a8c786"
+ }
+]

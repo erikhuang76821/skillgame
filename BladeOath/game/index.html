@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <title>刀誓（暫名）</title>
+  <style>
+    :root { --ink: #e9e4d8; --dim: #9aa3a8; --bg: #0c0f14; --panel: rgba(14, 18, 24, .92); --line: #39424c;
+      --hp: #c8423a; --sta: #6fae5a; --pos: #d8923a; --qi: #4f8fd8; --gold: #e3b34a; --red: #e0503c; }
+    html, body { margin: 0; height: 100%; background: var(--bg); overflow: hidden; touch-action: none;
+      -webkit-user-select: none; user-select: none; overscroll-behavior: none; color: var(--ink);
+      font: 600 15px/1.35 "Noto Sans TC", system-ui, sans-serif; }
+    /* Layering: #stage (clips) > #stage-shake (shaken by GSAP) > canvas; #fx and #hud are siblings, never shaken. */
+    #stage { position: fixed; inset: 0; overflow: hidden; background: var(--bg); }
+    #stage-shake { position: absolute; inset: -12px; will-change: transform; }
+    #stage-shake canvas { position: absolute; inset: 12px; display: block; image-rendering: pixelated; }
+    #fx { position: fixed; inset: 0; pointer-events: none; overflow: hidden; }
+    #fx-vignette, #fx-flash { position: absolute; inset: 0; opacity: 0; }
+    #fx-vignette { background: radial-gradient(ellipse at center, transparent 55%, rgba(170, 0, 0, .6) 100%); }
+    #fx-flash { background: #fff; mix-blend-mode: screen; }
+    .pop { position: absolute; transform: translate(-50%, -100%); font-size: 22px; font-weight: 900; letter-spacing: 2px;
+      text-shadow: 0 2px 0 #000, 0 0 8px rgba(0,0,0,.6); white-space: nowrap; }
+
+    #hud { position: fixed; inset: 0; pointer-events: none;
+      padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); }
+    #hud button, #hud .stick-zone { pointer-events: auto; }
+    .bars { position: absolute; top: 10px; left: 12px; width: min(32vw, 280px); display: grid; gap: 4px; }
+    .bars .row { display: grid; grid-template-columns: 16px 1fr; align-items: center; gap: 4px; }
+    .bars .row b { font-size: 13px; line-height: 1; text-shadow: 0 1px 0 #000; }
+    .bar { height: 9px; background: rgba(0,0,0,.55); border: 1px solid var(--line); position: relative; }
+    .bar > i { position: absolute; inset: 0 auto 0 0; display: block; transition: width .08s linear; }
+    .bar.hp > i { background: var(--hp); } .bar.sta > i { background: var(--sta); }
+    .bar.pos > i { background: var(--pos); } .bar.qi > i { background: var(--qi); }
+    .bar.hp { height: 13px; }
+    .bar.pos.warn { animation: warn .5s steps(2) infinite; }   /* posture nearly full: about to be broken */
+    @keyframes warn { 50% { border-color: var(--pos); box-shadow: 0 0 6px var(--pos); } }
+    @media (prefers-reduced-motion: reduce) { .bar.pos.warn { animation: none; border-color: var(--pos); } }
+    .meta { font-size: 13px; color: var(--dim); text-shadow: 0 1px 0 #000; }
+    .score { position: absolute; top: 8px; right: 14px; font-size: 22px; text-shadow: 0 2px 0 #000; text-align: right; }
+    .score small { display: block; font-size: 13px; color: var(--dim); }
+    .boss { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); width: min(44vw, 420px); text-align: center; }
+    .boss .name { font-size: 14px; text-shadow: 0 1px 0 #000; }
+    .boss .bar.hp { height: 10px; } .boss .bar.pos { height: 5px; }
+    .dc { position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%); font: 11px/1 ui-monospace, monospace; opacity: .6; }
+    .toast { position: absolute; top: 22%; left: 50%; transform: translateX(-50%); font-size: 26px; font-weight: 900;
+      letter-spacing: 6px; text-shadow: 0 2px 0 #000, 0 0 12px rgba(0,0,0,.8); opacity: 0; }
+
+    /* Virtual controls: the same buttons for touch, mouse and keyboard (pressed state mirrors the keys). */
+    .stick-zone { position: absolute; left: 0; bottom: 0; width: 42vw; height: 62vh; }
+    .stick { position: absolute; width: 110px; height: 110px; margin: -55px 0 0 -55px; border-radius: 50%;
+      border: 2px solid rgba(233,228,216,.25); background: rgba(0,0,0,.18); display: none; }
+    .stick i { position: absolute; left: 50%; top: 50%; width: 46px; height: 46px; margin: -23px 0 0 -23px; border-radius: 50%;
+      background: rgba(233,228,216,.35); }
+    .pad { position: absolute; right: calc(12px + env(safe-area-inset-right)); bottom: calc(12px + env(safe-area-inset-bottom));
+      width: 250px; height: 240px; pointer-events: none; }
+    .pad button { pointer-events: auto; }
+    .pad button { position: absolute; width: 56px; height: 56px; border-radius: 50%; border: 2px solid var(--line);
+      background: rgba(18, 22, 28, .78); color: var(--ink); font: 800 13px/1.05 inherit; padding: 0; cursor: pointer;
+      display: grid; place-items: center; overflow: hidden; touch-action: none; }
+    .pad button:hover { border-color: #6b7784; }
+    .pad button.down { transform: scale(.92); border-color: var(--ink); background: rgba(60, 66, 74, .9); }
+    .pad button kbd { position: absolute; bottom: 3px; left: 0; right: 0; font: 700 9px/1 ui-monospace, monospace; color: var(--dim); }
+    /* Cooling: the label stays readable under a dark veil, seconds sit in the corner (A10). */
+    .pad button > span:first-child { position: relative; z-index: 1; }
+    .pad button.cooling > span:first-child { color: var(--dim); }
+    .pad button .cd { position: absolute; inset: 0; background: rgba(0,0,0,.55); display: none; align-items: flex-start; justify-content: center;
+      padding-top: 3px; box-sizing: border-box; font: 800 11px/1 ui-monospace, monospace; color: #fff; }
+    .pad button.cooling .cd { display: flex; }
+    .pad button.empty { display: none; }
+    /* Button centres (from the pad's right / bottom) are spaced so every pair has >= 8 px between edges (UX #5). */
+    .pad .attack { width: 78px; height: 78px; right: 10px; bottom: 10px; font-size: 16px; }
+    /* v5 layout (jump added): every pair keeps >= 8 px between edges at 667x375 (UX #5, measured in N7) */
+    .pad .block  { right: 100px; bottom: 2px; } .pad .dodge { right: 12px; bottom: 100px; }
+    .pad .jump   { right: 98px; bottom: 70px; }
+    .pad .escape { right: 12px; bottom: 168px; width: 46px; height: 46px; font-size: 12px; }
+    .pad .s1 { right: 168px; bottom: 10px; } .pad .s2 { right: 166px; bottom: 78px; }
+    .pad .s3 { right: 100px; bottom: 138px; } .pad .s4 { right: 66px; bottom: 206px; width: 46px; height: 46px; font-size: 12px; }
+    .pad .interact { right: 236px; bottom: 150px; width: 64px; height: 44px; border-radius: 10px; display: none; border-color: var(--gold); }
+    @media (pointer: coarse) {
+      .pad button kbd { display: none; }                        /* key hints only where there is a keyboard (UX #8) */
+      .pad button { opacity: var(--pad-idle, .45); transition: opacity .15s; }
+      .pad.hot button, .pad button.interact { opacity: 1; }
+    }
+    @media (pointer: coarse) { .card .cta .hint { display: none; } }   /* no keyboard: no Enter / Esc hints (A8) */
+    /* Pause for touch (A2): top right under the score, >= 44 px. */
+    #hud .pause { position: absolute; top: 58px; right: 12px; width: 44px; height: 44px; border-radius: 10px; border: 2px solid var(--line);
+      background: rgba(18, 22, 28, .7); color: var(--ink); font: 800 12px/1 inherit; padding: 0; cursor: pointer; }
+    #hud .pause[hidden] { display: none; }
+    .bars { transition: opacity .15s; } .bars.under { opacity: .3; }   /* a fight under the bars shows through (A4) */
+    /* Wayfinding (A3, A5): name tags over landmarks on screen, edge arrows for ones off screen. */
+    .beacon { position: absolute; left: 0; top: 0; font: 800 13px/1 "Noto Sans TC", system-ui, sans-serif; white-space: nowrap;
+      text-shadow: 0 0 3px #000, 0 1px 0 #000; will-change: transform; display: flex; width: max-content; align-items: center; gap: 3px; }
+    .beacon.shrine { color: #f0a040; } .beacon.boss { color: var(--red); }
+    .beacon i { display: inline-block; width: 0; height: 0; border: 7px solid transparent; border-left: 11px solid currentColor; border-right: 0; }
+    .pad button:focus-visible, .btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+    .pad .interact.show { display: grid; }
+
+    /* Panels */
+    .panel { position: fixed; inset: 0; display: none; place-items: center; background: rgba(5, 7, 10, .72); pointer-events: auto; }
+    .panel.show { display: grid; }
+    .card { background: var(--panel); border: 1px solid var(--line); padding: 18px 22px 0; width: min(92vw, 760px);
+      max-height: 88vh; max-height: 88dvh; overflow: auto; box-sizing: border-box; }
+    /* The main action stays on screen on short landscape phones; the text above it scrolls (UX #4). */
+    .card .cta { position: sticky; bottom: 0; margin: 10px -22px 0; padding: 10px 22px 14px; background: #0f141b;
+      border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+    .card .cta .hint { font: 500 13px/1.3 inherit; color: var(--dim); margin-left: auto; }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+    .card h1 { margin: 0 0 6px; font-size: 28px; letter-spacing: 6px; } .card h2 { margin: 14px 0 6px; font-size: 16px; color: var(--gold); }
+    .card p, .card li { color: #cfd5d9; font-weight: 500; margin: 4px 0; } .card ul { margin: 4px 0; padding-left: 20px; }
+    .card table { border-collapse: collapse; width: 100%; font-weight: 500; } .card td { padding: 3px 6px; border-bottom: 1px solid #222a32; }
+    .card td.n { text-align: right; font-variant-numeric: tabular-nums; }
+    .btn { font: 700 14px/1 inherit; color: var(--ink); background: #222a33; border: 1px solid #4a5561; padding: 9px 14px; margin: 3px; cursor: pointer;
+      min-height: 44px; }   /* A6 */
+    .btn small { display: block; margin-top: 4px; font: 500 12px/1.25 inherit; color: var(--dim); }
+    .btn.node { text-align: left; }
+    .btn:hover:not(:disabled) { border-color: var(--ink); } .btn:disabled { opacity: .35; cursor: default; }
+    .btn.primary { background: #6b3b22; border-color: var(--gold); } .btn.on { border-color: var(--gold); color: var(--gold); }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 4px; }
+    .glow-w { color: #f3efe4; } .glow-g { color: var(--gold); } .glow-r { color: var(--red); }
+    /* Wind-up glyphs over a foe's head: the shape says what the colour says (UX #1). */
+    .mark { position: absolute; left: 0; top: 0; font: 900 16px/1 "Noto Sans TC", system-ui, sans-serif; text-shadow: 0 0 3px #000, 0 1px 0 #000;
+      transform: translate(-50%, -100%); white-space: nowrap; will-change: transform; }
+    .mark.w { color: #f3efe4; } .mark.g { color: var(--gold); } .mark.r { color: var(--red); font-size: 19px; }
+    .verify { font-size: 13px; color: var(--dim); }
+  </style>
+</head>
+<body>
+  <div id="stage"><div id="stage-shake"></div></div>
+  <div id="fx" aria-hidden="true"><div id="fx-vignette"></div><div id="fx-flash"></div></div>
+  <div id="hud"></div>
+  <div id="sr" class="sr-only" aria-live="polite"></div>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
