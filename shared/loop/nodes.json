@@ -128,7 +128,7 @@
     {
       "id": "N7-feel", "name": "手感、音效、UI",
       "after": ["N4-sim"],
-      "pull": { "kb": { "topic": ["juice", "audio", "ux"], "genre": ["$profile.genre"], "kind": ["method", "lesson", "research"] } },
+      "pull": { "kb": { "topic": ["juice", "audio", "ux"], "genre": ["$profile.genre"], "artStyle": ["$profile.artStyle"], "kind": ["method", "lesson", "research"] } },
       "budget": { "kbTokens": 6000 },
       "produces": ["game/src/fx/feel.js", "game/src/audio/sfx.js", "game/src/ui/"],
       "gate": { "must": ["RULE-FX-FILTER", "RULE-TEMPLATE-LEFTOVER"] },

@@ -48,7 +48,7 @@
     },
     {
       "id": "feel", "name": "手感 / 音效",
-      "pull": { "kb": { "topic": ["juice", "audio", "ux"], "genre": ["$profile.genre"], "kind": ["method", "lesson", "research"] } },
+      "pull": { "kb": { "topic": ["juice", "audio", "ux"], "genre": ["$profile.genre"], "artStyle": ["$profile.artStyle"], "kind": ["method", "lesson", "research"] } },
       "budget": { "kbTokens": 6000 },
       "gate": { "must": ["RULE-FX-FILTER"] },
       "expectPages": ["KB-juice-feel", "KB-audio", "KB-reference-games"]
